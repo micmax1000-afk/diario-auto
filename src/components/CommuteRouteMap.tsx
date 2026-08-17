@@ -1,0 +1,185 @@
+import { useEffect, useRef, useState } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { geocodeAddress } from "../utils/geocoding";
+import { getDrivingRoute, type RouteResult } from "../utils/routing";
+
+const markerIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+interface Props {
+  initialOrigin?: string;
+  initialDestination?: string;
+  onSelect: (kmOneWay: number, label: string) => void;
+  onClose: () => void;
+}
+
+export default function CommuteRouteMap({ initialOrigin = "", initialDestination = "", onSelect, onClose }: Props) {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<L.Map | null>(null);
+  const routeLayerRef = useRef<L.Polyline | null>(null);
+  const markersRef = useRef<L.Marker[]>([]);
+
+  const [origin, setOrigin] = useState(initialOrigin);
+  const [destination, setDestination] = useState(initialDestination);
+  const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const [route, setRoute] = useState<RouteResult | null>(null);
+
+  useEffect(() => {
+    if (!mapContainerRef.current || mapRef.current) return;
+    const map = L.map(mapContainerRef.current).setView([41.9028, 12.4964], 6);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19,
+    }).addTo(map);
+    mapRef.current = map;
+
+    return () => {
+      map.remove();
+      mapRef.current = null;
+    };
+  }, []);
+
+  async function handleCalculate() {
+    if (!origin.trim() || !destination.trim()) {
+      setError("Inserisci sia la partenza che la destinazione.");
+      return;
+    }
+
+    setStatus("loading");
+    setError(null);
+    setRoute(null);
+
+    try {
+      const [originPoint, destPoint] = await Promise.all([geocodeAddress(origin), geocodeAddress(destination)]);
+
+      if (!originPoint) {
+        setStatus("error");
+        setError(`Non trovo "${origin}". Prova con un indirizzo più preciso (es. città e provincia).`);
+        return;
+      }
+      if (!destPoint) {
+        setStatus("error");
+        setError(`Non trovo "${destination}". Prova con un indirizzo più preciso (es. città e provincia).`);
+        return;
+      }
+
+      const result = await getDrivingRoute(originPoint, destPoint);
+      setRoute(result);
+      setStatus("ready");
+      drawRoute(originPoint, destPoint, result);
+    } catch {
+      setStatus("error");
+      setError("Impossibile calcolare il percorso in questo momento. Riprova tra qualche secondo.");
+    }
+  }
+
+  function drawRoute(
+    originPoint: { lat: number; lng: number },
+    destPoint: { lat: number; lng: number },
+    result: RouteResult,
+  ) {
+    const map = mapRef.current;
+    if (!map) return;
+
+    markersRef.current.forEach((m) => m.remove());
+    markersRef.current = [];
+    routeLayerRef.current?.remove();
+    routeLayerRef.current = null;
+
+    const originMarker = L.marker([originPoint.lat, originPoint.lng], { icon: markerIcon }).addTo(map).bindPopup("Partenza");
+    const destMarker = L.marker([destPoint.lat, destPoint.lng], { icon: markerIcon }).addTo(map).bindPopup("Destinazione");
+    markersRef.current = [originMarker, destMarker];
+
+    const latLngs = result.geometry.map((p) => [p.lat, p.lng] as [number, number]);
+    const polyline = L.polyline(latLngs, { color: "#c98a2d", weight: 4 }).addTo(map);
+    routeLayerRef.current = polyline;
+
+    map.fitBounds(polyline.getBounds(), { padding: [30, 30] });
+  }
+
+  function handleUseRoute() {
+    if (!route) return;
+    onSelect(route.distanceKm, `${origin.trim()} → ${destination.trim()}`);
+  }
+
+  return (
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="commute-route-title">
+      <div className="modal modal--wide">
+        <div className="modal__header">
+          <h2 id="commute-route-title">Calcola tragitto sulla mappa</h2>
+          <button type="button" className="modal__close" onClick={onClose} aria-label="Chiudi">
+            ×
+          </button>
+        </div>
+
+        <div className="field-row" style={{ padding: "0 1rem" }}>
+          <div className="field">
+            <label htmlFor="route-origin">Partenza</label>
+            <input
+              id="route-origin"
+              type="text"
+              placeholder="es. Torino"
+              value={origin}
+              onChange={(e) => setOrigin(e.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="route-destination">Destinazione</label>
+            <input
+              id="route-destination"
+              type="text"
+              placeholder="es. Milano"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div style={{ padding: "0 1rem 0.75rem" }}>
+          <button type="button" className="btn btn--primary btn--small" onClick={handleCalculate} disabled={status === "loading"}>
+            {status === "loading" ? "Calcolo in corso…" : "Calcola percorso"}
+          </button>
+        </div>
+
+        {error && <p className="form-error" style={{ margin: "0 1rem 0.75rem" }}>{error}</p>}
+
+        <div ref={mapContainerRef} style={{ height: "380px", width: "100%" }} />
+
+        {route && (
+          <div className="stat-row" style={{ padding: "0.75rem 1rem 0" }}>
+            <div className="stat-chip">
+              <span className="stat-chip__label">Distanza (sola andata)</span>
+              <span className="stat-chip__value">{route.distanceKm.toFixed(1)} km</span>
+            </div>
+            <div className="stat-chip">
+              <span className="stat-chip__label">Tempo stimato</span>
+              <span className="stat-chip__value">{Math.round(route.durationMin)} min</span>
+            </div>
+          </div>
+        )}
+
+        <p className="empty-state__body" style={{ padding: "0.75rem 1rem 1rem" }}>
+          Il percorso è calcolato in auto (via OpenStreetMap/OSRM). Se fai anche il ritorno, imposta "Tratte al
+          giorno" a 2 nel passo successivo: la distanza qui è solo andata.
+        </p>
+
+        <div className="modal__actions">
+          <button type="button" className="btn btn--ghost" onClick={onClose}>
+            Annulla
+          </button>
+          <button type="button" className="btn btn--primary" onClick={handleUseRoute} disabled={!route}>
+            Usa questo tragitto
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
