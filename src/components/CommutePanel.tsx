@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Vehicle, FuelEntry, CommuteSettings, CommuteScenario } from "../types";
+import type { Vehicle, FuelEntry, CommuteSettings, CommuteScenario, CommuteFuelType } from "../types";
 import { calculateConsumption, averageConsumption, calculateCommuteCost } from "../utils/calculations";
 import {
   getCommuteSettings,
@@ -10,6 +10,15 @@ import {
 } from "../utils/storage";
 import CommuteSettingsForm from "./CommuteSettingsForm";
 import CommuteScenarioForm from "./CommuteScenarioForm";
+
+const FUEL_TYPE_LABELS: Record<CommuteFuelType, string> = {
+  benzina: "Benzina",
+  diesel: "Diesel",
+  gpl: "GPL",
+  elettrico: "Elettrico",
+  ibrido: "Ibrido",
+  ibrido_plugin: "Ibrido plug-in",
+};
 
 interface Props {
   vehicle: Vehicle;
@@ -193,7 +202,10 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
               const delta = realCost && cost ? cost.costPerMonth - realCost.costPerMonth : null;
               return (
                 <tr key={s.id}>
-                  <td>{s.label}</td>
+                  <td>
+                    {FUEL_TYPE_LABELS[s.fuelType]}
+                    {s.note && <span style={{ opacity: 0.7 }}> · {s.note}</span>}
+                  </td>
                   <td className="mono">
                     {s.kmPerUnit.toFixed(1)} km/{s.unit}
                   </td>

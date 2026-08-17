@@ -2,7 +2,7 @@ export type FuelType = "benzina" | "diesel" | "gpl" | "metano" | "elettrico" | "
 
 export interface Vehicle {
   id: string;
-  name: string; // es. "Fiat 500L"
+  name: string; // nome scelto dall'utente per il veicolo
   plate?: string; // targa
   fuelType: FuelType;
   currentKm: number;
@@ -128,10 +128,13 @@ export interface CommuteSettings {
 }
 
 // Scenario ipotetico per confrontare veicoli/alimentazioni alternative (es. GPL, elettrico)
+export type CommuteFuelType = "benzina" | "diesel" | "gpl" | "elettrico" | "ibrido" | "ibrido_plugin";
+
 export interface CommuteScenario {
   id: string;
   vehicleId: string; // veicolo "di riferimento" a cui è associato il confronto (per km/giorni tratta)
-  label: string; // es. "Dacia Sandero GPL", "Renault Zoe"
+  fuelType: CommuteFuelType;
+  note?: string; // nota personale opzionale (es. "usata, 3 anni")
   kmPerUnit: number; // km percorribili con 1 litro (o 1 kWh)
   pricePerUnit: number; // prezzo di 1 litro (o 1 kWh)
   unit: "litro" | "kWh";

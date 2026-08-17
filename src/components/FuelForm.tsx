@@ -81,8 +81,11 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
     setPriceHint({ price, label });
     setShowMap(false);
     const litersValue = Number(liters);
+    const costValue = Number(totalCost);
     if (!Number.isNaN(litersValue) && litersValue > 0) {
       setTotalCost((litersValue * price).toFixed(2));
+    } else if (!Number.isNaN(costValue) && costValue > 0) {
+      setLiters((costValue / price).toFixed(2));
     }
   }
 
@@ -92,6 +95,16 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
       const litersValue = Number(value);
       if (!Number.isNaN(litersValue) && litersValue > 0) {
         setTotalCost((litersValue * priceHint.price).toFixed(2));
+      }
+    }
+  }
+
+  function handleCostChange(value: string) {
+    setTotalCost(value);
+    if (priceHint) {
+      const costValue = Number(value);
+      if (!Number.isNaN(costValue) && costValue > 0) {
+        setLiters((costValue / priceHint.price).toFixed(2));
       }
     }
   }
@@ -157,7 +170,7 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
                 step="0.01"
                 inputMode="decimal"
                 value={totalCost}
-                onChange={(e) => setTotalCost(e.target.value)}
+                onChange={(e) => handleCostChange(e.target.value)}
               />
               {apiFuelForSource && (
                 <button
@@ -171,7 +184,8 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
               )}
               {priceHint && (
                 <p className="empty-state__body" style={{ margin: 0 }}>
-                  € {priceHint.price.toFixed(3)}/l — {priceHint.label}
+                  € {priceHint.price.toFixed(3)}/l — {priceHint.label}. Inserisci litri o costo: calcolo l'altro
+                  automaticamente.
                 </p>
               )}
             </div>

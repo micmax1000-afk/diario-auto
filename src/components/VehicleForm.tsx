@@ -32,7 +32,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose }: Props) 
     e.preventDefault();
 
     if (!name.trim()) {
-      setError("Inserisci il nome del veicolo (es. Fiat 500L).");
+      setError("Inserisci il nome del veicolo.");
       return;
     }
     const kmValue = Number(currentKm);
@@ -71,7 +71,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose }: Props) 
             <input
               id="name"
               type="text"
-              placeholder="es. Fiat 500L"
+              placeholder="es. La mia auto"
               value={name}
               onChange={(e) => setName(e.target.value)}
               autoFocus
