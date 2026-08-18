@@ -16,7 +16,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
   const isEditing = Boolean(initialEntry);
   const [date, setDate] = useState(() => initialEntry?.date.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
   const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
-  const [kWh, setKWh] = useState(initialEntry ? String(initialEntry.kWh) : "");
   const [pricePerKWh, setPricePerKWh] = useState(initialEntry ? String(initialEntry.pricePerKWh) : "");
   const [totalCost, setTotalCost] = useState(initialEntry ? String(initialEntry.totalCost) : "");
   const [powerKW, setPowerKW] = useState(initialEntry?.powerKW !== undefined ? String(initialEntry.powerKW) : "");
@@ -25,6 +24,15 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
   const [notes, setNotes] = useState(initialEntry?.notes ?? "");
   const [error, setError] = useState("");
   const [showMap, setShowMap] = useState(false);
+
+  // kWh calcolati SEMPRE da costo totale / prezzo unitario: non editabili
+  // direttamente, per evitare valori tra loro incoerenti.
+  const priceValue = Number(pricePerKWh);
+  const costValue = Number(totalCost);
+  const computedKWh =
+    pricePerKWh !== "" && !Number.isNaN(priceValue) && priceValue > 0 && totalCost !== "" && !Number.isNaN(costValue)
+      ? costValue / priceValue
+      : null;
 
   function handleToggleAtHome(checked: boolean) {
     setAtHome(checked);
@@ -41,34 +49,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
     }
   }
 
-  // Calcolo triangolare: kWh × prezzo/kWh = costo totale. Basta compilare due
-  // qualsiasi dei tre campi: il terzo si calcola da solo.
-  function recalcFrom(changed: "kwh" | "price" | "cost", value: string) {
-    const kwhValue = changed === "kwh" ? Number(value) : Number(kWh);
-    const priceValue = changed === "price" ? Number(value) : Number(pricePerKWh);
-    const costValue = changed === "cost" ? Number(value) : Number(totalCost);
-
-    const hasKwh = changed === "kwh" ? value !== "" && !Number.isNaN(kwhValue) : kWh !== "" && !Number.isNaN(kwhValue);
-    const hasPrice =
-      changed === "price" ? value !== "" && !Number.isNaN(priceValue) : pricePerKWh !== "" && !Number.isNaN(priceValue);
-    const hasCost =
-      changed === "cost" ? value !== "" && !Number.isNaN(costValue) : totalCost !== "" && !Number.isNaN(costValue);
-
-    if (changed === "kwh") {
-      setKWh(value);
-      if (hasPrice && kwhValue > 0) setTotalCost((kwhValue * priceValue).toFixed(2));
-      else if (hasCost && kwhValue > 0) setPricePerKWh((costValue / kwhValue).toFixed(3));
-    } else if (changed === "price") {
-      setPricePerKWh(value);
-      if (hasKwh && priceValue >= 0) setTotalCost((kwhValue * priceValue).toFixed(2));
-      else if (hasCost && priceValue > 0) setKWh((costValue / priceValue).toFixed(2));
-    } else {
-      setTotalCost(value);
-      if (hasKwh && kwhValue > 0) setPricePerKWh((costValue / kwhValue).toFixed(3));
-      else if (hasPrice && priceValue > 0) setKWh((costValue / priceValue).toFixed(2));
-    }
-  }
-
   function handleSelectStation(station: ChargerStation) {
     setShowMap(false);
     setLocation(station.title);
@@ -82,9 +62,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
     e.preventDefault();
 
     const kmValue = Number(km);
-    const kWhValue = Number(kWh);
-    const costValue = Number(totalCost);
-    const priceValue = Number(pricePerKWh);
 
     if (!date) {
       setError("Inserisci la data.");
@@ -94,12 +71,12 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
       setError("Inserisci un chilometraggio valido.");
       return;
     }
-    if (Number.isNaN(kWhValue) || kWhValue <= 0) {
-      setError("Inserisci una quantità di kWh valida.");
+    if (Number.isNaN(priceValue) || priceValue <= 0) {
+      setError("Inserisci un prezzo per kWh valido.");
       return;
     }
-    if (Number.isNaN(costValue) || costValue < 0) {
-      setError("Inserisci un costo valido.");
+    if (Number.isNaN(costValue) || costValue <= 0) {
+      setError("Inserisci un costo totale valido.");
       return;
     }
 
@@ -108,8 +85,8 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
       vehicleId: vehicle.id,
       date: new Date(date).toISOString(),
       km: Math.round(kmValue),
-      kWh: kWhValue,
-      pricePerKWh: Number.isNaN(priceValue) ? costValue / kWhValue : priceValue,
+      kWh: costValue / priceValue,
+      pricePerKWh: priceValue,
       totalCost: costValue,
       powerKW: powerKW.trim() ? Number(powerKW) : undefined,
       atHome,
@@ -164,31 +141,16 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
             </label>
           </div>
 
-          <p className="empty-state__body" style={{ margin: "0 0 0.25rem" }}>
-            Compila due qualsiasi tra kWh, prezzo e costo totale: calcolo il terzo in automatico.
-          </p>
-
           <div className="field-row">
             <div className="field">
-              <label htmlFor="charge-kwh">kWh</label>
-              <input
-                id="charge-kwh"
-                type="number"
-                step="0.01"
-                inputMode="decimal"
-                value={kWh}
-                onChange={(e) => recalcFrom("kwh", e.target.value)}
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="charge-price">€/kWh</label>
+              <label htmlFor="charge-price">€/kWh *</label>
               <input
                 id="charge-price"
                 type="number"
                 step="0.001"
                 inputMode="decimal"
                 value={pricePerKWh}
-                onChange={(e) => recalcFrom("price", e.target.value)}
+                onChange={(e) => setPricePerKWh(e.target.value)}
               />
               {!atHome && (
                 <button
@@ -201,9 +163,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
                 </button>
               )}
             </div>
-          </div>
-
-          <div className="field-row">
             <div className="field">
               <label htmlFor="charge-cost">Costo totale (€) *</label>
               <input
@@ -212,7 +171,20 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
                 step="0.01"
                 inputMode="decimal"
                 value={totalCost}
-                onChange={(e) => recalcFrom("cost", e.target.value)}
+                onChange={(e) => setTotalCost(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor="charge-kwh">kWh (calcolati)</label>
+              <input
+                id="charge-kwh"
+                type="text"
+                readOnly
+                disabled
+                value={computedKWh !== null ? computedKWh.toFixed(2) : "—"}
               />
             </div>
             <div className="field">

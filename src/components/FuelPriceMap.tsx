@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { fetchNearbyStations, type FuelApiType, type FuelStation } from "../utils/fuelPriceApi";
-import { geocodeAddress } from "../utils/geocoding";
+import { geocodeAddress, type GeocodeResult } from "../utils/geocoding";
+import AddressAutocompleteInput from "./AddressAutocompleteInput";
 
 interface Props {
   initialFuel?: FuelApiType;
@@ -116,6 +117,12 @@ export default function FuelPriceMap({ initialFuel = "benzina", onSelect, onClos
     );
   }
 
+  function handleSelectSuggestion(result: GeocodeResult) {
+    setAddressQuery(result.displayName);
+    setError(null);
+    setPosition({ lat: result.lat, lng: result.lng });
+  }
+
   async function handleSearchAddress() {
     if (!addressQuery.trim()) {
       setError("Inserisci un comune, CAP o indirizzo.");
@@ -194,20 +201,14 @@ export default function FuelPriceMap({ initialFuel = "benzina", onSelect, onClos
               ))}
             </select>
           </div>
-          <div className="field" style={{ flex: 2 }}>
-            <label htmlFor="fuel-map-address">Comune, CAP o indirizzo</label>
-            <input
+          <div style={{ flex: 2 }}>
+            <AddressAutocompleteInput
               id="fuel-map-address"
-              type="text"
+              label="Comune, CAP o indirizzo"
               placeholder="es. Brescia, oppure 25100"
               value={addressQuery}
-              onChange={(e) => setAddressQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleSearchAddress();
-                }
-              }}
+              onChange={setAddressQuery}
+              onSelectSuggestion={handleSelectSuggestion}
             />
           </div>
           <button type="button" className="btn btn--primary btn--small" onClick={handleSearchAddress}>

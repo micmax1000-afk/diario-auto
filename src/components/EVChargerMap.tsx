@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { fetchNearbyChargers, type ChargerStation } from "../utils/evChargerApi";
-import { geocodeAddress } from "../utils/geocoding";
+import { geocodeAddress, type GeocodeResult } from "../utils/geocoding";
+import { getOcmApiKey, setOcmApiKey } from "../utils/storage";
+import AddressAutocompleteInput from "./AddressAutocompleteInput";
 
 interface Props {
   onSelect: (station: ChargerStation) => void;
@@ -29,6 +31,15 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
   const [stationCount, setStationCount] = useState(0);
+  const [apiKey, setApiKey] = useState<string | null>(() => getOcmApiKey());
+  const [apiKeyInput, setApiKeyInput] = useState("");
+
+  function handleSaveApiKey() {
+    const trimmed = apiKeyInput.trim();
+    if (!trimmed) return;
+    setOcmApiKey(trimmed);
+    setApiKey(trimmed);
+  }
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -65,10 +76,14 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
         setStationCount(stations.length);
         setStatus("ready");
       })
-      .catch(() => {
+      .catch((err) => {
         if (cancelled) return;
         setStatus("error");
-        setError("Impossibile contattare Open Charge Map in questo momento. Riprova tra qualche secondo.");
+        if (err instanceof Error && err.message === "MISSING_API_KEY") {
+          setError("Serve prima una chiave API gratuita di Open Charge Map (vedi sopra).");
+        } else {
+          setError("Impossibile contattare Open Charge Map in questo momento. Riprova tra qualche secondo.");
+        }
       });
 
     return () => {
@@ -93,6 +108,12 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
       },
       { enableHighAccuracy: false, timeout: 10000 },
     );
+  }
+
+  function handleSelectSuggestion(result: GeocodeResult) {
+    setAddressQuery(result.displayName);
+    setError(null);
+    setPosition({ lat: result.lat, lng: result.lng });
   }
 
   async function handleSearchAddress() {
@@ -161,27 +182,50 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
           compilare la potenza (kW), poi inserisci tu il prezzo per kWh del tuo operatore.
         </p>
 
+        {!apiKey && (
+          <div className="empty-state" style={{ margin: "0 1rem 1rem" }}>
+            <p className="empty-state__title">Serve una chiave API gratuita</p>
+            <p className="empty-state__body">
+              Open Charge Map richiede una chiave gratuita per ogni richiesta. Registrati in un minuto su{" "}
+              <a href="https://openchargemap.org/site/develop/api" target="_blank" rel="noopener noreferrer">
+                openchargemap.org/site/develop/api
+              </a>{" "}
+              (sezione "API Key"), copia la chiave e incollala qui sotto — resta salvata solo su questo
+              dispositivo.
+            </p>
+            <div className="field-row" style={{ alignItems: "flex-end" }}>
+              <div className="field">
+                <label htmlFor="ocm-api-key">Chiave API Open Charge Map</label>
+                <input
+                  id="ocm-api-key"
+                  type="text"
+                  placeholder="incolla qui la chiave"
+                  value={apiKeyInput}
+                  onChange={(e) => setApiKeyInput(e.target.value)}
+                />
+              </div>
+              <button type="button" className="btn btn--primary btn--small" onClick={handleSaveApiKey}>
+                Salva chiave
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="field-row" style={{ padding: "0 1rem", alignItems: "flex-end" }}>
-          <div className="field" style={{ flex: 2 }}>
-            <label htmlFor="ev-map-address">Comune, CAP o indirizzo</label>
-            <input
+          <div style={{ flex: 2 }}>
+            <AddressAutocompleteInput
               id="ev-map-address"
-              type="text"
+              label="Comune, CAP o indirizzo"
               placeholder="es. Brescia, oppure 25100"
               value={addressQuery}
-              onChange={(e) => setAddressQuery(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleSearchAddress();
-                }
-              }}
+              onChange={setAddressQuery}
+              onSelectSuggestion={handleSelectSuggestion}
             />
           </div>
-          <button type="button" className="btn btn--primary btn--small" onClick={handleSearchAddress}>
+          <button type="button" className="btn btn--primary btn--small" onClick={handleSearchAddress} disabled={!apiKey}>
             Cerca
           </button>
-          <button type="button" className="btn btn--ghost btn--small" onClick={handleUseLocation}>
+          <button type="button" className="btn btn--ghost btn--small" onClick={handleUseLocation} disabled={!apiKey}>
             Usa la mia posizione
           </button>
         </div>

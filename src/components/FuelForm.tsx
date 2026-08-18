@@ -24,7 +24,6 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
   const isEditing = Boolean(initialEntry);
   const [date, setDate] = useState(() => initialEntry?.date.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
   const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
-  const [liters, setLiters] = useState(initialEntry ? String(initialEntry.liters) : "");
   const [pricePerUnit, setPricePerUnit] = useState(
     initialEntry && initialEntry.liters > 0 ? (initialEntry.totalCost / initialEntry.liters).toFixed(3) : "",
   );
@@ -52,44 +51,25 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
             ? "metano"
             : null;
 
-  // Calcolo triangolare: litri × prezzo/unità = costo totale. Basta compilare
-  // due qualsiasi dei tre campi: il terzo si calcola da solo.
-  function recalcFrom(changed: "liters" | "price" | "cost", value: string) {
-    const litersValue = changed === "liters" ? Number(value) : Number(liters);
-    const priceValue = changed === "price" ? Number(value) : Number(pricePerUnit);
-    const costValue = changed === "cost" ? Number(value) : Number(totalCost);
-
-    const hasLiters = changed === "liters" ? value !== "" && !Number.isNaN(litersValue) : liters !== "" && !Number.isNaN(litersValue);
-    const hasPrice = changed === "price" ? value !== "" && !Number.isNaN(priceValue) : pricePerUnit !== "" && !Number.isNaN(priceValue);
-    const hasCost = changed === "cost" ? value !== "" && !Number.isNaN(costValue) : totalCost !== "" && !Number.isNaN(costValue);
-
-    if (changed === "liters") {
-      setLiters(value);
-      if (hasPrice && litersValue > 0) setTotalCost((litersValue * priceValue).toFixed(2));
-      else if (hasCost && litersValue > 0) setPricePerUnit((costValue / litersValue).toFixed(3));
-    } else if (changed === "price") {
-      setPricePerUnit(value);
-      if (hasLiters && priceValue >= 0) setTotalCost((litersValue * priceValue).toFixed(2));
-      else if (hasCost && priceValue > 0) setLiters((costValue / priceValue).toFixed(2));
-    } else {
-      setTotalCost(value);
-      if (hasLiters && litersValue > 0) setPricePerUnit((costValue / litersValue).toFixed(3));
-      else if (hasPrice && priceValue > 0) setLiters((costValue / priceValue).toFixed(2));
-    }
-  }
+  // Litri (o kWh) calcolati SEMPRE da costo totale / prezzo unitario: non
+  // sono editabili direttamente, per evitare valori tra loro incoerenti.
+  const priceValue = Number(pricePerUnit);
+  const costValue = Number(totalCost);
+  const computedLiters =
+    pricePerUnit !== "" && !Number.isNaN(priceValue) && priceValue > 0 && totalCost !== "" && !Number.isNaN(costValue)
+      ? costValue / priceValue
+      : null;
 
   function handleSelectPrice(price: number, label: string) {
     setPriceSource(label);
     setShowMap(false);
-    recalcFrom("price", price.toFixed(3));
+    setPricePerUnit(price.toFixed(3));
   }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     const kmValue = Number(km);
-    const litersValue = Number(liters);
-    const costValue = Number(totalCost);
 
     if (!date) {
       setError("Inserisci la data.");
@@ -99,12 +79,12 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
       setError("Inserisci un chilometraggio valido.");
       return;
     }
-    if (Number.isNaN(litersValue) || litersValue <= 0) {
-      setError("Inserisci una quantità valida (litri o kWh).");
+    if (Number.isNaN(priceValue) || priceValue <= 0) {
+      setError(`Inserisci un prezzo per ${unitShort} valido.`);
       return;
     }
-    if (Number.isNaN(costValue) || costValue < 0) {
-      setError("Inserisci un costo valido.");
+    if (Number.isNaN(costValue) || costValue <= 0) {
+      setError("Inserisci un costo totale valido.");
       return;
     }
 
@@ -113,7 +93,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
       vehicleId: vehicle.id,
       date: new Date(date).toISOString(),
       km: Math.round(kmValue),
-      liters: litersValue,
+      liters: costValue / priceValue,
       totalCost: costValue,
       source,
       fullTank,
@@ -162,32 +142,16 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
             </select>
           </div>
 
-          <p className="empty-state__body" style={{ margin: "0 0 0.25rem" }}>
-            Compila due qualsiasi tra {unitLabel.toLowerCase()}, prezzo e costo totale: calcolo il terzo in
-            automatico.
-          </p>
-
           <div className="field-row">
             <div className="field">
-              <label htmlFor="fuel-liters">{unitLabel}</label>
-              <input
-                id="fuel-liters"
-                type="number"
-                step="0.01"
-                inputMode="decimal"
-                value={liters}
-                onChange={(e) => recalcFrom("liters", e.target.value)}
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="fuel-price">€/{unitShort}</label>
+              <label htmlFor="fuel-price">€/{unitShort} *</label>
               <input
                 id="fuel-price"
                 type="number"
                 step="0.001"
                 inputMode="decimal"
                 value={pricePerUnit}
-                onChange={(e) => recalcFrom("price", e.target.value)}
+                onChange={(e) => setPricePerUnit(e.target.value)}
               />
               {apiFuelForSource && (
                 <button
@@ -200,15 +164,6 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
                 </button>
               )}
             </div>
-          </div>
-
-          {priceSource && (
-            <p className="empty-state__body" style={{ margin: "-0.25rem 0 0" }}>
-              Prezzo da: {priceSource}
-            </p>
-          )}
-
-          <div className="field-row">
             <div className="field">
               <label htmlFor="fuel-cost">Costo totale (€) *</label>
               <input
@@ -217,20 +172,38 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
                 step="0.01"
                 inputMode="decimal"
                 value={totalCost}
-                onChange={(e) => recalcFrom("cost", e.target.value)}
+                onChange={(e) => setTotalCost(e.target.value)}
               />
             </div>
-            <div className="field field--checkbox">
-              <label htmlFor="fuel-full">
-                <input
-                  id="fuel-full"
-                  type="checkbox"
-                  checked={fullTank}
-                  onChange={(e) => setFullTank(e.target.checked)}
-                />
-                Pieno (serve per calcolo consumo)
-              </label>
-            </div>
+          </div>
+
+          {priceSource && (
+            <p className="empty-state__body" style={{ margin: "-0.25rem 0 0.5rem" }}>
+              Prezzo da: {priceSource}
+            </p>
+          )}
+
+          <div className="field">
+            <label htmlFor="fuel-liters">{unitLabel} (calcolati)</label>
+            <input
+              id="fuel-liters"
+              type="text"
+              readOnly
+              disabled
+              value={computedLiters !== null ? computedLiters.toFixed(2) : "—"}
+            />
+          </div>
+
+          <div className="field field--checkbox">
+            <label htmlFor="fuel-full">
+              <input
+                id="fuel-full"
+                type="checkbox"
+                checked={fullTank}
+                onChange={(e) => setFullTank(e.target.checked)}
+              />
+              Pieno (serve per calcolo consumo)
+            </label>
           </div>
 
           <div className="field">

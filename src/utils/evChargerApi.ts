@@ -1,7 +1,10 @@
 // Client per l'API pubblica Open Charge Map (registro globale delle colonnine
-// di ricarica elettrica). Gratuita, supporta CORS diretto dal browser, nessuna
-// chiave obbligatoria per un uso leggero come questo.
-// https://openchargemap.org/site/develop/api
+// di ricarica elettrica). Dal 2024 richiede una chiave API gratuita per ogni
+// richiesta (query param "key" o header "X-API-Key") — la chiave si registra
+// gratuitamente su https://openchargemap.org/site/develop/api e viene salvata
+// solo sul dispositivo dell'utente (mai inviata altrove).
+
+import { getOcmApiKey } from "./storage";
 
 const API_BASE = "https://api.openchargemap.io/v3/poi/";
 
@@ -44,9 +47,15 @@ interface OcmPoiRaw {
 }
 
 export async function fetchNearbyChargers(lat: number, lng: number, distanceKm = 15, maxResults = 25): Promise<ChargerStation[]> {
+  const apiKey = getOcmApiKey();
+  if (!apiKey) {
+    throw new Error("MISSING_API_KEY");
+  }
+
   const url =
     `${API_BASE}?output=json&countrycode=IT&latitude=${lat}&longitude=${lng}` +
-    `&distance=${distanceKm}&distanceunit=KM&maxresults=${maxResults}&compact=true&verbose=false`;
+    `&distance=${distanceKm}&distanceunit=KM&maxresults=${maxResults}&compact=true&verbose=false` +
+    `&key=${encodeURIComponent(apiKey)}`;
 
   const res = await fetch(url);
   if (!res.ok) {

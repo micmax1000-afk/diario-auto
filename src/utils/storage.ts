@@ -79,6 +79,26 @@ export function setHomeChargingDefaults(vehicleId: string, pricePerKWh: number, 
   save(HOME_CHARGING_DEFAULTS_KEY, list);
 }
 
+// Chiave API gratuita di Open Charge Map (richiesta obbligatoriamente
+// dall'API), salvata localmente sul dispositivo dell'utente.
+const OCM_API_KEY_KEY = "diario-auto:ocm-api-key";
+
+export function getOcmApiKey(): string | null {
+  try {
+    return localStorage.getItem(OCM_API_KEY_KEY);
+  } catch {
+    return null;
+  }
+}
+
+export function setOcmApiKey(key: string): void {
+  try {
+    localStorage.setItem(OCM_API_KEY_KEY, key);
+  } catch {
+    // storage non disponibile, ignorato
+  }
+}
+
 export function loadMaintenanceEntries(): MaintenanceEntry[] {
   return load<MaintenanceEntry>(MAINTENANCE_KEY);
 }
