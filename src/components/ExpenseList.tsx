@@ -50,44 +50,33 @@ export default function ExpenseList({ entries, onDelete }: Props) {
         ))}
       </div>
 
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Categoria</th>
-            <th>Descrizione</th>
-            <th>Importo</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((entry) => (
-            <tr key={entry.id}>
-              <td>{new Date(entry.date).toLocaleDateString("it-IT")}</td>
-              <td>{CATEGORY_LABELS[entry.category] ?? entry.category}</td>
-              <td>{entry.description}</td>
-              <td className="mono">€ {entry.amount.toFixed(2)}</td>
-              <td>
-                {entry.photo && (
-                  <button type="button" className="thumb-btn" onClick={() => setZoomPhoto(entry.photo!)}>
-                    <img src={entry.photo} alt="Allegato" />
-                  </button>
-                )}
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--danger btn--small"
-                  onClick={() => onDelete(entry.id)}
-                >
-                  Rimuovi
+      <div className="record-list">
+        {sorted.map((entry) => (
+          <div key={entry.id} className="record-card">
+            <div className="record-card__header">
+              <span className="record-card__title">{CATEGORY_LABELS[entry.category] ?? entry.category}</span>
+              <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+            </div>
+            <div className="record-card__rows">
+              <div className="record-card__row">
+                <span className="record-card__row-label">Importo</span>
+                <span className="record-card__row-value mono">€ {entry.amount.toFixed(2)}</span>
+              </div>
+            </div>
+            <p className="record-card__note">{entry.description}</p>
+            <div className="record-card__actions">
+              {entry.photo && (
+                <button type="button" className="thumb-btn" onClick={() => setZoomPhoto(entry.photo!)}>
+                  <img src={entry.photo} alt="Allegato" />
                 </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              )}
+              <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => onDelete(entry.id)}>
+                Rimuovi
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {zoomPhoto && (
         <div className="modal-overlay" onClick={() => setZoomPhoto(null)}>

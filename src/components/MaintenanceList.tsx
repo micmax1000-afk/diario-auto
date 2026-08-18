@@ -6,7 +6,9 @@ const CATEGORY_LABELS: Record<string, string> = {
   gomme: "Gomme",
   freni: "Freni",
   olio: "Cambio olio",
-  batteria: "Batteria",
+  batteria: "Batteria (12V/trazione)",
+  raffreddamento: "Liquido raffreddamento",
+  software: "Aggiornamento software",
   carrozzeria: "Carrozzeria",
   revisione: "Revisione",
   altro: "Altro",
@@ -45,55 +47,51 @@ export default function MaintenanceList({ entries, onDelete }: Props) {
         </div>
       </div>
 
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Data</th>
-            <th>Km</th>
-            <th>Categoria</th>
-            <th>Descrizione</th>
-            <th>Officina</th>
-            <th>Costo</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((entry) => (
-            <tr key={entry.id}>
-              <td>{new Date(entry.date).toLocaleDateString("it-IT")}</td>
-              <td className="mono">{entry.km.toLocaleString("it-IT")}</td>
-              <td>{CATEGORY_LABELS[entry.category] ?? entry.category}</td>
-              <td>{entry.description}</td>
-              <td>{entry.workshop ?? "—"}</td>
-              <td className="mono">
-                € {entry.cost.toFixed(2)}
-                {entry.partsCost !== undefined && entry.laborCost !== undefined && (
-                  <span className="cost-breakdown">
-                    ricambi € {entry.partsCost.toFixed(2)} · manodopera € {entry.laborCost.toFixed(2)}
-                  </span>
-                )}
-              </td>
-              <td>
-                {entry.photo && (
-                  <button type="button" className="thumb-btn" onClick={() => setZoomPhoto(entry.photo!)}>
-                    <img src={entry.photo} alt="Allegato" />
-                  </button>
-                )}
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--danger btn--small"
-                  onClick={() => onDelete(entry.id)}
-                >
-                  Rimuovi
+      <div className="record-list">
+        {sorted.map((entry) => (
+          <div key={entry.id} className="record-card">
+            <div className="record-card__header">
+              <span className="record-card__title">{CATEGORY_LABELS[entry.category] ?? entry.category}</span>
+              <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+            </div>
+            <div className="record-card__rows">
+              <div className="record-card__row">
+                <span className="record-card__row-label">Km</span>
+                <span className="record-card__row-value mono">{entry.km.toLocaleString("it-IT")}</span>
+              </div>
+              <div className="record-card__row">
+                <span className="record-card__row-label">Costo</span>
+                <span className="record-card__row-value mono">
+                  € {entry.cost.toFixed(2)}
+                  {entry.partsCost !== undefined && entry.laborCost !== undefined && (
+                    <span className="cost-breakdown">
+                      {" "}
+                      (ricambi € {entry.partsCost.toFixed(2)} · manodopera € {entry.laborCost.toFixed(2)})
+                    </span>
+                  )}
+                </span>
+              </div>
+              {entry.workshop && (
+                <div className="record-card__row">
+                  <span className="record-card__row-label">Officina</span>
+                  <span className="record-card__row-value">{entry.workshop}</span>
+                </div>
+              )}
+            </div>
+            <p className="record-card__note">{entry.description}</p>
+            <div className="record-card__actions">
+              {entry.photo && (
+                <button type="button" className="thumb-btn" onClick={() => setZoomPhoto(entry.photo!)}>
+                  <img src={entry.photo} alt="Allegato" />
                 </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              )}
+              <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => onDelete(entry.id)}>
+                Rimuovi
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
 
       {zoomPhoto && (
         <div className="modal-overlay" onClick={() => setZoomPhoto(null)}>

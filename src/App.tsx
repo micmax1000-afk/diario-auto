@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import type { Vehicle, FuelEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "./types";
+import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "./types";
 import {
   loadVehicles,
   saveVehicles,
   loadFuelEntries,
   saveFuelEntries,
+  loadChargingEntries,
+  saveChargingEntries,
   loadMaintenanceEntries,
   saveMaintenanceEntries,
   loadExpenseEntries,
@@ -25,6 +27,7 @@ type Tab = "veicoli" | "backup";
 export default function App() {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [fuelEntries, setFuelEntries] = useState<FuelEntry[]>([]);
+  const [chargingEntries, setChargingEntries] = useState<ChargingEntry[]>([]);
   const [maintenanceEntries, setMaintenanceEntries] = useState<MaintenanceEntry[]>([]);
   const [expenseEntries, setExpenseEntries] = useState<ExpenseEntry[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
@@ -38,6 +41,7 @@ export default function App() {
   function reloadAll() {
     setVehicles(loadVehicles());
     setFuelEntries(loadFuelEntries());
+    setChargingEntries(loadChargingEntries());
     setMaintenanceEntries(loadMaintenanceEntries());
     setExpenseEntries(loadExpenseEntries());
     setReminders(loadReminders());
@@ -82,6 +86,10 @@ export default function App() {
     setFuelEntries(nextFuel);
     saveFuelEntries(nextFuel);
 
+    const nextCharging = chargingEntries.filter((e) => e.vehicleId !== id);
+    setChargingEntries(nextCharging);
+    saveChargingEntries(nextCharging);
+
     const nextMaint = maintenanceEntries.filter((e) => e.vehicleId !== id);
     setMaintenanceEntries(nextMaint);
     saveMaintenanceEntries(nextMaint);
@@ -106,8 +114,9 @@ export default function App() {
 
   // ---------- Rifornimenti ----------
 
-  function handleAddFuel(entry: FuelEntry) {
-    const next = [...fuelEntries, entry];
+  function handleSaveFuel(entry: FuelEntry) {
+    const exists = fuelEntries.some((e) => e.id === entry.id);
+    const next = exists ? fuelEntries.map((e) => (e.id === entry.id ? entry : e)) : [...fuelEntries, entry];
     setFuelEntries(next);
     saveFuelEntries(next);
 
@@ -125,6 +134,29 @@ export default function App() {
     const next = fuelEntries.filter((e) => e.id !== id);
     setFuelEntries(next);
     saveFuelEntries(next);
+  }
+
+  // ---------- Ricariche elettriche ----------
+
+  function handleSaveCharging(entry: ChargingEntry) {
+    const exists = chargingEntries.some((e) => e.id === entry.id);
+    const next = exists ? chargingEntries.map((e) => (e.id === entry.id ? entry : e)) : [...chargingEntries, entry];
+    setChargingEntries(next);
+    saveChargingEntries(next);
+
+    const vehicle = vehicles.find((v) => v.id === entry.vehicleId);
+    if (vehicle && entry.km > vehicle.currentKm) {
+      const updated = { ...vehicle, currentKm: entry.km };
+      const nextVehicles = vehicles.map((v) => (v.id === vehicle.id ? updated : v));
+      setVehicles(nextVehicles);
+      saveVehicles(nextVehicles);
+    }
+  }
+
+  function handleDeleteCharging(id: string) {
+    const next = chargingEntries.filter((e) => e.id !== id);
+    setChargingEntries(next);
+    saveChargingEntries(next);
   }
 
   // ---------- Manutenzioni ----------
@@ -358,12 +390,15 @@ export default function App() {
           <VehicleDetail
             vehicle={openVehicle}
             fuelEntries={fuelEntries.filter((e) => e.vehicleId === openVehicle.id)}
+            chargingEntries={chargingEntries.filter((e) => e.vehicleId === openVehicle.id)}
             maintenanceEntries={maintenanceEntries.filter((e) => e.vehicleId === openVehicle.id)}
             expenseEntries={expenseEntries.filter((e) => e.vehicleId === openVehicle.id)}
             reminders={reminders.filter((r) => r.vehicleId === openVehicle.id)}
             onBack={() => setOpenVehicleId(null)}
-            onAddFuel={handleAddFuel}
+            onSaveFuel={handleSaveFuel}
             onDeleteFuel={handleDeleteFuel}
+            onSaveCharging={handleSaveCharging}
+            onDeleteCharging={handleDeleteCharging}
             onAddMaintenance={handleAddMaintenance}
             onDeleteMaintenance={handleDeleteMaintenance}
             onAddExpense={handleAddExpense}

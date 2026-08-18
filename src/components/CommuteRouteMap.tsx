@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { geocodeAddress } from "../utils/geocoding";
+import { geocodeAddress, type GeocodeResult } from "../utils/geocoding";
 import { getDrivingRoute, type RouteResult } from "../utils/routing";
+import AddressAutocompleteInput from "./AddressAutocompleteInput";
 
 const markerIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
@@ -28,6 +29,8 @@ export default function CommuteRouteMap({ initialOrigin = "", initialDestination
 
   const [origin, setOrigin] = useState(initialOrigin);
   const [destination, setDestination] = useState(initialDestination);
+  const [originPicked, setOriginPicked] = useState<GeocodeResult | null>(null);
+  const [destinationPicked, setDestinationPicked] = useState<GeocodeResult | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
   const [error, setError] = useState<string | null>(null);
   const [route, setRoute] = useState<RouteResult | null>(null);
@@ -58,7 +61,12 @@ export default function CommuteRouteMap({ initialOrigin = "", initialDestination
     setRoute(null);
 
     try {
-      const [originPoint, destPoint] = await Promise.all([geocodeAddress(origin), geocodeAddress(destination)]);
+      const [originPoint, destPoint] = await Promise.all([
+        originPicked && originPicked.displayName === origin.trim() ? Promise.resolve(originPicked) : geocodeAddress(origin),
+        destinationPicked && destinationPicked.displayName === destination.trim()
+          ? Promise.resolve(destinationPicked)
+          : geocodeAddress(destination),
+      ]);
 
       if (!originPoint) {
         setStatus("error");
@@ -121,26 +129,34 @@ export default function CommuteRouteMap({ initialOrigin = "", initialDestination
         </div>
 
         <div className="field-row" style={{ padding: "0 1rem" }}>
-          <div className="field">
-            <label htmlFor="route-origin">Partenza</label>
-            <input
-              id="route-origin"
-              type="text"
-              placeholder="es. Torino"
-              value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="route-destination">Destinazione</label>
-            <input
-              id="route-destination"
-              type="text"
-              placeholder="es. Milano"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-            />
-          </div>
+          <AddressAutocompleteInput
+            id="route-origin"
+            label="Partenza"
+            placeholder="es. Torino"
+            value={origin}
+            onChange={(v) => {
+              setOrigin(v);
+              setOriginPicked(null);
+            }}
+            onSelectSuggestion={(result) => {
+              setOrigin(result.displayName);
+              setOriginPicked(result);
+            }}
+          />
+          <AddressAutocompleteInput
+            id="route-destination"
+            label="Destinazione"
+            placeholder="es. Milano"
+            value={destination}
+            onChange={(v) => {
+              setDestination(v);
+              setDestinationPicked(null);
+            }}
+            onSelectSuggestion={(result) => {
+              setDestination(result.displayName);
+              setDestinationPicked(result);
+            }}
+          />
         </div>
 
         <div style={{ padding: "0 1rem 0.75rem" }}>

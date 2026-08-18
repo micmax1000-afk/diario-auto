@@ -54,14 +54,16 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
 
   const consumptionPoints = calculateConsumption(fuelEntries);
   const avgKmPerLiter = averageConsumption(consumptionPoints);
+  const usingEstimate = avgKmPerLiter === null && !!settings.estimatedKmPerLiter;
+  const effectiveKmPerLiter = avgKmPerLiter ?? settings.estimatedKmPerLiter ?? null;
 
   const realCost =
-    isConfigured && avgKmPerLiter !== null
+    isConfigured && effectiveKmPerLiter !== null
       ? calculateCommuteCost(
           settings.kmPerTrip,
           settings.tripsPerDay,
           settings.workDaysPerWeek,
-          avgKmPerLiter,
+          effectiveKmPerLiter,
           settings.fuelPricePerLiter,
         )
       : null;
@@ -105,22 +107,26 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
         </div>
       )}
 
-      {isConfigured && avgKmPerLiter === null && (
+      {isConfigured && effectiveKmPerLiter === null && (
         <div className="empty-state">
-          <p className="empty-state__title">Consumo non ancora calcolabile</p>
+          <p className="empty-state__title">Consumo non ancora disponibile</p>
           <p className="empty-state__body">
-            Registra almeno due rifornimenti "pieno" per la stessa alimentazione: da lì Diario Auto calcola il
-            consumo medio reale e il costo del tragitto.
+            Aggiungi un consumo stimato nelle impostazioni (anche approssimativo) per vedere subito il costo
+            del tragitto, oppure registra almeno due rifornimenti "pieno" per farlo calcolare a Diario Auto in
+            automatico.
           </p>
         </div>
       )}
 
-      {isConfigured && realCost && avgKmPerLiter !== null && (
+      {isConfigured && realCost && effectiveKmPerLiter !== null && (
         <>
           <p className="empty-state__body" style={{ marginBottom: "0.75rem" }}>
             {settings.kmPerTrip.toLocaleString("it-IT")} km a tratta × {settings.tripsPerDay}/giorno ×{" "}
-            {settings.workDaysPerWeek} giorni/settimana, consumo medio reale{" "}
-            {avgKmPerLiter.toFixed(1)} km/l a {formatEuro(settings.fuelPricePerLiter)}/litro.
+            {settings.workDaysPerWeek} giorni/settimana, consumo {usingEstimate ? "stimato" : "medio reale"}{" "}
+            {effectiveKmPerLiter.toFixed(1)} km/l a {formatEuro(settings.fuelPricePerLiter)}/litro.
+            {usingEstimate && (
+              <> Dato provvisorio — verrà sostituito in automatico appena avrai abbastanza rifornimenti registrati.</>
+            )}
           </p>
           <div className="stat-row">
             <div className="stat-chip">
@@ -167,76 +173,83 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
       )}
 
       {isConfigured && scenarios.length > 0 && (
-        <table className="data-table">
-          <thead>
-            <tr>
-              <th>Scenario</th>
-              <th>Consumo</th>
-              <th>Prezzo</th>
-              <th>A tratta</th>
-              <th>Al mese</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {realCost && (
-              <tr>
-                <td>
-                  <strong>{vehicle.name} (attuale)</strong>
-                </td>
-                <td className="mono">{avgKmPerLiter?.toFixed(1)} km/l</td>
-                <td className="mono">{formatEuro(settings.fuelPricePerLiter)}/l</td>
-                <td className="mono">{formatEuro(realCost.costPerTrip)}</td>
-                <td className="mono">{formatEuro(realCost.costPerMonth)}</td>
-                <td></td>
-              </tr>
-            )}
-            {scenarios.map((s) => {
-              const cost = calculateCommuteCost(
-                settings.kmPerTrip,
-                settings.tripsPerDay,
-                settings.workDaysPerWeek,
-                s.kmPerUnit,
-                s.pricePerUnit,
-              );
-              const delta = realCost && cost ? cost.costPerMonth - realCost.costPerMonth : null;
-              return (
-                <tr key={s.id}>
-                  <td>
-                    {FUEL_TYPE_LABELS[s.fuelType]}
-                    {s.note && <span style={{ opacity: 0.7 }}> · {s.note}</span>}
-                  </td>
-                  <td className="mono">
-                    {s.kmPerUnit.toFixed(1)} km/{s.unit}
-                  </td>
-                  <td className="mono">
-                    {formatEuro(s.pricePerUnit)}/{s.unit}
-                  </td>
-                  <td className="mono">{cost ? formatEuro(cost.costPerTrip) : "—"}</td>
-                  <td className="mono">
-                    {cost ? formatEuro(cost.costPerMonth) : "—"}
+        <div className="record-list">
+          {realCost && (
+            <div className="record-card">
+              <div className="record-card__header">
+                <span className="record-card__title">
+                  {vehicle.name} (attuale){usingEstimate && <span style={{ opacity: 0.7 }}> · stimato</span>}
+                </span>
+                <span className="record-card__meta">al mese: {formatEuro(realCost.costPerMonth)}</span>
+              </div>
+              <div className="record-card__rows">
+                <div className="record-card__row">
+                  <span className="record-card__row-label">Consumo</span>
+                  <span className="record-card__row-value mono">{effectiveKmPerLiter?.toFixed(1)} km/l</span>
+                </div>
+                <div className="record-card__row">
+                  <span className="record-card__row-label">Prezzo</span>
+                  <span className="record-card__row-value mono">{formatEuro(settings.fuelPricePerLiter)}/l</span>
+                </div>
+                <div className="record-card__row">
+                  <span className="record-card__row-label">A tratta</span>
+                  <span className="record-card__row-value mono">{formatEuro(realCost.costPerTrip)}</span>
+                </div>
+              </div>
+            </div>
+          )}
+          {scenarios.map((s) => {
+            const cost = calculateCommuteCost(
+              settings.kmPerTrip,
+              settings.tripsPerDay,
+              settings.workDaysPerWeek,
+              s.kmPerUnit,
+              s.pricePerUnit,
+            );
+            const delta = realCost && cost ? cost.costPerMonth - realCost.costPerMonth : null;
+            return (
+              <div key={s.id} className="record-card">
+                <div className="record-card__header">
+                  <span className="record-card__title">{FUEL_TYPE_LABELS[s.fuelType]}</span>
+                  <span className="record-card__meta">
+                    al mese: {cost ? formatEuro(cost.costPerMonth) : "—"}
                     {delta !== null && (
-                      <span style={{ opacity: 0.7 }}>
-                        {" "}
-                        ({delta <= 0 ? "-" : "+"}
-                        {formatEuro(Math.abs(delta))})
-                      </span>
+                      <> ({delta <= 0 ? "-" : "+"}{formatEuro(Math.abs(delta))})</>
                     )}
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      className="btn btn--ghost btn--danger btn--small"
-                      onClick={() => handleDeleteScenario(s.id)}
-                    >
-                      Rimuovi
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                  </span>
+                </div>
+                <div className="record-card__rows">
+                  <div className="record-card__row">
+                    <span className="record-card__row-label">Consumo</span>
+                    <span className="record-card__row-value mono">
+                      {s.kmPerUnit.toFixed(1)} km/{s.unit}
+                    </span>
+                  </div>
+                  <div className="record-card__row">
+                    <span className="record-card__row-label">Prezzo</span>
+                    <span className="record-card__row-value mono">
+                      {formatEuro(s.pricePerUnit)}/{s.unit}
+                    </span>
+                  </div>
+                  <div className="record-card__row">
+                    <span className="record-card__row-label">A tratta</span>
+                    <span className="record-card__row-value mono">{cost ? formatEuro(cost.costPerTrip) : "—"}</span>
+                  </div>
+                </div>
+                {s.note && <p className="record-card__note">{s.note}</p>}
+                <div className="record-card__actions">
+                  <button
+                    type="button"
+                    className="btn btn--ghost btn--danger btn--small"
+                    onClick={() => handleDeleteScenario(s.id)}
+                  >
+                    Rimuovi
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       )}
 
       {showSettingsForm && (

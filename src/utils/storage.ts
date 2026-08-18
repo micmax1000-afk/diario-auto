@@ -1,6 +1,7 @@
 import type {
   Vehicle,
   FuelEntry,
+  ChargingEntry,
   MaintenanceEntry,
   ExpenseEntry,
   Reminder,
@@ -12,6 +13,7 @@ import type {
 
 const VEHICLES_KEY = "diario-auto:vehicles";
 const FUEL_KEY = "diario-auto:fuel-entries";
+const CHARGING_KEY = "diario-auto:charging-entries";
 const MAINTENANCE_KEY = "diario-auto:maintenance-entries";
 const EXPENSES_KEY = "diario-auto:expense-entries";
 const REMINDERS_KEY = "diario-auto:reminders";
@@ -47,6 +49,34 @@ export function loadFuelEntries(): FuelEntry[] {
 }
 export function saveFuelEntries(entries: FuelEntry[]): void {
   save(FUEL_KEY, entries);
+}
+
+export function loadChargingEntries(): ChargingEntry[] {
+  return load<ChargingEntry>(CHARGING_KEY);
+}
+export function saveChargingEntries(entries: ChargingEntry[]): void {
+  save(CHARGING_KEY, entries);
+}
+
+// Ricorda l'ultimo prezzo/potenza usati per la ricarica a casa di ogni veicolo,
+// così il form si precompila da solo dalle volte successive.
+export interface HomeChargingDefaults {
+  vehicleId: string;
+  pricePerKWh: number;
+  powerKW?: number;
+}
+const HOME_CHARGING_DEFAULTS_KEY = "diario-auto:home-charging-defaults";
+
+export function getHomeChargingDefaults(vehicleId: string): HomeChargingDefaults | null {
+  return load<HomeChargingDefaults>(HOME_CHARGING_DEFAULTS_KEY).find((d) => d.vehicleId === vehicleId) ?? null;
+}
+export function setHomeChargingDefaults(vehicleId: string, pricePerKWh: number, powerKW?: number): void {
+  const list = load<HomeChargingDefaults>(HOME_CHARGING_DEFAULTS_KEY);
+  const idx = list.findIndex((d) => d.vehicleId === vehicleId);
+  const entry: HomeChargingDefaults = { vehicleId, pricePerKWh, powerKW };
+  if (idx >= 0) list[idx] = entry;
+  else list.push(entry);
+  save(HOME_CHARGING_DEFAULTS_KEY, list);
 }
 
 export function loadMaintenanceEntries(): MaintenanceEntry[] {
@@ -163,6 +193,7 @@ export interface BackupData {
   exportedAt: string;
   vehicles: Vehicle[];
   fuelEntries: FuelEntry[];
+  chargingEntries?: ChargingEntry[];
   maintenanceEntries: MaintenanceEntry[];
   expenseEntries?: ExpenseEntry[];
   reminders: Reminder[];
@@ -178,6 +209,7 @@ export function buildBackup(): BackupData {
     exportedAt: new Date().toISOString(),
     vehicles: loadVehicles(),
     fuelEntries: loadFuelEntries(),
+    chargingEntries: loadChargingEntries(),
     maintenanceEntries: loadMaintenanceEntries(),
     expenseEntries: loadExpenseEntries(),
     reminders: loadReminders(),
@@ -191,6 +223,7 @@ export function buildBackup(): BackupData {
 export function restoreBackup(data: BackupData): void {
   saveVehicles(data.vehicles ?? []);
   saveFuelEntries(data.fuelEntries ?? []);
+  saveChargingEntries(data.chargingEntries ?? []);
   saveMaintenanceEntries(data.maintenanceEntries ?? []);
   saveExpenseEntries(data.expenseEntries ?? []);
   saveReminders(data.reminders ?? []);

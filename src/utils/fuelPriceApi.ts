@@ -5,7 +5,7 @@
 
 const API_BASE = "https://prezzi-carburante.onrender.com/api";
 
-export type FuelApiType = "benzina" | "gasolio";
+export type FuelApiType = "benzina" | "gasolio" | "gpl" | "metano";
 
 export interface FuelStation {
   ranking?: number;

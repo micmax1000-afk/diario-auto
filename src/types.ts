@@ -28,12 +28,28 @@ export interface FuelEntry {
   notes?: string;
 }
 
+export interface ChargingEntry {
+  id: string;
+  vehicleId: string;
+  date: string; // ISO date
+  km: number; // km al momento della ricarica
+  kWh: number; // energia caricata
+  pricePerKWh: number; // euro per kWh
+  totalCost: number; // euro
+  powerKW?: number; // potenza della colonnina/wallbox, informativa
+  atHome?: boolean; // ricarica domestica (wallbox/presa di casa)
+  location?: string; // nome/indirizzo colonnina, se scelta dalla mappa
+  notes?: string;
+}
+
 export type MaintenanceCategory =
   | "tagliando"
   | "gomme"
   | "freni"
   | "olio"
   | "batteria"
+  | "raffreddamento"
+  | "software"
   | "carrozzeria"
   | "revisione"
   | "altro";
@@ -125,6 +141,7 @@ export interface CommuteSettings {
   tripsPerDay: number; // es. 2 = andata + ritorno
   workDaysPerWeek: number; // giorni lavorativi a settimana
   fuelPricePerLiter: number; // prezzo attuale al litro (o per kWh se elettrico), aggiornabile manualmente
+  estimatedKmPerLiter?: number; // consumo stimato, usato finché non ci sono abbastanza rifornimenti per calcolare quello reale
 }
 
 // Scenario ipotetico per confrontare veicoli/alimentazioni alternative (es. GPL, elettrico)

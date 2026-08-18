@@ -1,4 +1,4 @@
-import type { FuelEntry, MaintenanceEntry, ExpenseEntry, FuelSource } from "../types";
+import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, FuelSource } from "../types";
 
 export interface ConsumptionPoint {
   fromKm: number;
@@ -65,6 +65,7 @@ export function averageConsumption(points: ConsumptionPoint[], source?: FuelSour
 
 export interface VehicleCostSummary {
   fuelCost: number;
+  chargingCost: number;
   maintenanceCost: number;
   expensesCost: number;
   totalCost: number;
@@ -77,18 +78,25 @@ export function calculateVehicleCosts(
   maintenanceEntries: MaintenanceEntry[],
   currentKm: number,
   expenseEntries: ExpenseEntry[] = [],
+  chargingEntries: ChargingEntry[] = [],
 ): VehicleCostSummary {
   const fuelCost = fuelEntries.reduce((sum, e) => sum + e.totalCost, 0);
+  const chargingCost = chargingEntries.reduce((sum, e) => sum + e.totalCost, 0);
   const maintenanceCost = maintenanceEntries.reduce((sum, e) => sum + e.cost, 0);
   const expensesCost = expenseEntries.reduce((sum, e) => sum + e.amount, 0);
-  const totalCost = fuelCost + maintenanceCost + expensesCost;
+  const totalCost = fuelCost + chargingCost + maintenanceCost + expensesCost;
 
-  const allKm = [...fuelEntries.map((e) => e.km), ...maintenanceEntries.map((e) => e.km)];
+  const allKm = [
+    ...fuelEntries.map((e) => e.km),
+    ...maintenanceEntries.map((e) => e.km),
+    ...chargingEntries.map((e) => e.km),
+  ];
   const minKm = allKm.length > 0 ? Math.min(...allKm) : currentKm;
   const totalKm = Math.max(currentKm - minKm, 0);
 
   return {
     fuelCost,
+    chargingCost,
     maintenanceCost,
     expensesCost,
     totalCost,

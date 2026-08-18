@@ -15,23 +15,74 @@ const SOURCE_OPTIONS: { value: FuelSource; label: string }[] = [
 
 interface Props {
   vehicle: Vehicle;
+  initialEntry?: FuelEntry;
   onSave: (entry: FuelEntry) => void;
   onClose: () => void;
 }
 
-export default function FuelForm({ vehicle, onSave, onClose }: Props) {
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-  const [km, setKm] = useState(String(vehicle.currentKm));
-  const [liters, setLiters] = useState("");
-  const [totalCost, setTotalCost] = useState("");
-  const [source, setSource] = useState<FuelSource>(
-    vehicle.fuelType === "ibrido" ? "benzina" : (vehicle.fuelType as FuelSource),
+export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Props) {
+  const isEditing = Boolean(initialEntry);
+  const [date, setDate] = useState(() => initialEntry?.date.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
+  const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
+  const [liters, setLiters] = useState(initialEntry ? String(initialEntry.liters) : "");
+  const [pricePerUnit, setPricePerUnit] = useState(
+    initialEntry && initialEntry.liters > 0 ? (initialEntry.totalCost / initialEntry.liters).toFixed(3) : "",
   );
-  const [fullTank, setFullTank] = useState(true);
-  const [notes, setNotes] = useState("");
+  const [totalCost, setTotalCost] = useState(initialEntry ? String(initialEntry.totalCost) : "");
+  const [source, setSource] = useState<FuelSource>(
+    initialEntry?.source ?? (vehicle.fuelType === "ibrido" ? "benzina" : (vehicle.fuelType as FuelSource)),
+  );
+  const [fullTank, setFullTank] = useState(initialEntry?.fullTank ?? true);
+  const [notes, setNotes] = useState(initialEntry?.notes ?? "");
   const [error, setError] = useState("");
   const [showMap, setShowMap] = useState(false);
-  const [priceHint, setPriceHint] = useState<{ price: number; label: string } | null>(null);
+  const [priceSource, setPriceSource] = useState<string | null>(null);
+
+  const unitLabel = source === "elettrico" ? "kWh" : "Litri";
+  const unitShort = source === "elettrico" ? "kWh" : "l";
+
+  const apiFuelForSource: FuelApiType | null =
+    source === "benzina"
+      ? "benzina"
+      : source === "diesel"
+        ? "gasolio"
+        : source === "gpl"
+          ? "gpl"
+          : source === "metano"
+            ? "metano"
+            : null;
+
+  // Calcolo triangolare: litri × prezzo/unità = costo totale. Basta compilare
+  // due qualsiasi dei tre campi: il terzo si calcola da solo.
+  function recalcFrom(changed: "liters" | "price" | "cost", value: string) {
+    const litersValue = changed === "liters" ? Number(value) : Number(liters);
+    const priceValue = changed === "price" ? Number(value) : Number(pricePerUnit);
+    const costValue = changed === "cost" ? Number(value) : Number(totalCost);
+
+    const hasLiters = changed === "liters" ? value !== "" && !Number.isNaN(litersValue) : liters !== "" && !Number.isNaN(litersValue);
+    const hasPrice = changed === "price" ? value !== "" && !Number.isNaN(priceValue) : pricePerUnit !== "" && !Number.isNaN(priceValue);
+    const hasCost = changed === "cost" ? value !== "" && !Number.isNaN(costValue) : totalCost !== "" && !Number.isNaN(costValue);
+
+    if (changed === "liters") {
+      setLiters(value);
+      if (hasPrice && litersValue > 0) setTotalCost((litersValue * priceValue).toFixed(2));
+      else if (hasCost && litersValue > 0) setPricePerUnit((costValue / litersValue).toFixed(3));
+    } else if (changed === "price") {
+      setPricePerUnit(value);
+      if (hasLiters && priceValue >= 0) setTotalCost((litersValue * priceValue).toFixed(2));
+      else if (hasCost && priceValue > 0) setLiters((costValue / priceValue).toFixed(2));
+    } else {
+      setTotalCost(value);
+      if (hasLiters && litersValue > 0) setPricePerUnit((costValue / litersValue).toFixed(3));
+      else if (hasPrice && priceValue > 0) setLiters((costValue / priceValue).toFixed(2));
+    }
+  }
+
+  function handleSelectPrice(price: number, label: string) {
+    setPriceSource(label);
+    setShowMap(false);
+    recalcFrom("price", price.toFixed(3));
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -58,7 +109,7 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
     }
 
     const entry: FuelEntry = {
-      id: generateId(),
+      id: initialEntry?.id ?? generateId(),
       vehicleId: vehicle.id,
       date: new Date(date).toISOString(),
       km: Math.round(kmValue),
@@ -72,48 +123,11 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
     onSave(entry);
   }
 
-  const unitLabel = source === "elettrico" ? "kWh" : "Litri";
-
-  const apiFuelForSource: FuelApiType | null =
-    source === "benzina" ? "benzina" : source === "diesel" ? "gasolio" : null;
-
-  function handleSelectPrice(price: number, label: string) {
-    setPriceHint({ price, label });
-    setShowMap(false);
-    const litersValue = Number(liters);
-    const costValue = Number(totalCost);
-    if (!Number.isNaN(litersValue) && litersValue > 0) {
-      setTotalCost((litersValue * price).toFixed(2));
-    } else if (!Number.isNaN(costValue) && costValue > 0) {
-      setLiters((costValue / price).toFixed(2));
-    }
-  }
-
-  function handleLitersChange(value: string) {
-    setLiters(value);
-    if (priceHint) {
-      const litersValue = Number(value);
-      if (!Number.isNaN(litersValue) && litersValue > 0) {
-        setTotalCost((litersValue * priceHint.price).toFixed(2));
-      }
-    }
-  }
-
-  function handleCostChange(value: string) {
-    setTotalCost(value);
-    if (priceHint) {
-      const costValue = Number(value);
-      if (!Number.isNaN(costValue) && costValue > 0) {
-        setLiters((costValue / priceHint.price).toFixed(2));
-      }
-    }
-  }
-
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="fuel-form-title">
       <div className="modal">
         <div className="modal__header">
-          <h2 id="fuel-form-title">Nuovo rifornimento</h2>
+          <h2 id="fuel-form-title">{isEditing ? "Modifica rifornimento" : "Nuovo rifornimento"}</h2>
           <button type="button" className="modal__close" onClick={onClose} aria-label="Chiudi">
             ×
           </button>
@@ -137,40 +151,43 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
             </div>
           </div>
 
+          <div className="field">
+            <label htmlFor="fuel-source">Alimentazione usata</label>
+            <select id="fuel-source" value={source} onChange={(e) => setSource(e.target.value as FuelSource)}>
+              {SOURCE_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <p className="empty-state__body" style={{ margin: "0 0 0.25rem" }}>
+            Compila due qualsiasi tra {unitLabel.toLowerCase()}, prezzo e costo totale: calcolo il terzo in
+            automatico.
+          </p>
+
           <div className="field-row">
             <div className="field">
-              <label htmlFor="fuel-source">Alimentazione usata</label>
-              <select id="fuel-source" value={source} onChange={(e) => setSource(e.target.value as FuelSource)}>
-                {SOURCE_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="field">
-              <label htmlFor="fuel-liters">{unitLabel} *</label>
+              <label htmlFor="fuel-liters">{unitLabel}</label>
               <input
                 id="fuel-liters"
                 type="number"
                 step="0.01"
                 inputMode="decimal"
                 value={liters}
-                onChange={(e) => handleLitersChange(e.target.value)}
+                onChange={(e) => recalcFrom("liters", e.target.value)}
               />
             </div>
-          </div>
-
-          <div className="field-row">
             <div className="field">
-              <label htmlFor="fuel-cost">Costo totale (€) *</label>
+              <label htmlFor="fuel-price">€/{unitShort}</label>
               <input
-                id="fuel-cost"
+                id="fuel-price"
                 type="number"
-                step="0.01"
+                step="0.001"
                 inputMode="decimal"
-                value={totalCost}
-                onChange={(e) => handleCostChange(e.target.value)}
+                value={pricePerUnit}
+                onChange={(e) => recalcFrom("price", e.target.value)}
               />
               {apiFuelForSource && (
                 <button
@@ -182,12 +199,26 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
                   Trova sulla mappa
                 </button>
               )}
-              {priceHint && (
-                <p className="empty-state__body" style={{ margin: 0 }}>
-                  € {priceHint.price.toFixed(3)}/l — {priceHint.label}. Inserisci litri o costo: calcolo l'altro
-                  automaticamente.
-                </p>
-              )}
+            </div>
+          </div>
+
+          {priceSource && (
+            <p className="empty-state__body" style={{ margin: "-0.25rem 0 0" }}>
+              Prezzo da: {priceSource}
+            </p>
+          )}
+
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor="fuel-cost">Costo totale (€) *</label>
+              <input
+                id="fuel-cost"
+                type="number"
+                step="0.01"
+                inputMode="decimal"
+                value={totalCost}
+                onChange={(e) => recalcFrom("cost", e.target.value)}
+              />
             </div>
             <div className="field field--checkbox">
               <label htmlFor="fuel-full">
@@ -220,7 +251,7 @@ export default function FuelForm({ vehicle, onSave, onClose }: Props) {
               Annulla
             </button>
             <button type="submit" className="btn btn--primary">
-              Salva rifornimento
+              {isEditing ? "Salva modifiche" : "Salva rifornimento"}
             </button>
           </div>
         </form>

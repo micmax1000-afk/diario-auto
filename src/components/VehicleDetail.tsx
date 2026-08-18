@@ -1,8 +1,10 @@
 import { useState } from "react";
-import type { Vehicle, FuelEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
+import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
 import { calculateVehicleCosts } from "../utils/calculations";
 import FuelForm from "./FuelForm";
 import FuelList from "./FuelList";
+import ChargingForm from "./ChargingForm";
+import ChargingList from "./ChargingList";
 import MaintenanceForm from "./MaintenanceForm";
 import MaintenanceList from "./MaintenanceList";
 import ExpenseForm from "./ExpenseForm";
@@ -13,18 +15,29 @@ import CostChart from "./CostChart";
 import LiveDataPanel from "./LiveDataPanel";
 import CommutePanel from "./CommutePanel";
 
-type DetailTab = "live" | "rifornimenti" | "manutenzioni" | "spese" | "scadenze" | "tragitto" | "riepilogo";
+type DetailTab =
+  | "live"
+  | "rifornimenti"
+  | "ricarica"
+  | "manutenzioni"
+  | "spese"
+  | "scadenze"
+  | "tragitto"
+  | "riepilogo";
 type Period = "sempre" | "anno-scorso" | "anno-corrente" | number;
 
 interface Props {
   vehicle: Vehicle;
   fuelEntries: FuelEntry[];
+  chargingEntries: ChargingEntry[];
   maintenanceEntries: MaintenanceEntry[];
   expenseEntries: ExpenseEntry[];
   reminders: Reminder[];
   onBack: () => void;
-  onAddFuel: (entry: FuelEntry) => void;
+  onSaveFuel: (entry: FuelEntry) => void;
   onDeleteFuel: (id: string) => void;
+  onSaveCharging: (entry: ChargingEntry) => void;
+  onDeleteCharging: (id: string) => void;
   onAddMaintenance: (entry: MaintenanceEntry) => void;
   onDeleteMaintenance: (id: string) => void;
   onAddExpense: (entry: ExpenseEntry) => void;
@@ -37,6 +50,7 @@ interface Props {
 const TABS: { id: DetailTab; label: string }[] = [
   { id: "live", label: "Live" },
   { id: "rifornimenti", label: "Rifornimenti" },
+  { id: "ricarica", label: "Ricarica" },
   { id: "manutenzioni", label: "Manutenzioni" },
   { id: "spese", label: "Spese" },
   { id: "scadenze", label: "Scadenze" },
@@ -47,12 +61,15 @@ const TABS: { id: DetailTab; label: string }[] = [
 export default function VehicleDetail({
   vehicle,
   fuelEntries,
+  chargingEntries,
   maintenanceEntries,
   expenseEntries,
   reminders,
   onBack,
-  onAddFuel,
+  onSaveFuel,
   onDeleteFuel,
+  onSaveCharging,
+  onDeleteCharging,
   onAddMaintenance,
   onDeleteMaintenance,
   onAddExpense,
@@ -63,6 +80,9 @@ export default function VehicleDetail({
 }: Props) {
   const [tab, setTab] = useState<DetailTab>("live");
   const [showFuelForm, setShowFuelForm] = useState(false);
+  const [editingFuel, setEditingFuel] = useState<FuelEntry | null>(null);
+  const [showChargingForm, setShowChargingForm] = useState(false);
+  const [editingCharging, setEditingCharging] = useState<ChargingEntry | null>(null);
   const [showMaintenanceForm, setShowMaintenanceForm] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [showReminderForm, setShowReminderForm] = useState(false);
@@ -88,9 +108,16 @@ export default function VehicleDetail({
   }
 
   const filteredFuel = fuelEntries.filter((e) => inPeriod(e.date));
+  const filteredCharging = chargingEntries.filter((e) => inPeriod(e.date));
   const filteredMaintenance = maintenanceEntries.filter((e) => inPeriod(e.date));
   const filteredExpenses = expenseEntries.filter((e) => inPeriod(e.date));
-  const costs = calculateVehicleCosts(filteredFuel, filteredMaintenance, vehicle.currentKm, filteredExpenses);
+  const costs = calculateVehicleCosts(
+    filteredFuel,
+    filteredMaintenance,
+    vehicle.currentKm,
+    filteredExpenses,
+    filteredCharging,
+  );
 
   return (
     <section>
@@ -137,7 +164,19 @@ export default function VehicleDetail({
                 + Aggiungi rifornimento
               </button>
             </div>
-            <FuelList entries={fuelEntries} onDelete={onDeleteFuel} />
+            <FuelList entries={fuelEntries} onEdit={setEditingFuel} onDelete={onDeleteFuel} />
+          </>
+        )}
+
+        {tab === "ricarica" && (
+          <>
+            <div className="section-head section-head--tight">
+              <h2>Ricarica elettrica</h2>
+              <button type="button" className="btn btn--primary" onClick={() => setShowChargingForm(true)}>
+                + Aggiungi ricarica
+              </button>
+            </div>
+            <ChargingList entries={chargingEntries} onEdit={setEditingCharging} onDelete={onDeleteCharging} />
           </>
         )}
 
@@ -231,6 +270,12 @@ export default function VehicleDetail({
                 <span className="stat-chip__label">Carburante</span>
                 <span className="stat-chip__value">€ {costs.fuelCost.toFixed(2)}</span>
               </div>
+              {costs.chargingCost > 0 && (
+                <div className="stat-chip">
+                  <span className="stat-chip__label">Ricarica</span>
+                  <span className="stat-chip__value">€ {costs.chargingCost.toFixed(2)}</span>
+                </div>
+              )}
               <div className="stat-chip">
                 <span className="stat-chip__label">Manutenzione</span>
                 <span className="stat-chip__value">€ {costs.maintenanceCost.toFixed(2)}</span>
@@ -259,10 +304,45 @@ export default function VehicleDetail({
         <FuelForm
           vehicle={vehicle}
           onSave={(entry) => {
-            onAddFuel(entry);
+            onSaveFuel(entry);
             setShowFuelForm(false);
           }}
           onClose={() => setShowFuelForm(false)}
+        />
+      )}
+
+      {editingFuel && (
+        <FuelForm
+          vehicle={vehicle}
+          initialEntry={editingFuel}
+          onSave={(entry) => {
+            onSaveFuel(entry);
+            setEditingFuel(null);
+          }}
+          onClose={() => setEditingFuel(null)}
+        />
+      )}
+
+      {showChargingForm && (
+        <ChargingForm
+          vehicle={vehicle}
+          onSave={(entry) => {
+            onSaveCharging(entry);
+            setShowChargingForm(false);
+          }}
+          onClose={() => setShowChargingForm(false)}
+        />
+      )}
+
+      {editingCharging && (
+        <ChargingForm
+          vehicle={vehicle}
+          initialEntry={editingCharging}
+          onSave={(entry) => {
+            onSaveCharging(entry);
+            setEditingCharging(null);
+          }}
+          onClose={() => setEditingCharging(null)}
         />
       )}
 

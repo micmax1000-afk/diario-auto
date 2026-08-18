@@ -15,6 +15,9 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
   const [tripsPerDay, setTripsPerDay] = useState(String(initial.tripsPerDay || 2));
   const [workDaysPerWeek, setWorkDaysPerWeek] = useState(String(initial.workDaysPerWeek || 6));
   const [fuelPricePerLiter, setFuelPricePerLiter] = useState(String(initial.fuelPricePerLiter || ""));
+  const [estimatedKmPerLiter, setEstimatedKmPerLiter] = useState(
+    initial.estimatedKmPerLiter ? String(initial.estimatedKmPerLiter) : "",
+  );
   const [error, setError] = useState("");
   const [showMap, setShowMap] = useState(false);
   const [priceSource, setPriceSource] = useState<string | null>(null);
@@ -46,11 +49,18 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
       return;
     }
 
+    const estimate = estimatedKmPerLiter.trim() ? Number(estimatedKmPerLiter) : undefined;
+    if (estimate !== undefined && (Number.isNaN(estimate) || estimate <= 0)) {
+      setError("Il consumo stimato deve essere un numero maggiore di zero.");
+      return;
+    }
+
     onSave({
       kmPerTrip: km,
       tripsPerDay: trips,
       workDaysPerWeek: days,
       fuelPricePerLiter: price,
+      estimatedKmPerLiter: estimate,
     });
   }
 
@@ -141,6 +151,23 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
               </button>
               {priceSource && <p className="empty-state__body" style={{ margin: 0 }}>Da: {priceSource}</p>}
             </div>
+          </div>
+
+          <div className="field">
+            <label htmlFor="commute-estimate">Consumo stimato (km/l, opzionale)</label>
+            <input
+              id="commute-estimate"
+              type="number"
+              step="0.1"
+              inputMode="decimal"
+              placeholder="es. 15 (una stima approssimativa va bene)"
+              value={estimatedKmPerLiter}
+              onChange={(e) => setEstimatedKmPerLiter(e.target.value)}
+            />
+            <p className="empty-state__body" style={{ margin: "0.25rem 0 0" }}>
+              Usato solo finché non hai registrato abbastanza rifornimenti "pieno" per calcolare il consumo
+              reale — da quel momento lo sostituisco automaticamente, senza bisogno di modificare nulla qui.
+            </p>
           </div>
 
           {error && <p className="form-error">{error}</p>}

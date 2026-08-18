@@ -617,7 +617,82 @@ textarea {
   color: var(--ink);
 }
 
-/* ---------- Data table ---------- */
+/* ---------- Record cards (rifornimenti, manutenzioni, spese, confronti) ---------- */
+
+.record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.record-card {
+  background: #fff;
+  border: 1.5px solid var(--paper-dark);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.record-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.record-card__title {
+  font-weight: 600;
+}
+
+.record-card__meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.record-card__rows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.25rem;
+}
+
+.record-card__row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  min-width: 90px;
+}
+
+.record-card__row-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.record-card__row-value {
+  font-size: 0.9rem;
+}
+
+.record-card__note {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.record-card__actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.1rem;
+}
+
+/* ---------- Data table (residuo per usi legacy) ---------- */
 
 .data-table {
   width: 100%;
@@ -790,6 +865,46 @@ textarea {
 
 .reminder-completed .reminder-item {
   margin-top: 0.5rem;
+}
+
+/* ---------- Autocomplete indirizzo ---------- */
+
+.autocomplete-field {
+  position: relative;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  margin: 0.15rem 0 0;
+  padding: 0.25rem 0;
+  list-style: none;
+  background: #fff;
+  border: 1.5px solid var(--paper-dark);
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.autocomplete-list li button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: none;
+  font-size: 0.85rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.autocomplete-list li button:hover,
+.autocomplete-list li button:focus {
+  background: var(--paper);
 }
 
 /* ---------- Chart ---------- */
