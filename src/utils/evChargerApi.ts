@@ -3,8 +3,15 @@
 // registrazione — stesso principio "no-key" già usato per Nominatim (ricerca
 // indirizzi) e OSRM (percorso del tragitto).
 // https://wiki.openstreetmap.org/wiki/Overpass_API
-
-const OVERPASS_URL = "https://overpass-api.de/api/interpreter";
+//
+// Overpass ha diversi server pubblici equivalenti (mirror). Il principale è
+// spesso sovraccarico, quindi proviamo in sequenza più mirror prima di
+// arrenderci: aumenta molto l'affidabilità rispetto a un singolo endpoint.
+const OVERPASS_MIRRORS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass.openstreetmap.ru/api/interpreter",
+];
 
 export interface ChargerConnection {
   connectionType?: string;
@@ -63,14 +70,33 @@ export async function fetchNearbyChargers(lat: number, lng: number, distanceKm =
     `way["amenity"="charging_station"](around:${radiusM},${lat},${lng}););` +
     `out center ${maxResults};`;
 
-  const url = `${OVERPASS_URL}?data=${encodeURIComponent(query)}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Richiesta fallita (${res.status})`);
-  }
-  const data = (await res.json()) as { elements: OverpassElement[] };
+  let lastError: unknown = null;
 
-  return data.elements.map((el) => {
+  for (const mirror of OVERPASS_MIRRORS) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000);
+      const url = `${mirror}?data=${encodeURIComponent(query)}`;
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        lastError = new Error(`Richiesta fallita (${res.status})`);
+        continue; // prova il mirror successivo
+      }
+      const data = (await res.json()) as { elements: OverpassElement[] };
+      return mapElements(data.elements);
+    } catch (err) {
+      lastError = err;
+      // prova il prossimo mirror
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error("Tutti i server delle mappe non sono raggiungibili.");
+}
+
+function mapElements(elements: OverpassElement[]): ChargerStation[] {
+  return elements.map((el) => {
     const tags = el.tags ?? {};
     const latitude = el.lat ?? el.center?.lat ?? 0;
     const longitude = el.lon ?? el.center?.lon ?? 0;

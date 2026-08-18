@@ -30,6 +30,7 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
   const [stationCount, setStationCount] = useState(0);
+  const [searchRadiusKm, setSearchRadiusKm] = useState(25);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -59,7 +60,7 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
     setStatus("loading");
     setError(null);
 
-    fetchNearbyChargers(position.lat, position.lng, 15, 30)
+    fetchNearbyChargers(position.lat, position.lng, searchRadiusKm, 40)
       .then((stations) => {
         if (cancelled) return;
         renderMarkers(stations);
@@ -76,7 +77,11 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [position]);
+  }, [position, searchRadiusKm]);
+
+  function handleWiderSearch() {
+    setSearchRadiusKm((r) => r + 25);
+  }
 
   function handleUseLocation() {
     if (!navigator.geolocation) {
@@ -87,7 +92,10 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
     setStatus("locating");
     setError(null);
     navigator.geolocation.getCurrentPosition(
-      (pos) => setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      (pos) => {
+        setSearchRadiusKm(25);
+        setPosition({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      },
       () => {
         setStatus("error");
         setError("Posizione non disponibile (permesso negato o non supportato). Cerca invece un indirizzo o comune.");
@@ -99,6 +107,7 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
   function handleSelectSuggestion(result: GeocodeResult) {
     setAddressQuery(result.displayName);
     setError(null);
+    setSearchRadiusKm(25);
     setPosition({ lat: result.lat, lng: result.lng });
   }
 
@@ -116,6 +125,7 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
         setError(`Non trovo "${addressQuery}". Prova con un nome più preciso.`);
         return;
       }
+      setSearchRadiusKm(25);
       setPosition({ lat: result.lat, lng: result.lng });
     } catch {
       setStatus("error");
@@ -193,10 +203,22 @@ export default function EVChargerMap({ onSelect, onClose }: Props) {
         {status === "loading" && (
           <p className="empty-state__body" style={{ padding: "0.5rem 1rem 0" }}>Ricerca colonnine vicine…</p>
         )}
-        {status === "ready" && (
+        {status === "ready" && stationCount > 0 && (
           <p className="empty-state__body" style={{ padding: "0.5rem 1rem 0" }}>
-            {stationCount} punti di ricarica trovati.
+            {stationCount} punti di ricarica trovati (raggio {searchRadiusKm} km).
           </p>
+        )}
+        {status === "ready" && stationCount === 0 && (
+          <div className="empty-state" style={{ margin: "0.5rem 1rem 0" }}>
+            <p className="empty-state__title">Nessun punto trovato nel raggio di {searchRadiusKm} km</p>
+            <p className="empty-state__body">
+              La copertura di OpenStreetMap varia da zona a zona. Prova ad allargare la ricerca o cerca una
+              città più vicina.
+            </p>
+            <button type="button" className="btn btn--primary btn--small" onClick={handleWiderSearch}>
+              Allarga la ricerca a {searchRadiusKm + 25} km
+            </button>
+          </div>
         )}
         {error && <p className="form-error" style={{ margin: "0.5rem 1rem 0" }}>{error}</p>}
 
