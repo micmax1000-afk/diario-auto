@@ -2,8 +2,6 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import type { ChargingEntry, Vehicle } from "../types";
 import { generateId, getHomeChargingDefaults, setHomeChargingDefaults } from "../utils/storage";
-import EVChargerMap from "./EVChargerMap";
-import type { ChargerStation } from "../utils/evChargerApi";
 
 interface Props {
   vehicle: Vehicle;
@@ -23,7 +21,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
   const [location, setLocation] = useState(initialEntry?.location ?? "");
   const [notes, setNotes] = useState(initialEntry?.notes ?? "");
   const [error, setError] = useState("");
-  const [showMap, setShowMap] = useState(false);
 
   // kWh calcolati SEMPRE da costo totale / prezzo unitario: non editabili
   // direttamente, per evitare valori tra loro incoerenti.
@@ -46,15 +43,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
       }
     } else if (location === "Casa") {
       setLocation("");
-    }
-  }
-
-  function handleSelectStation(station: ChargerStation) {
-    setShowMap(false);
-    setLocation(station.title);
-    if (station.maxPowerKW) {
-      // usiamo la potenza massima come indicazione; non è un prezzo, quindi non ricalcola nulla
-      setNotes((prev) => (prev ? prev : `Potenza colonnina: fino a ${station.maxPowerKW} kW`));
     }
   }
 
@@ -152,16 +140,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
                 value={pricePerKWh}
                 onChange={(e) => setPricePerKWh(e.target.value)}
               />
-              {!atHome && (
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--small"
-                  style={{ alignSelf: "flex-start", marginTop: "0.25rem" }}
-                  onClick={() => setShowMap(true)}
-                >
-                  Trova colonnina sulla mappa
-                </button>
-              )}
             </div>
             <div className="field">
               <label htmlFor="charge-cost">Costo totale (€) *</label>
@@ -235,8 +213,6 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
           </div>
         </form>
       </div>
-
-      {showMap && <EVChargerMap onSelect={handleSelectStation} onClose={() => setShowMap(false)} />}
     </div>
   );
 }
