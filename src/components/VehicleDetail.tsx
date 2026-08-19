@@ -109,7 +109,11 @@ export default function VehicleDetail({
     }
     const granted = await enableNotifications();
     setNotificationsOn(granted);
-    setNotificationMsg(granted ? null : "Permesso negato. Puoi abilitarlo dalle impostazioni del browser.");
+    setNotificationMsg(
+      granted
+        ? null
+        : "Permesso negato dal browser. Tocca l'icona del lucchetto accanto all'indirizzo del sito → Autorizzazioni/Notifiche → Consenti, poi riprova qui.",
+    );
   }
 
   const activeRemindersCount = reminders.filter((r) => !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
