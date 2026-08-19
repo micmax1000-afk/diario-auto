@@ -49,6 +49,7 @@ export default function FuelPriceMap({ initialFuel = "benzina", onSelect, onClos
   const [error, setError] = useState<string | null>(null);
   const [position, setPosition] = useState<{ lat: number; lng: number } | null>(null);
   const [stationCount, setStationCount] = useState(0);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -97,7 +98,11 @@ export default function FuelPriceMap({ initialFuel = "benzina", onSelect, onClos
       cancelled = true;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [position, fuel]);
+  }, [position, fuel, retryToken]);
+
+  function handleRetry() {
+    setRetryToken((t) => t + 1);
+  }
 
   function handleUseLocation() {
     if (!navigator.geolocation) {
@@ -232,7 +237,16 @@ export default function FuelPriceMap({ initialFuel = "benzina", onSelect, onClos
             {stationCount} distributori trovati. Verde = economico, ambra = medio, rosso = caro.
           </p>
         )}
-        {error && <p className="form-error" style={{ margin: "0.5rem 1rem 0" }}>{error}</p>}
+        {error && (
+          <div style={{ margin: "0.5rem 1rem 0", display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap" }}>
+            <p className="form-error" style={{ margin: 0 }}>{error}</p>
+            {position && (
+              <button type="button" className="btn btn--ghost btn--small" onClick={handleRetry}>
+                Riprova
+              </button>
+            )}
+          </div>
+        )}
 
         <div ref={mapContainerRef} style={{ height: "420px", width: "100%", marginTop: "0.75rem" }} />
 
