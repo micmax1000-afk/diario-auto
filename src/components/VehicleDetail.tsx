@@ -1,6 +1,12 @@
 import { useState } from "react";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
-import { calculateVehicleCosts } from "../utils/calculations";
+import { calculateVehicleCosts, isReminderDue } from "../utils/calculations";
+import {
+  areNotificationsEnabled,
+  disableNotifications,
+  enableNotifications,
+  isNotificationSupported,
+} from "../utils/notifications";
 import FuelForm from "./FuelForm";
 import FuelList from "./FuelList";
 import ChargingForm from "./ChargingForm";
@@ -87,8 +93,26 @@ export default function VehicleDetail({
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [showReminderForm, setShowReminderForm] = useState(false);
   const [period, setPeriod] = useState<Period>("sempre");
+  const [notificationsOn, setNotificationsOn] = useState(() => areNotificationsEnabled());
+  const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
-  const activeRemindersCount = reminders.filter((r) => !r.completed).length;
+  async function handleToggleNotifications() {
+    if (notificationsOn) {
+      disableNotifications();
+      setNotificationsOn(false);
+      setNotificationMsg(null);
+      return;
+    }
+    if (!isNotificationSupported()) {
+      setNotificationMsg("Il tuo browser non supporta le notifiche.");
+      return;
+    }
+    const granted = await enableNotifications();
+    setNotificationsOn(granted);
+    setNotificationMsg(granted ? null : "Permesso negato. Puoi abilitarlo dalle impostazioni del browser.");
+  }
+
+  const activeRemindersCount = reminders.filter((r) => !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
 
   const currentYear = new Date().getFullYear();
   const availableYears = Array.from(
@@ -212,6 +236,19 @@ export default function VehicleDetail({
                 + Aggiungi scadenza
               </button>
             </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap", margin: "0 0 0.75rem" }}>
+              <button type="button" className="btn btn--ghost btn--small" onClick={handleToggleNotifications}>
+                {notificationsOn ? "Disattiva notifiche" : "Attiva notifiche scadenze"}
+              </button>
+              <p className="empty-state__body" style={{ margin: 0 }}>
+                {notificationsOn
+                  ? "Attive: ricevi una notifica quando una scadenza entra nei 30 giorni o è scaduta (serve avere l'app aperta)."
+                  : "Ricevi una notifica del browser quando una scadenza entra nei 30 giorni o è scaduta."}
+              </p>
+            </div>
+            {notificationMsg && <p className="form-error" style={{ margin: "0 0 0.75rem" }}>{notificationMsg}</p>}
+
             <ReminderList
               reminders={reminders}
               currentKm={vehicle.currentKm}

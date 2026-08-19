@@ -16,6 +16,7 @@ import {
   generateId,
 } from "./utils/storage";
 import { isReminderDue } from "./utils/calculations";
+import { areNotificationsEnabled, notifyDueReminders, type NotifiableReminder } from "./utils/notifications";
 import VehicleCard from "./components/VehicleCard";
 import VehicleForm from "./components/VehicleForm";
 import VehicleDetail from "./components/VehicleDetail";
@@ -50,6 +51,29 @@ export default function App() {
   useEffect(() => {
     reloadAll();
   }, []);
+
+  // Controlla le scadenze imminenti/scadute e invia notifiche del browser,
+  // se l'utente le ha attivate. Al massimo una per promemoria al giorno.
+  useEffect(() => {
+    if (!areNotificationsEnabled() || vehicles.length === 0 || reminders.length === 0) return;
+
+    const items: NotifiableReminder[] = [];
+    for (const reminder of reminders) {
+      if (reminder.completed) continue;
+      const vehicle = vehicles.find((v) => v.id === reminder.vehicleId);
+      if (!vehicle) continue;
+      const status = isReminderDue(reminder.dueDate, reminder.dueKm, vehicle.currentKm);
+      if (status === "ok") continue;
+      items.push({
+        id: reminder.id,
+        label: reminder.label,
+        vehicleName: vehicle.name,
+        status,
+        dueDate: reminder.dueDate,
+      });
+    }
+    notifyDueReminders(items);
+  }, [vehicles, reminders]);
 
   // ---------- Veicoli ----------
 
@@ -238,8 +262,10 @@ export default function App() {
 
   const openVehicle = vehicles.find((v) => v.id === openVehicleId) ?? null;
 
-  function totalActiveReminders(vehicleId: string): number {
-    return reminders.filter((r) => r.vehicleId === vehicleId && !r.completed).length;
+  function urgentRemindersCount(vehicleId: string, currentKm: number): number {
+    return reminders.filter(
+      (r) => r.vehicleId === vehicleId && !r.completed && isReminderDue(r.dueDate, r.dueKm, currentKm) !== "ok",
+    ).length;
   }
 
   function hasUrgentReminder(vehicleId: string, currentKm: number): boolean {
@@ -328,7 +354,7 @@ export default function App() {
                     <div key={v.id} className="vehicle-grid__item">
                       {hasUrgentReminder(v.id, v.currentKm) && (
                         <span className="vehicle-grid__alert" title="Scadenza in arrivo o scaduta">
-                          ⚠ {totalActiveReminders(v.id)}
+                          ⚠ {urgentRemindersCount(v.id, v.currentKm)}
                         </span>
                       )}
                       <VehicleCard
