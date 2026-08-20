@@ -6,8 +6,8 @@
   "scope": "/diario-auto/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#1c1a17",
-  "theme_color": "#1c1a17",
+  "background_color": "#0a0c0f",
+  "theme_color": "#0a0c0f",
   "lang": "it",
   "icons": [
     {

@@ -1,20 +1,22 @@
 :root {
-  --asphalt: #1c1a17;
-  --asphalt-light: #29261f;
-  --paper: #f2ecdd;
-  --paper-dark: #e6dcc4;
-  --ink: #2b2620;
-  --muted: #8a8172;
-  --amber: #e8a33d;
-  --amber-dark: #c8811e;
-  --ok: #5c7a52;
-  --danger: #b0432c;
+  --asphalt: #0a0c0f;
+  --asphalt-light: #171c22;
+  --paper: #f3f1ea;
+  --paper-dark: #262d36;
+  --ink: #f3f1ea;
+  --muted: #8a93a1;
+  --amber: #f5901f;
+  --amber-dark: #c9701a;
+  --ok: #3fbb72;
+  --danger: #e0563f;
+  --card: #12161b;
+  --cyan: #38d6c4;
 
   --font-display: "Bebas Neue", sans-serif;
   --font-body: "Source Serif 4", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  color-scheme: light;
+  color-scheme: dark;
 }
 
 * {
@@ -130,7 +132,7 @@ textarea {
 
 .content {
   flex: 1;
-  background: var(--paper);
+  background: var(--asphalt);
   padding: 2rem 1.25rem 4rem;
 }
 
@@ -236,11 +238,11 @@ textarea {
 
 .vehicle-card {
   position: relative;
-  background: var(--paper);
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 1.5rem;
-  box-shadow: 0 2px 0 var(--paper-dark), 0 8px 20px -12px rgba(28, 26, 23, 0.4);
+  box-shadow: 0 2px 0 var(--paper-dark), 0 8px 20px -12px rgba(0, 0, 0, 0.5);
 }
 
 .vehicle-card__stamp {
@@ -251,7 +253,7 @@ textarea {
   height: 68px;
   border-radius: 50%;
   border: 2px dashed var(--amber-dark);
-  background: var(--paper);
+  background: var(--card);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -335,7 +337,7 @@ textarea {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(28, 26, 23, 0.72);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -344,7 +346,7 @@ textarea {
 }
 
 .modal {
-  background: var(--paper);
+  background: var(--card);
   border-radius: 8px;
   width: 100%;
   max-width: 480px;
@@ -411,7 +413,7 @@ textarea {
 .field input,
 .field select,
 .field textarea {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 4px;
   padding: 0.55rem 0.7rem;
@@ -592,7 +594,7 @@ textarea {
 }
 
 .stat-chip {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 0.6rem 1rem;
@@ -626,7 +628,7 @@ textarea {
 }
 
 .record-card {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 0.75rem 1rem;
@@ -697,7 +699,7 @@ textarea {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   overflow: hidden;
@@ -711,7 +713,7 @@ textarea {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--muted);
-  background: var(--paper);
+  background: var(--asphalt-light);
   padding: 0.65rem 0.75rem;
   border-bottom: 1.5px solid var(--paper-dark);
 }
@@ -770,7 +772,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 0.9rem;
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-left-width: 5px;
   border-radius: 6px;
@@ -802,7 +804,7 @@ textarea {
   letter-spacing: 0.06em;
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
-  background: var(--paper);
+  background: var(--card);
   color: var(--muted);
   white-space: nowrap;
 }
@@ -882,7 +884,7 @@ textarea {
   margin: 0.15rem 0 0;
   padding: 0.25rem 0;
   list-style: none;
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
@@ -904,13 +906,13 @@ textarea {
 
 .autocomplete-list li button:hover,
 .autocomplete-list li button:focus {
-  background: var(--paper);
+  background: var(--asphalt-light);
 }
 
 /* ---------- Chart ---------- */
 
 .chart-wrap {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 1rem 0.5rem 0.5rem;
@@ -921,7 +923,7 @@ textarea {
 .backup-panel {
   max-width: 640px;
   margin: 0 auto;
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 8px;
   padding: 1.5rem;
@@ -950,12 +952,12 @@ textarea {
 }
 
 .backup-panel__message--ok {
-  background: rgba(92, 122, 82, 0.15);
+  background: rgba(63, 187, 114, 0.15);
   color: var(--ok);
 }
 
 .backup-panel__message--error {
-  background: rgba(176, 67, 44, 0.12);
+  background: rgba(224, 86, 63, 0.12);
   color: var(--danger);
 }
 
@@ -1026,7 +1028,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 0.85rem 1rem;
@@ -1044,18 +1046,18 @@ textarea {
 
 .obd-status-dot--connected {
   background: var(--ok);
-  box-shadow: 0 0 0 3px rgba(92, 122, 82, 0.2);
+  box-shadow: 0 0 0 3px rgba(63, 187, 114, 0.2);
 }
 
 .obd-status-dot--connecting,
 .obd-status-dot--initializing {
   background: var(--amber);
-  box-shadow: 0 0 0 3px rgba(232, 163, 61, 0.25);
+  box-shadow: 0 0 0 3px rgba(245, 144, 31, 0.25);
 }
 
 .obd-status-dot--error {
   background: var(--danger);
-  box-shadow: 0 0 0 3px rgba(176, 67, 44, 0.2);
+  box-shadow: 0 0 0 3px rgba(224, 86, 63, 0.2);
 }
 
 .obd-status-text {
@@ -1113,7 +1115,7 @@ textarea {
 }
 
 .dtc-panel {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 1.25rem;
@@ -1131,7 +1133,7 @@ textarea {
 .dtc-list__item {
   font-family: var(--font-mono);
   font-weight: 700;
-  background: rgba(176, 67, 44, 0.1);
+  background: rgba(224, 86, 63, 0.1);
   color: var(--danger);
   border: 1.5px solid var(--danger);
   border-radius: 4px;
@@ -1142,7 +1144,7 @@ textarea {
 /* ---------- OBD extended blocks ---------- */
 
 .obd-block {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 1.25rem;
@@ -1164,7 +1166,7 @@ textarea {
   font-size: 1.1rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  background: var(--paper);
+  background: var(--card);
   border: 1.5px dashed var(--paper-dark);
   border-radius: 4px;
   padding: 0.6rem 0.9rem;
@@ -1315,14 +1317,14 @@ textarea {
   display: flex;
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
-  background: var(--paper);
+  background: var(--asphalt-light);
   border-bottom: 1px solid var(--paper-dark);
   overflow-x: auto;
 }
 
 .vehicle-switcher__chip {
   position: relative;
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   color: var(--muted);
   font-family: var(--font-mono);
@@ -1369,7 +1371,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  background: var(--paper);
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   border-radius: 6px;
   padding: 0.65rem 0.9rem;
@@ -1401,7 +1403,7 @@ textarea {
 }
 
 .period-filter__btn {
-  background: #fff;
+  background: var(--card);
   border: 1.5px solid var(--paper-dark);
   color: var(--muted);
   font-family: var(--font-mono);
@@ -1448,7 +1450,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  background: #fff;
+  background: var(--card);
   border: 1.5px dashed var(--paper-dark);
   border-radius: 6px;
   padding: 0.75rem 1rem;

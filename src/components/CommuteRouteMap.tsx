@@ -107,7 +107,7 @@ export default function CommuteRouteMap({ initialOrigin = "", initialDestination
     markersRef.current = [originMarker, destMarker];
 
     const latLngs = result.geometry.map((p) => [p.lat, p.lng] as [number, number]);
-    const polyline = L.polyline(latLngs, { color: "#c98a2d", weight: 4 }).addTo(map);
+    const polyline = L.polyline(latLngs, { color: "#f5901f", weight: 4 }).addTo(map);
     routeLayerRef.current = polyline;
 
     map.fitBounds(polyline.getBounds(), { padding: [30, 30] });

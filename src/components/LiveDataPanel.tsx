@@ -432,31 +432,33 @@ export default function LiveDataPanel({ vehicle }: Props) {
               <div className="chart-wrap">
                 <ResponsiveContainer width="100%" height={220}>
                   <LineChart data={chartData} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e6dcc4" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#262d36" />
                     <XAxis
                       dataKey="t"
                       tickFormatter={(v: number) => `${Math.round(v / 1000)}s`}
-                      tick={{ fontFamily: "JetBrains Mono", fontSize: 11 }}
-                      stroke="#8a8172"
+                      tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "#8a93a1" }}
+                      stroke="#262d36"
                     />
-                    <YAxis tick={{ fontFamily: "JetBrains Mono", fontSize: 11 }} stroke="#8a8172" />
+                    <YAxis tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "#8a93a1" }} stroke="#262d36" />
                     <Tooltip
                       contentStyle={{
                         fontFamily: "JetBrains Mono",
                         fontSize: 12,
-                        background: "#f2ecdd",
-                        border: "1px solid #e6dcc4",
+                        background: "#171c22",
+                        border: "1px solid #262d36",
                         borderRadius: 4,
+                        color: "#f3f1ea",
                       }}
+                      labelStyle={{ color: "#f3f1ea" }}
                       labelFormatter={(v) => `${(Number(v) / 1000).toFixed(1)}s`}
                     />
-                    <Legend wrapperStyle={{ fontFamily: "JetBrains Mono", fontSize: 11 }} />
-                    <Line type="monotone" dataKey="rpm" name="Giri" stroke="#e8a33d" dot={false} strokeWidth={2} />
+                    <Legend wrapperStyle={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "#8a93a1" }} />
+                    <Line type="monotone" dataKey="rpm" name="Giri" stroke="#f5901f" dot={false} strokeWidth={2} />
                     <Line
                       type="monotone"
                       dataKey="speedKmh"
                       name="Velocità"
-                      stroke="#5c7a52"
+                      stroke="#38d6c4"
                       dot={false}
                       strokeWidth={2}
                     />
@@ -464,7 +466,7 @@ export default function LiveDataPanel({ vehicle }: Props) {
                       type="monotone"
                       dataKey="coolantTempC"
                       name="Temp. liquido"
-                      stroke="#b0432c"
+                      stroke="#e0563f"
                       dot={false}
                       strokeWidth={2}
                     />

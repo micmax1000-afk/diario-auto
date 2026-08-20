@@ -70,23 +70,25 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
     <div className="chart-wrap">
       <ResponsiveContainer width="100%" height={280}>
         <BarChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#e6dcc4" />
-          <XAxis dataKey="monthLabel" tick={{ fontFamily: "JetBrains Mono", fontSize: 11 }} stroke="#8a8172" />
-          <YAxis tick={{ fontFamily: "JetBrains Mono", fontSize: 11 }} stroke="#8a8172" unit="€" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#262d36" />
+          <XAxis dataKey="monthLabel" tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "#8a93a1" }} stroke="#262d36" />
+          <YAxis tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "#8a93a1" }} stroke="#262d36" unit="€" />
           <Tooltip
             contentStyle={{
               fontFamily: "JetBrains Mono",
               fontSize: 12,
-              background: "#f2ecdd",
-              border: "1px solid #e6dcc4",
+              background: "#171c22",
+              border: "1px solid #262d36",
               borderRadius: 4,
+              color: "#f3f1ea",
             }}
+            labelStyle={{ color: "#f3f1ea" }}
             formatter={(value) => [`€ ${Number(value).toFixed(2)}`, undefined]}
           />
-          <Legend wrapperStyle={{ fontFamily: "JetBrains Mono", fontSize: 11 }} />
-          <Bar dataKey="carburante" name="Carburante" fill="#e8a33d" radius={[3, 3, 0, 0]} />
-          <Bar dataKey="manutenzione" name="Manutenzione" fill="#5c7a52" radius={[3, 3, 0, 0]} />
-          <Bar dataKey="spese" name="Spese (bollo/assic./multe)" fill="#8a6fb0" radius={[3, 3, 0, 0]} />
+          <Legend wrapperStyle={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "#8a93a1" }} />
+          <Bar dataKey="carburante" name="Carburante" fill="#f5901f" radius={[3, 3, 0, 0]} />
+          <Bar dataKey="manutenzione" name="Manutenzione" fill="#3fbb72" radius={[3, 3, 0, 0]} />
+          <Bar dataKey="spese" name="Spese (bollo/assic./multe)" fill="#a58fd1" radius={[3, 3, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>
