@@ -174,7 +174,7 @@ export default function VehicleDetail({
         ))}
       </nav>
 
-      <div className="detail-content">
+      <div className="detail-content" key={tab}>
         {tab === "live" && (
           <>
             <div className="section-head section-head--tight">
@@ -290,7 +290,7 @@ export default function VehicleDetail({
                 className={`period-filter__btn ${period === "anno-scorso" ? "is-active" : ""}`}
                 onClick={() => setPeriod("anno-scorso")}
               >
-                L'anno scorso
+                {currentYear - 1}
               </button>
               {availableYears
                 .filter((y) => y !== currentYear && y !== currentYear - 1)

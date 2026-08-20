@@ -1,4 +1,5 @@
 import type { ChargingEntry } from "../types";
+import { groupByMonth } from "../utils/calculations";
 import CategoryIcon from "./CategoryIcon";
 
 interface Props {
@@ -8,8 +9,6 @@ interface Props {
 }
 
 export default function ChargingList({ entries, onEdit, onDelete }: Props) {
-  const sorted = [...entries].sort((a, b) => b.km - a.km);
-
   if (entries.length === 0) {
     return (
       <div className="empty-state">
@@ -22,6 +21,7 @@ export default function ChargingList({ entries, onEdit, onDelete }: Props) {
   const totalKWh = entries.reduce((sum, e) => sum + e.kWh, 0);
   const totalCost = entries.reduce((sum, e) => sum + e.totalCost, 0);
   const avgPrice = totalKWh > 0 ? totalCost / totalKWh : null;
+  const monthGroups = groupByMonth(entries, (e) => e.date);
 
   return (
     <div>
@@ -40,60 +40,88 @@ export default function ChargingList({ entries, onEdit, onDelete }: Props) {
         </div>
       </div>
 
-      <div className="record-list">
-        {sorted.map((entry) => (
-          <div key={entry.id} className="record-card">
-            <div className="record-card__header">
-              <CategoryIcon kind="charging" category="ricarica" />
-              <div className="record-card__title-group">
-                <span className="record-card__title">
-                  {entry.location ?? "Ricarica"}
-                  {entry.atHome && <span style={{ opacity: 0.7 }}> · Casa</span>}
+      {monthGroups.map((group, i) => {
+        const monthKWh = group.entries.reduce((sum, e) => sum + e.kWh, 0);
+        const monthCost = group.entries.reduce((sum, e) => sum + e.totalCost, 0);
+        const sortedEntries = [...group.entries].sort((a, b) => b.km - a.km);
+
+        return (
+          <details key={group.key} className="month-group" open={i === 0}>
+            <summary className="month-group__summary">
+              <span className="month-group__label">
+                <span className="month-group__chevron" />
+                {group.label}
+              </span>
+              <span className="month-group__stats">
+                <span>{group.entries.length} ricariche</span>
+                <span>{monthKWh.toFixed(1)} kWh</span>
+                <span>
+                  <strong>€ {monthCost.toFixed(2)}</strong>
                 </span>
-                <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
-              </div>
-              <div className="record-card__check">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 12l6 6L20 6" />
-                </svg>
-              </div>
-            </div>
-            <div className="record-card__rows">
-              <div className="record-card__row">
-                <span className="record-card__row-label">Km</span>
-                <span className="record-card__row-value mono">{entry.km.toLocaleString("it-IT")}</span>
-              </div>
-              <div className="record-card__row">
-                <span className="record-card__row-label">kWh</span>
-                <span className="record-card__row-value mono">{entry.kWh}</span>
-              </div>
-              <div className="record-card__row">
-                <span className="record-card__row-label">€/kWh</span>
-                <span className="record-card__row-value mono">{entry.pricePerKWh.toFixed(3)}</span>
-              </div>
-              <div className="record-card__row">
-                <span className="record-card__row-label">Costo</span>
-                <span className="record-card__row-value mono">€ {entry.totalCost.toFixed(2)}</span>
-              </div>
-              {entry.powerKW !== undefined && (
-                <div className="record-card__row">
-                  <span className="record-card__row-label">Potenza</span>
-                  <span className="record-card__row-value mono">{entry.powerKW} kW</span>
+              </span>
+            </summary>
+
+            <div className="month-group__body">
+              {sortedEntries.map((entry) => (
+                <div key={entry.id} className="record-card">
+                  <div className="record-card__header">
+                    <CategoryIcon kind="charging" category="ricarica" />
+                    <div className="record-card__title-group">
+                      <span className="record-card__title">
+                        {entry.location ?? "Ricarica"}
+                        {entry.atHome && <span style={{ opacity: 0.7 }}> · Casa</span>}
+                      </span>
+                      <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+                    </div>
+                    <div className="record-card__check">
+                      <svg viewBox="0 0 24 24">
+                        <path d="M4 12l6 6L20 6" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="record-card__rows">
+                    <div className="record-card__row">
+                      <span className="record-card__row-label">Km</span>
+                      <span className="record-card__row-value mono">{entry.km.toLocaleString("it-IT")}</span>
+                    </div>
+                    <div className="record-card__row">
+                      <span className="record-card__row-label">kWh</span>
+                      <span className="record-card__row-value mono">{entry.kWh}</span>
+                    </div>
+                    <div className="record-card__row">
+                      <span className="record-card__row-label">€/kWh</span>
+                      <span className="record-card__row-value mono">{entry.pricePerKWh.toFixed(3)}</span>
+                    </div>
+                    <div className="record-card__row">
+                      <span className="record-card__row-label">Costo</span>
+                      <span className="record-card__row-value mono">€ {entry.totalCost.toFixed(2)}</span>
+                    </div>
+                    {entry.powerKW !== undefined && (
+                      <div className="record-card__row">
+                        <span className="record-card__row-label">Potenza</span>
+                        <span className="record-card__row-value mono">{entry.powerKW} kW</span>
+                      </div>
+                    )}
+                  </div>
+                  {entry.notes && <p className="record-card__note">{entry.notes}</p>}
+                  <div className="record-card__actions">
+                    <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(entry)}>
+                      Modifica
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn--ghost btn--danger btn--small"
+                      onClick={() => onDelete(entry.id)}
+                    >
+                      Rimuovi
+                    </button>
+                  </div>
                 </div>
-              )}
+              ))}
             </div>
-            {entry.notes && <p className="record-card__note">{entry.notes}</p>}
-            <div className="record-card__actions">
-              <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(entry)}>
-                Modifica
-              </button>
-              <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => onDelete(entry.id)}>
-                Rimuovi
-              </button>
-            </div>
-          </div>
-        ))}
-      </div>
+          </details>
+        );
+      })}
     </div>
   );
 }

@@ -5,6 +5,7 @@ type IconTint = "amber" | "cyan" | "purple";
 interface Props {
   category: string;
   kind: "maintenance" | "fuel" | "charging" | "expense";
+  size?: "default" | "small";
 }
 
 const MAINTENANCE_ICONS: Record<string, ReactElement> = {
@@ -93,6 +94,12 @@ const FUEL_ICONS: Record<string, ReactElement> = {
     </>
   ),
   elettrico: <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />,
+  ibrido: (
+    <>
+      <path d="M12 3c4 3 7 6.5 7 10.5A7 7 0 0 1 5 13.5C5 9.5 8 6 12 3z" />
+      <path d="M9.5 14.5c1 .8 2 .8 3-1 .8-1.4 1.5-.5 2-.2" />
+    </>
+  ),
 };
 
 const CHARGING_ICON = <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z" />;
@@ -138,10 +145,11 @@ function iconFor(kind: Props["kind"], category: string): ReactElement {
   return table[category] ?? table.altro ?? <circle cx="12" cy="12" r="6" />;
 }
 
-export default function CategoryIcon({ category, kind }: Props) {
+export default function CategoryIcon({ category, kind, size = "default" }: Props) {
   const tint = tintFor(kind);
+  const sizeClass = size === "small" ? " record-card__icon--sm" : "";
   return (
-    <div className={`record-card__icon record-card__icon--${tint}`}>
+    <div className={`record-card__icon record-card__icon--${tint}${sizeClass}`}>
       <svg viewBox="0 0 24 24">{iconFor(kind, category)}</svg>
     </div>
   );

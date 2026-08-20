@@ -153,3 +153,32 @@ export function isReminderDue(dueDate?: string, dueKm?: number, currentKm?: numb
 
   return status;
 }
+
+// ---------- Raggruppamento mensile (liste rifornimenti/ricarica) ----------
+
+export interface MonthGroup<T> {
+  key: string; // "2026-08"
+  label: string; // "Agosto 2026"
+  entries: T[];
+}
+
+export function groupByMonth<T>(entries: T[], getDate: (e: T) => string): MonthGroup<T>[] {
+  const map = new Map<string, T[]>();
+  for (const entry of entries) {
+    const d = new Date(getDate(entry));
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    const list = map.get(key) ?? [];
+    list.push(entry);
+    map.set(key, list);
+  }
+  const groups = Array.from(map.entries()).map(([key, groupEntries]) => {
+    const [year, month] = key.split("-");
+    const d = new Date(Number(year), Number(month) - 1, 1);
+    return {
+      key,
+      label: d.toLocaleDateString("it-IT", { month: "long", year: "numeric" }),
+      entries: groupEntries,
+    };
+  });
+  return groups.sort((a, b) => b.key.localeCompare(a.key));
+}

@@ -1,4 +1,5 @@
 import type { Vehicle } from "../types";
+import CategoryIcon from "./CategoryIcon";
 
 const FUEL_LABELS: Record<Vehicle["fuelType"], string> = {
   benzina: "Benzina",
@@ -31,6 +32,7 @@ export default function VehicleCard({ vehicle, onOpen, onEdit, onQuickKm, onDele
       </button>
 
       <header className="vehicle-card__header" onClick={() => onOpen(vehicle.id)} role="button" tabIndex={0}>
+        <CategoryIcon kind="fuel" category={vehicle.fuelType} size="small" />
         <h3 className="vehicle-card__name">{vehicle.name}</h3>
         {vehicle.year && <span className="vehicle-card__year">{vehicle.year}</span>}
       </header>

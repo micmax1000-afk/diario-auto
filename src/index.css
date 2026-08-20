@@ -1,22 +1,43 @@
 :root {
+  /* Cruscotto (header/tabbar/switcher): sempre scuro, non cambia col tema —
+     come la plancia di un'auto, resta la stessa sia di giorno che di notte. */
   --asphalt: #0a0c0f;
   --asphalt-light: #171c22;
+  --chrome-border: #2a323c;
+  --chrome-text-muted: #6b7684;
+
+  /* Accenti: costanti in entrambi i temi */
   --paper: #f3f1ea;
-  --paper-dark: #262d36;
-  --ink: #f3f1ea;
-  --muted: #8a93a1;
   --amber: #f5901f;
   --amber-dark: #c9701a;
   --ok: #3fbb72;
   --danger: #e0563f;
-  --card: #12161b;
   --cyan: #38d6c4;
+
+  /* Contenuto: si adattano al tema chiaro/scuro (valori di default = scuro) */
+  --bg: #0a0c0f;
+  --card: #12161b;
+  --surface-alt: #171c22;
+  --border: #262d36;
+  --text: #f3f1ea;
+  --text-muted: #8a93a1;
 
   --font-display: "Bebas Neue", sans-serif;
   --font-body: "Source Serif 4", Georgia, serif;
   --font-mono: "JetBrains Mono", monospace;
 
   color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f2ecdd;
+  --card: #ffffff;
+  --surface-alt: #ece4d0;
+  --border: #ddd3ba;
+  --text: #2b2620;
+  --text-muted: #756e5f;
+
+  color-scheme: light;
 }
 
 * {
@@ -30,8 +51,8 @@ body {
 }
 
 body {
-  background: var(--asphalt);
-  color: var(--ink);
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
 }
@@ -62,12 +83,48 @@ textarea {
   border-bottom: 3px solid var(--amber);
 }
 
+.topbar__inner {
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .topbar__brand {
   display: flex;
   align-items: baseline;
   gap: 0.75rem;
-  max-width: 960px;
-  margin: 0 auto;
+}
+
+.theme-toggle {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--chrome-border);
+  background: transparent;
+  color: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.theme-toggle svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-toggle:hover {
+  border-color: var(--amber);
+  color: var(--amber);
 }
 
 .topbar__title {
@@ -97,7 +154,7 @@ textarea {
 .tabbar__item {
   background: none;
   border: none;
-  color: var(--muted);
+  color: var(--chrome-text-muted);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   text-transform: uppercase;
@@ -132,8 +189,31 @@ textarea {
 
 .content {
   flex: 1;
-  background: var(--asphalt);
+  background: var(--bg);
   padding: 2rem 1.25rem 4rem;
+  animation: contentFadeIn 0.22s ease;
+}
+
+.detail-content {
+  animation: contentFadeIn 0.18s ease;
+}
+
+@keyframes contentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content,
+  .detail-content {
+    animation: none;
+  }
 }
 
 .section-head {
@@ -162,11 +242,11 @@ textarea {
   overflow: hidden;
   position: relative;
   background-image:
-    linear-gradient(180deg, rgba(10, 12, 15, 0.35) 0%, rgba(10, 12, 15, 0.55) 55%, var(--asphalt) 100%),
+    linear-gradient(180deg, rgba(10, 12, 15, 0.35) 0%, rgba(10, 12, 15, 0.55) 55%, var(--bg) 100%),
     url("/images/garage-hero.jpg");
   background-size: cover;
   background-position: center 25%;
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
 }
 
 .home-hero__head {
@@ -221,12 +301,12 @@ textarea {
 
 .btn--ghost {
   background: transparent;
-  color: var(--ink);
-  border-color: var(--muted);
+  color: var(--text);
+  border-color: var(--text-muted);
 }
 
 .btn--ghost:hover {
-  border-color: var(--ink);
+  border-color: var(--text);
 }
 
 .btn--danger {
@@ -246,7 +326,7 @@ textarea {
   margin: 3rem auto;
   text-align: center;
   padding: 2.5rem 1.5rem;
-  border: 2px dashed var(--muted);
+  border: 2px dashed var(--text-muted);
   border-radius: 8px;
 }
 
@@ -258,7 +338,7 @@ textarea {
 }
 
 .empty-state__body {
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.95rem;
   margin: 0 0 1.5rem;
 }
@@ -276,10 +356,10 @@ textarea {
 .vehicle-card {
   position: relative;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 1.5rem;
-  box-shadow: 0 2px 0 var(--paper-dark), 0 8px 20px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 0 var(--border), 0 8px 20px -12px rgba(0, 0, 0, 0.5);
 }
 
 .vehicle-card__stamp {
@@ -315,7 +395,7 @@ textarea {
 
 .vehicle-card__header {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
   padding-right: 3rem;
@@ -330,7 +410,7 @@ textarea {
 
 .vehicle-card__year {
   font-family: var(--font-mono);
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.85rem;
 }
 
@@ -346,7 +426,7 @@ textarea {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-bottom: 0.15rem;
 }
 
@@ -357,9 +437,9 @@ textarea {
 
 .vehicle-card__notes {
   font-style: italic;
-  color: var(--muted);
+  color: var(--text-muted);
   font-size: 0.88rem;
-  border-top: 1px dashed var(--paper-dark);
+  border-top: 1px dashed var(--border);
   padding-top: 0.75rem;
   margin: 0 0 0.75rem;
 }
@@ -411,13 +491,13 @@ textarea {
   border: none;
   font-size: 1.5rem;
   line-height: 1;
-  color: var(--muted);
+  color: var(--text-muted);
   cursor: pointer;
   padding: 0.25rem 0.5rem;
 }
 
 .modal__close:hover {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .vehicle-form {
@@ -444,18 +524,18 @@ textarea {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .field input,
 .field select,
 .field textarea {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 4px;
   padding: 0.55rem 0.7rem;
   font-size: 0.95rem;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .field input:focus,
@@ -542,7 +622,7 @@ textarea {
 .back-link {
   background: none;
   border: none;
-  color: var(--muted);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 0.78rem;
   text-transform: uppercase;
@@ -555,7 +635,7 @@ textarea {
 }
 
 .back-link:hover {
-  color: var(--ink);
+  color: var(--text);
 }
 
 .detail-km {
@@ -580,14 +660,14 @@ textarea {
   margin: 0 auto 1.5rem;
   display: flex;
   gap: 0.5rem;
-  border-bottom: 2px solid var(--paper-dark);
+  border-bottom: 2px solid var(--border);
   overflow-x: auto;
 }
 
 .subtabbar__item {
   background: none;
   border: none;
-  color: var(--muted);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -603,7 +683,7 @@ textarea {
 }
 
 .subtabbar__item.is-active {
-  color: var(--ink);
+  color: var(--text);
   border-bottom-color: var(--amber-dark);
   font-weight: 700;
 }
@@ -632,7 +712,7 @@ textarea {
 
 .stat-chip {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 0.6rem 1rem;
   display: flex;
@@ -646,14 +726,14 @@ textarea {
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .stat-chip__value {
   font-family: var(--font-mono);
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text);
 }
 
 /* ---------- Record cards (rifornimenti, manutenzioni, spese, confronti) ---------- */
@@ -666,7 +746,7 @@ textarea {
 
 .record-card {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   display: flex;
@@ -718,6 +798,16 @@ textarea {
   stroke: #a58fd1;
 }
 
+.record-card__icon--sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+.record-card__icon--sm svg {
+  width: 16px;
+  height: 16px;
+}
+
 .record-card__title-group {
   flex: 1;
   min-width: 0;
@@ -733,7 +823,7 @@ textarea {
 .record-card__meta {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -756,6 +846,83 @@ textarea {
   stroke-width: 2.8;
 }
 
+/* ---------- Gruppi mensili (rifornimenti, ricarica) ---------- */
+
+.month-group {
+  margin-bottom: 0.6rem;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.month-group__summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 0.7rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  background: var(--surface-alt);
+  user-select: none;
+}
+
+.month-group__summary::-webkit-details-marker {
+  display: none;
+}
+
+.month-group__label {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.month-group__chevron {
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--text-muted);
+  border-bottom: 2px solid var(--text-muted);
+  transform: rotate(-45deg);
+  transition: transform 0.15s ease;
+  flex: none;
+}
+
+.month-group[open] .month-group__chevron {
+  transform: rotate(45deg);
+}
+
+.month-group__stats {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.month-group__stats strong {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+.month-group__body {
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .month-group__chevron {
+    transition: none;
+  }
+}
+
 .record-card__rows {
   display: flex;
   flex-wrap: wrap;
@@ -774,7 +941,7 @@ textarea {
   font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .record-card__row-value {
@@ -784,7 +951,7 @@ textarea {
 .record-card__note {
   font-size: 0.82rem;
   font-style: italic;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .record-card__actions {
@@ -800,7 +967,7 @@ textarea {
   width: 100%;
   border-collapse: collapse;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   overflow: hidden;
   font-size: 0.88rem;
@@ -812,15 +979,15 @@ textarea {
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--muted);
-  background: var(--asphalt-light);
+  color: var(--text-muted);
+  background: var(--surface-alt);
   padding: 0.65rem 0.75rem;
-  border-bottom: 1.5px solid var(--paper-dark);
+  border-bottom: 1.5px solid var(--border);
 }
 
 .data-table td {
   padding: 0.6rem 0.75rem;
-  border-bottom: 1px solid var(--paper-dark);
+  border-bottom: 1px solid var(--border);
   vertical-align: middle;
 }
 
@@ -852,7 +1019,7 @@ textarea {
   letter-spacing: normal;
   font-family: var(--font-body);
   font-size: 0.85rem;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .field--checkbox input[type="checkbox"] {
@@ -873,7 +1040,7 @@ textarea {
   align-items: center;
   gap: 0.9rem;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-left-width: 5px;
   border-radius: 6px;
   padding: 0.75rem 1rem;
@@ -894,7 +1061,7 @@ textarea {
 
 .reminder-item--completed {
   opacity: 0.6;
-  border-left-color: var(--muted);
+  border-left-color: var(--text-muted);
 }
 
 .reminder-item__badge {
@@ -905,7 +1072,7 @@ textarea {
   padding: 0.2rem 0.5rem;
   border-radius: 10px;
   background: var(--card);
-  color: var(--muted);
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -939,13 +1106,13 @@ textarea {
 .reminder-item__due {
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .reminder-item__notes {
   font-size: 0.8rem;
   font-style: italic;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .reminder-item__actions {
@@ -957,7 +1124,7 @@ textarea {
   margin-top: 0.75rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .reminder-completed summary {
@@ -985,7 +1152,7 @@ textarea {
   padding: 0.25rem 0;
   list-style: none;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
   max-height: 220px;
@@ -1000,20 +1167,20 @@ textarea {
   border: none;
   background: none;
   font-size: 0.85rem;
-  color: var(--ink);
+  color: var(--text);
   cursor: pointer;
 }
 
 .autocomplete-list li button:hover,
 .autocomplete-list li button:focus {
-  background: var(--asphalt-light);
+  background: var(--surface-alt);
 }
 
 /* ---------- Chart ---------- */
 
 .chart-wrap {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 1rem 0.5rem 0.5rem;
 }
@@ -1024,7 +1191,7 @@ textarea {
   max-width: 640px;
   margin: 0 auto;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 8px;
   padding: 1.5rem;
 }
@@ -1032,7 +1199,7 @@ textarea {
 .backup-panel__status {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-bottom: 1rem;
 }
 
@@ -1070,14 +1237,14 @@ textarea {
 
 .backup-panel__hint {
   font-size: 0.82rem;
-  color: var(--muted);
-  border-top: 1px dashed var(--paper-dark);
+  color: var(--text-muted);
+  border-top: 1px dashed var(--border);
   padding-top: 1rem;
   margin-bottom: 1rem;
 }
 
 .backup-panel__csv {
-  border-top: 1px dashed var(--paper-dark);
+  border-top: 1px dashed var(--border);
   padding-top: 1rem;
 }
 
@@ -1087,7 +1254,7 @@ textarea {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-bottom: 0.6rem;
 }
 
@@ -1129,7 +1296,7 @@ textarea {
   align-items: center;
   gap: 0.75rem;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 0.85rem 1rem;
   margin-bottom: 1rem;
@@ -1140,7 +1307,7 @@ textarea {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: var(--muted);
+  background: var(--text-muted);
   flex-shrink: 0;
 }
 
@@ -1163,13 +1330,13 @@ textarea {
 .obd-status-text {
   font-family: var(--font-mono);
   font-size: 0.82rem;
-  color: var(--ink);
+  color: var(--text);
   flex: 1;
 }
 
 .obd-hint {
   font-size: 0.88rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-style: italic;
   margin: 0 0 1rem;
 }
@@ -1210,13 +1377,13 @@ textarea {
 .gauge-card__unit {
   font-family: var(--font-mono);
   font-size: 0.85rem;
-  color: var(--muted);
+  color: var(--text-muted);
   margin-left: 0.35rem;
 }
 
 .dtc-panel {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 1.25rem;
 }
@@ -1245,7 +1412,7 @@ textarea {
 
 .obd-block {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 1.25rem;
   margin-bottom: 1.25rem;
@@ -1267,7 +1434,7 @@ textarea {
   font-weight: 700;
   letter-spacing: 0.08em;
   background: var(--card);
-  border: 1.5px dashed var(--paper-dark);
+  border: 1.5px dashed var(--border);
   border-radius: 4px;
   padding: 0.6rem 0.9rem;
   display: inline-block;
@@ -1305,14 +1472,14 @@ textarea {
 }
 
 .monitor-list__dot--na {
-  background: var(--muted);
+  background: var(--text-muted);
 }
 
 .monitor-list__status {
   margin-left: auto;
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -1332,7 +1499,7 @@ textarea {
   gap: 1rem;
   font-size: 0.88rem;
   padding: 0.4rem 0;
-  border-bottom: 1px dashed var(--paper-dark);
+  border-bottom: 1px dashed var(--border);
 }
 
 .ecu-info__row dt {
@@ -1340,7 +1507,7 @@ textarea {
   font-size: 0.68rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .ecu-info__row dd {
@@ -1373,7 +1540,7 @@ textarea {
 
 .dtc-list__desc {
   font-size: 0.82rem;
-  color: var(--ink);
+  color: var(--text);
   font-weight: 400;
   font-family: var(--font-body);
 }
@@ -1418,15 +1585,15 @@ textarea {
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   background: var(--asphalt-light);
-  border-bottom: 1px solid var(--paper-dark);
+  border-bottom: 1px solid var(--chrome-border);
   overflow-x: auto;
 }
 
 .vehicle-switcher__chip {
   position: relative;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
-  color: var(--muted);
+  border: 1.5px solid var(--chrome-border);
+  color: var(--chrome-text-muted);
   font-family: var(--font-mono);
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -1472,14 +1639,14 @@ textarea {
   align-items: center;
   gap: 1rem;
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
   border-radius: 6px;
   padding: 0.65rem 0.9rem;
   cursor: pointer;
   text-align: left;
   font-family: var(--font-body);
   font-size: 0.9rem;
-  color: var(--ink);
+  color: var(--text);
 }
 
 .catalog-list__item:hover {
@@ -1489,7 +1656,7 @@ textarea {
 .catalog-list__interval {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
@@ -1504,8 +1671,8 @@ textarea {
 
 .period-filter__btn {
   background: var(--card);
-  border: 1.5px solid var(--paper-dark);
-  color: var(--muted);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -1532,10 +1699,10 @@ textarea {
 .archived-section__title {
   font-family: var(--font-display);
   font-size: 1.3rem;
-  color: var(--muted);
+  color: var(--text-muted);
   letter-spacing: 0.02em;
   margin: 0 0 0.85rem;
-  border-top: 1px dashed var(--paper-dark);
+  border-top: 1px dashed var(--border);
   padding-top: 1.5rem;
 }
 
@@ -1551,7 +1718,7 @@ textarea {
   align-items: center;
   gap: 1rem;
   background: var(--card);
-  border: 1.5px dashed var(--paper-dark);
+  border: 1.5px dashed var(--border);
   border-radius: 6px;
   padding: 0.75rem 1rem;
   opacity: 0.85;
@@ -1571,7 +1738,7 @@ textarea {
 .archived-item__meta {
   font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .archived-item__actions {
@@ -1593,13 +1760,13 @@ textarea {
   height: 64px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
 }
 
 .photo-preview__meta {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -1629,7 +1796,7 @@ textarea {
   height: 36px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1.5px solid var(--paper-dark);
+  border: 1.5px solid var(--border);
 }
 
 .photo-zoom {
@@ -1643,7 +1810,7 @@ textarea {
   display: block;
   font-family: var(--font-body);
   font-size: 0.72rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-weight: 400;
   white-space: nowrap;
 }
