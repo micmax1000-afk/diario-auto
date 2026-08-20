@@ -1,5 +1,6 @@
 import type { FuelEntry } from "../types";
 import { calculateConsumption, averageConsumption } from "../utils/calculations";
+import CategoryIcon from "./CategoryIcon";
 
 interface Props {
   entries: FuelEntry[];
@@ -58,8 +59,16 @@ export default function FuelList({ entries, onEdit, onDelete }: Props) {
           return (
             <div key={entry.id} className="record-card">
               <div className="record-card__header">
-                <span className="record-card__title">{SOURCE_LABELS[entry.source] ?? entry.source}</span>
-                <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+                <CategoryIcon kind="fuel" category={entry.source} />
+                <div className="record-card__title-group">
+                  <span className="record-card__title">{SOURCE_LABELS[entry.source] ?? entry.source}</span>
+                  <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+                </div>
+                <div className="record-card__check">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 12l6 6L20 6" />
+                  </svg>
+                </div>
               </div>
               <div className="record-card__rows">
                 <div className="record-card__row">

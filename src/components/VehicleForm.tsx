@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { FormEvent } from "react";
 import type { Vehicle, FuelType } from "../types";
 import { generateId } from "../utils/storage";
+import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL } from "../utils/carCatalog";
 
 const FUEL_OPTIONS: { value: FuelType; label: string }[] = [
   { value: "benzina", label: "Benzina" },
@@ -20,6 +21,10 @@ interface Props {
 
 export default function VehicleForm({ initialVehicle, onSave, onClose }: Props) {
   const isEditing = Boolean(initialVehicle);
+  const [brand, setBrand] = useState("");
+  const [customBrand, setCustomBrand] = useState("");
+  const [model, setModel] = useState("");
+  const [customModel, setCustomModel] = useState("");
   const [name, setName] = useState(initialVehicle?.name ?? "");
   const [plate, setPlate] = useState(initialVehicle?.plate ?? "");
   const [fuelType, setFuelType] = useState<FuelType>(initialVehicle?.fuelType ?? "benzina");
@@ -27,6 +32,26 @@ export default function VehicleForm({ initialVehicle, onSave, onClose }: Props) 
   const [year, setYear] = useState(initialVehicle?.year ? String(initialVehicle.year) : "");
   const [notes, setNotes] = useState(initialVehicle?.notes ?? "");
   const [error, setError] = useState("");
+
+  const selectedBrandEntry = CAR_CATALOG.find((b) => b.brand === brand);
+
+  // Compila automaticamente "Nome veicolo" da Marca/Modello selezionati,
+  // ma solo se l'utente ha effettivamente usato i menu: se non li tocca
+  // (es. in modifica), il nome digitato a mano resta intatto.
+  useEffect(() => {
+    if (!brand) return;
+    const brandLabel = brand === OTHER_BRAND ? customBrand.trim() : brand;
+    const modelLabel = brand === OTHER_BRAND ? customModel.trim() : model === OTHER_MODEL ? customModel.trim() : model;
+    const combined = [brandLabel, modelLabel].filter(Boolean).join(" ");
+    if (combined) setName(combined);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [brand, customBrand, model, customModel]);
+
+  function handleBrandChange(value: string) {
+    setBrand(value);
+    setModel("");
+    setCustomModel("");
+  }
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -66,6 +91,74 @@ export default function VehicleForm({ initialVehicle, onSave, onClose }: Props) 
         </div>
 
         <form onSubmit={handleSubmit} className="vehicle-form">
+          <div className="field-row">
+            <div className="field">
+              <label htmlFor="brand">Marca</label>
+              <select id="brand" value={brand} onChange={(e) => handleBrandChange(e.target.value)} autoFocus>
+                <option value="">Scegli marca (opzionale)</option>
+                {CAR_CATALOG.map((b) => (
+                  <option key={b.brand} value={b.brand}>
+                    {b.brand}
+                  </option>
+                ))}
+                <option value={OTHER_BRAND}>Altra marca...</option>
+              </select>
+            </div>
+
+            {brand && brand !== OTHER_BRAND && (
+              <div className="field">
+                <label htmlFor="model">Modello</label>
+                <select id="model" value={model} onChange={(e) => setModel(e.target.value)}>
+                  <option value="">Scegli modello</option>
+                  {selectedBrandEntry?.models.map((m) => (
+                    <option key={m} value={m}>
+                      {m}
+                    </option>
+                  ))}
+                  <option value={OTHER_MODEL}>Altro modello...</option>
+                </select>
+              </div>
+            )}
+          </div>
+
+          {brand === OTHER_BRAND && (
+            <div className="field-row">
+              <div className="field">
+                <label htmlFor="custom-brand">Marca</label>
+                <input
+                  id="custom-brand"
+                  type="text"
+                  placeholder="es. Lada"
+                  value={customBrand}
+                  onChange={(e) => setCustomBrand(e.target.value)}
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="custom-model-alt">Modello</label>
+                <input
+                  id="custom-model-alt"
+                  type="text"
+                  placeholder="es. Niva"
+                  value={customModel}
+                  onChange={(e) => setCustomModel(e.target.value)}
+                />
+              </div>
+            </div>
+          )}
+
+          {brand && brand !== OTHER_BRAND && model === OTHER_MODEL && (
+            <div className="field">
+              <label htmlFor="custom-model">Modello personalizzato</label>
+              <input
+                id="custom-model"
+                type="text"
+                placeholder="es. A3 Sportback"
+                value={customModel}
+                onChange={(e) => setCustomModel(e.target.value)}
+              />
+            </div>
+          )}
+
           <div className="field">
             <label htmlFor="name">Nome veicolo *</label>
             <input
@@ -74,7 +167,6 @@ export default function VehicleForm({ initialVehicle, onSave, onClose }: Props) 
               placeholder="es. La mia auto"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              autoFocus
             />
           </div>
 

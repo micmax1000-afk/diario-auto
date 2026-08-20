@@ -327,11 +327,13 @@ export default function App() {
       <main className="content">
         {activeTab === "veicoli" && !openVehicle && (
           <section>
-            <div className="section-head">
-              <h1>I tuoi veicoli</h1>
-              <button type="button" className="btn btn--primary" onClick={() => setShowNewVehicleForm(true)}>
-                + Aggiungi veicolo
-              </button>
+            <div className="home-hero">
+              <div className="section-head home-hero__head">
+                <h1>I tuoi veicoli</h1>
+                <button type="button" className="btn btn--primary" onClick={() => setShowNewVehicleForm(true)}>
+                  + Aggiungi veicolo
+                </button>
+              </div>
             </div>
 
             {vehicles.filter((v) => !v.archived).length === 0 ? (

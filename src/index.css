@@ -153,6 +153,43 @@ textarea {
   margin: 0;
 }
 
+/* ---------- Home hero (foto officina in cima alla pagina veicoli) ---------- */
+
+.home-hero {
+  max-width: 960px;
+  margin: -2rem auto 1.75rem;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  background-image:
+    linear-gradient(180deg, rgba(10, 12, 15, 0.35) 0%, rgba(10, 12, 15, 0.55) 55%, var(--asphalt) 100%),
+    url("/images/garage-hero.jpg");
+  background-size: cover;
+  background-position: center 25%;
+  border: 1.5px solid var(--paper-dark);
+}
+
+.home-hero__head {
+  max-width: none;
+  margin: 0;
+  padding: 3.5rem 1.5rem 2rem;
+}
+
+.home-hero__head h1 {
+  color: var(--paper);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 640px) {
+  .home-hero {
+    margin: -1.5rem 0.5rem 1.5rem;
+    background-position: center 20%;
+  }
+  .home-hero__head {
+    padding: 2.75rem 1.25rem 1.75rem;
+  }
+}
+
 /* ---------- Buttons ---------- */
 
 .btn {
@@ -639,10 +676,54 @@ textarea {
 
 .record-card__header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.record-card__icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.record-card__icon svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke-width: 1.8;
+}
+
+.record-card__icon--amber {
+  background: rgba(245, 144, 31, 0.14);
+}
+.record-card__icon--amber svg {
+  stroke: var(--amber);
+}
+
+.record-card__icon--cyan {
+  background: rgba(56, 214, 196, 0.14);
+}
+.record-card__icon--cyan svg {
+  stroke: var(--cyan);
+}
+
+.record-card__icon--purple {
+  background: rgba(165, 143, 209, 0.14);
+}
+.record-card__icon--purple svg {
+  stroke: #a58fd1;
+}
+
+.record-card__title-group {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
 }
 
 .record-card__title {
@@ -654,6 +735,25 @@ textarea {
   font-size: 0.8rem;
   color: var(--muted);
   white-space: nowrap;
+}
+
+.record-card__check {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  flex: none;
+  background: rgba(63, 187, 114, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.record-card__check svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: var(--ok);
+  stroke-width: 2.8;
 }
 
 .record-card__rows {

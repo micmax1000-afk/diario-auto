@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ExpenseEntry } from "../types";
+import CategoryIcon from "./CategoryIcon";
 
 const CATEGORY_LABELS: Record<string, string> = {
   assicurazione: "Assicurazione",
@@ -54,8 +55,16 @@ export default function ExpenseList({ entries, onDelete }: Props) {
         {sorted.map((entry) => (
           <div key={entry.id} className="record-card">
             <div className="record-card__header">
-              <span className="record-card__title">{CATEGORY_LABELS[entry.category] ?? entry.category}</span>
-              <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+              <CategoryIcon kind="expense" category={entry.category} />
+              <div className="record-card__title-group">
+                <span className="record-card__title">{CATEGORY_LABELS[entry.category] ?? entry.category}</span>
+                <span className="record-card__meta">{new Date(entry.date).toLocaleDateString("it-IT")}</span>
+              </div>
+              <div className="record-card__check">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 12l6 6L20 6" />
+                </svg>
+              </div>
             </div>
             <div className="record-card__rows">
               <div className="record-card__row">
