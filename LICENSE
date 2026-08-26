@@ -1,0 +1,42 @@
+Copyright (c) 2026 micmax1000-afk. Tutti i diritti riservati.
+
+Questo repository è pubblico a scopo di trasparenza (in particolare per
+permettere la verifica indipendente delle pratiche sulla privacy descritte
+in PRIVACY_POLICY.md) e come portfolio di lavoro. La visibilità pubblica
+del codice sorgente NON costituisce una licenza open source e NON autorizza
+l'uso, la copia, la modifica, la distribuzione o la pubblicazione di questo
+software o di parti di esso, in forma originale o modificata, per qualsiasi
+scopo, senza il permesso scritto esplicito del titolare del copyright.
+
+In particolare, senza permesso scritto NON è consentito:
+- ridistribuire questo software, in tutto o in parte, come proprio prodotto
+  o come parte di un altro prodotto (anche gratuito);
+- pubblicare build, fork o derivati di questa app su store di applicazioni
+  (Google Play, Apple App Store, F-Droid o altri) con nome, branding o
+  identità diversi da quelli originali;
+- rimuovere o aggirare i meccanismi di sblocco delle funzionalità a
+  pagamento presenti nell'app;
+- usare il codice, il design, le traduzioni o gli asset grafici per
+  progetti commerciali propri.
+
+È invece sempre consentito:
+- leggere, studiare e clonare il repository per scopi di apprendimento
+  personale, revisione del codice o verifica delle pratiche sulla privacy;
+- segnalare bug o proporre modifiche tramite issue/pull request, che
+  restano comunque soggette all'approvazione discrezionale del titolare;
+- citare piccoli estratti di codice a scopo didattico, con attribuzione.
+
+QUESTO SOFTWARE VIENE FORNITO "COSÌ COM'È", SENZA GARANZIE DI ALCUN TIPO,
+ESPLICITE O IMPLICITE. IN NESSUN CASO IL TITOLARE DEL COPYRIGHT SARÀ
+RESPONSABILE PER QUALSIASI RECLAMO, DANNO O ALTRA RESPONSABILITÀ DERIVANTE
+DALL'USO DI QUESTO SOFTWARE.
+
+---
+
+Nota sulle dipendenze di terze parti: questo progetto utilizza librerie
+open source (React, Recharts, Leaflet, idb, i18next e altre elencate in
+package.json), ciascuna soggetta alla propria licenza originale. Questa
+licenza riguarda esclusivamente il codice originale scritto per Diario
+Auto, non le dipendenze di terze parti in esso incluse.
+
+Per richieste di licenza d'uso, collaborazione o altro: [inserisci qui la tua email di contatto]
