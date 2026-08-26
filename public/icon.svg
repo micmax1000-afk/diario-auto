@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <radialGradient id="chrome" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#e9ecef"/>
+      <stop offset="0.45" stop-color="#8f979f"/>
+      <stop offset="0.7" stop-color="#4a5158"/>
+      <stop offset="1" stop-color="#22262b"/>
+    </radialGradient>
+    <radialGradient id="face" cx="50%" cy="42%" r="65%">
+      <stop offset="0" stop-color="#171c22"/>
+      <stop offset="1" stop-color="#0a0c0f"/>
+    </radialGradient>
+    <linearGradient id="needleGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ef6a4f"/>
+      <stop offset="1" stop-color="#e0563f"/>
+    </linearGradient>
+  </defs>
+
+  <!-- sfondo app -->
+  <rect width="512" height="512" rx="96" fill="#0a0c0f"/>
+
+  <!-- bezel cromato -->
+  <circle cx="256" cy="256" r="222" fill="url(#chrome)"/>
+  <!-- arco ambra (zona alta prestazioni) -->
+  <path d="M 402 148 A 222 222 0 0 1 452 270" fill="none" stroke="#f5901f" stroke-width="14" stroke-linecap="round"/>
+  <!-- arco ciano (zona eco/elettrico, richiama il supporto EV dell'app) -->
+  <path d="M 60 270 A 222 222 0 0 1 110 148" fill="none" stroke="#38d6c4" stroke-width="14" stroke-linecap="round"/>
+
+  <!-- quadrante nero -->
+  <circle cx="256" cy="256" r="196" fill="url(#face)"/>
+  <circle cx="256" cy="256" r="196" fill="none" stroke="#262d36" stroke-width="2"/>
+
+  <!-- tacche minori -->
+  <g stroke="#4a5158" stroke-width="3" stroke-linecap="round">
+    <line x1="256" y1="76" x2="256" y2="92"/>
+    <line x1="342" y1="98" x2="332" y2="112"/>
+    <line x1="410" y1="166" x2="396" y2="176"/>
+    <line x1="436" y1="256" x2="420" y2="256"/>
+    <line x1="410" y1="346" x2="396" y2="336"/>
+    <line x1="170" y1="98" x2="180" y2="112"/>
+    <line x1="102" y1="166" x2="116" y2="176"/>
+    <line x1="76" y1="256" x2="92" y2="256"/>
+    <line x1="102" y1="346" x2="116" y2="336"/>
+  </g>
+
+  <!-- tacche maggiori (chiare, più spesse) -->
+  <g stroke="#f3f1ea" stroke-width="6" stroke-linecap="round">
+    <line x1="256" y1="70" x2="256" y2="98"/>
+    <line x1="376" y1="112" x2="360" y2="132"/>
+    <line x1="440" y1="220" x2="414" y2="228"/>
+    <line x1="440" y1="292" x2="414" y2="284"/>
+    <line x1="376" y1="400" x2="360" y2="380"/>
+    <line x1="136" y1="112" x2="152" y2="132"/>
+  </g>
+
+  <!-- numeri -->
+  <g font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="34" fill="#f3f1ea" text-anchor="middle">
+    <text x="256" y="140">60</text>
+    <text x="366" y="172">80</text>
+    <text x="404" y="270">100</text>
+    <text x="366" y="368">120</text>
+    <text x="146" y="172">40</text>
+    <text x="108" y="270">20</text>
+  </g>
+
+  <!-- mozzo centrale -->
+  <circle cx="256" cy="256" r="16" fill="#f3f1ea"/>
+
+  <!-- lancetta arancione -->
+  <g transform="rotate(-60 256 256)">
+    <polygon points="256,120 264,256 248,256" fill="url(#needleGrad)"/>
+  </g>
+  <circle cx="256" cy="256" r="9" fill="#0a0c0f"/>
+
+  <!-- finestra contachilometri -->
+  <rect x="206" y="318" width="100" height="34" rx="3" fill="#f3f1ea" stroke="#262d36" stroke-width="2"/>
+  <text x="256" y="342" font-family="'DejaVu Sans Mono', 'Courier New', monospace" font-weight="700" font-size="19"
+        fill="#0a0c0f" text-anchor="middle" letter-spacing="1">000000</text>
+
+  <!-- etichetta KM/H -->
+  <text x="256" y="300" font-family="'DejaVu Sans', Arial, sans-serif" font-weight="700" font-size="20"
+        fill="#f3f1ea" text-anchor="middle" letter-spacing="2">KM/H</text>
+</svg>
