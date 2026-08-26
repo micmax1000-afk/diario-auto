@@ -661,8 +661,6 @@ export default function App() {
               setOpenVehicleId(id);
               setDetailInitialTab("live");
             }}
-            onAddReminder={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
-            onAddFuel={() => requestVehicleAction({ kind: "quickFuel" })}
             onAddVehicle={handleRequestAddVehicle}
             onManageVehicles={() => setShowManageVehicles(true)}
           />
@@ -693,7 +691,7 @@ export default function App() {
         )}
       </main>
 
-      {!openVehicle && !showBackup && !showManageVehicles && (
+      {!showBackup && !showManageVehicles && (
         <BottomTabBar active={mainTab} onChange={handleMainTabChange} urgentCount={urgentTotalCount} />
       )}
 

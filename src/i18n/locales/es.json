@@ -723,7 +723,22 @@
     "BRL": "Real brasileño",
     "AED": "Dirham de los EAU",
     "PLN": "Zloty polaco",
-    "RON": "Leu rumano"
+    "RON": "Leu rumano",
+    "CZK": "Corona checa",
+    "HUF": "Florín húngaro",
+    "SEK": "Corona sueca",
+    "NOK": "Corona noruega",
+    "DKK": "Corona danesa",
+    "TRY": "Lira turca",
+    "CNY": "Yuan chino",
+    "KRW": "Won surcoreano",
+    "THB": "Baht tailandés",
+    "VND": "Dong vietnamita",
+    "PHP": "Peso filipino",
+    "MXN": "Peso mexicano",
+    "ARS": "Peso argentino",
+    "CAD": "Dólar canadiense",
+    "AUD": "Dólar australiano"
   },
   "settingsScreen": {
     "title": "Configuración",

@@ -2109,8 +2109,8 @@ textarea {
 }
 
 .dash-card__photo {
-  width: 70px;
-  height: 54px;
+  width: 108px;
+  height: 76px;
   border-radius: 10px;
   overflow: hidden;
   background: var(--surface-alt);
@@ -2257,18 +2257,15 @@ textarea {
 
 .bottom-tabbar__item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 0.2rem;
+  justify-content: center;
   background: none;
   border: none;
   color: var(--chrome-text-muted);
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  letter-spacing: 0.01em;
   cursor: pointer;
-  padding: 0.25rem 0.25rem;
+  padding: 0.7rem 0.25rem;
   min-width: 46px;
+  min-height: 44px;
   flex: 1;
   transition: color 0.15s ease;
 }
@@ -2278,19 +2275,15 @@ textarea {
 }
 
 .bottom-tabbar__item svg {
-  width: 21px;
-  height: 21px;
+  width: 24px;
+  height: 24px;
   stroke-width: 2;
 }
 
 @media (max-width: 380px) {
-  .bottom-tabbar__item {
-    font-size: 0.5rem;
-    min-width: 40px;
-  }
   .bottom-tabbar__item svg {
-    width: 19px;
-    height: 19px;
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -2582,8 +2575,8 @@ textarea {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 2px;
-  padding: 5px;
+  gap: 4px;
+  padding: 8px;
   background: radial-gradient(ellipse at center, #14181d 0%, #0a0c0f 100%);
 }
 
@@ -2595,8 +2588,8 @@ textarea {
 }
 
 .dash-cluster__light svg {
-  width: 12px;
-  height: 12px;
+  width: 17px;
+  height: 17px;
   fill: currentColor;
 }
 
@@ -2758,4 +2751,35 @@ textarea {
   font-weight: 600;
   font-size: 0.88rem;
   margin: 0 0 1rem;
+}
+
+.vehicle-detail-page {
+  padding-bottom: 5.8rem;
+}
+
+.stat-chip--icon {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.stat-chip--icon .record-card__icon {
+  flex-shrink: 0;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.chart-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--paper-dim, #8a93a1);
 }

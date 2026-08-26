@@ -146,23 +146,16 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
 
       <div className="section-head section-head--tight" style={{ marginTop: "1.5rem" }}>
         <h2>{t("commute.compareTitle")}</h2>
-        <button
-          type="button"
-          className="btn btn--ghost btn--small"
-          onClick={() => setShowScenarioForm(true)}
-          disabled={!isConfigured}
-        >
+        <button type="button" className="btn btn--ghost btn--small" onClick={() => setShowScenarioForm(true)}>
           {t("commute.addScenario")}
         </button>
       </div>
 
-      {!isConfigured && <p className="empty-state__body">{t("commute.setupFirst")}</p>}
-
-      {isConfigured && scenarios.length === 0 && (
+      {scenarios.length === 0 && (
         <p className="empty-state__body">{t("commute.noScenarios", { name: vehicle.name })}</p>
       )}
 
-      {isConfigured && scenarios.length > 0 && (
+      {scenarios.length > 0 && (
         <div className="record-list">
           {realCost && (
             <div className="record-card">

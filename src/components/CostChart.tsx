@@ -4,6 +4,7 @@ import type { FuelEntry, MaintenanceEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol } from "../utils/settings";
+import CategoryIcon from "./CategoryIcon";
 
 interface Props {
   fuelEntries: FuelEntry[];
@@ -91,10 +92,27 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
             labelStyle={{ color: "#f3f1ea" }}
             formatter={(value) => [formatMoney(Number(value)), undefined]}
           />
-          <Legend wrapperStyle={{ fontFamily: "JetBrains Mono", fontSize: 11, color: "#8a93a1" }} />
-          <Bar dataKey="carburante" name={t("summary.chartFuel")} fill="#f5901f" radius={[3, 3, 0, 0]} />
-          <Bar dataKey="manutenzione" name={t("summary.chartMaintenance")} fill="#3fbb72" radius={[3, 3, 0, 0]} />
-          <Bar dataKey="spese" name={t("summary.chartExpenses")} fill="#a58fd1" radius={[3, 3, 0, 0]} />
+          <Legend
+            content={() => (
+              <div className="chart-legend">
+                <span className="chart-legend__item">
+                  <CategoryIcon kind="fuel" category="benzina" size="small" />
+                  {t("summary.chartFuel")}
+                </span>
+                <span className="chart-legend__item">
+                  <CategoryIcon kind="maintenance" category="tagliando" size="small" />
+                  {t("summary.chartMaintenance")}
+                </span>
+                <span className="chart-legend__item">
+                  <CategoryIcon kind="expense" category="altro" size="small" />
+                  {t("summary.chartExpenses")}
+                </span>
+              </div>
+            )}
+          />
+          <Bar dataKey="carburante" name={t("summary.chartFuel")} fill="#f5901f" radius={[8, 8, 0, 0]} />
+          <Bar dataKey="manutenzione" name={t("summary.chartMaintenance")} fill="#3fbb72" radius={[8, 8, 0, 0]} />
+          <Bar dataKey="spese" name={t("summary.chartExpenses")} fill="#a58fd1" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

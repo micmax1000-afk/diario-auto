@@ -723,7 +723,22 @@
     "BRL": "Real Brasil",
     "AED": "Dirham UEA",
     "PLN": "Zloty Polandia",
-    "RON": "Leu Rumania"
+    "RON": "Leu Rumania",
+    "CZK": "Koruna Ceko",
+    "HUF": "Forint Hungaria",
+    "SEK": "Krona Swedia",
+    "NOK": "Krone Norwegia",
+    "DKK": "Krone Denmark",
+    "TRY": "Lira Turki",
+    "CNY": "Yuan Tiongkok",
+    "KRW": "Won Korea Selatan",
+    "THB": "Baht Thailand",
+    "VND": "Dong Vietnam",
+    "PHP": "Peso Filipina",
+    "MXN": "Peso Meksiko",
+    "ARS": "Peso Argentina",
+    "CAD": "Dolar Kanada",
+    "AUD": "Dolar Australia"
   },
   "settingsScreen": {
     "title": "Pengaturan",

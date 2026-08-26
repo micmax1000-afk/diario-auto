@@ -19,11 +19,26 @@ export const CURRENCIES: CurrencyOption[] = [
   { code: "CHF", symbol: "CHF", labelKey: "currency.CHF" },
   { code: "PLN", symbol: "zł", labelKey: "currency.PLN" },
   { code: "RON", symbol: "lei", labelKey: "currency.RON" },
+  { code: "CZK", symbol: "Kč", labelKey: "currency.CZK" },
+  { code: "HUF", symbol: "Ft", labelKey: "currency.HUF" },
+  { code: "SEK", symbol: "kr", labelKey: "currency.SEK" },
+  { code: "NOK", symbol: "kr", labelKey: "currency.NOK" },
+  { code: "DKK", symbol: "kr", labelKey: "currency.DKK" },
+  { code: "TRY", symbol: "₺", labelKey: "currency.TRY" },
   { code: "JPY", symbol: "¥", labelKey: "currency.JPY" },
+  { code: "CNY", symbol: "¥", labelKey: "currency.CNY" },
+  { code: "KRW", symbol: "₩", labelKey: "currency.KRW" },
   { code: "RUB", symbol: "₽", labelKey: "currency.RUB" },
   { code: "INR", symbol: "₹", labelKey: "currency.INR" },
   { code: "IDR", symbol: "Rp", labelKey: "currency.IDR" },
+  { code: "THB", symbol: "฿", labelKey: "currency.THB" },
+  { code: "VND", symbol: "₫", labelKey: "currency.VND" },
+  { code: "PHP", symbol: "₱", labelKey: "currency.PHP" },
   { code: "BRL", symbol: "R$", labelKey: "currency.BRL" },
+  { code: "MXN", symbol: "$", labelKey: "currency.MXN" },
+  { code: "ARS", symbol: "$", labelKey: "currency.ARS" },
+  { code: "CAD", symbol: "$", labelKey: "currency.CAD" },
+  { code: "AUD", symbol: "$", labelKey: "currency.AUD" },
   { code: "AED", symbol: "د.إ", labelKey: "currency.AED" },
 ];
 
@@ -36,9 +51,11 @@ const CURRENCY_META_KEY = "settings:currency";
 // modificabile a mano in qualunque momento dalle Impostazioni.
 const REGION_TO_CURRENCY: Record<string, string> = {
   IT: "EUR", ES: "EUR", PT: "EUR", DE: "EUR", FR: "EUR", NL: "EUR", AT: "EUR", IE: "EUR", GR: "EUR",
-  PL: "PLN", RO: "RON",
+  PL: "PLN", RO: "RON", CZ: "CZK", HU: "HUF", SE: "SEK", NO: "NOK", DK: "DKK", TR: "TRY",
   GB: "GBP", CH: "CHF",
-  RU: "RUB", IN: "INR", ID: "IDR", BR: "BRL",
+  RU: "RUB", IN: "INR", ID: "IDR", BR: "BRL", TH: "THB", VN: "VND", PH: "PHP",
+  MX: "MXN", AR: "ARS", CA: "CAD", AU: "AUD",
+  CN: "CNY", KR: "KRW",
   AE: "AED", SA: "AED", JP: "JPY", US: "USD",
 };
 

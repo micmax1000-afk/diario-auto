@@ -21,6 +21,7 @@ import ChargingList from "./ChargingList";
 import MaintenanceForm from "./MaintenanceForm";
 import MaintenanceList from "./MaintenanceList";
 import PremiumScreen from "./PremiumScreen";
+import CategoryIcon from "./CategoryIcon";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
 import ReminderForm from "./ReminderForm";
@@ -212,7 +213,7 @@ export default function VehicleDetail({
   );
 
   return (
-    <section>
+    <section className="vehicle-detail-page">
       <button type="button" className="back-link" onClick={onBack}>
         {isRtlLanguage(i18n.language) ? "→ " : "← "}
         {t("detail.back")}
@@ -381,33 +382,61 @@ export default function VehicleDetail({
             </div>
 
             <div className="stat-row">
-              <div className="stat-chip">
-                <span className="stat-chip__label">{t("summary.fuel")}</span>
-                <span className="stat-chip__value">{formatMoney(costs.fuelCost)}</span>
+              <div className="stat-chip stat-chip--icon">
+                <CategoryIcon kind="fuel" category="benzina" size="small" />
+                <div>
+                  <span className="stat-chip__label">{t("summary.fuel")}</span>
+                  <span className="stat-chip__value">{formatMoney(costs.fuelCost)}</span>
+                </div>
               </div>
               {costs.chargingCost > 0 && (
-                <div className="stat-chip">
-                  <span className="stat-chip__label">{t("summary.charging")}</span>
-                  <span className="stat-chip__value">{formatMoney(costs.chargingCost)}</span>
+                <div className="stat-chip stat-chip--icon">
+                  <CategoryIcon kind="charging" category="" size="small" />
+                  <div>
+                    <span className="stat-chip__label">{t("summary.charging")}</span>
+                    <span className="stat-chip__value">{formatMoney(costs.chargingCost)}</span>
+                  </div>
                 </div>
               )}
-              <div className="stat-chip">
-                <span className="stat-chip__label">{t("summary.maintenance")}</span>
-                <span className="stat-chip__value">{formatMoney(costs.maintenanceCost)}</span>
+              <div className="stat-chip stat-chip--icon">
+                <CategoryIcon kind="maintenance" category="tagliando" size="small" />
+                <div>
+                  <span className="stat-chip__label">{t("summary.maintenance")}</span>
+                  <span className="stat-chip__value">{formatMoney(costs.maintenanceCost)}</span>
+                </div>
               </div>
-              <div className="stat-chip">
-                <span className="stat-chip__label">{t("summary.expenses")}</span>
-                <span className="stat-chip__value">{formatMoney(costs.expensesCost)}</span>
+              <div className="stat-chip stat-chip--icon">
+                <CategoryIcon kind="expense" category="altro" size="small" />
+                <div>
+                  <span className="stat-chip__label">{t("summary.expenses")}</span>
+                  <span className="stat-chip__value">{formatMoney(costs.expensesCost)}</span>
+                </div>
               </div>
-              <div className="stat-chip">
-                <span className="stat-chip__label">{t("summary.total")}</span>
-                <span className="stat-chip__value">{formatMoney(costs.totalCost)}</span>
+              <div className="stat-chip stat-chip--icon">
+                <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <rect x="3" y="6" width="18" height="13" rx="2" />
+                    <path d="M3 10h18M7 14h3" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="stat-chip__label">{t("summary.total")}</span>
+                  <span className="stat-chip__value">{formatMoney(costs.totalCost)}</span>
+                </div>
               </div>
-              <div className="stat-chip">
-                <span className="stat-chip__label">{t("summary.costPerKm")}</span>
-                <span className="stat-chip__value">
-                  {costs.costPerKm !== null ? formatMoney(costs.costPerKm, 3) : "—"}
-                </span>
+              <div className="stat-chip stat-chip--icon">
+                <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M3 17 9 8l4 5 8-11" />
+                    <path d="M15 2h6v6" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="stat-chip__label">{t("summary.costPerKm")}</span>
+                  <span className="stat-chip__value">
+                    {costs.costPerKm !== null ? formatMoney(costs.costPerKm, 3) : "—"}
+                  </span>
+                </div>
               </div>
             </div>
             <CostChart fuelEntries={filteredFuel} maintenanceEntries={filteredMaintenance} expenseEntries={filteredExpenses} />

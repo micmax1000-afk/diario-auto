@@ -723,7 +723,22 @@
     "BRL": "Real brasileiro",
     "AED": "Dirham dos EAU",
     "PLN": "Zloti polaco",
-    "RON": "Leu romeno"
+    "RON": "Leu romeno",
+    "CZK": "Coroa checa",
+    "HUF": "Florim húngaro",
+    "SEK": "Coroa sueca",
+    "NOK": "Coroa norueguesa",
+    "DKK": "Coroa dinamarquesa",
+    "TRY": "Lira turca",
+    "CNY": "Yuan chinês",
+    "KRW": "Won sul-coreano",
+    "THB": "Baht tailandês",
+    "VND": "Dong vietnamita",
+    "PHP": "Peso filipino",
+    "MXN": "Peso mexicano",
+    "ARS": "Peso argentino",
+    "CAD": "Dólar canadiano",
+    "AUD": "Dólar australiano"
   },
   "settingsScreen": {
     "title": "Definições",

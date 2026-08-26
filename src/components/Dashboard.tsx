@@ -13,8 +13,6 @@ interface Props {
   maintenanceEntries: MaintenanceEntry[];
   isPro: boolean;
   onOpenVehicle: (id: string) => void;
-  onAddReminder: () => void;
-  onAddFuel: () => void;
   onAddVehicle: () => void;
   onManageVehicles: () => void;
 }
@@ -71,8 +69,6 @@ export default function Dashboard({
   maintenanceEntries,
   isPro,
   onOpenVehicle,
-  onAddReminder,
-  onAddFuel,
   onAddVehicle,
   onManageVehicles,
 }: Props) {
@@ -93,14 +89,6 @@ export default function Dashboard({
             {t("dashboardGarage.heroTitleLine2")}
           </h1>
           <p className="dash-hero__subtitle">{t("dashboardGarage.heroSubtitle")}</p>
-          <div className="dash-hero__actions">
-            <button type="button" className="dash-hero__btn" onClick={onAddFuel}>
-              {t("dashboardGarage.heroButtonFuel")} →
-            </button>
-            <button type="button" className="dash-hero__btn dash-hero__btn--ghost" onClick={onAddReminder}>
-              {t("dashboardGarage.heroButton")} →
-            </button>
-          </div>
         </div>
         <div className="dash-hero__image-wrap">
           <picture>
