@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { App as CapacitorApp } from "@capacitor/app";
+import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { CURRENCIES } from "../utils/settings";
@@ -28,6 +30,18 @@ const ROW_ICONS: Record<string, string> = {
 };
 
 export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleTheme }: Props) {
+  // Versione reale dell'app installata (versionName + versionCode di Android),
+  // così si capisce subito se l'aggiornamento è arrivato.
+  const [appVersion, setAppVersion] = useState("");
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) {
+      setAppVersion("web");
+      return;
+    }
+    CapacitorApp.getInfo()
+      .then((info) => setAppVersion(`${info.version} (${info.build})`))
+      .catch(() => setAppVersion(""));
+  }, []);
   const { t, i18n } = useTranslation();
   const { currency, setCurrency, distanceUnit, setDistanceUnit, temperatureUnit, setTemperatureUnit } = useAppSettings();
   const [openRow, setOpenRow] = useState<RowId>(null);
@@ -137,7 +151,7 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
           <span className="settings-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={ROW_ICONS.info} /></svg></span>
           <span className="settings-row__text">
             <span className="settings-row__label">{t("settingsScreen.infoSupport")}</span>
-            <span className="settings-row__value">{t("settingsScreen.version")} 2.3</span>
+            <span className="settings-row__value">{t("settingsScreen.version")} {appVersion}</span>
           </span>
         </div>
       </div>
