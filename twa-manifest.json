@@ -1,0 +1,45 @@
+{
+  "packageId": "com.diarioauto.app",
+  "host": "diario-auto.mic-max-1000.workers.dev",
+  "name": "Diario Auto",
+  "launcherName": "Diario Auto",
+  "display": "standalone",
+  "themeColor": "#0A0C0F",
+  "navigationColor": "#0A0C0F",
+  "navigationColorDark": "#0A0C0F",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#0A0C0F",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://diario-auto.mic-max-1000.workers.dev/icons/icon-512.png",
+  "maskableIconUrl": "https://diario-auto.mic-max-1000.workers.dev/icons/icon-512.png",
+  "webManifestUrl": "https://diario-auto.mic-max-1000.workers.dev/manifest.json",
+  "fallbackType": "customtabs",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "diario-auto"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "features": {
+    "playBilling": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://diario-auto.mic-max-1000.workers.dev/",
+  "minSdkVersion": 21,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "versionName": "1.2.0",
+  "versionCode": 3
+}

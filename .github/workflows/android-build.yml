@@ -1,0 +1,74 @@
+name: Build Android APK/AAB
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Build debug APK (sempre, utile per test rapidi)
+        working-directory: android
+        run: ./gradlew assembleDebug
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: diario-auto-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      # L'AAB firmato si genera solo se i secrets del keystore sono
+      # configurati nel repo (Settings → Secrets and variables → Actions).
+      # Finché non li aggiungi, questo step e il successivo vengono saltati
+      # senza far fallire la build.
+      - name: Check release signing secrets
+        id: signing
+        run: |
+          if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Decode keystore
+        if: steps.signing.outputs.available == 'true'
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
+      - name: Build release AAB (firmato)
+        if: steps.signing.outputs.available == 'true'
+        working-directory: android
+        run: ./gradlew bundleRelease
+        env:
+          RELEASE_KEYSTORE_PATH: release.keystore
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+      - name: Upload release AAB
+        if: steps.signing.outputs.available == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: diario-auto-release.aab
+          path: android/app/build/outputs/bundle/release/app-release.aab

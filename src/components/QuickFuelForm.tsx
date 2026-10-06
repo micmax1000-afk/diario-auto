@@ -1,0 +1,192 @@
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { useTranslation } from "react-i18next";
+import type { FuelEntry, FuelSource, Vehicle } from "../types";
+import { generateId } from "../utils/storage";
+import { calculateConsumption, averageConsumption } from "../utils/calculations";
+import { getNumberLocale } from "../utils/locale";
+import QuickEntryHeader from "./QuickEntryHeader";
+import ActionGridIcon from "./ActionGridIcon";
+
+interface Props {
+  vehicle: Vehicle;
+  existingEntries?: FuelEntry[];
+  onSave: (entry: FuelEntry) => void;
+  onClose: () => void;
+}
+
+// Mappa il tipo di alimentazione del veicolo alla fonte rifornimento più
+// probabile, per pre-compilare senza dover scegliere (velocità è l'obiettivo).
+function defaultSource(vehicle: Vehicle): FuelSource {
+  if (vehicle.fuelType === "benzina" || vehicle.fuelType === "diesel" || vehicle.fuelType === "gpl" || vehicle.fuelType === "metano") {
+    return vehicle.fuelType;
+  }
+  return "benzina"; // ibrido: la maggioranza dei rifornimenti sarà comunque benzina
+}
+
+function formatEuro(value: number, locale: string) {
+  return value.toLocaleString(locale, { style: "currency", currency: "EUR", maximumFractionDigits: 4 });
+}
+
+export default function QuickFuelForm({ vehicle, existingEntries = [], onSave, onClose }: Props) {
+  const { t, i18n } = useTranslation();
+  const locale = getNumberLocale(i18n.language);
+  const source = defaultSource(vehicle);
+  const [pricePerUnit, setPricePerUnit] = useState("");
+  const [totalCost, setTotalCost] = useState("");
+  const [fullTank, setFullTank] = useState(true);
+  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(vehicle.currentKm))));
+  const [error, setError] = useState("");
+
+  const priceValue = Number(pricePerUnit);
+  const costValue = Number(totalCost);
+  const computedLiters =
+    pricePerUnit !== "" && !Number.isNaN(priceValue) && priceValue > 0 && totalCost !== "" && !Number.isNaN(costValue)
+      ? costValue / priceValue
+      : null;
+
+  const kmParsed = Number(kmInput);
+  const kmValue = kmInput !== "" && Number.isFinite(kmParsed) ? Math.max(0, Math.round(kmParsed)) : 0;
+  const lastKnownKm = existingEntries.reduce((m, e) => Math.max(m, e.km), 0);
+  const kmUnchanged = kmValue > 0 && kmValue === lastKnownKm;
+  const previousEntry = [...existingEntries].filter((e) => e.km < kmValue).sort((a, b) => b.km - a.km)[0];
+  const distanceSinceLast = previousEntry ? kmValue - previousEntry.km : null;
+  const costPerKm = distanceSinceLast && distanceSinceLast > 0 && costValue > 0 ? costValue / distanceSinceLast : null;
+
+  let newAvgConsumption: number | null = null;
+  if (computedLiters !== null) {
+    const previewEntry: FuelEntry = {
+      id: "preview",
+      vehicleId: vehicle.id,
+      date: new Date().toISOString(),
+      km: kmValue,
+      liters: computedLiters,
+      totalCost: costValue,
+      source,
+      fullTank,
+    };
+    newAvgConsumption = averageConsumption(calculateConsumption([...existingEntries, previewEntry]), source);
+  }
+
+  function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    if (kmValue <= 0 || kmValue < Math.round(vehicle.currentKm)) {
+      setError(t("quickEntry.errorKmLower", { km: Math.round(vehicle.currentKm).toLocaleString(locale) }));
+      return;
+    }
+    if (Number.isNaN(priceValue) || priceValue <= 0) {
+      setError(t("fuelForm.errorPrice", { unit: "l" }));
+      return;
+    }
+    if (Number.isNaN(costValue) || costValue <= 0) {
+      setError(t("fuelForm.errorTotalCost"));
+      return;
+    }
+
+    const entry: FuelEntry = {
+      id: generateId(),
+      vehicleId: vehicle.id,
+      date: new Date().toISOString(),
+      km: kmValue,
+      liters: costValue / priceValue,
+      totalCost: costValue,
+      source,
+      fullTank,
+    };
+
+    onSave(entry);
+  }
+
+  return (
+    <div className="quick-entry-page quick-entry-page--blue">
+      <QuickEntryHeader title={t("quickEntry.fuelTitle")} onBack={onClose} tone="blue" />
+
+      <form onSubmit={handleSubmit} className="quick-entry-page__body">
+        <div className="quick-entry-card">
+          <div className="quick-entry-card__title-row">
+            <span className="quick-entry-card__icon quick-entry-card__icon--blue"><ActionGridIcon name="fuel" /></span>
+            <div>
+              <strong>{t("quickEntry.fuelTitleFull")}</strong>
+              <p>{vehicle.name}</p>
+            </div>
+          </div>
+          <label className="quick-entry-card__km quick-entry-card__km--edit">
+            <span>{t("quickEntry.kmLabel")}</span>
+            <div className="quick-entry-card__km-input">
+              <input type="number" inputMode="numeric" value={kmInput} onChange={(e) => setKmInput(e.target.value)} aria-label={t("quickEntry.kmLabel")} />
+              <small>km</small>
+            </div>
+          </label>
+          {kmUnchanged && <p className="quick-entry-card__km-hint">{t("quickEntry.kmUnchangedHint")}</p>}
+        </div>
+
+        <p className="quick-entry-page__section-label">{t("quickEntry.enterOnlyFuelData")}</p>
+
+        <div className="quick-entry-inputs">
+          <label className="quick-entry-input">
+            <span>{t("fuelForm.pricePerUnit", { unit: "l" })}</span>
+            <div className="quick-entry-input__row">
+              <input
+                type="number"
+                step="0.001"
+                inputMode="decimal"
+                autoFocus
+                value={pricePerUnit}
+                onChange={(e) => setPricePerUnit(e.target.value)}
+              />
+              <small>€/L</small>
+            </div>
+          </label>
+          <label className="quick-entry-input">
+            <span>{t("fuelForm.cost")}</span>
+            <div className="quick-entry-input__row">
+              <input
+                type="number"
+                step="0.01"
+                inputMode="decimal"
+                value={totalCost}
+                onChange={(e) => setTotalCost(e.target.value)}
+              />
+              <small>€</small>
+            </div>
+          </label>
+        </div>
+
+        <div className="quick-entry-field field--checkbox">
+          <label htmlFor="qf-full">
+            <input id="qf-full" type="checkbox" checked={fullTank} onChange={(e) => setFullTank(e.target.checked)} />
+            {t("fuelForm.fullTank")}
+          </label>
+        </div>
+
+        <div className="quick-entry-calc">
+          <p className="quick-entry-calc__title">{t("quickEntry.autoCalcTitle")}</p>
+          <div className="quick-entry-calc__row">
+            <span>{t("quickEntry.litersDispensed")}</span>
+            <strong className="is-positive">{computedLiters !== null ? `${computedLiters.toFixed(2)} L` : "—"}</strong>
+          </div>
+          <div className="quick-entry-calc__row">
+            <span>{t("quickEntry.costPerKm")}</span>
+            <strong>{costPerKm !== null ? formatEuro(costPerKm, locale) : "—"}</strong>
+          </div>
+          <div className="quick-entry-calc__row">
+            <span>{t("quickEntry.costPer100Km")}</span>
+            <strong>{costPerKm !== null ? formatEuro(costPerKm * 100, locale) : "—"}</strong>
+          </div>
+          <div className="quick-entry-calc__row">
+            <span>{t("quickEntry.newAvgConsumption")}</span>
+            <strong>{newAvgConsumption !== null ? `${newAvgConsumption.toLocaleString(locale, { maximumFractionDigits: 2 })} l/100km` : "—"}</strong>
+          </div>
+        </div>
+
+        {error && <p className="form-error">{error}</p>}
+
+        <button type="submit" className="quick-entry-page__save quick-entry-page__save--blue">
+          ✓ {t("quickEntry.saveFuel")}
+        </button>
+
+        <p className="quick-entry__full-form-hint">{t("quickEntry.fullFormHint")}</p>
+      </form>
+    </div>
+  );
+}
