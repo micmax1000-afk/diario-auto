@@ -116,7 +116,8 @@ class PlayBillingPlugin : Plugin(), PurchasesUpdatedListener {
                 .setProductList(listOf(product))
                 .build()
 
-            billingClient?.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
+            billingClient?.queryProductDetailsAsync(params) { billingResult, queryResult ->
+                val productDetailsList = queryResult.productDetailsList
                 val array = JSArray()
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     for (details in productDetailsList) {
@@ -193,7 +194,8 @@ class PlayBillingPlugin : Plugin(), PurchasesUpdatedListener {
                 .setProductList(listOf(product))
                 .build()
 
-            billingClient?.queryProductDetailsAsync(queryParams) { billingResult, productDetailsList ->
+            billingClient?.queryProductDetailsAsync(queryParams) { billingResult, queryResult ->
+                val productDetailsList = queryResult.productDetailsList
                 val details = productDetailsList.firstOrNull()
                 if (billingResult.responseCode != BillingClient.BillingResponseCode.OK || details == null) {
                     activity?.runOnUiThread {

@@ -8,7 +8,7 @@ android {
         applicationId "com.micmax.diarioauto"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 2
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
@@ -64,7 +64,7 @@ dependencies {
     // Google Play Billing Library — per lo sblocco Pro (acquisto singolo,
     // non abbonamento). Sostituisce la Digital Goods API, che esiste solo
     // dentro una TWA e non in un'app Capacitor come questa.
-    implementation "com.android.billingclient:billing:7.1.1"
+    implementation "com.android.billingclient:billing:8.0.0"
     // Accesso Google nativo per il backup su Drive — sostituisce il login
     // basato su popup web (Google Identity Services), che Google blocca
     // attivamente dentro le WebView native per motivi di sicurezza.

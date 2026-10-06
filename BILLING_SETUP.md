@@ -12,7 +12,7 @@ Diario Auto è un'app Android nativa (Capacitor). Lo sblocco **Pro** è un
 
 | Pezzo | Dove |
 |---|---|
-| Plugin nativo Kotlin (Google Play Billing Library 7.1.1) | `android/app/src/main/java/com/micmax/diarioauto/PlayBillingPlugin.kt` |
+| Plugin nativo Kotlin (Google Play Billing Library 8.0.0) | `android/app/src/main/java/com/micmax/diarioauto/PlayBillingPlugin.kt` |
 | Ponte TypeScript verso il plugin | `src/services/billing/nativePlayBilling.ts`, `src/services/billing/digitalGoods.ts` |
 | Hook React (acquisto, ripristino, stato) | `src/services/billing/usePremiumPurchase.ts`, `useProStatus.ts` |
 | Schermata "Diario Auto Premium" | `src/components/PremiumScreen.tsx` |
