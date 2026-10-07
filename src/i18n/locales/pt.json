@@ -473,7 +473,8 @@
       "title": "Códigos de erro (DTC)",
       "none": "Não existe nenhum código {{mode}}.",
       "unknownCode": "Código específico do fabricante: não consta do dicionário genérico.",
-      "noClearHint": "Este app não apaga os códigos de erro: faça-o após a reparação, numa oficina ou com uma ferramenta profissional."
+      "noClearHint": "Este app não apaga os códigos de erro: faça-o após a reparação, numa oficina ou com uma ferramenta profissional.",
+      "manufacturerNote": "Os códigos que começam por P1 (ou B1, C1, U1) são específicos do fabricante: o significado depende da marca e do modelo. Consulte o manual de oficina ou peça a uma oficina que leia o código."
     },
     "readiness": {
       "title": "Monitor de prontidão (pré-revisão)",

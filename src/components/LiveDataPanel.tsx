@@ -895,6 +895,10 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                   })}
                 </ul>
               ))}
+
+            {dtcCodes !== null && dtcCodes.some((c) => /^[PBCU]1/i.test(c)) && (
+              <p className="obd-hint">{t("live.dtc.manufacturerNote")}</p>
+            )}
           </div>
 
           {/* Readiness monitors */}

@@ -4421,3 +4421,7 @@ textarea {
 }
 .dash-featured-vehicle--hero .dash-featured-vehicle__photo { min-height: 210px; object-fit: cover; width: 100%; }
 .dash-ccard .dash-pill { padding: 0.28rem 0.6rem; font-size: 0.7rem; }
+
+/* Codice DTC e descrizione sempre su righe separate */
+.dtc-list__item--described { display: flex; flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+.dtc-list__item--described .dtc-list__code, .dtc-list__item--described .dtc-list__desc { display: block; }

@@ -473,7 +473,8 @@
       "title": "Kode kesalahan (DTC)",
       "none": "Tidak ada kode {{mode}}.",
       "unknownCode": "Kode khusus pabrikan: tidak ada dalam kamus umum.",
-      "noClearHint": "Aplikasi ini tidak menghapus kode kesalahan: lakukan setelah perbaikan, di bengkel atau dengan alat profesional."
+      "noClearHint": "Aplikasi ini tidak menghapus kode kesalahan: lakukan setelah perbaikan, di bengkel atau dengan alat profesional.",
+      "manufacturerNote": "Kode yang diawali P1 (atau B1, C1, U1) khusus pabrikan: artinya bergantung pada merek dan model. Lihat buku manual bengkel atau minta bengkel membaca kodenya."
     },
     "readiness": {
       "title": "Monitor kesiapan (pra-revisi)",

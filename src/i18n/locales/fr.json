@@ -473,7 +473,8 @@
       "title": "Codes d'erreur (DTC)",
       "none": "Aucun code {{mode}}.",
       "unknownCode": "Code propre au constructeur : absent du dictionnaire générique.",
-      "noClearHint": "Cette app n'efface pas les codes défaut : faites-le après la réparation, en atelier ou avec un outil professionnel."
+      "noClearHint": "Cette app n'efface pas les codes défaut : faites-le après la réparation, en atelier ou avec un outil professionnel.",
+      "manufacturerNote": "Les codes commençant par P1 (ou B1, C1, U1) sont propres au constructeur : leur signification dépend de la marque et du modèle. Consultez le manuel d'atelier ou faites lire le code par un garage."
     },
     "readiness": {
       "title": "Suivi de l'état de préparation (avant révision)",

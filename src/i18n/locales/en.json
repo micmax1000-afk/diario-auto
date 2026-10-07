@@ -473,7 +473,8 @@
       "title": "Error Codes (DTCs)",
       "none": "No {{mode}} code.",
       "unknownCode": "Manufacturer-specific code: not in the generic dictionary.",
-      "noClearHint": "This app does not clear fault codes: do it after the repair, at a workshop or with a professional tool."
+      "noClearHint": "This app does not clear fault codes: do it after the repair, at a workshop or with a professional tool.",
+      "manufacturerNote": "Codes starting with P1 (or B1, C1, U1) are manufacturer-specific: their meaning depends on the make and model. Check the workshop manual or have a garage read the code."
     },
     "readiness": {
       "title": "Readiness Monitor (Pre-Inspection)",

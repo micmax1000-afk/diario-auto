@@ -473,7 +473,8 @@
       "title": "Fehlercodes (DTC)",
       "none": "Kein Code {{mode}}.",
       "unknownCode": "Herstellerspezifischer Code: nicht im allgemeinen Verzeichnis enthalten.",
-      "noClearHint": "Diese App löscht keine Fehlercodes: Tun Sie das nach der Reparatur, in einer Werkstatt oder mit einem professionellen Gerät."
+      "noClearHint": "Diese App löscht keine Fehlercodes: Tun Sie das nach der Reparatur, in einer Werkstatt oder mit einem professionellen Gerät.",
+      "manufacturerNote": "Codes, die mit P1 (oder B1, C1, U1) beginnen, sind herstellerspezifisch: Ihre Bedeutung hängt von Marke und Modell ab. Siehe Werkstatthandbuch oder lassen Sie den Code in einer Werkstatt auslesen."
     },
     "readiness": {
       "title": "Readiness-Monitor (vor der Überprüfung)",
