@@ -33,6 +33,8 @@ const CLIPBOARD_PATH = "M9 3h6a1 1 0 0 1 1 1v1h1a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H
 
 interface RowData {
   key: string;
+  vehicleId: string;
+  vehicleName: string;
   icon: LightId | "clipboard";
   label: string;
   status: "overdue" | "soon" | "ok";
@@ -67,19 +69,26 @@ function buildRow(r: Reminder, vehicle: Vehicle | undefined, locale: string, t: 
     progress = Math.max(0, Math.min(100, (diffDays / warningDays) * 100));
   }
 
-  return { key: r.id, icon, label: r.label, status, progress, remainingText };
+  return { key: r.id, vehicleId: vehicle.id, vehicleName: vehicle.name, icon, label: r.label, status, progress, remainingText };
 }
 
 interface Props {
   vehicles: Vehicle[];
   reminders: Reminder[];
   distanceUnit: DistanceUnit;
-  onOpenReminder: (id: string) => void;
-  onViewAll: () => void;
+  /** Riceve l'id del veicolo a cui appartiene la scadenza toccata. */
+  onOpenReminder: (vehicleId: string) => void;
+  onViewAll?: () => void;
   limit?: number;
+  /** Titolo del riquadro; se assente non mostra l'intestazione. */
+  title?: string;
+  /** Mostra il nome del veicolo sotto ogni scadenza (elenco di più veicoli). */
+  showVehicleName?: boolean;
+  /** "attached": riquadro agganciato sotto la scheda di un veicolo. */
+  variant?: "card" | "attached";
 }
 
-export default function UpcomingReminders({ vehicles, reminders, distanceUnit, onOpenReminder, onViewAll, limit = 5 }: Props) {
+export default function UpcomingReminders({ vehicles, reminders, distanceUnit, onOpenReminder, onViewAll, limit = 5, title, showVehicleName = false, variant = "card" }: Props) {
   const { t, i18n } = useTranslation();
   const locale = getNumberLocale(i18n.language);
   const vehicleById = new Map(vehicles.map((v) => [v.id, v]));
@@ -97,16 +106,20 @@ export default function UpcomingReminders({ vehicles, reminders, distanceUnit, o
   if (rows.length === 0) return null;
 
   return (
-    <section className="upcoming-reminders">
-      <div className="upcoming-reminders__head">
-        <h2>{t("dashboardGarage.upcomingDeadlines", "Scadenze in arrivo")}</h2>
-        <button type="button" className="dash-link" onClick={onViewAll}>
-          {t("dashboardGarage.viewAll", "Vedi tutte")}
-        </button>
-      </div>
+    <section className={`upcoming-reminders${variant === "attached" ? " upcoming-reminders--attached" : ""}`}>
+      {title && (
+        <div className="upcoming-reminders__head">
+          <h2>{title}</h2>
+          {onViewAll && (
+            <button type="button" className="dash-link" onClick={onViewAll}>
+              {t("dashboardGarage.viewAll", "Vedi tutte")}
+            </button>
+          )}
+        </div>
+      )}
       <ul className="upcoming-reminders__list">
         {rows.map((row) => (
-          <li key={row.key} className="upcoming-reminders__item" onClick={() => onOpenReminder(row.key)}>
+          <li key={row.key} className="upcoming-reminders__item" onClick={() => onOpenReminder(row.vehicleId)}>
             <span className={`upcoming-reminders__icon upcoming-reminders__icon--${row.status}`}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                 <path d={row.icon === "clipboard" ? CLIPBOARD_PATH : ICON_PATHS[row.icon]} />
@@ -114,6 +127,7 @@ export default function UpcomingReminders({ vehicles, reminders, distanceUnit, o
             </span>
             <div className="upcoming-reminders__body">
               <span className="upcoming-reminders__label">{row.label}</span>
+              {showVehicleName && <span className="upcoming-reminders__vehicle">{row.vehicleName}</span>}
               <div className={`upcoming-reminders__bar upcoming-reminders__bar--${row.status}`}>
                 <div className="upcoming-reminders__bar-fill" style={{ width: `${Math.max(6, 100 - row.progress)}%` }} />
               </div>

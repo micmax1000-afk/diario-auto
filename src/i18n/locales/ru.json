@@ -742,7 +742,14 @@
     "thisMonth": "В этом месяце",
     "monthSpend": "Всего расходов",
     "avgConsumption": "Средний расход, л/100 км",
-    "refuels": "Заправки"
+    "refuels": "Заправки",
+    "viewCompact": "Компактно",
+    "viewDetailed": "Подробно",
+    "viewLabel": "Вид",
+    "fleetDeadlines": "Сроки · все автомобили",
+    "monthAll": "В этом месяце · все автомобили",
+    "moveUp": "Вверх",
+    "moveDown": "Вниз"
   },
   "premium": {
     "title": "Автожурнал «Auto Premium»",

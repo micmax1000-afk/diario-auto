@@ -1,4 +1,4 @@
-import { useEffect, useState, Suspense, lazy } from "react";
+import { useEffect, useMemo, useState, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
@@ -94,6 +94,7 @@ export default function App() {
   const [maintenanceEntries, setMaintenanceEntries] = useState<MaintenanceEntry[]>([]);
   const [expenseEntries, setExpenseEntries] = useState<ExpenseEntry[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
+  const [vehicleOrder, setVehicleOrder] = useState<string[]>([]);
 
   const [mainTab, setMainTab] = useState<TabId>("garage");
   const [quickFuelVehicleId, setQuickFuelVehicleId] = useState<string | null>(null);
@@ -167,6 +168,10 @@ export default function App() {
       // migra eventuali dati da localStorage (versioni precedenti dell'app) prima del primo caricamento
       await initStorage();
       await reloadAll();
+      try {
+        const rawOrder = await getMeta("vehicle-order");
+        if (rawOrder) setVehicleOrder(JSON.parse(rawOrder) as string[]);
+      } catch { /* ordine non leggibile: si usa quello di default */ }
       const seen = await getMeta("onboarding:seen");
       setShowOnboarding(seen !== "true");
       setDisclaimerAccepted((await getMeta(DISCLAIMER_META_KEY)) === DISCLAIMER_VERSION);
@@ -505,6 +510,26 @@ export default function App() {
     }
   }
 
+  const orderedVehicles = useMemo(() => {
+    const rank = (id: string) => {
+      const i = vehicleOrder.indexOf(id);
+      return i === -1 ? Number.MAX_SAFE_INTEGER : i;
+    };
+    return [...vehicles].sort((a, b) => rank(a.id) - rank(b.id));
+  }, [vehicles, vehicleOrder]);
+
+  function moveVehicle(vehicleId: string, direction: -1 | 1) {
+    const ids = orderedVehicles.filter((v) => !v.archived).map((v) => v.id);
+    const i = ids.indexOf(vehicleId);
+    const j = i + direction;
+    if (i < 0 || j < 0 || j >= ids.length) return;
+    [ids[i], ids[j]] = [ids[j], ids[i]];
+    const rest = orderedVehicles.filter((v) => v.archived).map((v) => v.id);
+    const next = [...ids, ...rest];
+    setVehicleOrder(next);
+    void setMeta("vehicle-order", JSON.stringify(next));
+  }
+
   function handleVehiclePicked(vehicleId: string) {
     if (pendingVehicleAction) {
       completeVehicleAction(vehicleId, pendingVehicleAction);
@@ -732,7 +757,7 @@ export default function App() {
 
         {!showBackup && !showManageVehicles && !openVehicle && !showUtilities && mainTab !== "impostazioni" && (
           <Dashboard
-            vehicles={vehicles}
+            vehicles={orderedVehicles}
             reminders={reminders}
             maintenanceEntries={maintenanceEntries}
             fuelEntries={fuelEntries}
@@ -747,8 +772,10 @@ export default function App() {
             onManageVehicles={() => setShowManageVehicles(true)}
             onQuickFuel={() => requestVehicleAction({ kind: "quickFuel" })}
             onQuickCharge={() => requestVehicleAction({ kind: "quickCharge" })}
+            onQuickFuelVehicle={(id) => completeVehicleAction(id, { kind: "quickFuel" })}
+            onMoveVehicle={moveVehicle}
             onQuickKm={(vehicle) => setQuickKmVehicle(vehicle)}
-            onOpenReminder={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
+            onOpenReminder={(vehicleId) => completeVehicleAction(vehicleId, { kind: "navigate", tab: "scadenze" })}
             onOpenReminders={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
             onOpenUtilities={() => setShowUtilities(true)}
             onOpenPremium={() => setShowPremium(true)}

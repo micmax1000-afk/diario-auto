@@ -742,7 +742,14 @@
     "thisMonth": "Diesen Monat",
     "monthSpend": "Gesamtkosten",
     "avgConsumption": "Ø L/100 km",
-    "refuels": "Tankungen"
+    "refuels": "Tankungen",
+    "viewCompact": "Kompakt",
+    "viewDetailed": "Detailliert",
+    "viewLabel": "Ansicht",
+    "fleetDeadlines": "Fristen · alle Fahrzeuge",
+    "monthAll": "Diesen Monat · alle Fahrzeuge",
+    "moveUp": "Nach oben",
+    "moveDown": "Nach unten"
   },
   "premium": {
     "title": "Auto-Tagebuch Premium",

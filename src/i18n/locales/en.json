@@ -742,7 +742,14 @@
     "thisMonth": "This month",
     "monthSpend": "Total spent",
     "avgConsumption": "Avg L/100 km",
-    "refuels": "Refuels"
+    "refuels": "Refuels",
+    "viewCompact": "Compact",
+    "viewDetailed": "Detailed",
+    "viewLabel": "View",
+    "fleetDeadlines": "Deadlines · all vehicles",
+    "monthAll": "This month · all vehicles",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
   },
   "premium": {
     "title": "Premium Car Journal",

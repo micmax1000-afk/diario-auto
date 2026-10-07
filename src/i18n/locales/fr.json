@@ -742,7 +742,14 @@
     "thisMonth": "Ce mois-ci",
     "monthSpend": "Dépenses totales",
     "avgConsumption": "L/100 km moyens",
-    "refuels": "Pleins"
+    "refuels": "Pleins",
+    "viewCompact": "Compacte",
+    "viewDetailed": "Détaillée",
+    "viewLabel": "Vue",
+    "fleetDeadlines": "Échéances · tous les véhicules",
+    "monthAll": "Ce mois-ci · tous les véhicules",
+    "moveUp": "Monter",
+    "moveDown": "Descendre"
   },
   "premium": {
     "title": "Journal Auto Premium",

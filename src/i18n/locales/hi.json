@@ -742,7 +742,14 @@
     "thisMonth": "इस महीने",
     "monthSpend": "कुल ख़र्च",
     "avgConsumption": "औसत L/100 किमी",
-    "refuels": "ईंधन भरवाई"
+    "refuels": "ईंधन भरवाई",
+    "viewCompact": "संक्षिप्त",
+    "viewDetailed": "विस्तृत",
+    "viewLabel": "दृश्य",
+    "fleetDeadlines": "नियत तिथियाँ · सभी वाहन",
+    "monthAll": "इस महीने · सभी वाहन",
+    "moveUp": "ऊपर",
+    "moveDown": "नीचे"
   },
   "premium": {
     "title": "प्रीमियम कार डायरी",

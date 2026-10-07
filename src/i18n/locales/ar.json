@@ -742,7 +742,14 @@
     "thisMonth": "هذا الشهر",
     "monthSpend": "إجمالي الإنفاق",
     "avgConsumption": "متوسط ل/100 كم",
-    "refuels": "التعبئة"
+    "refuels": "التعبئة",
+    "viewCompact": "مضغوط",
+    "viewDetailed": "مفصّل",
+    "viewLabel": "العرض",
+    "fleetDeadlines": "المواعيد · كل المركبات",
+    "monthAll": "هذا الشهر · كل المركبات",
+    "moveUp": "أعلى",
+    "moveDown": "أسفل"
   },
   "premium": {
     "title": "مجلة «أوتو بريميوم»",

@@ -742,7 +742,14 @@
     "thisMonth": "Bulan ini",
     "monthSpend": "Total pengeluaran",
     "avgConsumption": "Rata-rata L/100 km",
-    "refuels": "Pengisian BBM"
+    "refuels": "Pengisian BBM",
+    "viewCompact": "Ringkas",
+    "viewDetailed": "Terperinci",
+    "viewLabel": "Tampilan",
+    "fleetDeadlines": "Jatuh tempo · semua kendaraan",
+    "monthAll": "Bulan ini · semua kendaraan",
+    "moveUp": "Naik",
+    "moveDown": "Turun"
   },
   "premium": {
     "title": "Buku Harian Mobil Premium",

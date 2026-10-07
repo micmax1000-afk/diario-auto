@@ -742,7 +742,14 @@
     "thisMonth": "Este mes",
     "monthSpend": "Gasto total",
     "avgConsumption": "L/100 km medios",
-    "refuels": "Repostajes"
+    "refuels": "Repostajes",
+    "viewCompact": "Compacta",
+    "viewDetailed": "Detallada",
+    "viewLabel": "Vista",
+    "fleetDeadlines": "Vencimientos · todos los vehículos",
+    "monthAll": "Este mes · todos los vehículos",
+    "moveUp": "Subir",
+    "moveDown": "Bajar"
   },
   "premium": {
     "title": "Diario Auto Premium",
