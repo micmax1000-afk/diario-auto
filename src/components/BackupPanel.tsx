@@ -46,7 +46,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
   const [driveBusy, setDriveBusy] = useState(false);
   const [driveFiles, setDriveFiles] = useState<DriveBackupFile[] | null>(null);
   // Ripristino in attesa di conferma: sostituisce TUTTI i dati attuali, quindi mai senza un "sei sicuro?"
-  const [pendingRestore, setPendingRestore] = useState<{ data: BackupData; label: string } | null>(null);
+  const [pendingRestore, setPendingRestore] = useState<{ data: BackupData; label: string; source: "file" | "drive" } | null>(null);
 
   async function refreshStatus() {
     setLastBackup(await getLastBackupDate());
@@ -202,7 +202,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
       const content = await downloadBackupFromDrive(fileId);
       const parsed: unknown = JSON.parse(content);
       if (!isValidBackupData(parsed)) throw new Error("Formato non valido");
-      setPendingRestore({ data: parsed, label: fileName });
+      setPendingRestore({ data: parsed, label: fileName, source: "drive" });
     } catch (err) {
       setError(err instanceof DriveError ? driveErrorMessage(err) : t("backupPanel.invalidFile"));
       setMessage(null);
@@ -237,7 +237,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
       try {
         const parsed: unknown = JSON.parse(String(reader.result));
         if (!isValidBackupData(parsed)) throw new Error("Formato non valido");
-        setPendingRestore({ data: parsed, label: file.name });
+        setPendingRestore({ data: parsed, label: file.name, source: "file" });
         setError(null);
         setMessage(null);
       } catch {
@@ -247,6 +247,37 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     };
     reader.readAsText(file);
     e.target.value = "";
+  }
+
+  const confirmRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (pendingRestore) confirmRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [pendingRestore]);
+
+  function renderConfirm(source: "file" | "drive") {
+    if (!pendingRestore || pendingRestore.source !== source) return null;
+    const pending = pendingRestore;
+    return (
+      <div className="backup-panel__confirm" role="alertdialog" aria-live="assertive" ref={confirmRef}>
+        <strong>{t("backupPanel.confirmTitle")}</strong>
+        <p>
+          {t("backupPanel.confirmBody", {
+            name: pending.label,
+            date: pending.data.exportedAt
+              ? new Date(pending.data.exportedAt).toLocaleDateString(getNumberLocale(i18n.language))
+              : "?",
+          })}
+        </p>
+        <div className="backup-panel__actions">
+          <button type="button" className="btn btn--ghost" onClick={() => setPendingRestore(null)}>
+            {t("backupPanel.confirmCancel")}
+          </button>
+          <button type="button" className="btn btn--primary" onClick={confirmRestore}>
+            {t("backupPanel.confirmRestore")}
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -263,28 +294,6 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
           t("backupPanel.noBackupYet")
         )}
       </div>
-
-      {pendingRestore && (
-        <div className="backup-panel__confirm" role="alertdialog" aria-live="assertive">
-          <strong>{t("backupPanel.confirmTitle")}</strong>
-          <p>
-            {t("backupPanel.confirmBody", {
-              name: pendingRestore.label,
-              date: pendingRestore.data.exportedAt
-                ? new Date(pendingRestore.data.exportedAt).toLocaleDateString(getNumberLocale(i18n.language))
-                : "?",
-            })}
-          </p>
-          <div className="backup-panel__actions">
-            <button type="button" className="btn btn--ghost" onClick={() => setPendingRestore(null)}>
-              {t("backupPanel.confirmCancel")}
-            </button>
-            <button type="button" className="btn btn--primary" onClick={confirmRestore}>
-              {t("backupPanel.confirmRestore")}
-            </button>
-          </div>
-        </div>
-      )}
 
       {message && <p className="backup-panel__message backup-panel__message--ok">{message}</p>}
       {error && <p className="backup-panel__message backup-panel__message--error">{error}</p>}
@@ -311,6 +320,8 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
           style={{ display: "none" }}
         />
       </div>
+
+      {renderConfirm("file")}
 
       <p className="backup-panel__hint">{t("backupPanel.hint")}</p>
 
@@ -364,6 +375,8 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
             ))}
           </div>
         )}
+
+        {renderConfirm("drive")}
 
         <p className="backup-panel__hint">{t("backupPanel.driveHint")}</p>
       </div>

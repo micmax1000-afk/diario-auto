@@ -553,14 +553,17 @@ export default function App() {
       setOpenVehicleId(null);
       return;
     }
-    if (tab === "movimenti") {
-      setMainTab("movimenti");
-      requestVehicleAction({ kind: "navigate", tab: MAIN_TAB_TO_DETAIL_TAB.movimenti });
-      return;
-    }
-    if (tab === "manutenzione" || tab === "statistiche") {
+    if (tab === "movimenti" || tab === "manutenzione" || tab === "statistiche") {
       setMainTab(tab);
-      requestVehicleAction({ kind: "navigate", tab: MAIN_TAB_TO_DETAIL_TAB[tab] });
+      const action: PendingAction = { kind: "navigate", tab: MAIN_TAB_TO_DETAIL_TAB[tab] };
+      // Con una scheda veicolo già aperta si resta su quel veicolo: niente
+      // domanda "su quale veicolo?" ad ogni cambio tra Rifornimento/Manutenzione/Statistiche.
+      const current = openVehicleId ? vehicles.find((v) => v.id === openVehicleId && !v.archived) : undefined;
+      if (current) {
+        completeVehicleAction(current.id, action);
+      } else {
+        requestVehicleAction(action);
+      }
       return;
     }
     if (tab === "impostazioni") {
@@ -614,7 +617,7 @@ export default function App() {
     <div className="app">
       <main
         className="content"
-        key={`${mainTab}-${showBackup ? "backup" : "app"}-${openVehicleId ?? "list"}`}
+        key={`${mainTab}-${showBackup ? "backup" : "app"}-${openVehicleId ?? "list"}-${detailInitialTab}`}
       >
         {showBackup && (
           <section style={{ paddingBottom: "3rem" }}>
