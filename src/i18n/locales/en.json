@@ -63,7 +63,9 @@
     "photoHint": "It is cropped in the center to a wide format and displayed on the vehicle card. It is saved only on this device and is included in the backup.",
     "photoPreviewAlt": "Photo preview of the car",
     "photoCompressing": "I'm compressing the image…",
-    "photoError": "I wasn't able to upload the photo."
+    "photoError": "I wasn't able to upload the photo.",
+    "color": "Identifying color",
+    "colorHint": "If you don't choose, one is assigned automatically."
   },
   "fuelType": {
     "benzina": "Gasoline",
@@ -809,7 +811,9 @@
     "saveCharge": "Save Recharge",
     "kmLabel": "Current km",
     "kmUnchangedHint": "Km unchanged since the last entry: consumption will not be calculated.",
-    "errorKmLower": "Km cannot be lower than the vehicle's ({{km}})."
+    "errorKmLower": "Km cannot be lower than the vehicle's ({{km}}).",
+    "vehicleLabel": "Vehicle",
+    "saveFuelOn": "Save to {{name}}"
   },
   "kmHistory": {
     "title": "Distance Timeline",
@@ -941,5 +945,12 @@
   },
   "utilities": {
     "title": "Utilities"
+  },
+  "fleet": {
+    "all": "All vehicles",
+    "last12": "Last 12 months",
+    "costPerKm": "Cost/km",
+    "urgent": "Urgent",
+    "hint": "Tap a vehicle to open it."
   }
 }

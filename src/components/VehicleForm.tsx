@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { VEHICLE_COLORS } from "../utils/vehicleColor";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelType } from "../types";
@@ -29,6 +30,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
   const [year, setYear] = useState(initialVehicle?.year ? String(initialVehicle.year) : "");
   const [notes, setNotes] = useState(initialVehicle?.notes ?? "");
   const [photo, setPhoto] = useState<string | null>(initialVehicle?.photo ?? null);
+  const [color, setColor] = useState<string | undefined>(initialVehicle?.color);
   const [error, setError] = useState("");
 
   const selectedBrandEntry = CAR_CATALOG.find((b) => b.brand === brand);
@@ -73,6 +75,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
       year: year.trim() ? Number(year) : undefined,
       notes: notes.trim() || undefined,
       photo: photo ?? undefined,
+      color,
       createdAt: initialVehicle?.createdAt ?? new Date().toISOString(),
     };
 
@@ -218,6 +221,22 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
             </div>
           </div>
 
+          <div className="field">
+            <label>{t("vehicleForm.color", "Colore identificativo")}</label>
+            <div className="vcolor">
+              {VEHICLE_COLORS.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  aria-label={c}
+                  className={color === c ? "is-on" : ""}
+                  style={{ ["--c" as string]: c }}
+                  onClick={() => setColor(color === c ? undefined : c)}
+                />
+              ))}
+            </div>
+            <small>{t("vehicleForm.colorHint", "Se non scegli, viene assegnato in automatico.")}</small>
+          </div>
           <PhotoPicker id="vehicle-photo" value={photo} onChange={setPhoto} keyPrefix="vehicleForm" aspect={16 / 9} />
 
           <div className="field">

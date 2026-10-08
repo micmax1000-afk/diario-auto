@@ -63,7 +63,9 @@
     "photoHint": "Elle est recadrée au centre au format large et affichée sur la fiche du véhicule. Elle n'est enregistrée que sur cet appareil et est incluse dans la sauvegarde.",
     "photoPreviewAlt": "Aperçu de la photo de la voiture",
     "photoCompressing": "Je compresse l'image…",
-    "photoError": "Je n'ai pas réussi à télécharger la photo."
+    "photoError": "Je n'ai pas réussi à télécharger la photo.",
+    "color": "Couleur d'identification",
+    "colorHint": "Si vous ne choisissez pas, une couleur est attribuée automatiquement."
   },
   "fuelType": {
     "benzina": "Essence",
@@ -809,7 +811,9 @@
     "saveCharge": "Enregistrer la recharge",
     "kmLabel": "Km actuels",
     "kmUnchangedHint": "Les km sont identiques à la dernière saisie : la consommation ne sera pas calculée.",
-    "errorKmLower": "Les km ne peuvent pas être inférieurs à ceux du véhicule ({{km}})."
+    "errorKmLower": "Les km ne peuvent pas être inférieurs à ceux du véhicule ({{km}}).",
+    "vehicleLabel": "Véhicule",
+    "saveFuelOn": "Enregistrer sur {{name}}"
   },
   "kmHistory": {
     "title": "Chronologie en km",
@@ -941,5 +945,12 @@
   },
   "utilities": {
     "title": "Utilitaires"
+  },
+  "fleet": {
+    "all": "Tous les véhicules",
+    "last12": "12 derniers mois",
+    "costPerKm": "Coût/km",
+    "urgent": "Urgents",
+    "hint": "Touchez un véhicule pour l'ouvrir."
   }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
@@ -24,6 +24,7 @@ import MaintenanceForm from "./MaintenanceForm";
 import MaintenanceList from "./MaintenanceList";
 import MaintenanceOverview from "./MaintenanceOverview";
 import PremiumScreen from "./PremiumScreen";
+import VehicleSwitcher from "./VehicleSwitcher";
 import CategoryIcon from "./CategoryIcon";
 import ActionGridIcon from "./ActionGridIcon";
 import ExpenseForm from "./ExpenseForm";
@@ -66,6 +67,13 @@ interface Props {
   onDeleteReminder: (id: string) => void;
   restrictToTab?: DetailTab;
   onOdometerKm?: (km: number) => void;
+  /** Elenco veicoli attivi + colori: abilita la fascia per cambiare veicolo senza tornare al garage. */
+  allVehicles?: Vehicle[];
+  colors?: Record<string, string>;
+  urgentCounts?: Record<string, number>;
+  onSwitchVehicle?: (vehicleId: string) => void;
+  /** Solo nella scheda Statistiche: apre il confronto "Tutti i veicoli". */
+  onOpenFleet?: () => void;
 }
 
 const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "riepilogo"];
@@ -100,6 +108,11 @@ export default function VehicleDetail({
   onToggleReminder,
   onDeleteReminder,
   restrictToTab,
+  allVehicles,
+  colors,
+  urgentCounts,
+  onSwitchVehicle,
+  onOpenFleet,
   onOdometerKm,
 }: Props) {
   const { t, i18n } = useTranslation();
@@ -263,17 +276,40 @@ export default function VehicleDetail({
   const averageChargingPrice = totalChargingKwh > 0 ? costs.chargingCost / totalChargingKwh : null;
   const totalRecordedKm = costs.totalKm;
 
+  const vehicleColor = colors?.[vehicle.id];
+
   return (
-    <section className="vehicle-detail-page">
+    <section
+      className={`vehicle-detail-page${vehicleColor ? " vehicle-detail-page--colored" : ""}`}
+      style={vehicleColor ? ({ ["--c" as string]: vehicleColor } as CSSProperties) : undefined}
+    >
       <button type="button" className="back-link" onClick={onBack}>
         {isRtlLanguage(i18n.language) ? "→ " : "← "}
         {t("detail.back")}
       </button>
 
       <div className="section-head">
-        <h1>{vehicle.name}</h1>
+        <h1>
+          {vehicleColor && allVehicles && allVehicles.length > 1 && <span className="vdot" aria-hidden="true" />}
+          {vehicle.name}
+        </h1>
         <span className="detail-km">{formatDistance(vehicle.currentKm, distanceUnit, getNumberLocale(i18n.language))}</span>
       </div>
+
+      {allVehicles && allVehicles.length > 1 && onSwitchVehicle && colors && (
+        <VehicleSwitcher
+          vehicles={allVehicles}
+          currentId={vehicle.id}
+          colors={colors}
+          urgentCounts={urgentCounts}
+          onSelect={onSwitchVehicle}
+          leading={
+            restrictToTab === "riepilogo" && onOpenFleet
+              ? { label: t("fleet.all", "Tutti"), active: false, onClick: onOpenFleet, badge: isPro ? undefined : "PRO" }
+              : undefined
+          }
+        />
+      )}
 
       {!restrictToTab && (
         <nav className="subtabbar">

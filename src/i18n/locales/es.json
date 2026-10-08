@@ -63,7 +63,9 @@
     "photoHint": "Se recorta por el centro en formato horizontal y se muestra en la ficha del vehículo. Solo se guarda en este dispositivo y se incluye en la copia de seguridad.",
     "photoPreviewAlt": "Vista previa de la foto del coche",
     "photoCompressing": "Comprimiré la imagen…",
-    "photoError": "No he podido subir la foto."
+    "photoError": "No he podido subir la foto.",
+    "color": "Color identificativo",
+    "colorHint": "Si no eliges, se asigna automáticamente."
   },
   "fuelType": {
     "benzina": "Gasolina",
@@ -809,7 +811,9 @@
     "saveCharge": "Guardar recarga",
     "kmLabel": "Km actuales",
     "kmUnchangedHint": "Los km son iguales a la última entrada: no se calculará el consumo.",
-    "errorKmLower": "Los km no pueden ser inferiores a los del vehículo ({{km}})."
+    "errorKmLower": "Los km no pueden ser inferiores a los del vehículo ({{km}}).",
+    "vehicleLabel": "Vehículo",
+    "saveFuelOn": "Guardar en {{name}}"
   },
   "kmHistory": {
     "title": "Historial de kilómetros",
@@ -941,5 +945,12 @@
   },
   "utilities": {
     "title": "Utilidades"
+  },
+  "fleet": {
+    "all": "Todos los vehículos",
+    "last12": "Últimos 12 meses",
+    "costPerKm": "Coste/km",
+    "urgent": "Urgentes",
+    "hint": "Toca un vehículo para abrirlo."
   }
 }

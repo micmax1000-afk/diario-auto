@@ -63,7 +63,9 @@
     "photoHint": "Sie wird in der Mitte auf das breite Format zugeschnitten und auf der Fahrzeugkarte angezeigt. Sie wird nur auf diesem Gerät gespeichert und ist im Backup enthalten.",
     "photoPreviewAlt": "Vorschau des Autofotos",
     "photoCompressing": "Ich komprimiere das Bild…",
-    "photoError": "Ich konnte das Foto nicht hochladen."
+    "photoError": "Ich konnte das Foto nicht hochladen.",
+    "color": "Kennfarbe",
+    "colorHint": "Ohne Auswahl wird automatisch eine zugewiesen."
   },
   "fuelType": {
     "benzina": "Benzin",
@@ -809,7 +811,9 @@
     "saveCharge": "Aufladen speichern",
     "kmLabel": "Aktuelle km",
     "kmUnchangedHint": "Kilometerstand wie beim letzten Eintrag: Der Verbrauch wird nicht berechnet.",
-    "errorKmLower": "Der Kilometerstand darf nicht unter dem des Fahrzeugs liegen ({{km}})."
+    "errorKmLower": "Der Kilometerstand darf nicht unter dem des Fahrzeugs liegen ({{km}}).",
+    "vehicleLabel": "Fahrzeug",
+    "saveFuelOn": "Speichern für {{name}}"
   },
   "kmHistory": {
     "title": "Kilometer-Chronologie",
@@ -941,5 +945,12 @@
   },
   "utilities": {
     "title": "Werkzeuge"
+  },
+  "fleet": {
+    "all": "Alle Fahrzeuge",
+    "last12": "Letzte 12 Monate",
+    "costPerKm": "Kosten/km",
+    "urgent": "Dringend",
+    "hint": "Fahrzeug antippen, um es zu öffnen."
   }
 }

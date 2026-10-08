@@ -23,6 +23,7 @@ export interface Vehicle extends SyncFields {
   notes?: string;
   bodyType?: BodyType; // categoria di carrozzeria, per l'icona mostrata nelle card
   photo?: string; // foto dell'auto (data URL JPEG, ritagliata 16:9 e compressa), mostrata nella card
+  color?: string; // colore identificativo (hex) scelto dall'utente; se manca ne viene assegnato uno in automatico
   createdAt: string; // ISO date
   archived?: boolean; // true = venduto/non più posseduto, ma dati mantenuti nello storico
   archivedAt?: string; // ISO date

@@ -4432,3 +4432,35 @@ textarea {
 @media (max-width: 600px) { .dash-backup-nag { margin-inline: 0.65rem; } }
 .backup-panel__confirm { margin: 0.8rem 0; padding: 0.9rem 1rem; border-radius: 14px; border: 1px solid var(--danger); background: color-mix(in srgb, var(--danger) 10%, var(--card)); }
 .backup-panel__confirm p { margin: 0.4rem 0 0.8rem; font-size: 0.88rem; line-height: 1.4; }
+
+/* ---- Cambio veicolo (fascia con miniature) e colore identificativo ---- */
+.vswitch { display: flex; gap: 0.45rem; margin: 0 0 0.9rem; padding: 0.35rem 0.1rem 0.4rem; overflow-x: auto; scrollbar-width: none; }
+.vswitch::-webkit-scrollbar { display: none; }
+.vswitch__chip { position: relative; flex: none; display: inline-flex; align-items: center; gap: 0.4rem; max-width: 70vw; padding: 0.28rem 0.75rem 0.28rem 0.3rem; border-radius: 999px; border: 1px solid var(--border); background: var(--card); color: var(--text-muted); font: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer; }
+.vswitch__chip.is-on { color: var(--text); border-color: var(--c); background: color-mix(in srgb, var(--c) 14%, var(--card)); }
+.vswitch__thumb { width: 26px; height: 26px; flex: none; border-radius: 50%; border: 2px solid var(--c); background: var(--surface-alt, rgba(127,127,127,.15)) center / cover no-repeat; display: grid; place-items: center; font-size: 0.8rem; overflow: hidden; }
+.vswitch__icon { width: 18px; height: 18px; }
+.vswitch__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.vswitch__badge { position: absolute; top: -5px; inset-inline-end: -3px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--danger); color: #fff; font-size: 0.62rem; font-weight: 700; display: grid; place-items: center; }
+.vswitch__pro { margin-inline-start: 0.2rem; padding: 0.05rem 0.35rem; border-radius: 5px; background: var(--amber); color: #1a1d21; font-size: 0.58rem; font-weight: 800; letter-spacing: 0.05em; }
+.vdot { display: inline-block; width: 9px; height: 9px; margin-inline-end: 0.4rem; border-radius: 50%; background: var(--c, var(--amber)); vertical-align: middle; flex: none; }
+.vehicle-detail-page--colored { border-top: 3px solid var(--c); border-radius: 2px; padding-top: 0.6rem; }
+.vcolor { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.vcolor button { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; background: var(--c); cursor: pointer; padding: 0; }
+.vcolor button.is-on { border-color: var(--text); box-shadow: 0 0 0 2px var(--card); }
+.dash-ccard__thumb { box-shadow: 0 0 0 2px var(--c, transparent); }
+.dash-featured-vehicle__name .vdot { width: 10px; height: 10px; }
+.fleet-stats { padding-bottom: 5rem; }
+.fleet-stats__head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 0.6rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.fleet-stats__head strong { font-family: var(--font-mono); font-size: 0.95rem; color: var(--amber); letter-spacing: 0; }
+.fleet-stats__card { display: block; width: 100%; margin: 0 0 0.6rem; padding: 0.8rem 0.9rem; text-align: start; border-radius: 16px; border: 1px solid var(--border); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.fleet-stats__title { display: flex; align-items: center; font-weight: 700; font-size: 0.95rem; }
+.fleet-stats__title b { margin-inline-start: auto; font-family: var(--font-mono); font-size: 0.85rem; color: var(--amber); }
+.fleet-stats__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; margin-top: 0.55rem; }
+.fleet-stats__grid > span { font-size: 0.68rem; color: var(--text-muted); min-width: 0; }
+.fleet-stats__grid b { display: block; font-family: var(--font-mono); font-size: 0.95rem; color: var(--text); }
+.fleet-stats__grid b.is-urgent { color: var(--danger); }
+.fleet-stats__grid b.is-ok { color: var(--ok); }
+.fleet-stats__bar { display: block; height: 6px; margin-top: 0.6rem; border-radius: 3px; background: var(--surface-alt, rgba(127,127,127,.18)); overflow: hidden; }
+.fleet-stats__bar i { display: block; height: 100%; border-radius: 3px; background: var(--c); }
+.fleet-stats__hint { text-align: center; font-size: 0.72rem; color: var(--text-muted); }

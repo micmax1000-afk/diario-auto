@@ -42,6 +42,7 @@ import VehiclePickerModal from "./components/VehiclePickerModal";
 import LanguagePicker from "./components/LanguagePicker";
 import DisclaimerGate from "./components/DisclaimerGate";
 import { getMeta, setMeta } from "./utils/db";
+import { resolveVehicleColors } from "./utils/vehicleColor";
 import QuickFuelForm from "./components/QuickFuelForm";
 import QuickChargeForm from "./components/QuickChargeForm";
 import { useProStatus, FREE_VEHICLE_LIMIT } from "./services/billing/useProStatus";
@@ -52,6 +53,7 @@ import { useProStatus, FREE_VEHICLE_LIMIT } from "./services/billing/useProStatu
 const VehicleDetail = lazy(() => import("./components/VehicleDetail"));
 const QuickKmUpdate = lazy(() => import("./components/QuickKmUpdate"));
 const BackupPanel = lazy(() => import("./components/BackupPanel"));
+const FleetStats = lazy(() => import("./components/FleetStats"));
 const SettingsScreen = lazy(() => import("./components/SettingsScreen"));
 const UtilitiesScreen = lazy(() => import("./components/UtilitiesScreen"));
 const PremiumScreen = lazy(() => import("./components/PremiumScreen"));
@@ -113,6 +115,7 @@ export default function App() {
   const { distanceUnit } = useAppSettings();
   const [quickKmVehicle, setQuickKmVehicle] = useState<Vehicle | null>(null);
   const [kmHistoryVehicleId, setKmHistoryVehicleId] = useState<string | null>(null);
+  const [showFleet, setShowFleet] = useState(false);
 
   // Ogni schermata/modulo "chiudibile" si registra per il tasto indietro
   // hardware di Android — vedi backButtonStack.ts. L'ordine qui non conta:
@@ -123,6 +126,7 @@ export default function App() {
   useBackButtonClose(showBackup, () => { setShowBackup(false); setMainTab("impostazioni"); });
   useBackButtonClose(showUtilities, () => setShowUtilities(false));
   useBackButtonClose(showPremium, () => setShowPremium(false));
+  useBackButtonClose(showFleet, () => setShowFleet(false));
   useBackButtonClose(quickKmVehicle !== null, () => setQuickKmVehicle(null));
   useBackButtonClose(kmHistoryVehicleId !== null, () => setKmHistoryVehicleId(null));
   useBackButtonClose(quickFuelVehicleId !== null, () => setQuickFuelVehicleId(null));
@@ -496,6 +500,17 @@ export default function App() {
       completeVehicleAction(active[0].id, action);
       return;
     }
+    // Rifornimento rapido: si apre sul veicolo usato più di recente. Il modulo mostra
+    // chiaramente il nome e la fascia per cambiarlo, quindi niente domanda preliminare.
+    if (action.kind === "quickFuel") {
+      const activeIds = new Set(active.map((v) => v.id));
+      const latest = [...fuelEntries, ...chargingEntries]
+        .filter((e) => activeIds.has(e.vehicleId))
+        .sort((a, b) => b.date.localeCompare(a.date))[0];
+      const fallback = orderedVehicles.find((v) => !v.archived) ?? active[0];
+      completeVehicleAction(latest?.vehicleId ?? fallback.id, action);
+      return;
+    }
     setPendingVehicleAction(action);
   }
 
@@ -517,6 +532,18 @@ export default function App() {
     };
     return [...vehicles].sort((a, b) => rank(a.id) - rank(b.id));
   }, [vehicles, vehicleOrder]);
+
+  const vehicleColors = useMemo(() => resolveVehicleColors(vehicles), [vehicles]);
+  const activeOrderedVehicles = useMemo(() => orderedVehicles.filter((v) => !v.archived), [orderedVehicles]);
+  const urgentByVehicle = useMemo(() => {
+    const out: Record<string, number> = {};
+    for (const v of vehicles) {
+      out[v.id] = reminders.filter(
+        (r) => r.vehicleId === v.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, v.currentKm) !== "ok",
+      ).length;
+    }
+    return out;
+  }, [vehicles, reminders]);
 
   function moveVehicle(vehicleId: string, direction: -1 | 1) {
     const ids = orderedVehicles.filter((v) => !v.archived).map((v) => v.id);
@@ -546,6 +573,7 @@ export default function App() {
 
   // Navigazione principale mobile: 5 aree, con le funzioni secondarie raccolte in "Altro".
   function handleMainTabChange(tab: TabId) {
+    setShowFleet(false);
     setShowBackup(false);
     setShowManageVehicles(false);
     if (tab === "garage") {
@@ -786,7 +814,25 @@ export default function App() {
           />
         )}
 
-        {!showBackup && openVehicle && (
+        {!showBackup && openVehicle && showFleet && (
+          <Suspense fallback={<LazyFallback />}>
+            <FleetStats
+              vehicles={activeOrderedVehicles}
+              colors={vehicleColors}
+              fuelEntries={fuelEntries}
+              chargingEntries={chargingEntries}
+              maintenanceEntries={maintenanceEntries}
+              expenseEntries={expenseEntries}
+              reminders={reminders}
+              onOpenVehicle={(id) => {
+                setShowFleet(false);
+                setOpenVehicleId(id);
+              }}
+            />
+          </Suspense>
+        )}
+
+        {!showBackup && openVehicle && !showFleet && (
           <Suspense fallback={<LazyFallback />}>
             <VehicleDetail
               vehicle={openVehicle}
@@ -810,6 +856,11 @@ export default function App() {
               onToggleReminder={handleToggleReminder}
               onDeleteReminder={handleDeleteReminder}
               onOdometerKm={(km) => bumpVehicleKmIfNeeded(openVehicle.id, km)}
+              allVehicles={activeOrderedVehicles}
+              colors={vehicleColors}
+              urgentCounts={urgentByVehicle}
+              onSwitchVehicle={(id) => setOpenVehicleId(id)}
+              onOpenFleet={() => (isPro ? setShowFleet(true) : setShowPremium(true))}
             />
           </Suspense>
         )}
@@ -890,7 +941,12 @@ export default function App() {
           if (!v) return null;
           return (
             <QuickFuelForm
+              key={v.id}
               vehicle={v}
+              vehicles={activeOrderedVehicles}
+              colors={vehicleColors}
+              urgentCounts={urgentByVehicle}
+              onChangeVehicle={(id) => setQuickFuelVehicleId(id)}
               existingEntries={fuelEntries.filter((f) => f.vehicleId === v.id)}
               onSave={(entry) => {
                 handleSaveFuel(entry);

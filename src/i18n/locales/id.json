@@ -63,7 +63,9 @@
     "photoHint": "Gambar tersebut dipotong di bagian tengah dalam format lebar dan ditampilkan di kartu kendaraan. Gambar tersebut hanya disimpan di perangkat ini dan termasuk dalam cadangan.",
     "photoPreviewAlt": "Pratinjau foto mobil",
     "photoCompressing": "Saya mengompres gambar…",
-    "photoError": "Saya tidak berhasil mengunggah foto tersebut."
+    "photoError": "Saya tidak berhasil mengunggah foto tersebut.",
+    "color": "Warna penanda",
+    "colorHint": "Jika tidak dipilih, diberikan otomatis."
   },
   "fuelType": {
     "benzina": "Bensin",
@@ -809,7 +811,9 @@
     "saveCharge": "Simpan pulsa",
     "kmLabel": "Km saat ini",
     "kmUnchangedHint": "Km sama dengan catatan terakhir: konsumsi tidak akan dihitung.",
-    "errorKmLower": "Km tidak boleh lebih rendah dari km kendaraan ({{km}})."
+    "errorKmLower": "Km tidak boleh lebih rendah dari km kendaraan ({{km}}).",
+    "vehicleLabel": "Kendaraan",
+    "saveFuelOn": "Simpan ke {{name}}"
   },
   "kmHistory": {
     "title": "Riwayat jarak tempuh (km)",
@@ -941,5 +945,12 @@
   },
   "utilities": {
     "title": "Utilitas"
+  },
+  "fleet": {
+    "all": "Semua kendaraan",
+    "last12": "12 bulan terakhir",
+    "costPerKm": "Biaya/km",
+    "urgent": "Mendesak",
+    "hint": "Ketuk kendaraan untuk membukanya."
   }
 }

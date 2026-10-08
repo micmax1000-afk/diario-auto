@@ -10,6 +10,7 @@ import ActionGridIcon from "./ActionGridIcon";
 import VehicleBodyIcon from "./VehicleBodyIcon";
 import { getMeta, setMeta } from "../utils/db";
 import { daysSince } from "../utils/storage";
+import { resolveVehicleColors } from "../utils/vehicleColor";
 import { calculateConsumption, averageConsumption, isReminderDue } from "../utils/calculations";
 
 interface Props {
@@ -134,6 +135,9 @@ export default function Dashboard({
     void setMeta(BACKUP_NAG_KEY, new Date().toISOString());
   }
 
+  const colors = resolveVehicleColors(vehicles);
+  const multi = vehicles.filter((v) => !v.archived).length > 1;
+
   const urgentFor = (vehicle: Vehicle) =>
     reminders.filter((r) => r.vehicleId === vehicle.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
   const urgentCount = activeVehicles.reduce((a, v) => a + urgentFor(v), 0);
@@ -181,7 +185,7 @@ export default function Dashboard({
           <div className="dash-featured-vehicle__info">
             <div>
               {index === 0 && <span className="dash-featured-vehicle__badge">{t("dashboardGarage.primary", "PRINCIPALE")}</span>}
-              <h1 className="dash-featured-vehicle__name">{v.name}</h1>
+              <h1 className="dash-featured-vehicle__name" style={{ ["--c" as string]: colors[v.id] } as React.CSSProperties}>{multi && <span className="vdot" aria-hidden="true" />}{v.name}</h1>
               <p className="dash-featured-vehicle__km">
                 {formatDistance(v.currentKm, distanceUnit, locale)}
               </p>
@@ -227,7 +231,7 @@ export default function Dashboard({
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && onOpenVehicle(v.id)}
       >
-        <div className="dash-ccard__thumb" style={v.photo ? { backgroundImage: `url(${v.photo})` } : undefined}>
+        <div className="dash-ccard__thumb" style={{ ...(v.photo ? { backgroundImage: `url(${v.photo})` } : {}), ["--c" as string]: colors[v.id] } as React.CSSProperties}>
           {!v.photo && <VehicleBodyIcon bodyType={v.bodyType ?? "hatchback"} className="dash-ccard__icon" />}
           {urgent > 0 && <span className="dash-ccard__badge">{urgent}</span>}
         </div>
