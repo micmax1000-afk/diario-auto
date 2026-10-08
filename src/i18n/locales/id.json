@@ -371,7 +371,11 @@
     "driveScriptFailed": "Tidak dapat menghubungi layanan Google. Silakan coba lagi.",
     "driveGenericError": "Operasi di Google Drive gagal. Silakan coba lagi.",
     "driveHint": "Simpan salinan data Anda di Google Drive pribadi Anda (di folder pribadi aplikasi, bukan di bagian lain Drive Anda). Berguna jika Anda mengganti ponsel.",
-    "exportFailed": "Ekspor gagal. Coba lagi."
+    "exportFailed": "Ekspor gagal. Coba lagi.",
+    "confirmTitle": "Konfirmasi pemulihan",
+    "confirmBody": "Anda akan memulihkan “{{name}}” (cadangan tanggal {{date}}). Semua data aplikasi saat ini akan DIGANTI dengan data cadangan: yang Anda tambahkan setelah tanggal itu akan hilang. Lanjutkan?",
+    "confirmCancel": "Batal",
+    "confirmRestore": "Pulihkan"
   },
   "reminderCatalog": {
     "oilFilter": "Minyak dengan filter",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "Jatuh tempo · semua kendaraan",
     "monthAll": "Bulan ini · semua kendaraan",
     "moveUp": "Naik",
-    "moveDown": "Turun"
+    "moveDown": "Turun",
+    "backupNag": "Sudah {{days}} hari Anda tidak menyimpan cadangan. Salinan melindungi Anda jika berganti atau kehilangan ponsel.",
+    "backupNagAction": "Cadangkan",
+    "backupNagLater": "Nanti"
   },
   "premium": {
     "title": "Buku Harian Mobil Premium",
@@ -870,7 +877,8 @@
     "backupActive": "Aktif",
     "backupNotConfigured": "Belum dikonfigurasi",
     "infoSupport": "Info dan dukungan",
-    "version": "Versi"
+    "version": "Versi",
+    "privacy": "Kebijakan privasi"
   },
   "passport": {
     "generate": "Paspor Servis",

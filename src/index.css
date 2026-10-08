@@ -4425,3 +4425,10 @@ textarea {
 /* Codice DTC e descrizione sempre su righe separate */
 .dtc-list__item--described { display: flex; flex-direction: column; align-items: flex-start; gap: 0.3rem; }
 .dtc-list__item--described .dtc-list__code, .dtc-list__item--described .dtc-list__desc { display: block; }
+
+/* Avviso backup vecchio + conferma ripristino */
+.dash-backup-nag { margin: 0 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; padding: 0.8rem 1rem; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent); background: color-mix(in srgb, var(--amber) 10%, var(--card)); font-size: 0.85rem; }
+.dash-backup-nag__actions { display: flex; gap: 1rem; }
+@media (max-width: 600px) { .dash-backup-nag { margin-inline: 0.65rem; } }
+.backup-panel__confirm { margin: 0.8rem 0; padding: 0.9rem 1rem; border-radius: 14px; border: 1px solid var(--danger); background: color-mix(in srgb, var(--danger) 10%, var(--card)); }
+.backup-panel__confirm p { margin: 0.4rem 0 0.8rem; font-size: 0.88rem; line-height: 1.4; }

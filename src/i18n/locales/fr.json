@@ -371,7 +371,11 @@
     "driveScriptFailed": "Impossible de contacter les services Google. Veuillez réessayer.",
     "driveGenericError": "Échec de l'opération sur Google Drive. Veuillez réessayer.",
     "driveHint": "Enregistrez une copie de vos données sur votre Google Drive personnel (dans le dossier privé de l'application, et non dans le reste de votre Drive). Cela peut s'avérer utile si vous changez de téléphone.",
-    "exportFailed": "L'exportation a échoué. Veuillez réessayer."
+    "exportFailed": "L'exportation a échoué. Veuillez réessayer.",
+    "confirmTitle": "Confirmer la restauration",
+    "confirmBody": "Vous allez restaurer « {{name}} » (sauvegarde du {{date}}). Toutes les données actuelles de l'app seront REMPLACÉES par celles de la sauvegarde : ce que vous avez ajouté après cette date sera perdu. Continuer ?",
+    "confirmCancel": "Annuler",
+    "confirmRestore": "Restaurer"
   },
   "reminderCatalog": {
     "oilFilter": "Huile avec filtre",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "Échéances · tous les véhicules",
     "monthAll": "Ce mois-ci · tous les véhicules",
     "moveUp": "Monter",
-    "moveDown": "Descendre"
+    "moveDown": "Descendre",
+    "backupNag": "Vous n'avez pas fait de sauvegarde depuis {{days}} jours. Une copie vous protège si vous changez ou perdez de téléphone.",
+    "backupNagAction": "Sauvegarder",
+    "backupNagLater": "Plus tard"
   },
   "premium": {
     "title": "Journal Auto Premium",
@@ -870,7 +877,8 @@
     "backupActive": "Actif",
     "backupNotConfigured": "Non configuré",
     "infoSupport": "Informations et assistance",
-    "version": "Version"
+    "version": "Version",
+    "privacy": "Politique de confidentialité"
   },
   "passport": {
     "generate": "Carnet de contrôle",

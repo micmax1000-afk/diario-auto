@@ -371,7 +371,11 @@
     "driveScriptFailed": "Unable to contact Google services. Please try again.",
     "driveGenericError": "The operation on Google Drive failed. Please try again.",
     "driveHint": "Save a copy of your data to your personal Google Drive (in the app's private folder, not in the rest of your Drive). This is useful if you switch phones.",
-    "exportFailed": "Export failed. Please try again."
+    "exportFailed": "Export failed. Please try again.",
+    "confirmTitle": "Confirm restore",
+    "confirmBody": "You are about to restore “{{name}}” (backup of {{date}}). All current app data will be REPLACED with the backup: anything you added after that date will be lost. Continue?",
+    "confirmCancel": "Cancel",
+    "confirmRestore": "Restore"
   },
   "reminderCatalog": {
     "oilFilter": "Oil with filter",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "Deadlines · all vehicles",
     "monthAll": "This month · all vehicles",
     "moveUp": "Move up",
-    "moveDown": "Move down"
+    "moveDown": "Move down",
+    "backupNag": "You haven't saved a backup in {{days}} days. A copy protects you if you change or lose your phone.",
+    "backupNagAction": "Back up",
+    "backupNagLater": "Later"
   },
   "premium": {
     "title": "Premium Car Journal",
@@ -870,7 +877,8 @@
     "backupActive": "Active",
     "backupNotConfigured": "Not configured",
     "infoSupport": "Info and Support",
-    "version": "Version"
+    "version": "Version",
+    "privacy": "Privacy policy"
   },
   "passport": {
     "generate": "Service Passport",

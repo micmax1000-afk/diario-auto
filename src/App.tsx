@@ -777,6 +777,7 @@ export default function App() {
             onQuickKm={(vehicle) => setQuickKmVehicle(vehicle)}
             onOpenReminder={(vehicleId) => completeVehicleAction(vehicleId, { kind: "navigate", tab: "scadenze" })}
             onOpenReminders={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
+            onOpenBackup={() => { setMainTab("impostazioni"); setShowBackup(true); }}
             onOpenUtilities={() => setShowUtilities(true)}
             onOpenPremium={() => setShowPremium(true)}
           />

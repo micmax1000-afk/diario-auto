@@ -371,7 +371,11 @@
     "driveScriptFailed": "Die Google-Dienste konnten nicht kontaktiert werden. Bitte versuche es erneut.",
     "driveGenericError": "Der Vorgang auf Google Drive ist fehlgeschlagen. Bitte versuche es erneut.",
     "driveHint": "Speichere eine Kopie deiner Daten auf deinem persönlichen Google Drive (im privaten Ordner der App, nicht im restlichen Drive). Das ist nützlich, wenn du das Handy wechselst.",
-    "exportFailed": "Der Export ist fehlgeschlagen. Bitte versuche es erneut."
+    "exportFailed": "Der Export ist fehlgeschlagen. Bitte versuche es erneut.",
+    "confirmTitle": "Wiederherstellung bestätigen",
+    "confirmBody": "Sie stellen gleich „{{name}}“ (Sicherung vom {{date}}) wieder her. Alle aktuellen App-Daten werden durch die der Sicherung ERSETZT: Was Sie nach diesem Datum hinzugefügt haben, geht verloren. Fortfahren?",
+    "confirmCancel": "Abbrechen",
+    "confirmRestore": "Wiederherstellen"
   },
   "reminderCatalog": {
     "oilFilter": "Öl mit Filter",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "Fristen · alle Fahrzeuge",
     "monthAll": "Diesen Monat · alle Fahrzeuge",
     "moveUp": "Nach oben",
-    "moveDown": "Nach unten"
+    "moveDown": "Nach unten",
+    "backupNag": "Seit {{days}} Tagen keine Sicherung gespeichert. Eine Kopie schützt Sie, wenn Sie das Handy wechseln oder verlieren.",
+    "backupNagAction": "Sichern",
+    "backupNagLater": "Später"
   },
   "premium": {
     "title": "Auto-Tagebuch Premium",
@@ -870,7 +877,8 @@
     "backupActive": "Aktiv",
     "backupNotConfigured": "Nicht konfiguriert",
     "infoSupport": "Infos und Support",
-    "version": "Version"
+    "version": "Version",
+    "privacy": "Datenschutzerklärung"
   },
   "passport": {
     "generate": "Wartungsheft-Auszüge",

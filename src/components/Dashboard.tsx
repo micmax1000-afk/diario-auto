@@ -9,6 +9,7 @@ import UpcomingReminders from "./UpcomingReminders";
 import ActionGridIcon from "./ActionGridIcon";
 import VehicleBodyIcon from "./VehicleBodyIcon";
 import { getMeta, setMeta } from "../utils/db";
+import { daysSince } from "../utils/storage";
 import { calculateConsumption, averageConsumption, isReminderDue } from "../utils/calculations";
 
 interface Props {
@@ -29,6 +30,7 @@ interface Props {
   onQuickKm: (vehicle: Vehicle) => void;
   onOpenReminder: (vehicleId: string) => void;
   onOpenReminders: () => void;
+  onOpenBackup: () => void;
   onOpenUtilities: () => void;
   onOpenPremium: () => void;
 }
@@ -36,6 +38,9 @@ interface Props {
 type HomeView = "detailed" | "compact";
 const HOME_VIEW_KEY = "home-view";
 const COMPACT_FROM_VEHICLES = 3;
+const BACKUP_STALE_DAYS = 30;
+const BACKUP_NAG_SNOOZE_DAYS = 7;
+const BACKUP_NAG_KEY = "backup-nag-snoozed";
 
 export default function Dashboard({
   vehicles,
@@ -54,6 +59,7 @@ export default function Dashboard({
   onQuickKm,
   onOpenReminder,
   onOpenReminders,
+  onOpenBackup,
   onOpenUtilities,
 }: Props) {
   const { t, i18n } = useTranslation();
@@ -97,6 +103,36 @@ export default function Dashboard({
   const totalRefuels = [...stats.values()].reduce((a, x) => a + x.refuels, 0);
   const per100List = [...stats.values()].map((x) => x.per100).filter((x): x is number => x !== null);
   const avgPer100 = per100List.length ? per100List.reduce((a, x) => a + x, 0) / per100List.length : null;
+
+  const [backupStaleDays, setBackupStaleDays] = useState<number | null>(null);
+  const oldestCreated = vehicles.map((v) => v.createdAt).filter(Boolean).sort()[0];
+  const hasVehicles = vehicles.length > 0;
+  useEffect(() => {
+    if (!hasVehicles) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const snoozed = await getMeta(BACKUP_NAG_KEY);
+        if (snoozed && daysSince(snoozed) < BACKUP_NAG_SNOOZE_DAYS) return;
+        const last = await getMeta("last-backup");
+        // mai fatto un backup: si conta da quando è stato aggiunto il primo veicolo
+        const reference = last ?? oldestCreated;
+        if (!reference) return;
+        const days = daysSince(reference);
+        if (!cancelled && days >= BACKUP_STALE_DAYS) setBackupStaleDays(days);
+      } catch {
+        /* nessun avviso se non si riesce a leggere */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [hasVehicles, oldestCreated]);
+
+  function snoozeBackupNag() {
+    setBackupStaleDays(null);
+    void setMeta(BACKUP_NAG_KEY, new Date().toISOString());
+  }
 
   const urgentFor = (vehicle: Vehicle) =>
     reminders.filter((r) => r.vehicleId === vehicle.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
@@ -291,6 +327,20 @@ export default function Dashboard({
               <span>{t("utilities.title", "Utilità")}</span>
             </button>
           </div>
+        </section>
+      )}
+
+      {backupStaleDays !== null && activeVehicles.length > 0 && (
+        <section className="dash-backup-nag" role="status">
+          <span>{t("dashboardGarage.backupNag", { days: backupStaleDays })}</span>
+          <span className="dash-backup-nag__actions">
+            <button type="button" className="dash-link" onClick={onOpenBackup}>
+              {t("dashboardGarage.backupNagAction")}
+            </button>
+            <button type="button" className="dash-link" onClick={snoozeBackupNag}>
+              {t("dashboardGarage.backupNagLater")}
+            </button>
+          </span>
         </section>
       )}
 

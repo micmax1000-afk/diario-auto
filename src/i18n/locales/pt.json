@@ -371,7 +371,11 @@
     "driveScriptFailed": "Não foi possível estabelecer contacto com os serviços do Google. Tente novamente.",
     "driveGenericError": "A operação no Google Drive não foi bem-sucedida. Tente novamente.",
     "driveHint": "Guarde uma cópia dos teus dados no teu Google Drive pessoal (na pasta privada da aplicação, não no resto do teu Drive). É útil se mudares de telemóvel.",
-    "exportFailed": "A exportação não foi bem-sucedida. Tente novamente."
+    "exportFailed": "A exportação não foi bem-sucedida. Tente novamente.",
+    "confirmTitle": "Confirmar restauro",
+    "confirmBody": "Vai restaurar «{{name}}» (backup de {{date}}). Todos os dados atuais da app serão SUBSTITUÍDOS pelos do backup: o que adicionou depois dessa data será perdido. Continuar?",
+    "confirmCancel": "Cancelar",
+    "confirmRestore": "Restaurar"
   },
   "reminderCatalog": {
     "oilFilter": "Óleo com filtro",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "Prazos · todos os veículos",
     "monthAll": "Este mês · todos os veículos",
     "moveUp": "Subir",
-    "moveDown": "Descer"
+    "moveDown": "Descer",
+    "backupNag": "Não guarda um backup há {{days}} dias. Uma cópia protege-o se mudar ou perder o telemóvel.",
+    "backupNagAction": "Fazer backup",
+    "backupNagLater": "Mais tarde"
   },
   "premium": {
     "title": "Diário Auto Premium",
@@ -870,7 +877,8 @@
     "backupActive": "Ativo",
     "backupNotConfigured": "Não configurado",
     "infoSupport": "Informações e apoio",
-    "version": "Versão"
+    "version": "Versão",
+    "privacy": "Política de privacidade"
   },
   "passport": {
     "generate": "Passaporte de cupões",

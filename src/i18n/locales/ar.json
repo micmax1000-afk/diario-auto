@@ -371,7 +371,11 @@
     "driveScriptFailed": "يتعذر الاتصال بخدمات Google. يرجى المحاولة مرة أخرى.",
     "driveGenericError": "فشلت العملية على Google Drive. حاول مرة أخرى.",
     "driveHint": "احفظ نسخة من بياناتك على Google Drive الشخصي الخاص بك (في المجلد الخاص بالتطبيق، وليس في بقية ملفات Drive الخاصة بك). وهذا مفيد في حالة تغيير هاتفك.",
-    "exportFailed": "فشل التصدير. حاول مرة أخرى."
+    "exportFailed": "فشل التصدير. حاول مرة أخرى.",
+    "confirmTitle": "تأكيد الاستعادة",
+    "confirmBody": "أنت على وشك استعادة «{{name}}» (نسخة بتاريخ {{date}}). سيتم استبدال جميع بيانات التطبيق الحالية ببيانات النسخة: وكل ما أضفته بعد ذلك التاريخ سيُفقد. هل تريد المتابعة؟",
+    "confirmCancel": "إلغاء",
+    "confirmRestore": "استعادة"
   },
   "reminderCatalog": {
     "oilFilter": "زيت مزود بفلتر",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "المواعيد · كل المركبات",
     "monthAll": "هذا الشهر · كل المركبات",
     "moveUp": "أعلى",
-    "moveDown": "أسفل"
+    "moveDown": "أسفل",
+    "backupNag": "لم تحفظ نسخة احتياطية منذ {{days}} يومًا. النسخة تحميك إذا غيّرت هاتفك أو فقدته.",
+    "backupNagAction": "نسخ احتياطي",
+    "backupNagLater": "لاحقًا"
   },
   "premium": {
     "title": "مجلة «أوتو بريميوم»",
@@ -870,7 +877,8 @@
     "backupActive": "نشط",
     "backupNotConfigured": "غير مُهيأ",
     "infoSupport": "معلومات ودعم",
-    "version": "الإصدار"
+    "version": "الإصدار",
+    "privacy": "سياسة الخصوصية"
   },
   "passport": {
     "generate": "قسائم جواز السفر",

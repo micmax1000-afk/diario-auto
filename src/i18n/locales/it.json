@@ -371,7 +371,11 @@
     "driveScriptFailed": "Impossibile contattare i servizi Google. Riprova.",
     "driveGenericError": "Operazione su Google Drive non riuscita. Riprova.",
     "driveHint": "Salva una copia dei tuoi dati sul tuo Google Drive personale (nella cartella privata dell'app, non nel resto del tuo Drive). Utile se cambi telefono.",
-    "exportFailed": "Esportazione non riuscita. Riprova."
+    "exportFailed": "Esportazione non riuscita. Riprova.",
+    "confirmTitle": "Conferma ripristino",
+    "confirmBody": "Stai per ripristinare «{{name}}» (backup del {{date}}). Tutti i dati attuali dell'app verranno SOSTITUITI con quelli del backup: ciò che hai inserito dopo quella data andrà perso. Vuoi continuare?",
+    "confirmCancel": "Annulla",
+    "confirmRestore": "Ripristina"
   },
   "reminderCatalog": {
     "oilFilter": "Olio con filtro",
@@ -750,7 +754,10 @@
     "fleetDeadlines": "Scadenze · tutti i veicoli",
     "monthAll": "Questo mese · tutti i veicoli",
     "moveUp": "Sposta su",
-    "moveDown": "Sposta giù"
+    "moveDown": "Sposta giù",
+    "backupNag": "Non salvi un backup da {{days}} giorni. Una copia ti protegge se cambi o perdi il telefono.",
+    "backupNagAction": "Fai backup",
+    "backupNagLater": "Più tardi"
   },
   "premium": {
     "title": "Diario Auto Premium",
@@ -870,7 +877,8 @@
     "backupActive": "Attivo",
     "backupNotConfigured": "Non configurato",
     "infoSupport": "Info e supporto",
-    "version": "Versione"
+    "version": "Versione",
+    "privacy": "Informativa sulla privacy"
   },
   "passport": {
     "generate": "Passaporto tagliandi",
