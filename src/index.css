@@ -4420,7 +4420,7 @@ textarea {
   .dash-seg, .dash-vcard, .dash-clist { margin-inline: 0.65rem; }
 }
 .dash-featured-vehicle--hero .dash-featured-vehicle__photo { min-height: 210px; object-fit: cover; width: 100%; }
-.dash-ccard .dash-pill { padding: 0.28rem 0.6rem; font-size: 0.7rem; }
+.dash-ccard .dash-pill { padding: 0.28rem 0.6rem; font-size: 0.7rem; white-space: nowrap; }
 
 /* Codice DTC e descrizione sempre su righe separate */
 .dtc-list__item--described { display: flex; flex-direction: column; align-items: flex-start; gap: 0.3rem; }
@@ -4495,3 +4495,18 @@ textarea {
 .fuel-actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin: 0 0 1rem; }
 .fuel-actions--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .fuel-actions .dash-quick__item { flex-direction: row; justify-content: center; gap: 0.6rem; padding: 0.8rem; font-size: 0.85rem; min-height: 52px; }
+
+/* Statistiche: schede su due colonne, etichetta sopra il valore */
+.stat-row--grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.stat-row--grid .stat-chip { min-width: 0; }
+.stat-row--grid .stat-chip--icon > div:last-child { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.stat-row--grid .stat-chip__value { overflow-wrap: anywhere; }
+@media (max-width: 380px) {
+  .stat-row--grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .stat-row--grid .stat-chip { padding: 0.5rem 0.6rem; }
+  .stat-row--grid .stat-chip__value { font-size: 0.95rem; }
+  /* Home compatta su telefoni stretti: miniatura più piccola, così i pulsanti restano su una riga */
+  .dash-ccard__thumb { width: 72px; height: 40.5px; }
+}
+/* Scadenze in home: il nome del veicolo resta su una riga */
+.upcoming-reminders__vehicle { display: inline-block; max-width: 100%; vertical-align: middle; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
