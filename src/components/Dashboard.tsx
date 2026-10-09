@@ -96,7 +96,8 @@ export default function Dashboard({
       chargingEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.totalCost, 0) +
       maintenanceEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.cost, 0) +
       expenseEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.amount, 0);
-    const kmPerL = averageConsumption(calculateConsumption(fuel));
+    // Consumo del mese: solo i tratti da pieno a pieno che si chiudono in questo mese.
+    const kmPerL = averageConsumption(calculateConsumption(fuel).filter((p) => inMonth(p.date)));
     return { spend, per100: kmPerL ? 100 / kmPerL : null, refuels: monthFuel.length };
   }
 
