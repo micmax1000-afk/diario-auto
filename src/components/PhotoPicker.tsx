@@ -1,8 +1,9 @@
 import { useState, type ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
-import { compressImage, estimateDataUrlKb } from "../utils/imageCompression";
+import { compressImage, estimateDataUrlKb, readFileAsDataUrl, type CropRect } from "../utils/imageCompression";
 import { takeNativePhoto, chooseNativePhotoFromGallery } from "../utils/nativePhotoCapture";
+import PhotoCropper from "./PhotoCropper";
 
 interface Props {
   id: string;
@@ -10,7 +11,7 @@ interface Props {
   onChange: (dataUrl: string | null) => void;
   /** Prefisso delle chiavi i18n: usa `${keyPrefix}.photo`, `.photoHint`, `.photoCompressing`, `.photoError`, `.photoPreviewAlt` — stesso schema già usato da maintenanceForm/expenseForm. */
   keyPrefix: string;
-  /** Se indicato, la foto viene ritagliata al centro in questo formato (larghezza/altezza, es. 16/9). */
+  /** Se indicato, la foto viene ritagliata in questo formato (larghezza/altezza, es. 16/9): l'utente sceglie l'inquadratura. */
   aspect?: number;
 }
 
@@ -24,6 +25,8 @@ export default function PhotoPicker({ id, value, onChange, keyPrefix, aspect }: 
   const { t } = useTranslation();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Foto appena scelta, in attesa che l'utente ne scelga l'inquadratura.
+  const [pendingCrop, setPendingCrop] = useState<string | null>(null);
   const kb = value ? estimateDataUrlKb(value) : null;
   const isNative = Capacitor.isNativePlatform();
 
@@ -33,7 +36,8 @@ export default function PhotoPicker({ id, value, onChange, keyPrefix, aspect }: 
     setBusy(true);
     setError(null);
     try {
-      onChange(await compressImage(file, { aspect }));
+      if (aspect) setPendingCrop(await readFileAsDataUrl(file));
+      else onChange(await compressImage(file));
     } catch {
       setError(t(`${keyPrefix}.photoError`));
     }
@@ -46,7 +50,22 @@ export default function PhotoPicker({ id, value, onChange, keyPrefix, aspect }: 
     setError(null);
     try {
       const raw = source === "camera" ? await takeNativePhoto() : await chooseNativePhotoFromGallery();
-      if (raw) onChange(await compressImage(raw, { aspect }));
+      if (raw && aspect) setPendingCrop(raw);
+      else if (raw) onChange(await compressImage(raw));
+    } catch {
+      setError(t(`${keyPrefix}.photoError`));
+    }
+    setBusy(false);
+  }
+
+  async function handleCropConfirm(crop: CropRect) {
+    const raw = pendingCrop;
+    setPendingCrop(null);
+    if (!raw) return;
+    setBusy(true);
+    setError(null);
+    try {
+      onChange(await compressImage(raw, { crop }));
     } catch {
       setError(t(`${keyPrefix}.photoError`));
     }
@@ -95,6 +114,10 @@ export default function PhotoPicker({ id, value, onChange, keyPrefix, aspect }: 
       )}
 
       <p className="obd-hint">{t(`${keyPrefix}.photoHint`)}</p>
+
+      {pendingCrop && aspect && (
+        <PhotoCropper src={pendingCrop} aspect={aspect} onConfirm={handleCropConfirm} onCancel={() => setPendingCrop(null)} />
+      )}
     </div>
   );
 }

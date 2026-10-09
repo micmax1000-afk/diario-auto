@@ -60,7 +60,7 @@
     "errorNameGeneric": "Masukkan nama kendaraan.",
     "bodyType": "Kategori (opsional)",
     "photo": "Foto mobil (opsional)",
-    "photoHint": "Gambar tersebut dipotong di bagian tengah dalam format lebar dan ditampilkan di kartu kendaraan. Gambar tersebut hanya disimpan di perangkat ini dan termasuk dalam cadangan.",
+    "photoHint": "Setelah memilihnya, Anda dapat menggeser dan memperbesarnya untuk menentukan bingkai. Foto ditampilkan di kartu kendaraan, hanya disimpan di perangkat ini, dan disertakan dalam cadangan.",
     "photoPreviewAlt": "Pratinjau foto mobil",
     "photoCompressing": "Saya mengompres gambar…",
     "photoError": "Saya tidak berhasil mengunggah foto tersebut.",
@@ -531,6 +531,15 @@
       "body": "Kendaraan menunjukkan {{carKm}}, buku harian {{diaryKm}}. Perbarui buku harian?",
       "update": "Perbarui",
       "ignore": "Abaikan"
+    },
+    "dtcHistory": {
+      "title": "Riwayat kode kesalahan",
+      "show": "Tampilkan ({{n}})",
+      "hide": "Sembunyikan",
+      "hint": "Setiap pembacaan dengan kode disimpan beserta tanggal dan jarak tempuh, sehingga Anda bisa melihat apakah kode muncul lagi. Pembacaan mode demo tidak disimpan.",
+      "cleared": "Tidak ada kode: pada pembacaan sebelumnya masih ada.",
+      "delete": "Hapus",
+      "seenBefore": "Pernah terlihat: {{n}}× · pertama pada {{date}} di {{km}}"
     }
   },
   "chargingCategory": {
@@ -952,5 +961,11 @@
     "costPerKm": "Biaya/km",
     "urgent": "Mendesak",
     "hint": "Ketuk kendaraan untuk membukanya."
+  },
+  "photoCrop": {
+    "title": "Atur bingkai foto",
+    "hint": "Geser foto untuk memindahkannya, gunakan dua jari atau penggeser untuk memperbesar.",
+    "zoom": "Zoom",
+    "confirm": "Konfirmasi"
   }
 }

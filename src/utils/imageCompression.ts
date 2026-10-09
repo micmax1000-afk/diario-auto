@@ -5,9 +5,19 @@
 const MAX_DIMENSION = 800;
 const JPEG_QUALITY = 0.6;
 
+/** Area da tenere, in frazioni (0-1) della larghezza e dell'altezza dell'originale. */
+export interface CropRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 interface CompressOptions {
   /** Se indicato (larghezza/altezza, es. 16/9) l'immagine viene ritagliata al centro in quel formato. */
   aspect?: number;
+  /** Ritaglio scelto dall'utente: ha la precedenza su `aspect`. */
+  crop?: CropRect;
 }
 
 export function compressImage(source: File | string, options: CompressOptions = {}): Promise<string> {
@@ -21,7 +31,12 @@ export function compressImage(source: File | string, options: CompressOptions = 
         let sy = 0;
         let sw = img.width;
         let sh = img.height;
-        if (options.aspect) {
+        if (options.crop) {
+          sx = Math.round(options.crop.x * img.width);
+          sy = Math.round(options.crop.y * img.height);
+          sw = Math.max(1, Math.round(options.crop.w * img.width));
+          sh = Math.max(1, Math.round(options.crop.h * img.height));
+        } else if (options.aspect) {
           if (sw / sh > options.aspect) {
             sw = Math.round(sh * options.aspect);
             sx = Math.round((img.width - sw) / 2);
@@ -58,10 +73,16 @@ export function compressImage(source: File | string, options: CompressOptions = 
       return;
     }
 
+    readFileAsDataUrl(source).then(loadImage, reject);
+  });
+}
+
+export function readFileAsDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Lettura file non riuscita."));
-    reader.onload = () => loadImage(String(reader.result));
-    reader.readAsDataURL(source);
+    reader.onload = () => resolve(String(reader.result));
+    reader.readAsDataURL(file);
   });
 }
 

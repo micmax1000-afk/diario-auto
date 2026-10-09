@@ -148,6 +148,17 @@ export interface ObdVehicleProfile extends SyncFields {
   protocol?: string; // es. "6" per ISO 15765-4 CAN, salvato con ATSP
   lastDeviceId?: string; // per il tentativo di riconnessione automatica
   alarms?: AlarmThresholds;
+  /** Storico delle letture dei codici errore, dalla più vecchia alla più recente. */
+  dtcHistory?: DtcReading[];
+}
+
+export interface DtcReading {
+  id: string;
+  date: string; // ISO
+  km: number;
+  mode: "03" | "07" | "0A";
+  /** Vuoto = lettura senza codici, salvata solo se la precedente dello stesso tipo ne aveva. */
+  codes: string[];
 }
 
 // ---------- Costo reale del tragitto ----------

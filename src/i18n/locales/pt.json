@@ -60,7 +60,7 @@
     "errorNameGeneric": "Introduza o nome do veículo.",
     "bodyType": "Categoria (opcional)",
     "photo": "Foto do carro (opcional)",
-    "photoHint": "É recortada no centro, em formato panorâmico, e exibida no cartão do veículo. Fica guardada apenas neste dispositivo e é incluída na cópia de segurança.",
+    "photoHint": "Depois de a escolher, pode arrastá-la e ampliá-la para decidir o enquadramento. É mostrada no cartão do veículo, fica guardada apenas neste dispositivo e é incluída na cópia de segurança.",
     "photoPreviewAlt": "Pré-visualização da foto do carro",
     "photoCompressing": "Compacto a imagem…",
     "photoError": "Não consegui carregar a foto.",
@@ -531,6 +531,15 @@
       "body": "O veículo indica {{carKm}}, o diário {{diaryKm}}. Atualizar o diário?",
       "update": "Atualizar",
       "ignore": "Ignorar"
+    },
+    "dtcHistory": {
+      "title": "Histórico de códigos de erro",
+      "show": "Mostrar ({{n}})",
+      "hide": "Ocultar",
+      "hint": "Cada leitura com códigos é guardada com data e quilometragem, para ver se um código volta a aparecer. As leituras do modo demo não são guardadas.",
+      "cleared": "Sem códigos: estavam presentes na leitura anterior.",
+      "delete": "Eliminar",
+      "seenBefore": "Já visto antes: {{n}}× · a primeira vez em {{date}} aos {{km}}"
     }
   },
   "chargingCategory": {
@@ -952,5 +961,11 @@
     "costPerKm": "Custo/km",
     "urgent": "Urgentes",
     "hint": "Toque num veículo para abri-lo."
+  },
+  "photoCrop": {
+    "title": "Enquadrar a foto",
+    "hint": "Arraste a foto para a mover, use dois dedos ou o controlo deslizante para ampliar.",
+    "zoom": "Zoom",
+    "confirm": "Confirmar"
   }
 }
