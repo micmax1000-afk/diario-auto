@@ -65,7 +65,7 @@ export default function Dashboard({
   onOpenUtilities,
 }: Props) {
   const { t, i18n } = useTranslation();
-  const { distanceUnit } = useAppSettings();
+  const { distanceUnit, formatMoney } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
   const activeVehicles = vehicles.filter((v) => !v.archived);
 
@@ -144,7 +144,7 @@ export default function Dashboard({
     reminders.filter((r) => r.vehicleId === vehicle.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
   const urgentCount = activeVehicles.reduce((a, v) => a + urgentFor(v), 0);
 
-  const fmtMoney = (n: number) => `${n.toLocaleString(locale, { maximumFractionDigits: 0 })} €`;
+  const fmtMoney = (n: number) => formatMoney(n, 0);
   const fmtCons = (n: number | null) => (n === null ? "–" : n.toLocaleString(locale, { maximumFractionDigits: 1 }));
 
   function renderMoveButtons(vehicle: Vehicle, index: number) {

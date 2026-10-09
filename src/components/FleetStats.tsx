@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
 import { calculateConsumption, averageConsumption, calculateVehicleCosts, isReminderDue } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
+import { useAppSettings } from "../contexts/AppSettingsContext";
 import VehicleSwitcher from "./VehicleSwitcher";
 
 interface Props {
@@ -21,6 +22,7 @@ const MONTHS = 12;
 export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntries, maintenanceEntries, expenseEntries, reminders, onOpenVehicle }: Props) {
   const { t, i18n } = useTranslation();
   const locale = getNumberLocale(i18n.language);
+  const { formatMoney } = useAppSettings();
   const since = new Date();
   since.setMonth(since.getMonth() - MONTHS);
   const sinceIso = since.toISOString();
@@ -45,7 +47,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
 
   const grandTotal = rows.reduce((a, r) => a + r.total, 0);
   const maxTotal = Math.max(1, ...rows.map((r) => r.total));
-  const money = (n: number) => `${n.toLocaleString(locale, { maximumFractionDigits: 0 })} €`;
+  const money = (n: number) => formatMoney(n, 0);
   const urgentCounts = Object.fromEntries(rows.map((r) => [r.vehicle.id, r.urgent]));
 
   return (
@@ -85,7 +87,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
           </span>
           <span className="fleet-stats__grid">
             <span>
-              <b>{r.costPerKm !== null ? `${r.costPerKm.toLocaleString(locale, { maximumFractionDigits: 2 })} €` : "–"}</b>
+              <b>{r.costPerKm !== null ? formatMoney(r.costPerKm, 2) : "–"}</b>
               {t("fleet.costPerKm", "costo/km")}
             </span>
             <span>

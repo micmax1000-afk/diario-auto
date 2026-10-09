@@ -4,7 +4,7 @@ import type { FuelEntry, ChargingEntry } from "../types";
 import { calculateConsumption, averageConsumption } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { kmToDisplayDistance } from "../utils/settings";
+import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
 import ActionGridIcon from "./ActionGridIcon";
 
 type Filter = "all" | "fuel" | "electric";
@@ -35,7 +35,7 @@ export default function FuelChargeList({
   onDeleteCharging,
 }: Props) {
   const { t, i18n } = useTranslation();
-  const { formatMoney, distanceUnit } = useAppSettings();
+  const { formatMoney, currency, distanceUnit } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
   const [filter, setFilter] = useState<Filter>("all");
   const [period, setPeriod] = useState<Period>("12m");
@@ -113,7 +113,7 @@ export default function FuelChargeList({
         </div>
         <div className="fc-list__summary-item">
           <span>{t("fuel.summaryAvgConsumption", "Consumo medio")}</span>
-          <strong>{avgConsumption !== null ? `${avgConsumption.toLocaleString(locale, { maximumFractionDigits: 1 })} l/100km` : "—"}</strong>
+          <strong>{avgConsumption !== null && avgConsumption > 0 ? `${(100 / avgConsumption).toLocaleString(locale, { maximumFractionDigits: 1 })} l/100km` : "—"}</strong>
         </div>
         <div className="fc-list__summary-item">
           <span>{t("fuel.summaryTotalDistance", "Distanza totale")}</span>
@@ -148,7 +148,7 @@ export default function FuelChargeList({
                 </div>
                 <div className="fc-item__mid">
                   <span>{formatMoney(entry.totalCost)}</span>
-                  {pricePerUnit !== null && <span>{pricePerUnit.toFixed(3)} €/{unit}</span>}
+                  {pricePerUnit !== null && <span>{getCurrencySymbol(currency)} {pricePerUnit.toFixed(3)}/{unit}</span>}
                   <span>{quantity.toFixed(2)} {unit}</span>
                 </div>
               </div>

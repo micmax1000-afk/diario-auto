@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import type { ChargingEntry, Vehicle } from "../types";
 import { generateId, getHomeChargingDefaults, setHomeChargingDefaults } from "../utils/storage";
 import { getNumberLocale } from "../utils/locale";
+import { useAppSettings } from "../contexts/AppSettingsContext";
+import { getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
 import ActionGridIcon from "./ActionGridIcon";
 import VehicleSwitcher from "./VehicleSwitcher";
@@ -26,6 +28,7 @@ function formatEuro(value: number, locale: string) {
 export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const locale = getNumberLocale(i18n.language);
+  const { currency } = useAppSettings();
   const [pricePerKWh, setPricePerKWh] = useState("");
   const [totalCost, setTotalCost] = useState("");
   const [atHome, setAtHome] = useState(false);
@@ -149,7 +152,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
                 value={pricePerKWh}
                 onChange={(e) => setPricePerKWh(e.target.value)}
               />
-              <small>€/kWh</small>
+              <small>{getCurrencySymbol(currency)}/kWh</small>
             </div>
           </label>
           <label className="quick-entry-input">
@@ -162,7 +165,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
                 value={totalCost}
                 onChange={(e) => setTotalCost(e.target.value)}
               />
-              <small>€</small>
+              <small>{getCurrencySymbol(currency)}</small>
             </div>
           </label>
         </div>

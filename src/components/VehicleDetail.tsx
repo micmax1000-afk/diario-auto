@@ -530,14 +530,16 @@ export default function VehicleDetail({
                 ))}
             </div>
 
-            <div className="stat-row">
-              <div className="stat-chip stat-chip--icon">
-                <CategoryIcon kind="fuel" category="benzina" size="small" />
-                <div>
-                  <span className="stat-chip__label">{t("summary.fuel")}</span>
-                  <span className="stat-chip__value">{formatMoney(costs.fuelCost)}</span>
+            <div className="stat-row stat-row--grid">
+              {(vehicle.fuelType !== "elettrico" || costs.fuelCost > 0) && (
+                <div className="stat-chip stat-chip--icon">
+                  <CategoryIcon kind="fuel" category="benzina" size="small" />
+                  <div>
+                    <span className="stat-chip__label">{t("summary.fuel")}</span>
+                    <span className="stat-chip__value">{formatMoney(costs.fuelCost)}</span>
+                  </div>
                 </div>
-              </div>
+              )}
               {costs.chargingCost > 0 && (
                 <div className="stat-chip stat-chip--icon">
                   <CategoryIcon kind="charging" category="" size="small" />
@@ -588,7 +590,7 @@ export default function VehicleDetail({
                 </div>
               </div>
             </div>
-            <div className="stat-row stat-row--secondary">
+            <div className="stat-row stat-row--grid stat-row--secondary">
               <div className="stat-chip stat-chip--icon">
                 <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -603,41 +605,47 @@ export default function VehicleDetail({
                   </span>
                 </div>
               </div>
-              <div className="stat-chip stat-chip--icon">
-                <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
-                  <ActionGridIcon name="fuel" />
+              {vehicle.fuelType !== "elettrico" && (
+                <div className="stat-chip stat-chip--icon">
+                  <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
+                    <ActionGridIcon name="fuel" />
+                  </div>
+                  <div>
+                    <span className="stat-chip__label">{t("summary.consumption")}</span>
+                    <span className="stat-chip__value">
+                      {averageConsumption !== null ? `${averageConsumption.toFixed(1)} L/100 km` : "—"}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <span className="stat-chip__label">{t("summary.consumption")}</span>
-                  <span className="stat-chip__value">
-                    {averageConsumption !== null ? `${averageConsumption.toFixed(1)} L/100 km` : "—"}
-                  </span>
-                </div>
-              </div>
-              <div className="stat-chip stat-chip--icon">
-                <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
-                  <ActionGridIcon name="bolt" />
-                </div>
-                <div>
-                  <span className="stat-chip__label">{t("summary.energy")}</span>
-                  <span className="stat-chip__value">
-                    {totalChargingKwh > 0 ? `${totalChargingKwh.toFixed(1)} kWh` : "—"}
-                  </span>
-                </div>
-              </div>
-              <div className="stat-chip stat-chip--icon">
-                <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M17 8a5 5 0 1 0 0 8M6 10h6M6 14h5" />
-                  </svg>
-                </div>
-                <div>
-                  <span className="stat-chip__label">{t("summary.averageEnergyPrice")}</span>
-                  <span className="stat-chip__value">
-                    {averageChargingPrice !== null ? formatMoney(averageChargingPrice, 3) + "/kWh" : "—"}
-                  </span>
-                </div>
-              </div>
+              )}
+              {canCharge && (
+                <>
+                  <div className="stat-chip stat-chip--icon">
+                    <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
+                      <ActionGridIcon name="bolt" />
+                    </div>
+                    <div>
+                      <span className="stat-chip__label">{t("summary.energy")}</span>
+                      <span className="stat-chip__value">
+                        {totalChargingKwh > 0 ? `${totalChargingKwh.toFixed(1)} kWh` : "—"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="stat-chip stat-chip--icon">
+                    <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                        <path d="M17 8a5 5 0 1 0 0 8M6 10h6M6 14h5" />
+                      </svg>
+                    </div>
+                    <div>
+                      <span className="stat-chip__label">{t("summary.averageEnergyPrice")}</span>
+                      <span className="stat-chip__value">
+                        {averageChargingPrice !== null ? formatMoney(averageChargingPrice, 3) + "/kWh" : "—"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="summary-insight">
@@ -649,7 +657,7 @@ export default function VehicleDetail({
               }</span>
             </div>
 
-            <CostChart fuelEntries={filteredFuel} maintenanceEntries={filteredMaintenance} expenseEntries={filteredExpenses} />
+            <CostChart fuelEntries={filteredFuel} chargingEntries={filteredCharging} maintenanceEntries={filteredMaintenance} expenseEntries={filteredExpenses} />
           </>
         )}
       </div>
