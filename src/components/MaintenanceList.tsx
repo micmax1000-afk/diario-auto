@@ -8,10 +8,11 @@ import CategoryIcon from "./CategoryIcon";
 
 interface Props {
   entries: MaintenanceEntry[];
+  onEdit: (entry: MaintenanceEntry) => void;
   onDelete: (id: string) => void;
 }
 
-export default function MaintenanceList({ entries, onDelete }: Props) {
+export default function MaintenanceList({ entries, onEdit, onDelete }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney, distanceUnit } = useAppSettings();
   const [zoomPhoto, setZoomPhoto] = useState<string | null>(null);
@@ -91,6 +92,9 @@ export default function MaintenanceList({ entries, onDelete }: Props) {
                   <img src={entry.photo} alt="" />
                 </button>
               )}
+              <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(entry)}>
+                {t("common.edit")}
+              </button>
               <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => onDelete(entry.id)}>
                 {t("common.remove")}
               </button>

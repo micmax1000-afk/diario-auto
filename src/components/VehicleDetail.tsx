@@ -140,6 +140,9 @@ export default function VehicleDetail({
   const [showMaintenanceForm, setShowMaintenanceForm] = useState(false);
   const [showExpenseForm, setShowExpenseForm] = useState(false);
   const [showReminderForm, setShowReminderForm] = useState(false);
+  const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceEntry | null>(null);
+  const [editingExpense, setEditingExpense] = useState<ExpenseEntry | null>(null);
+  const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
   const [period, setPeriod] = useState<Period>("sempre");
 
   // Tasto indietro Android: chiude il modulo aperto più di recente invece di
@@ -151,6 +154,9 @@ export default function VehicleDetail({
   useBackButtonClose(showMaintenanceForm, () => setShowMaintenanceForm(false));
   useBackButtonClose(showExpenseForm, () => setShowExpenseForm(false));
   useBackButtonClose(showReminderForm, () => setShowReminderForm(false));
+  useBackButtonClose(editingMaintenance !== null, () => setEditingMaintenance(null));
+  useBackButtonClose(editingExpense !== null, () => setEditingExpense(null));
+  useBackButtonClose(editingReminder !== null, () => setEditingReminder(null));
   useBackButtonClose(showPassportPremium, () => setShowPassportPremium(false));
   const [notificationsOn, setNotificationsOn] = useState(() => areNotificationsEnabled());
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
@@ -440,6 +446,7 @@ export default function VehicleDetail({
                   ? maintenanceEntries.filter((m) => m.category === maintenanceCategoryFilter)
                   : maintenanceEntries
               }
+              onEdit={setEditingMaintenance}
               onDelete={onDeleteMaintenance}
             />
           </>
@@ -451,7 +458,7 @@ export default function VehicleDetail({
               <div><h2>{t("expenses.title")}</h2><p className="section-subtitle">Spese collegate alla gestione dell'auto (bollo, assicurazione, ecc.)</p></div>
               <button type="button" className="btn btn--primary" onClick={() => setShowExpenseForm(true)}>{t("expenses.add")}</button>
             </div>
-            <ExpenseList entries={expenseEntries} onDelete={onDeleteExpense} />
+            <ExpenseList entries={expenseEntries} onEdit={setEditingExpense} onDelete={onDeleteExpense} />
           </>
         )}
 
@@ -481,6 +488,7 @@ export default function VehicleDetail({
               reminders={reminders}
               currentKm={vehicle.currentKm}
               onToggleComplete={onToggleReminder}
+              onEdit={setEditingReminder}
               onDelete={onDeleteReminder}
             />
           </>
@@ -740,6 +748,42 @@ export default function VehicleDetail({
             setShowReminderForm(false);
           }}
           onClose={() => setShowReminderForm(false)}
+        />
+      )}
+
+      {editingMaintenance && (
+        <MaintenanceForm
+          vehicle={vehicle}
+          initialEntry={editingMaintenance}
+          onSave={(entry) => {
+            onAddMaintenance(entry);
+            setEditingMaintenance(null);
+          }}
+          onClose={() => setEditingMaintenance(null)}
+        />
+      )}
+
+      {editingExpense && (
+        <ExpenseForm
+          vehicle={vehicle}
+          initialEntry={editingExpense}
+          onSave={(entry) => {
+            onAddExpense(entry);
+            setEditingExpense(null);
+          }}
+          onClose={() => setEditingExpense(null)}
+        />
+      )}
+
+      {editingReminder && (
+        <ReminderForm
+          vehicle={vehicle}
+          initialReminder={editingReminder}
+          onSave={(reminder) => {
+            onAddReminder(reminder);
+            setEditingReminder(null);
+          }}
+          onClose={() => setEditingReminder(null)}
         />
       )}
     </section>

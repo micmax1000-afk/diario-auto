@@ -4519,3 +4519,7 @@ textarea {
 .cost-detail b { margin-inline-start: auto; padding-inline-start: 0.8rem; white-space: nowrap; }
 .cost-detail__total { border-top: 1px solid var(--border); padding-top: 0.3rem; font-weight: 700; }
 .chart-wrap .recharts-wrapper:focus, .chart-wrap .recharts-surface:focus, .chart-wrap :focus-visible { outline: none; }
+
+/* Messaggio "Eliminato · Annulla" */
+.undo-toast { position: fixed; left: 50%; bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 2000; display: flex; align-items: center; gap: 1rem; max-width: calc(100% - 2rem); padding: 0.55rem 0.6rem 0.55rem 1.1rem; border-radius: 999px; background: var(--text); color: var(--bg); font-size: 0.85rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); animation: contentFadeIn 0.15s ease; }
+.undo-toast button { border: none; border-radius: 999px; padding: 0.35rem 0.8rem; background: var(--amber); color: #1a1205; font: inherit; font-weight: 700; cursor: pointer; }

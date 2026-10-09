@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { CommuteSettings } from "../types";
 import CommuteRouteMap from "./CommuteRouteMap";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 interface Props {
   initial: CommuteSettings;
@@ -12,6 +13,7 @@ interface Props {
 
 export default function CommuteSettingsForm({ initial, onSave, onClose }: Props) {
   const { t } = useTranslation();
+  const cur = useCurrencySymbol();
   const [kmPerTrip, setKmPerTrip] = useState(String(initial.kmPerTrip || ""));
   const [tripsPerDay, setTripsPerDay] = useState(String(initial.tripsPerDay || 2));
   const [workDaysPerWeek, setWorkDaysPerWeek] = useState(String(initial.workDaysPerWeek || 6));
@@ -131,7 +133,7 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
               />
             </div>
             <div className="field">
-              <label htmlFor="commute-price">{t("commuteSettingsForm.fuelPrice")}</label>
+              <label htmlFor="commute-price">{t("commuteSettingsForm.fuelPrice", { cur })}</label>
               <input
                 id="commute-price"
                 type="number"

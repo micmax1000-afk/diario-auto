@@ -1,3 +1,4 @@
+import { localDateString } from "./dates";
 // Catalogo di scadenze/manutenzioni comuni con intervalli tipici suggeriti.
 // Sono valori orientativi generici (non specifici per marca/modello): l'utente
 // può sempre modificarli prima di salvare. Le etichette visualizzate vivono
@@ -37,7 +38,7 @@ export function computeDueFromCatalog(
   if (entry.months) {
     const due = new Date();
     due.setMonth(due.getMonth() + entry.months);
-    result.dueDate = due.toISOString().slice(0, 10);
+    result.dueDate = localDateString(due);
   }
   if (entry.km) {
     result.dueKm = currentKm + entry.km;

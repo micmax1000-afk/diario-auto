@@ -1,8 +1,10 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { isoToLocalDate, localDateString, localDateToIso } from "../utils/dates";
 import { useTranslation } from "react-i18next";
 import type { ChargingEntry, Vehicle } from "../types";
 import { generateId, getHomeChargingDefaults, setHomeChargingDefaults } from "../utils/storage";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 interface Props {
   vehicle: Vehicle;
@@ -13,8 +15,9 @@ interface Props {
 
 export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }: Props) {
   const { t } = useTranslation();
+  const cur = useCurrencySymbol();
   const isEditing = Boolean(initialEntry);
-  const [date, setDate] = useState(() => initialEntry?.date.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(() => (initialEntry ? isoToLocalDate(initialEntry.date) : localDateString()));
   const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
   const [pricePerKWh, setPricePerKWh] = useState(initialEntry ? String(initialEntry.pricePerKWh) : "");
   const [totalCost, setTotalCost] = useState(initialEntry ? String(initialEntry.totalCost) : "");
@@ -73,7 +76,7 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
     const entry: ChargingEntry = {
       id: initialEntry?.id ?? generateId(),
       vehicleId: vehicle.id,
-      date: new Date(date).toISOString(),
+      date: localDateToIso(date, initialEntry?.date),
       km: Math.round(kmValue),
       kWh: costValue / priceValue,
       pricePerKWh: priceValue,
@@ -133,7 +136,7 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
 
           <div className="field-row">
             <div className="field">
-              <label htmlFor="charge-price">{t("chargingForm.price")}</label>
+              <label htmlFor="charge-price">{t("chargingForm.price", { cur })}</label>
               <input
                 id="charge-price"
                 type="number"
@@ -144,7 +147,7 @@ export default function ChargingForm({ vehicle, initialEntry, onSave, onClose }:
               />
             </div>
             <div className="field">
-              <label htmlFor="charge-cost">{t("chargingForm.cost")}</label>
+              <label htmlFor="charge-cost">{t("chargingForm.cost", { cur })}</label>
               <input
                 id="charge-cost"
                 type="number"

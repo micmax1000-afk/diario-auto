@@ -19,6 +19,7 @@
 
 import { Capacitor } from "@capacitor/core";
 import { LocalNotifications } from "@capacitor/local-notifications";
+import { localDateString } from "./dates";
 
 const LAST_NOTIFIED_KEY = "diario-auto:reminder-notifications-sent";
 const NOTIFICATIONS_ENABLED_KEY = "diario-auto:notifications-enabled";
@@ -98,7 +99,7 @@ function getNotifiedToday(): Set<string> {
     const raw = localStorage.getItem(LAST_NOTIFIED_KEY);
     if (!raw) return new Set();
     const parsed = JSON.parse(raw) as { date: string; ids: string[] };
-    const today = new Date().toISOString().slice(0, 10);
+    const today = localDateString();
     if (parsed.date !== today) return new Set(); // reset ad ogni nuovo giorno
     return new Set(parsed.ids);
   } catch {
@@ -108,7 +109,7 @@ function getNotifiedToday(): Set<string> {
 
 function markNotifiedToday(ids: string[]): void {
   try {
-    const today = new Date().toISOString().slice(0, 10);
+    const today = localDateString();
     localStorage.setItem(LAST_NOTIFIED_KEY, JSON.stringify({ date: today, ids }));
   } catch {
     // ignorato

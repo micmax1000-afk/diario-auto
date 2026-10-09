@@ -1,26 +1,31 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { isoToLocalDate, localDateString, localDateToIso } from "../utils/dates";
 import { useTranslation } from "react-i18next";
 import type { ExpenseEntry, ExpenseCategory, Vehicle } from "../types";
 import { generateId } from "../utils/storage";
 import PhotoPicker from "./PhotoPicker";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 const CATEGORIES: ExpenseCategory[] = ["assicurazione", "bollo", "multa", "documenti", "altro"];
 
 interface Props {
   vehicle: Vehicle;
+  /** Se presente, il modulo modifica questa spesa invece di crearne una nuova. */
+  initialEntry?: ExpenseEntry;
   onSave: (entry: ExpenseEntry) => void;
   onClose: () => void;
 }
 
-export default function ExpenseForm({ vehicle, onSave, onClose }: Props) {
+export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose }: Props) {
   const { t } = useTranslation();
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-  const [category, setCategory] = useState<ExpenseCategory>("assicurazione");
-  const [description, setDescription] = useState("");
-  const [amount, setAmount] = useState("");
-  const [notes, setNotes] = useState("");
-  const [photo, setPhoto] = useState<string | null>(null);
+  const cur = useCurrencySymbol();
+  const [date, setDate] = useState(() => initialEntry ? isoToLocalDate(initialEntry.date) : localDateString());
+  const [category, setCategory] = useState<ExpenseCategory>(initialEntry?.category ?? "assicurazione");
+  const [description, setDescription] = useState(initialEntry?.description ?? "");
+  const [amount, setAmount] = useState(initialEntry ? String(initialEntry.amount) : "");
+  const [notes, setNotes] = useState(initialEntry?.notes ?? "");
+  const [photo, setPhoto] = useState<string | null>(initialEntry?.photo ?? null);
   const [error, setError] = useState("");
 
   function handleSubmit(e: FormEvent) {
@@ -37,9 +42,10 @@ export default function ExpenseForm({ vehicle, onSave, onClose }: Props) {
     }
 
     const entry: ExpenseEntry = {
-      id: generateId(),
+      ...initialEntry,
+      id: initialEntry?.id ?? generateId(),
       vehicleId: vehicle.id,
-      date: new Date(date).toISOString(),
+      date: localDateToIso(date, initialEntry?.date),
       category,
       description: description.trim(),
       amount: amountValue,
@@ -54,7 +60,7 @@ export default function ExpenseForm({ vehicle, onSave, onClose }: Props) {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="expense-form-title">
       <div className="modal">
         <div className="modal__header">
-          <h2 id="expense-form-title">{t("expenseForm.title")}</h2>
+          <h2 id="expense-form-title">{t(initialEntry ? "expenseForm.editTitle" : "expenseForm.title")}</h2>
           <button type="button" className="modal__close" onClick={onClose} aria-label={t("common.close")}>
             ×
           </button>
@@ -87,7 +93,7 @@ export default function ExpenseForm({ vehicle, onSave, onClose }: Props) {
           </div>
 
           <div className="field">
-            <label htmlFor="expense-amount">{t("expenseForm.amount")}</label>
+            <label htmlFor="expense-amount">{t("expenseForm.amount", { cur })}</label>
             <input
               id="expense-amount"
               type="number"

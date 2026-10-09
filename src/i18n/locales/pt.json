@@ -137,7 +137,7 @@
     "periodLast12": "Últimos 12 meses",
     "periodAll": "Sempre",
     "fillupsCount": "{{count}} reabastecimentos",
-    "pricePerUnitLabel": "€/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}"
   },
   "fuelForm": {
     "title": "Novo abastecimento",
@@ -146,7 +146,7 @@
     "source": "Alimentação usada",
     "liters": "Litros *",
     "kwh": "kWh *",
-    "cost": "Custo total (€) *",
+    "cost": "Custo total ({{cur}}) *",
     "fullTank": "Cheio (serve para calcular o consumo)",
     "notes": "Notas",
     "notesPlaceholder": "por exemplo, autoestrada, posto de abastecimento...",
@@ -157,7 +157,7 @@
     "save": "Guardar abastecimento",
     "cancel": "Anular",
     "titleEdit": "Alterar o abastecimento",
-    "pricePerUnit": "€/{{unit}} *",
+    "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (calculados)",
     "errorPrice": "Introduza um preço válido para {{unit}}.",
     "errorTotalCost": "Introduza um custo total válido."
@@ -169,7 +169,12 @@
     "back": "Voltar",
     "pressBackAgainToExit": "Volta a premir «Voltar» para sair",
     "takePhoto": "Tirar foto",
-    "chooseFromGallery": "Escolher da galeria"
+    "chooseFromGallery": "Escolher da galeria",
+    "deleted": "Eliminado",
+    "undo": "Anular",
+    "edit": "Editar",
+    "menu": "Menu",
+    "notifications": "Notificações"
   },
   "backup": {
     "title": "Cópias de segurança e exportação"
@@ -226,9 +231,9 @@
     "description": "Descrição *",
     "descriptionPlaceholder": "por exemplo, substituição das pastilhas de travão dianteiras",
     "splitCost": "Separar peças de substituição e mão-de-obra",
-    "parts": "Peças de reposição (€)",
-    "labor": "Mão-de-obra (€)",
-    "totalCost": "Custo total (€) *",
+    "parts": "Peças de reposição ({{cur}})",
+    "labor": "Mão-de-obra ({{cur}})",
+    "totalCost": "Custo total ({{cur}}) *",
     "workshop": "Oficina",
     "workshopPlaceholder": "por exemplo, Oficina Rossi",
     "notes": "Notas",
@@ -242,7 +247,8 @@
     "errorSplitCost": "Introduza valores válidos para peças de substituição e mão-de-obra.",
     "errorCost": "Introduza um custo válido.",
     "save": "Poupar na manutenção",
-    "cancel": "Anular"
+    "cancel": "Anular",
+    "editTitle": "Editar manutenção"
   },
   "expenseCategory": {
     "assicurazione": "Seguro",
@@ -270,7 +276,7 @@
     "category": "Categoria",
     "description": "Descrição *",
     "descriptionPlaceholder": "por exemplo, Seguro de Responsabilidade Civil Automóvel 2026",
-    "amount": "Montante (€) *",
+    "amount": "Montante ({{cur}}) *",
     "notes": "Notas",
     "photo": "Fotografias (fatura, ata, etc.)",
     "photoCompressing": "Compacto a imagem…",
@@ -280,7 +286,8 @@
     "errorDescription": "Indique do que se trata (por exemplo, Seguro RCA 2026).",
     "errorAmount": "Introduza um valor válido.",
     "save": "Guardar despesa",
-    "cancel": "Anular"
+    "cancel": "Anular",
+    "editTitle": "Editar despesa"
   },
   "reminders": {
     "title": "Prazos",
@@ -317,7 +324,8 @@
     "errorKm": "Introduza uma quilometragem de validade válida.",
     "save": "Guardar prazo",
     "cancel": "Anular",
-    "months": "meses"
+    "months": "meses",
+    "editTitle": "Editar prazo"
   },
   "summary": {
     "title": "Resumo dos custos",
@@ -566,8 +574,8 @@
     "date": "Data",
     "km": "Quilómetros atuais *",
     "atHome": "Carregamento em casa (wallbox/tomada)",
-    "price": "€/kWh *",
-    "cost": "Custo total (€) *",
+    "price": "{{cur}}/kWh *",
+    "cost": "Custo total ({{cur}}) *",
     "kwhComputed": "kWh (calculados)",
     "power": "Potência (kW)",
     "powerPlaceholderHome": "ex. 7.4 (wallbox)",
@@ -632,7 +640,7 @@
     "routeLabel": "Percurso: {{label}}",
     "tripsPerDay": "Viagens por dia *",
     "workDays": "Dias úteis/semana *",
-    "fuelPrice": "Preço do combustível (€/litro) *",
+    "fuelPrice": "Preço do combustível ({{cur}}/litro) *",
     "fuelPricePlaceholder": "por exemplo, 1 750",
     "estimatedConsumption": "Consumo estimado (km/l, opcional)",
     "estimatedConsumptionPlaceholder": "ex. 15 (basta uma estimativa aproximada)",
@@ -651,7 +659,7 @@
     "kmPerUnit": "Km por 1 {{unit}} *",
     "kmPerUnitPlaceholderLiter": "ex. 18",
     "kmPerUnitPlaceholderKwh": "ex. 6",
-    "pricePerUnit": "Preço por 1 {{unit}} (€) *",
+    "pricePerUnit": "Preço por 1 {{unit}} ({{cur}}) *",
     "pricePerUnitPlaceholderLiter": "por exemplo, 0,700",
     "pricePerUnitPlaceholderKwh": "por exemplo, 0,250",
     "note": "Nota (opcional)",
@@ -972,5 +980,22 @@
     "hint": "Arraste a foto para a mover, use dois dedos ou o controlo deslizante para ampliar.",
     "zoom": "Zoom",
     "confirm": "Confirmar"
+  },
+  "obdText": {
+    "catalyst": "Catalisador",
+    "heatedCatalyst": "Catalisador aquecido",
+    "evap": "Sistema evaporativo (EVAP)",
+    "secondaryAir": "Ar secundário",
+    "o2Sensor": "Sonda lambda (O2)",
+    "o2Heater": "Aquecimento da sonda lambda",
+    "egr": "Recirculação dos gases de escape (EGR)",
+    "automatic": "Automático",
+    "noWebBluetooth": "Este navegador não suporta Web Bluetooth. Use o Chrome ou o Edge no Android.",
+    "nativeOnlyInApp": "O Bluetooth nativo só está disponível na app Android, não no navegador.",
+    "gattFailed": "Falha na ligação ao adaptador.",
+    "adapterUnknown": "Adaptador não reconhecido: nenhum serviço Bluetooth compatível encontrado.",
+    "notConnected": "Não ligado.",
+    "pairedDevicesError": "Não foi possível ler os dispositivos emparelhados.",
+    "timeout": "Sem resposta ao comando \"{{command}}\"."
   }
 }

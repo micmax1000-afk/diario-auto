@@ -1,9 +1,11 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { isoToLocalDate, localDateString, localDateToIso } from "../utils/dates";
 import { useTranslation } from "react-i18next";
 import type { MaintenanceEntry, MaintenanceCategory, Vehicle } from "../types";
 import { generateId } from "../utils/storage";
 import PhotoPicker from "./PhotoPicker";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 const CATEGORIES: MaintenanceCategory[] = [
   "tagliando", "gomme", "freni", "olio", "batteria", "raffreddamento", "software", "carrozzeria", "revisione", "altro",
@@ -11,23 +13,26 @@ const CATEGORIES: MaintenanceCategory[] = [
 
 interface Props {
   vehicle: Vehicle;
+  /** Se presente, il modulo modifica questa manutenzione invece di crearne una nuova. */
+  initialEntry?: MaintenanceEntry;
   onSave: (entry: MaintenanceEntry) => void;
   onClose: () => void;
 }
 
-export default function MaintenanceForm({ vehicle, onSave, onClose }: Props) {
+export default function MaintenanceForm({ vehicle, initialEntry, onSave, onClose }: Props) {
   const { t } = useTranslation();
-  const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
-  const [km, setKm] = useState(String(vehicle.currentKm));
-  const [category, setCategory] = useState<MaintenanceCategory>("tagliando");
-  const [description, setDescription] = useState("");
-  const [splitCost, setSplitCost] = useState(false);
-  const [cost, setCost] = useState("");
-  const [partsCost, setPartsCost] = useState("");
-  const [laborCost, setLaborCost] = useState("");
-  const [workshop, setWorkshop] = useState("");
-  const [notes, setNotes] = useState("");
-  const [photo, setPhoto] = useState<string | null>(null);
+  const cur = useCurrencySymbol();
+  const [date, setDate] = useState(() => initialEntry ? isoToLocalDate(initialEntry.date) : localDateString());
+  const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
+  const [category, setCategory] = useState<MaintenanceCategory>(initialEntry?.category ?? "tagliando");
+  const [description, setDescription] = useState(initialEntry?.description ?? "");
+  const [splitCost, setSplitCost] = useState(initialEntry?.partsCost !== undefined || initialEntry?.laborCost !== undefined);
+  const [cost, setCost] = useState(initialEntry ? String(initialEntry.cost) : "");
+  const [partsCost, setPartsCost] = useState(initialEntry?.partsCost !== undefined ? String(initialEntry.partsCost) : "");
+  const [laborCost, setLaborCost] = useState(initialEntry?.laborCost !== undefined ? String(initialEntry.laborCost) : "");
+  const [workshop, setWorkshop] = useState(initialEntry?.workshop ?? "");
+  const [notes, setNotes] = useState(initialEntry?.notes ?? "");
+  const [photo, setPhoto] = useState<string | null>(initialEntry?.photo ?? null);
   const [error, setError] = useState("");
 
   function handleSubmit(e: FormEvent) {
@@ -67,9 +72,10 @@ export default function MaintenanceForm({ vehicle, onSave, onClose }: Props) {
     }
 
     const entry: MaintenanceEntry = {
-      id: generateId(),
+      ...initialEntry,
+      id: initialEntry?.id ?? generateId(),
       vehicleId: vehicle.id,
-      date: new Date(date).toISOString(),
+      date: localDateToIso(date, initialEntry?.date),
       km: Math.round(kmValue),
       category,
       description: description.trim(),
@@ -88,7 +94,7 @@ export default function MaintenanceForm({ vehicle, onSave, onClose }: Props) {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="maintenance-form-title">
       <div className="modal">
         <div className="modal__header">
-          <h2 id="maintenance-form-title">{t("maintenanceForm.title")}</h2>
+          <h2 id="maintenance-form-title">{t(initialEntry ? "maintenanceForm.editTitle" : "maintenanceForm.title")}</h2>
           <button type="button" className="modal__close" onClick={onClose} aria-label={t("common.close")}>
             ×
           </button>
@@ -147,7 +153,7 @@ export default function MaintenanceForm({ vehicle, onSave, onClose }: Props) {
           {splitCost ? (
             <div className="field-row">
               <div className="field">
-                <label htmlFor="maint-parts">{t("maintenanceForm.parts")}</label>
+                <label htmlFor="maint-parts">{t("maintenanceForm.parts", { cur })}</label>
                 <input
                   id="maint-parts"
                   type="number"
@@ -158,7 +164,7 @@ export default function MaintenanceForm({ vehicle, onSave, onClose }: Props) {
                 />
               </div>
               <div className="field">
-                <label htmlFor="maint-labor">{t("maintenanceForm.labor")}</label>
+                <label htmlFor="maint-labor">{t("maintenanceForm.labor", { cur })}</label>
                 <input
                   id="maint-labor"
                   type="number"
@@ -171,7 +177,7 @@ export default function MaintenanceForm({ vehicle, onSave, onClose }: Props) {
             </div>
           ) : (
             <div className="field">
-              <label htmlFor="maint-cost">{t("maintenanceForm.totalCost")}</label>
+              <label htmlFor="maint-cost">{t("maintenanceForm.totalCost", { cur })}</label>
               <input
                 id="maint-cost"
                 type="number"

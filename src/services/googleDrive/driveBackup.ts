@@ -2,6 +2,7 @@ import { Capacitor } from "@capacitor/core";
 import { GOOGLE_DRIVE_CLIENT_ID, GOOGLE_DRIVE_SCOPE, isGoogleDriveConfigured } from "./config";
 import type { TokenResponse } from "./googleIdentityTypes";
 import NativeGoogleDriveAuth from "./nativeGoogleDriveAuth";
+import { localDateString } from "../../utils/dates";
 
 const GIS_SCRIPT_URL = "https://accounts.google.com/gsi/client";
 const DRIVE_FILE_NAME_PREFIX = "diario-auto-backup-";
@@ -103,7 +104,7 @@ const MULTIPART_MAX_BYTES = 4 * 1024 * 1024;
 /** Carica il backup JSON su Google Drive dell'utente (nella sezione "File creati da questa app", non nel resto del Drive). */
 export async function uploadBackupToDrive(jsonContent: string): Promise<void> {
   const token = await getAccessToken();
-  const filename = `${DRIVE_FILE_NAME_PREFIX}${new Date().toISOString().slice(0, 10)}.json`;
+  const filename = `${DRIVE_FILE_NAME_PREFIX}${localDateString()}.json`;
   const metadata = { name: filename, mimeType: "application/json" };
   const content = new Blob([jsonContent], { type: "application/json" });
 

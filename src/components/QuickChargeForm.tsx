@@ -9,6 +9,7 @@ import { getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
 import ActionGridIcon from "./ActionGridIcon";
 import VehicleSwitcher from "./VehicleSwitcher";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 interface Props {
   vehicle: Vehicle;
@@ -27,6 +28,7 @@ function formatEuro(value: number, locale: string) {
 
 export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
+  const cur = useCurrencySymbol();
   const locale = getNumberLocale(i18n.language);
   const { currency } = useAppSettings();
   const [pricePerKWh, setPricePerKWh] = useState("");
@@ -142,7 +144,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
 
         <div className="quick-entry-inputs">
           <label className="quick-entry-input">
-            <span>{t("chargingForm.price")}</span>
+            <span>{t("chargingForm.price", { cur })}</span>
             <div className="quick-entry-input__row">
               <input
                 type="number"
@@ -156,7 +158,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
             </div>
           </label>
           <label className="quick-entry-input">
-            <span>{t("chargingForm.cost")}</span>
+            <span>{t("chargingForm.cost", { cur })}</span>
             <div className="quick-entry-input__row">
               <input
                 type="number"

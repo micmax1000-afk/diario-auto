@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { Reminder, ReminderType, Vehicle } from "../types";
 import { generateId } from "../utils/storage";
+import { isoToLocalDate, localDateToIso } from "../utils/dates";
 import { getNumberLocale } from "../utils/locale";
 import { kmToDisplayDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -11,25 +12,27 @@ import { REMINDER_CATALOG, computeDueFromCatalog } from "../utils/reminderCatalo
 
 interface Props {
   vehicle: Vehicle;
+  /** Se presente, il modulo modifica questa scadenza invece di crearne una nuova. */
+  initialReminder?: Reminder;
   onSave: (reminder: Reminder) => void;
   onClose: () => void;
 }
 
-export default function ReminderForm({ vehicle, onSave, onClose }: Props) {
+export default function ReminderForm({ vehicle, initialReminder, onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit } = useAppSettings();
-  const [showCatalog, setShowCatalog] = useState(true);
-  const [catalogKey, setCatalogKey] = useState<string | undefined>(undefined);
-  const [label, setLabel] = useState("");
-  const [type, setType] = useState<ReminderType>("data");
-  const [dueDate, setDueDate] = useState("");
-  const [dueKm, setDueKm] = useState("");
-  const [notes, setNotes] = useState("");
+  const [showCatalog, setShowCatalog] = useState(!initialReminder);
+  const [catalogKey, setCatalogKey] = useState<string | undefined>(initialReminder?.catalogKey);
+  const [label, setLabel] = useState(initialReminder?.label ?? "");
+  const [type, setType] = useState<ReminderType>(initialReminder?.type ?? "data");
+  const [dueDate, setDueDate] = useState(initialReminder?.dueDate ? isoToLocalDate(initialReminder.dueDate) : "");
+  const [dueKm, setDueKm] = useState(initialReminder?.dueKm !== undefined ? String(initialReminder.dueKm) : "");
+  const [notes, setNotes] = useState(initialReminder?.notes ?? "");
   const [error, setError] = useState("");
 
-  const [repeat, setRepeat] = useState(false);
-  const [repeatMonths, setRepeatMonths] = useState("");
-  const [repeatKm, setRepeatKm] = useState("");
+  const [repeat, setRepeat] = useState(Boolean(initialReminder?.repeatMonths || initialReminder?.repeatKm));
+  const [repeatMonths, setRepeatMonths] = useState(initialReminder?.repeatMonths ? String(initialReminder.repeatMonths) : "");
+  const [repeatKm, setRepeatKm] = useState(initialReminder?.repeatKm ? String(initialReminder.repeatKm) : "");
 
   function applyCatalogEntry(key: string) {
     const entry = REMINDER_CATALOG.find((e) => e.key === key);
@@ -76,14 +79,15 @@ export default function ReminderForm({ vehicle, onSave, onClose }: Props) {
     }
 
     const reminder: Reminder = {
-      id: generateId(),
+      ...initialReminder,
+      id: initialReminder?.id ?? generateId(),
       vehicleId: vehicle.id,
       label: label.trim(),
       type,
-      dueDate: type === "data" ? new Date(dueDate).toISOString() : undefined,
+      dueDate: type === "data" ? localDateToIso(dueDate, initialReminder?.dueDate) : undefined,
       dueKm: type === "km" ? Math.round(Number(dueKm)) : undefined,
       notes: notes.trim() || undefined,
-      completed: false,
+      completed: initialReminder?.completed ?? false,
       repeatMonths: repeat && repeatMonths.trim() ? Number(repeatMonths) : undefined,
       repeatKm: repeat && repeatKm.trim() ? Number(repeatKm) : undefined,
       catalogKey,
@@ -96,7 +100,7 @@ export default function ReminderForm({ vehicle, onSave, onClose }: Props) {
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="reminder-form-title">
       <div className="modal">
         <div className="modal__header">
-          <h2 id="reminder-form-title">{t("reminderForm.title")}</h2>
+          <h2 id="reminder-form-title">{t(initialReminder ? "reminderForm.editTitle" : "reminderForm.title")}</h2>
           <button type="button" className="modal__close" onClick={onClose} aria-label={t("common.close")}>
             ×
           </button>

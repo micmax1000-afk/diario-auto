@@ -137,7 +137,7 @@
     "periodLast12": "Letzte 12 Monate",
     "periodAll": "Immer",
     "fillupsCount": "{{count}} Nachfüllungen",
-    "pricePerUnitLabel": "€/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}"
   },
   "fuelForm": {
     "title": "Neuer Nachschub",
@@ -146,7 +146,7 @@
     "source": "Gebrauchte Stromversorgung",
     "liters": "Liter *",
     "kwh": "kWh *",
-    "cost": "Gesamtkosten (€) *",
+    "cost": "Gesamtkosten ({{cur}}) *",
     "fullTank": "Voll (wird zur Verbrauchsberechnung benötigt)",
     "notes": "Anmerkungen",
     "notesPlaceholder": "z. B. Autobahn, Tankstelle...",
@@ -157,7 +157,7 @@
     "save": "Tankstopp speichern",
     "cancel": "Abbrechen",
     "titleEdit": "Betankung ändern",
-    "pricePerUnit": "€/{{unit}} *",
+    "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (berechnet)",
     "errorPrice": "Gib einen gültigen Preis für {{unit}} ein.",
     "errorTotalCost": "Geben Sie einen gültigen Gesamtbetrag ein."
@@ -169,7 +169,12 @@
     "back": "Zurück",
     "pressBackAgainToExit": "Drücke erneut die Zurück-Taste, um die App zu verlassen",
     "takePhoto": "Foto aufnehmen",
-    "chooseFromGallery": "Aus Galerie wählen"
+    "chooseFromGallery": "Aus Galerie wählen",
+    "deleted": "Gelöscht",
+    "undo": "Rückgängig",
+    "edit": "Bearbeiten",
+    "menu": "Menü",
+    "notifications": "Benachrichtigungen"
   },
   "backup": {
     "title": "Sicherung und Export"
@@ -226,9 +231,9 @@
     "description": "Beschreibung *",
     "descriptionPlaceholder": "z. B. Austausch der vorderen Bremsbeläge",
     "splitCost": "Trenne Ersatzteile und Arbeitskosten",
-    "parts": "Ersatzteile (€)",
-    "labor": "Arbeitskosten (€)",
-    "totalCost": "Gesamtkosten (€) *",
+    "parts": "Ersatzteile ({{cur}})",
+    "labor": "Arbeitskosten ({{cur}})",
+    "totalCost": "Gesamtkosten ({{cur}}) *",
     "workshop": "Werkstatt",
     "workshopPlaceholder": "z. B. Werkstatt Rossi",
     "notes": "Anmerkungen",
@@ -242,7 +247,8 @@
     "errorSplitCost": "Geben Sie gültige Beträge für Ersatzteile und Arbeitskosten ein.",
     "errorCost": "Geben Sie einen gültigen Preis ein.",
     "save": "Wartungsarm",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "editTitle": "Wartung bearbeiten"
   },
   "expenseCategory": {
     "assicurazione": "Versicherung",
@@ -270,7 +276,7 @@
     "category": "Kategorie",
     "description": "Beschreibung *",
     "descriptionPlaceholder": "z. B. Kfz-Haftpflichtversicherung 2026",
-    "amount": "Betrag (€) *",
+    "amount": "Betrag ({{cur}}) *",
     "notes": "Anmerkungen",
     "photo": "Fotos (Rechnung, Protokoll usw.)",
     "photoCompressing": "Ich komprimiere das Bild…",
@@ -280,7 +286,8 @@
     "errorDescription": "Geben Sie an, um was es sich handelt (z. B. Kfz-Haftpflichtversicherung 2026).",
     "errorAmount": "Geben Sie einen gültigen Betrag ein.",
     "save": "Ausgabe speichern",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "editTitle": "Ausgabe bearbeiten"
   },
   "reminders": {
     "title": "Fristen",
@@ -317,7 +324,8 @@
     "errorKm": "Geben Sie eine gültige Kilometerstandsgrenze ein.",
     "save": "Frist speichern",
     "cancel": "Abbrechen",
-    "months": "Monate"
+    "months": "Monate",
+    "editTitle": "Frist bearbeiten"
   },
   "summary": {
     "title": "Kostenübersicht",
@@ -566,8 +574,8 @@
     "date": "Datum",
     "km": "Aktuelle Kilometer *",
     "atHome": "Aufladen zu Hause (Wallbox/Steckdose)",
-    "price": "€/kWh *",
-    "cost": "Gesamtkosten (€) *",
+    "price": "{{cur}}/kWh *",
+    "cost": "Gesamtkosten ({{cur}}) *",
     "kwhComputed": "kWh (berechnet)",
     "power": "Leistung (kW)",
     "powerPlaceholderHome": "Beispiel 7.4 (Wallbox)",
@@ -632,7 +640,7 @@
     "routeLabel": "Route: {{label}}",
     "tripsPerDay": "Tägliche Fahrten *",
     "workDays": "Arbeitstage/Woche *",
-    "fuelPrice": "Kraftstoffpreis (€/Liter) *",
+    "fuelPrice": "Kraftstoffpreis ({{cur}}/Liter) *",
     "fuelPricePlaceholder": "z. B. 1.750",
     "estimatedConsumption": "Geschätzter Kraftstoffverbrauch (km/l, optional)",
     "estimatedConsumptionPlaceholder": "Beispiel 15 (eine grobe Schätzung reicht aus)",
@@ -651,7 +659,7 @@
     "kmPerUnit": "km pro 1 {{unit}} *",
     "kmPerUnitPlaceholderLiter": "Beispiel 18",
     "kmPerUnitPlaceholderKwh": "Beispiel 6",
-    "pricePerUnit": "Preis pro 1 {{unit}} (€) *",
+    "pricePerUnit": "Preis pro 1 {{unit}} ({{cur}}) *",
     "pricePerUnitPlaceholderLiter": "z. B. 0,700",
     "pricePerUnitPlaceholderKwh": "z. B. 0,250",
     "note": "Anmerkung (optional)",
@@ -972,5 +980,22 @@
     "hint": "Ziehe das Foto, um es zu verschieben; mit zwei Fingern oder dem Schieberegler vergrößern.",
     "zoom": "Zoom",
     "confirm": "Bestätigen"
+  },
+  "obdText": {
+    "catalyst": "Katalysator",
+    "heatedCatalyst": "Beheizter Katalysator",
+    "evap": "Verdunstungssystem (EVAP)",
+    "secondaryAir": "Sekundärluft",
+    "o2Sensor": "Lambdasonde (O2)",
+    "o2Heater": "Lambdasonden-Heizung",
+    "egr": "Abgasrückführung (AGR)",
+    "automatic": "Automatisch",
+    "noWebBluetooth": "Dieser Browser unterstützt kein Web Bluetooth. Verwende Chrome oder Edge unter Android.",
+    "nativeOnlyInApp": "Natives Bluetooth ist nur in der Android-App verfügbar, nicht im Browser.",
+    "gattFailed": "Verbindung zum Adapter fehlgeschlagen.",
+    "adapterUnknown": "Adapter nicht erkannt: kein kompatibler Bluetooth-Dienst gefunden.",
+    "notConnected": "Nicht verbunden.",
+    "pairedDevicesError": "Gekoppelte Geräte können nicht gelesen werden.",
+    "timeout": "Keine Antwort auf den Befehl „{{command}}“."
   }
 }
