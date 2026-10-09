@@ -8,7 +8,9 @@ import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { isRtlLanguage } from "../i18n";
 import { generateMaintenancePassportPdf } from "../utils/vehiclePassport";
+import { describeDtc } from "../utils/dtcCodes";
 import { exportPdfBytes } from "../utils/nativeFileExport";
+import { getObdProfile } from "../utils/storage";
 import { useProStatus } from "../services/billing/useProStatus";
 import {
   areNotificationsEnabled,
@@ -181,6 +183,8 @@ export default function VehicleDetail({
     try {
       const locale = getNumberLocale(i18n.language);
       const sorted = [...maintenanceEntries].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      const dtcHistory = (await getObdProfile(vehicle.id))?.dtcHistory ?? [];
+      const dtcModeKeys = { "03": "live.dtcModes.stored", "07": "live.dtcModes.pending", "0A": "live.dtcModes.permanent" } as const;
 
       const bytes = await generateMaintenancePassportPdf({
         vehicleName: vehicle.name,
@@ -197,6 +201,12 @@ export default function VehicleDetail({
           description: e.description,
           costLabel: formatMoney(e.cost),
           workshop: e.workshop ?? "",
+        })),
+        dtcReadings: dtcHistory.map((r) => ({
+          dateLabel: new Date(r.date).toLocaleDateString(locale),
+          kmLabel: formatDistance(r.km, distanceUnit, locale),
+          modeLabel: t(dtcModeKeys[r.mode]),
+          codes: r.codes.map((code) => ({ code, description: describeDtc(code, i18n.language) ?? t("passport.dtcUnknown") })),
         })),
         labels: {
           title: t("passport.title"),
@@ -215,6 +225,8 @@ export default function VehicleDetail({
           totalCost: t("passport.totalCost"),
           generatedBy: t("passport.generatedBy"),
           noEntries: t("passport.noEntries"),
+          dtcTitle: t("passport.dtcTitle"),
+          dtcCleared: t("passport.dtcCleared"),
         },
       });
 

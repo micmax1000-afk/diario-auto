@@ -8,6 +8,7 @@ import { exportTextFile } from "../utils/nativeFileExport";
 import PremiumScreen from "./PremiumScreen";
 import {
   uploadBackupToDrive,
+  DRIVE_BACKUPS_TO_KEEP,
   listBackupsOnDrive,
   downloadBackupFromDrive,
   DriveError,
@@ -169,7 +170,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
       await uploadBackupToDrive(JSON.stringify(backup, null, 2));
       await setLastBackupDate(new Date().toISOString());
       await refreshStatus();
-      setMessage(t("backupPanel.driveSavedOk"));
+      setMessage(t("backupPanel.driveSavedOk", { n: DRIVE_BACKUPS_TO_KEEP }));
     } catch (err) {
       setError(driveErrorMessage(err));
     } finally {

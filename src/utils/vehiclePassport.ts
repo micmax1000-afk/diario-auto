@@ -9,6 +9,14 @@ export interface PassportEntry {
   workshop: string;
 }
 
+export interface PassportDtcReading {
+  dateLabel: string;
+  kmLabel: string;
+  modeLabel: string;
+  /** Vuoto = lettura senza codici dopo una che ne aveva. */
+  codes: { code: string; description: string }[];
+}
+
 export interface PassportLabels {
   title: string;
   subtitle: string;
@@ -26,6 +34,8 @@ export interface PassportLabels {
   totalCost: string;
   generatedBy: string;
   noEntries: string;
+  dtcTitle: string;
+  dtcCleared: string;
 }
 
 export interface PassportParams {
@@ -37,6 +47,8 @@ export interface PassportParams {
   entries: PassportEntry[];
   totalCostLabel: string;
   generatedOnLabel: string;
+  /** Storico dei codici errore OBD, dal più vecchio al più recente. Sezione omessa se vuoto. */
+  dtcReadings?: PassportDtcReading[];
   labels: PassportLabels;
 }
 
@@ -95,10 +107,10 @@ export async function generateMaintenancePassportPdf(params: PassportParams): Pr
     y = PAGE_HEIGHT - MARGIN;
   }
 
-  function ensureSpace(needed: number) {
+  function ensureSpace(needed: number, withTableHeader = true) {
     if (y - needed < MARGIN + 30) {
       newPage();
-      drawTableHeader();
+      if (withTableHeader) drawTableHeader();
     }
   }
 
@@ -210,6 +222,52 @@ export async function generateMaintenancePassportPdf(params: PassportParams): Pr
     font: fontBold,
     color: DARK,
   });
+
+  // Storico codici errore OBD
+  const dtcReadings = params.dtcReadings ?? [];
+  if (dtcReadings.length > 0) {
+    y -= 34;
+    ensureSpace(60, false);
+    page.drawText(labels.dtcTitle, { x: MARGIN, y, size: 13, font: fontBold, color: DARK });
+    y -= 8;
+    page.drawLine({ start: { x: MARGIN, y }, end: { x: PAGE_WIDTH - MARGIN, y }, thickness: 1.5, color: AMBER });
+    y -= 16;
+
+    const codeWidth = 52;
+    const descWidth = PAGE_WIDTH - MARGIN * 2 - codeWidth - 12;
+    for (const reading of dtcReadings) {
+      const rows = reading.codes.map((c) => ({ code: c.code, lines: wrapText(c.description, fontRegular, 8.5, descWidth) }));
+      const bodyHeight = rows.length === 0 ? 12 : rows.reduce((h, r) => h + r.lines.length * 11 + 2, 0);
+      ensureSpace(bodyHeight + 24, false);
+
+      page.drawText(`${reading.dateLabel}   ·   ${reading.kmLabel}   ·   ${reading.modeLabel}`, {
+        x: MARGIN,
+        y,
+        size: 9,
+        font: fontBold,
+        color: DARK,
+      });
+      y -= 13;
+
+      if (rows.length === 0) {
+        page.drawText(labels.dtcCleared, { x: MARGIN + 6, y, size: 8.5, font: fontRegular, color: GRAY });
+        y -= 12;
+      }
+      for (const row of rows) {
+        page.drawText(row.code, { x: MARGIN + 6, y, size: 8.5, font: fontBold, color: rgb(0.75, 0.2, 0.15) });
+        let lineY = y;
+        for (const line of row.lines) {
+          page.drawText(line, { x: MARGIN + 6 + codeWidth, y: lineY, size: 8.5, font: fontRegular, color: DARK });
+          lineY -= 11;
+        }
+        y -= row.lines.length * 11 + 2;
+      }
+
+      y -= 6;
+      page.drawLine({ start: { x: MARGIN, y: y + 2 }, end: { x: PAGE_WIDTH - MARGIN, y: y + 2 }, thickness: 0.5, color: LIGHT_LINE });
+      y -= 10;
+    }
+  }
 
   // Piè di pagina su tutte le pagine generate
   const pages = doc.getPages();

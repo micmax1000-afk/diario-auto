@@ -365,7 +365,7 @@
     "driveSave": "Auf Drive speichern",
     "driveRestore": "Von Drive wiederherstellen",
     "driveWorking": "Im Gange…",
-    "driveSavedOk": "Backup auf Google Drive gespeichert.",
+    "driveSavedOk": "Backup in Google Drive gespeichert. Die letzten {{n}} bleiben erhalten, ältere landen im Drive-Papierkorb.",
     "driveNoBackups": "Auf Google Drive wurde kein Backup gefunden.",
     "driveNotConfigured": "Diese Funktion ist auf diesem Gerät noch nicht aktiviert – der Dienst wird gerade eingerichtet.",
     "driveCancelled": "Der Zugriff auf Google wurde abgebrochen.",
@@ -912,7 +912,10 @@
     "totalCost": "Gesamtausgaben",
     "generatedBy": "Erstellt von Diario Auto",
     "noEntries": "Es wurden keine Wartungsarbeiten erfasst.",
-    "exportFailed": "Der Export ist fehlgeschlagen. Bitte versuche es erneut."
+    "exportFailed": "Der Export ist fehlgeschlagen. Bitte versuche es erneut.",
+    "dtcTitle": "OBD-Diagnose: Fehlercode-Verlauf",
+    "dtcCleared": "Keine Codes: seit der vorherigen Auslesung behoben.",
+    "dtcUnknown": "Herstellerspezifischer Code."
   },
   "obdNotice": {
     "title": "Bevor du dich verbindest",
