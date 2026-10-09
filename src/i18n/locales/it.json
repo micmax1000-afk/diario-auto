@@ -106,7 +106,9 @@
     "notificationsNotSupported": "Le notifiche non sono disponibili su questo dispositivo.",
     "notificationsDenied": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui.",
     "notificationsOnHintNative": "Attive: le scadenze con data ricevono una notifica anche ad app chiusa. Quelle a chilometraggio vengono controllate solo quando apri l'app.",
-    "notificationsDeniedNative": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui."
+    "notificationsDeniedNative": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui.",
+    "fuelSubtitleBoth": "Carburante e ricarica elettrica",
+    "fuelSubtitleFuel": "Rifornimenti di carburante e consumi"
   },
   "fuel": {
     "title": "Rifornimenti",

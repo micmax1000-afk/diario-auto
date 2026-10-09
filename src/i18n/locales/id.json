@@ -106,7 +106,9 @@
     "notificationsNotSupported": "Notifikasi tidak tersedia di perangkat ini.",
     "notificationsDenied": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini.",
     "notificationsOnHintNative": "Aktif: tenggat waktu berdasarkan tanggal akan tetap mengirimkan pemberitahuan meskipun aplikasi dalam keadaan tertutup. Tenggat waktu berdasarkan jarak tempuh hanya akan diperiksa saat Anda membuka aplikasi.",
-    "notificationsDeniedNative": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini."
+    "notificationsDeniedNative": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini.",
+    "fuelSubtitleBoth": "Bahan bakar dan pengisian listrik",
+    "fuelSubtitleFuel": "Pengisian bahan bakar dan konsumsi"
   },
   "fuel": {
     "title": "Pasokan",

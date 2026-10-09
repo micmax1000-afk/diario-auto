@@ -106,7 +106,9 @@
     "notificationsNotSupported": "Las notificaciones no están disponibles en este dispositivo.",
     "notificationsDenied": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí.",
     "notificationsOnHintNative": "Activas: las citas con fecha reciben una notificación incluso cuando la aplicación está cerrada. Las relacionadas con el kilometraje solo se comprueban al abrir la aplicación.",
-    "notificationsDeniedNative": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí."
+    "notificationsDeniedNative": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí.",
+    "fuelSubtitleBoth": "Combustible y recarga eléctrica",
+    "fuelSubtitleFuel": "Repostajes y consumo"
   },
   "fuel": {
     "title": "Abastecimiento",

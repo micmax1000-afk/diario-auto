@@ -17,6 +17,8 @@ type Row =
 interface Props {
   fuelEntries: FuelEntry[];
   chargingEntries: ChargingEntry[];
+  /** Mostra i filtri Tutti / Carburante / Elettrico (inutili per un veicolo che non si ricarica). */
+  showSourceFilters?: boolean;
   onEditFuel: (entry: FuelEntry) => void;
   onDeleteFuel: (id: string) => void;
   onEditCharging: (entry: ChargingEntry) => void;
@@ -26,6 +28,7 @@ interface Props {
 export default function FuelChargeList({
   fuelEntries,
   chargingEntries,
+  showSourceFilters = true,
   onEditFuel,
   onDeleteFuel,
   onEditCharging,
@@ -79,18 +82,20 @@ export default function FuelChargeList({
 
   return (
     <div className="fc-list">
-      <div className="fc-list__filters">
-        {(["all", "fuel", "electric"] as Filter[]).map((f) => (
-          <button
-            key={f}
-            type="button"
-            className={`fc-list__filter ${filter === f ? "is-active" : ""}`}
-            onClick={() => setFilter(f)}
-          >
-            {f === "all" ? t("fuel.filterAll", "Tutti") : f === "fuel" ? t("fuel.filterFuel", "Carburante") : t("fuel.filterElectric", "Elettrico")}
-          </button>
-        ))}
-      </div>
+      {showSourceFilters && (
+        <div className="fc-list__filters">
+          {(["all", "fuel", "electric"] as Filter[]).map((f) => (
+            <button
+              key={f}
+              type="button"
+              className={`fc-list__filter ${filter === f ? "is-active" : ""}`}
+              onClick={() => setFilter(f)}
+            >
+              {f === "all" ? t("fuel.filterAll", "Tutti") : f === "fuel" ? t("fuel.filterFuel", "Carburante") : t("fuel.filterElectric", "Elettrico")}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="fc-list__period">
         <select value={period} onChange={(e) => setPeriod(e.target.value as Period)}>
