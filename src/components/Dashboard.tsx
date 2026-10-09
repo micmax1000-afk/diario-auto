@@ -55,6 +55,7 @@ export default function Dashboard({
   onAddVehicle,
   onManageVehicles,
   onQuickFuel,
+  onQuickCharge,
   onQuickFuelVehicle,
   onMoveVehicle,
   onQuickKm,
@@ -136,6 +137,7 @@ export default function Dashboard({
   }
 
   const colors = resolveVehicleColors(vehicles);
+  const canCharge = activeVehicles.some((v) => v.fuelType === "elettrico" || v.fuelType === "ibrido");
   const multi = vehicles.filter((v) => !v.archived).length > 1;
 
   const urgentFor = (vehicle: Vehicle) =>
@@ -312,11 +314,17 @@ export default function Dashboard({
       {activeVehicles.length > 0 && (
         <section className="dash-quick">
           <h2 className="dash-section-title">{t("dashboardGarage.quickActions", "Azioni rapide")}</h2>
-          <div className={`dash-quick__row ${view === "compact" ? "dash-quick__row--3" : "dash-quick__row--2"}`}>
+          <div className={`dash-quick__row ${view === "compact" ? (canCharge ? "dash-quick__row--4" : "dash-quick__row--3") : canCharge ? "dash-quick__row--3" : "dash-quick__row--2"}`}>
             {view === "compact" && (
               <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={onQuickFuel}>
                 <ActionGridIcon name="fuel" className="dash-quick__icon" />
                 <span>{t("dashboardGarage.fuel", "Rifornimento")}</span>
+              </button>
+            )}
+            {canCharge && (
+              <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={onQuickCharge}>
+                <ActionGridIcon name="bolt" className="dash-quick__icon" />
+                <span>{t("dashboardGarage.charge", "Ricarica")}</span>
               </button>
             )}
             <button type="button" className="dash-quick__item" onClick={onOpenReminders}>

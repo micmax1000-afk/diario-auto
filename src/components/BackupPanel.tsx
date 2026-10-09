@@ -299,9 +299,8 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
       {error && <p className="backup-panel__message backup-panel__message--error">{error}</p>}
 
       {storageUsedKb !== null && (
-        <p className={`backup-panel__status ${storageUsedKb > 4000 ? "is-warning" : ""}`}>
+        <p className="backup-panel__status">
           {t("backupPanel.storageUsed", { mb: (storageUsedKb / 1024).toFixed(1) })}
-          {storageUsedKb > 4000 && t("backupPanel.storageWarning")}
         </p>
       )}
 

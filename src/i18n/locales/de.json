@@ -102,9 +102,9 @@
     "notificationsOn": "Benachrichtigungen deaktivieren",
     "notificationsOff": "Benachrichtigungen zu Fälligkeitsterminen aktivieren",
     "notificationsOnHint": "Aktiv: Du erhältst eine Benachrichtigung, wenn eine Frist in die letzten 30 Tage geht oder bereits abgelaufen ist (dazu muss die App geöffnet sein).",
-    "notificationsOffHint": "Erhalte eine Benachrichtigung vom Browser, wenn eine Frist in die letzten 30 Tage geht oder bereits abgelaufen ist.",
-    "notificationsNotSupported": "Dein Browser unterstützt keine Benachrichtigungen.",
-    "notificationsDenied": "Der Browser hat die Berechtigung verweigert. Tippe auf das Schloss-Symbol neben der Website-Adresse → Berechtigungen/Benachrichtigungen → „Zulassen“ und versuche es dann hier erneut.",
+    "notificationsOffHint": "Erhalte eine Benachrichtigung, wenn eine Frist in die letzten 30 Tage geht oder bereits abgelaufen ist.",
+    "notificationsNotSupported": "Benachrichtigungen sind auf diesem Gerät nicht verfügbar.",
+    "notificationsDenied": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut.",
     "notificationsOnHintNative": "Aktiv: Termine mit einem Datum werden auch bei geschlossener App angezeigt. Termine, die auf der Kilometerleistung basieren, werden erst beim Öffnen der App überprüft.",
     "notificationsDeniedNative": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut."
   },
@@ -361,7 +361,6 @@
     "maintenanceExportedOk": "In CSV exportierte Wartungsarbeiten.",
     "expensesExportedOk": "Ausgaben in CSV exportiert.",
     "storageUsed": "Belegter Speicherplatz: ~{{mb}} MB",
-    "storageWarning": " — Du näherst dich der üblichen Speichergrenze des Browsers (5–10 MB). Lösche alte Fotos oder exportiere sie und räume auf.",
     "driveSectionLabel": "Sicherung auf Google Drive",
     "driveSave": "Auf Drive speichern",
     "driveRestore": "Von Drive wiederherstellen",
@@ -434,11 +433,11 @@
       "pending": "Ausstehend",
       "permanent": "Dauerhaft"
     },
-    "notSupportedTitle": "Web-Bluetooth nicht verfügbar",
-    "notSupportedBody": "Für diese Funktion ist Chrome oder Edge auf Android (oder dem Desktop) erforderlich. Safari auf dem iPhone unterstützt keine Bluetooth-Verbindung über den Browser.",
+    "notSupportedTitle": "Bluetooth nicht verfügbar",
+    "notSupportedBody": "Bluetooth ist auf diesem Gerät nicht verfügbar.",
     "connect": "OBD2-Adapter anschließen",
     "disconnect": "Abmelden",
-    "connectingHint": "Befolge die Anweisungen des Browsers, um deinen OBD2-Bluetooth-Adapter auszuwählen.",
+    "connectingHint": "Folge der Android-Aufforderung, um deinen Bluetooth-OBD2-Adapter auszuwählen.",
     "disconnectedHint": "Stecke den OBD2-Bluetooth-Adapter in die OBD2-Buchse des Fahrzeugs, schalte die Zündung ein und tippe auf „OBD2-Adapter anschließen“.",
     "recording": {
       "title": "Sitzungsprotokoll",
@@ -759,13 +758,14 @@
     "moveDown": "Nach unten",
     "backupNag": "Seit {{days}} Tagen keine Sicherung gespeichert. Eine Kopie schützt Sie, wenn Sie das Handy wechseln oder verlieren.",
     "backupNagAction": "Sichern",
-    "backupNagLater": "Später"
+    "backupNagLater": "Später",
+    "charge": "Laden"
   },
   "premium": {
     "title": "Auto-Tagebuch Premium",
     "checking": "Verfügbarkeit prüfen…",
     "unavailableTitle": "Nur über die Android-App verfügbar",
-    "unavailableBody": "Premium-Käufe funktionieren nur in der über Google Play installierten Diario-Auto-App, nicht im Browser. Laden Sie die App aus dem Play Store, um Pro freizuschalten.",
+    "unavailableBody": "Premium-Käufe sind derzeit nicht verfügbar. Prüfe die Verbindung und ob die App über Google Play installiert ist, und versuche es erneut.",
     "noProducts": "Derzeit ist kein Plan verfügbar. Versuchen Sie es später noch einmal.",
     "processing": "Wird verarbeitet…",
     "subscribe": "Abonnieren",

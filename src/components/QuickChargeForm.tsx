@@ -6,9 +6,14 @@ import { generateId, getHomeChargingDefaults, setHomeChargingDefaults } from "..
 import { getNumberLocale } from "../utils/locale";
 import QuickEntryHeader from "./QuickEntryHeader";
 import ActionGridIcon from "./ActionGridIcon";
+import VehicleSwitcher from "./VehicleSwitcher";
 
 interface Props {
   vehicle: Vehicle;
+  vehicles?: Vehicle[];
+  colors?: Record<string, string>;
+  urgentCounts?: Record<string, number>;
+  onChangeVehicle?: (vehicleId: string) => void;
   existingEntries?: ChargingEntry[];
   onSave: (entry: ChargingEntry) => void;
   onClose: () => void;
@@ -18,7 +23,7 @@ function formatEuro(value: number, locale: string) {
   return value.toLocaleString(locale, { style: "currency", currency: "EUR", maximumFractionDigits: 4 });
 }
 
-export default function QuickChargeForm({ vehicle, existingEntries = [], onSave, onClose }: Props) {
+export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const locale = getNumberLocale(i18n.language);
   const [pricePerKWh, setPricePerKWh] = useState("");
@@ -88,6 +93,18 @@ export default function QuickChargeForm({ vehicle, existingEntries = [], onSave,
       <QuickEntryHeader title={t("quickEntry.chargeTitle")} onBack={onClose} tone="green" />
 
       <form onSubmit={handleSubmit} className="quick-entry-page__body">
+        {vehicles && vehicles.length > 1 && colors && onChangeVehicle && (
+          <div>
+            <p className="quick-entry-page__section-label">{t("quickEntry.vehicleLabel", "Veicolo")}</p>
+            <VehicleSwitcher
+              vehicles={vehicles}
+              currentId={vehicle.id}
+              colors={colors}
+              urgentCounts={urgentCounts}
+              onSelect={onChangeVehicle}
+            />
+          </div>
+        )}
         <div className="quick-entry-card">
           <div className="quick-entry-card__title-row">
             <span className="quick-entry-card__icon quick-entry-card__icon--green"><ActionGridIcon name="bolt" /></span>
@@ -165,7 +182,7 @@ export default function QuickChargeForm({ vehicle, existingEntries = [], onSave,
         {error && <p className="form-error">{error}</p>}
 
         <button type="submit" className="quick-entry-page__save quick-entry-page__save--green">
-          ✓ {t("quickEntry.saveCharge")}
+          ✓ {vehicles && vehicles.length > 1 ? t("quickEntry.saveFuelOn", { name: vehicle.name, defaultValue: "Salva su {{name}}" }) : t("quickEntry.saveCharge")}
         </button>
 
         <p className="quick-entry__full-form-hint">{t("quickEntry.fullFormHint")}</p>

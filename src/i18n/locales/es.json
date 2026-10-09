@@ -102,9 +102,9 @@
     "notificationsOn": "Desactivar notificaciones",
     "notificationsOff": "Activar notificaciones de vencimientos",
     "notificationsOnHint": "Activas: recibirás una notificación cuando un plazo entre en los 30 días o haya vencido (es necesario tener la aplicación abierta).",
-    "notificationsOffHint": "Recibe una notificación del navegador cuando un plazo entre en los últimos 30 días o haya vencido.",
-    "notificationsNotSupported": "Tu navegador no admite notificaciones.",
-    "notificationsDenied": "El navegador ha denegado el permiso. Toca el icono del candado junto a la dirección del sitio web → Permisos/Notificaciones → Permitir y, a continuación, vuelve a intentarlo aquí.",
+    "notificationsOffHint": "Recibe una notificación cuando un plazo entre en los últimos 30 días o haya vencido.",
+    "notificationsNotSupported": "Las notificaciones no están disponibles en este dispositivo.",
+    "notificationsDenied": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí.",
     "notificationsOnHintNative": "Activas: las citas con fecha reciben una notificación incluso cuando la aplicación está cerrada. Las relacionadas con el kilometraje solo se comprueban al abrir la aplicación.",
     "notificationsDeniedNative": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí."
   },
@@ -361,7 +361,6 @@
     "maintenanceExportedOk": "Tareas de mantenimiento exportadas a CSV.",
     "expensesExportedOk": "Gastos exportados a CSV.",
     "storageUsed": "Espacio ocupado: ~{{mb}} MB",
-    "storageWarning": " — Te estás acercando al límite habitual del navegador (5-10 MB). Elimina fotos antiguas o expórtalas y limpia el espacio.",
     "driveSectionLabel": "Copia de seguridad en Google Drive",
     "driveSave": "Guardar en Drive",
     "driveRestore": "Restaurar desde Drive",
@@ -434,11 +433,11 @@
       "pending": "Pendiente",
       "permanent": "Permanentes"
     },
-    "notSupportedTitle": "Web Bluetooth no disponible",
-    "notSupportedBody": "Esta función requiere Chrome o Edge en Android (o en el ordenador). Safari en el iPhone no admite la conexión por Bluetooth desde el navegador.",
+    "notSupportedTitle": "Bluetooth no disponible",
+    "notSupportedBody": "El Bluetooth no está disponible en este dispositivo.",
     "connect": "Conecta el adaptador OBD2",
     "disconnect": "Cerrar sesión",
-    "connectingHint": "Sigue las instrucciones del navegador para seleccionar tu adaptador OBD2 Bluetooth.",
+    "connectingHint": "Sigue la solicitud de Android para seleccionar tu adaptador OBD2 Bluetooth.",
     "disconnectedHint": "Conecta el adaptador OBD2 Bluetooth a la toma OBD2 del coche, pon el contacto y pulsa «Conecta el adaptador OBD2».",
     "recording": {
       "title": "Registro de la sesión",
@@ -759,13 +758,14 @@
     "moveDown": "Bajar",
     "backupNag": "Hace {{days}} días que no guardas una copia de seguridad. Una copia te protege si cambias o pierdes el móvil.",
     "backupNagAction": "Hacer copia",
-    "backupNagLater": "Más tarde"
+    "backupNagLater": "Más tarde",
+    "charge": "Recarga"
   },
   "premium": {
     "title": "Diario Auto Premium",
     "checking": "Comprobar disponibilidad…",
     "unavailableTitle": "Disponible solo en la aplicación para Android",
-    "unavailableBody": "Las compras Premium solo funcionan desde la app Diario Auto instalada desde Google Play, no desde el navegador. Descarga la app de Play Store para desbloquear Pro.",
+    "unavailableBody": "Las compras Premium no están disponibles ahora. Comprueba la conexión y que la app esté instalada desde Google Play, y vuelve a intentarlo.",
     "noProducts": "No hay ningún plan disponible en este momento. Inténtalo más tarde.",
     "processing": "Procesando…",
     "subscribe": "Suscríbete",

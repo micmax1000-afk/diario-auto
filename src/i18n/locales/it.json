@@ -102,9 +102,9 @@
     "notificationsOn": "Disattiva notifiche",
     "notificationsOff": "Attiva notifiche scadenze",
     "notificationsOnHint": "Attive: ricevi una notifica quando una scadenza entra nei 30 giorni o è scaduta (serve avere l'app aperta).",
-    "notificationsOffHint": "Ricevi una notifica del browser quando una scadenza entra nei 30 giorni o è scaduta.",
-    "notificationsNotSupported": "Il tuo browser non supporta le notifiche.",
-    "notificationsDenied": "Permesso negato dal browser. Tocca l'icona del lucchetto accanto all'indirizzo del sito → Autorizzazioni/Notifiche → Consenti, poi riprova qui.",
+    "notificationsOffHint": "Ricevi una notifica quando una scadenza entra nei 30 giorni o è scaduta.",
+    "notificationsNotSupported": "Le notifiche non sono disponibili su questo dispositivo.",
+    "notificationsDenied": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui.",
     "notificationsOnHintNative": "Attive: le scadenze con data ricevono una notifica anche ad app chiusa. Quelle a chilometraggio vengono controllate solo quando apri l'app.",
     "notificationsDeniedNative": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui."
   },
@@ -361,7 +361,6 @@
     "maintenanceExportedOk": "Manutenzioni esportate in CSV.",
     "expensesExportedOk": "Spese esportate in CSV.",
     "storageUsed": "Spazio occupato: ~{{mb}} MB",
-    "storageWarning": " — ti stai avvicinando al limite tipico del browser (5-10MB). Elimina foto vecchie o esporta e ripulisci.",
     "driveSectionLabel": "Backup su Google Drive",
     "driveSave": "Salva su Drive",
     "driveRestore": "Ripristina da Drive",
@@ -434,11 +433,11 @@
       "pending": "Pending",
       "permanent": "Permanenti"
     },
-    "notSupportedTitle": "Web Bluetooth non disponibile",
-    "notSupportedBody": "Questa funzione richiede Chrome o Edge su Android (o desktop). Safari su iPhone non supporta la connessione Bluetooth dal browser.",
+    "notSupportedTitle": "Bluetooth non disponibile",
+    "notSupportedBody": "Il Bluetooth non è disponibile su questo dispositivo.",
     "connect": "Collega adattatore OBD2",
     "disconnect": "Disconnetti",
-    "connectingHint": "Segui la richiesta del browser per selezionare il tuo adattatore OBD2 Bluetooth.",
+    "connectingHint": "Segui la richiesta di Android per selezionare il tuo adattatore OBD2 Bluetooth.",
     "disconnectedHint": "Inserisci l'adattatore OBD2 Bluetooth nella presa OBD2 dell'auto, accendi il quadro e premi \"Collega adattatore OBD2\".",
     "recording": {
       "title": "Registrazione sessione",
@@ -759,13 +758,14 @@
     "moveDown": "Sposta giù",
     "backupNag": "Non salvi un backup da {{days}} giorni. Una copia ti protegge se cambi o perdi il telefono.",
     "backupNagAction": "Fai backup",
-    "backupNagLater": "Più tardi"
+    "backupNagLater": "Più tardi",
+    "charge": "Ricarica"
   },
   "premium": {
     "title": "Diario Auto Premium",
     "checking": "Verifica disponibilità…",
     "unavailableTitle": "Disponibile solo dall'app Android",
-    "unavailableBody": "Gli acquisti Premium funzionano solo dall'app Diario Auto installata da Google Play, non dal browser. Scarica l'app da Play Store per sbloccare Pro.",
+    "unavailableBody": "Gli acquisti Premium non sono disponibili in questo momento. Verifica la connessione e che l'app sia installata da Google Play, poi riprova.",
     "noProducts": "Nessun piano disponibile al momento. Riprova più tardi.",
     "processing": "Elaborazione…",
     "subscribe": "Abbonati",

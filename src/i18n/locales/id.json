@@ -102,9 +102,9 @@
     "notificationsOn": "Nonaktifkan notifikasi",
     "notificationsOff": "Aktifkan pemberitahuan tenggat waktu",
     "notificationsOnHint": "Aktif: Anda akan menerima pemberitahuan saat tenggat waktu tinggal 30 hari lagi atau telah lewat (aplikasi harus dalam keadaan terbuka).",
-    "notificationsOffHint": "Dapatkan pemberitahuan dari browser saat tenggat waktu tinggal 30 hari lagi atau telah habis.",
-    "notificationsNotSupported": "Browser Anda tidak mendukung notifikasi.",
-    "notificationsDenied": "Izin ditolak oleh browser. Ketuk ikon gembok di sebelah alamat situs → Izin/Pemberitahuan → Izinkan, lalu coba lagi di sini.",
+    "notificationsOffHint": "Dapatkan pemberitahuan saat tenggat waktu tinggal 30 hari lagi atau telah habis.",
+    "notificationsNotSupported": "Notifikasi tidak tersedia di perangkat ini.",
+    "notificationsDenied": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini.",
     "notificationsOnHintNative": "Aktif: tenggat waktu berdasarkan tanggal akan tetap mengirimkan pemberitahuan meskipun aplikasi dalam keadaan tertutup. Tenggat waktu berdasarkan jarak tempuh hanya akan diperiksa saat Anda membuka aplikasi.",
     "notificationsDeniedNative": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini."
   },
@@ -361,7 +361,6 @@
     "maintenanceExportedOk": "Perawatan yang diekspor ke CSV.",
     "expensesExportedOk": "Biaya yang diekspor ke CSV.",
     "storageUsed": "Ruang yang digunakan: ~{{mb}} MB",
-    "storageWarning": " — Kamu hampir mencapai batas standar browser (5–10 MB). Hapus foto-foto lama atau ekspor dan bersihkan.",
     "driveSectionLabel": "Pencadangan di Google Drive",
     "driveSave": "Simpan di Drive",
     "driveRestore": "Pulihkan dari Drive",
@@ -434,11 +433,11 @@
       "pending": "Sedang diproses",
       "permanent": "Permanen"
     },
-    "notSupportedTitle": "Web Bluetooth tidak tersedia",
-    "notSupportedBody": "Fitur ini memerlukan Chrome atau Edge di Android (atau desktop). Safari di iPhone tidak mendukung koneksi Bluetooth dari browser.",
+    "notSupportedTitle": "Bluetooth tidak tersedia",
+    "notSupportedBody": "Bluetooth tidak tersedia di perangkat ini.",
     "connect": "Hubungkan adaptor OBD2",
     "disconnect": "Keluar",
-    "connectingHint": "Ikuti petunjuk dari browser untuk memilih adaptor OBD2 Bluetooth Anda.",
+    "connectingHint": "Ikuti permintaan Android untuk memilih adaptor OBD2 Bluetooth Anda.",
     "disconnectedHint": "Pasang adaptor OBD2 Bluetooth ke soket OBD2 mobil, nyalakan kunci kontak, lalu tekan \"Hubungkan adaptor OBD2\".",
     "recording": {
       "title": "Pencatatan sesi",
@@ -759,13 +758,14 @@
     "moveDown": "Turun",
     "backupNag": "Sudah {{days}} hari Anda tidak menyimpan cadangan. Salinan melindungi Anda jika berganti atau kehilangan ponsel.",
     "backupNagAction": "Cadangkan",
-    "backupNagLater": "Nanti"
+    "backupNagLater": "Nanti",
+    "charge": "Isi daya"
   },
   "premium": {
     "title": "Buku Harian Mobil Premium",
     "checking": "Periksa ketersediaan…",
     "unavailableTitle": "Hanya tersedia melalui aplikasi Android",
-    "unavailableBody": "Pembelian Premium hanya berfungsi dari aplikasi Diario Auto yang dipasang dari Google Play, bukan dari browser. Unduh aplikasi dari Play Store untuk membuka Pro.",
+    "unavailableBody": "Pembelian Premium belum tersedia saat ini. Periksa koneksi dan pastikan aplikasi dipasang dari Google Play, lalu coba lagi.",
     "noProducts": "Saat ini tidak ada paket yang tersedia. Silakan coba lagi nanti.",
     "processing": "Sedang diproses…",
     "subscribe": "Berlangganan",

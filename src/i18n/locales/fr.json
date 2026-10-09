@@ -102,9 +102,9 @@
     "notificationsOn": "Désactiver les notifications",
     "notificationsOff": "Activer les notifications d'échéance",
     "notificationsOnHint": "Actives : vous recevez une notification lorsqu'une échéance approche à moins de 30 jours ou qu'elle est dépassée (l'application doit être ouverte).",
-    "notificationsOffHint": "Recevez une notification de votre navigateur lorsqu'une échéance approche (dans les 30 jours) ou est dépassée.",
-    "notificationsNotSupported": "Votre navigateur ne prend pas en charge les notifications.",
-    "notificationsDenied": "Autorisation refusée par le navigateur. Appuie sur l'icône du cadenas à côté de l'adresse du site → Autorisations/Notifications → Autoriser, puis réessaie ici.",
+    "notificationsOffHint": "Recevez une notification lorsqu'une échéance approche (dans les 30 jours) ou est dépassée.",
+    "notificationsNotSupported": "Les notifications ne sont pas disponibles sur cet appareil.",
+    "notificationsDenied": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici.",
     "notificationsOnHintNative": "Actives : les échéances avec une date font l'objet d'une notification même lorsque l'application est fermée. Celles liées au kilométrage ne sont vérifiées que lorsque vous ouvrez l'application.",
     "notificationsDeniedNative": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici."
   },
@@ -361,7 +361,6 @@
     "maintenanceExportedOk": "Opérations de maintenance exportées au format CSV.",
     "expensesExportedOk": "Dépenses exportées au format CSV.",
     "storageUsed": "Espace occupé : ~{{mb}} Mo",
-    "storageWarning": " — Tu approches de la limite habituelle du navigateur (5 à 10 Mo). Supprime les anciennes photos ou exporte-les, puis fais le ménage.",
     "driveSectionLabel": "Sauvegarde sur Google Drive",
     "driveSave": "Enregistrer sur Drive",
     "driveRestore": "Restaurer à partir de Drive",
@@ -434,11 +433,11 @@
       "pending": "En attente",
       "permanent": "Permanentes"
     },
-    "notSupportedTitle": "Bluetooth Web indisponible",
-    "notSupportedBody": "Cette fonctionnalité nécessite Chrome ou Edge sur Android (ou sur ordinateur). Safari sur iPhone ne prend pas en charge la connexion Bluetooth depuis le navigateur.",
+    "notSupportedTitle": "Bluetooth indisponible",
+    "notSupportedBody": "Le Bluetooth n'est pas disponible sur cet appareil.",
     "connect": "Brancher l'adaptateur OBD2",
     "disconnect": "Se déconnecter",
-    "connectingHint": "Suivez les instructions du navigateur pour sélectionner votre adaptateur OBD2 Bluetooth.",
+    "connectingHint": "Suivez la demande d'Android pour sélectionner votre adaptateur OBD2 Bluetooth.",
     "disconnectedHint": "Branchez l'adaptateur OBD2 Bluetooth sur la prise OBD2 de la voiture, mettez le contact et appuyez sur « Brancher l'adaptateur OBD2 ».",
     "recording": {
       "title": "Enregistrement de la session",
@@ -759,13 +758,14 @@
     "moveDown": "Descendre",
     "backupNag": "Vous n'avez pas fait de sauvegarde depuis {{days}} jours. Une copie vous protège si vous changez ou perdez de téléphone.",
     "backupNagAction": "Sauvegarder",
-    "backupNagLater": "Plus tard"
+    "backupNagLater": "Plus tard",
+    "charge": "Recharge"
   },
   "premium": {
     "title": "Journal Auto Premium",
     "checking": "Vérifier la disponibilité…",
     "unavailableTitle": "Disponible uniquement depuis l'application Android",
-    "unavailableBody": "Les achats Premium ne fonctionnent que depuis l'app Diario Auto installée depuis Google Play, pas depuis le navigateur. Téléchargez l'app sur le Play Store pour débloquer Pro.",
+    "unavailableBody": "Les achats Premium ne sont pas disponibles pour le moment. Vérifiez la connexion et que l'application est installée depuis Google Play, puis réessayez.",
     "noProducts": "Aucun forfait n'est disponible pour le moment. Veuillez réessayer plus tard.",
     "processing": "Traitement…",
     "subscribe": "Abonnez-vous",

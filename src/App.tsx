@@ -500,14 +500,21 @@ export default function App() {
       completeVehicleAction(active[0].id, action);
       return;
     }
-    // Rifornimento rapido: si apre sul veicolo usato più di recente. Il modulo mostra
-    // chiaramente il nome e la fascia per cambiarlo, quindi niente domanda preliminare.
-    if (action.kind === "quickFuel") {
-      const activeIds = new Set(active.map((v) => v.id));
+    // Rifornimento rapido e navigazione alle schede: si apre sul veicolo usato più di
+    // recente. Il modulo/la schermata mostra la striscia dei veicoli per cambiarlo,
+    // quindi niente domanda preliminare.
+    if (action.kind === "quickFuel" || action.kind === "quickCharge" || action.kind === "navigate") {
+      // Per la ricarica si preferiscono i veicoli che possono ricaricare (elettrico/ibrido).
+      const pool =
+        action.kind === "quickCharge"
+          ? active.filter((v) => v.fuelType === "elettrico" || v.fuelType === "ibrido")
+          : active;
+      const candidates = pool.length > 0 ? pool : active;
+      const activeIds = new Set(candidates.map((v) => v.id));
       const latest = [...fuelEntries, ...chargingEntries]
         .filter((e) => activeIds.has(e.vehicleId))
         .sort((a, b) => b.date.localeCompare(a.date))[0];
-      const fallback = orderedVehicles.find((v) => !v.archived) ?? active[0];
+      const fallback = orderedVehicles.find((v) => activeIds.has(v.id) && !v.archived) ?? candidates[0];
       completeVehicleAction(latest?.vehicleId ?? fallback.id, action);
       return;
     }
@@ -963,7 +970,12 @@ export default function App() {
           if (!v) return null;
           return (
             <QuickChargeForm
+              key={v.id}
               vehicle={v}
+              vehicles={activeOrderedVehicles}
+              colors={vehicleColors}
+              urgentCounts={urgentByVehicle}
+              onChangeVehicle={(id) => setQuickChargeVehicleId(id)}
               existingEntries={chargingEntries.filter((c) => c.vehicleId === v.id)}
               onSave={(entry) => {
                 handleSaveCharging(entry);

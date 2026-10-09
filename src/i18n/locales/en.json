@@ -102,9 +102,9 @@
     "notificationsOn": "Turn off notifications",
     "notificationsOff": "Turn on due date notifications",
     "notificationsOnHint": "Active: You'll receive a notification when a due date is within 30 days or has passed (you must have the app open).",
-    "notificationsOffHint": "Receive a browser notification when a due date is within 30 days or has passed.",
-    "notificationsNotSupported": "Your browser does not support notifications.",
-    "notificationsDenied": "Permission denied by the browser. Tap the padlock icon next to the website address → Permissions/Notifications → Allow, then try again here.",
+    "notificationsOffHint": "Receive a notification when a due date is within 30 days or has passed.",
+    "notificationsNotSupported": "Notifications are not available on this device.",
+    "notificationsDenied": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here.",
     "notificationsOnHintNative": "Active: Deadlines with a specific date trigger a notification even when the app is closed. Mileage-based deadlines are checked only when you open the app.",
     "notificationsDeniedNative": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here."
   },
@@ -361,7 +361,6 @@
     "maintenanceExportedOk": "Maintenance tasks exported to CSV.",
     "expensesExportedOk": "Expenses exported to CSV.",
     "storageUsed": "Storage space used: ~{{mb}} MB",
-    "storageWarning": " — You're approaching the browser's typical limit (5–10 MB). Delete old photos or export and clean up.",
     "driveSectionLabel": "Backup to Google Drive",
     "driveSave": "Save to Drive",
     "driveRestore": "Restore from Drive",
@@ -434,11 +433,11 @@
       "pending": "Pending",
       "permanent": "Permanents"
     },
-    "notSupportedTitle": "Web Bluetooth is not available",
-    "notSupportedBody": "This feature requires Chrome or Edge on Android (or desktop). Safari on the iPhone does not support Bluetooth connections from the browser.",
+    "notSupportedTitle": "Bluetooth not available",
+    "notSupportedBody": "Bluetooth is not available on this device.",
     "connect": "Connect the OBD2 adapter",
     "disconnect": "Log Out",
-    "connectingHint": "Follow the browser's instructions to select your OBD2 Bluetooth adapter.",
+    "connectingHint": "Follow the Android prompt to select your Bluetooth OBD2 adapter.",
     "disconnectedHint": "Plug the Bluetooth OBD2 adapter into the car's OBD2 port, turn the ignition on, then tap \"Connect the OBD2 adapter\".",
     "recording": {
       "title": "Session Recording",
@@ -759,13 +758,14 @@
     "moveDown": "Move down",
     "backupNag": "You haven't saved a backup in {{days}} days. A copy protects you if you change or lose your phone.",
     "backupNagAction": "Back up",
-    "backupNagLater": "Later"
+    "backupNagLater": "Later",
+    "charge": "Charge"
   },
   "premium": {
     "title": "Premium Car Journal",
     "checking": "Check availability…",
     "unavailableTitle": "Available only on the Android app",
-    "unavailableBody": "Premium purchases only work from the Diario Auto app installed from Google Play, not from the browser. Get the app from the Play Store to unlock Pro.",
+    "unavailableBody": "Premium purchases are not available right now. Check your connection and that the app is installed from Google Play, then try again.",
     "noProducts": "No plans are available at this time. Please try again later.",
     "processing": "Processing…",
     "subscribe": "Subscribe",
