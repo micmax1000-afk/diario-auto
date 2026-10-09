@@ -80,6 +80,20 @@ export function decodeDtcResponse(raw: string, responseMode: string, isCan: bool
   return [...codes];
 }
 
+/**
+ * Codice errore che ha fatto registrare il freeze frame (Mode 02, PID 02,
+ * frame 0): risposta "42 02 00 A B". null se non c'è o se è 00 00.
+ */
+export function decodeFreezeFrameDtc(raw: string): string | null {
+  const upper = raw.toUpperCase();
+  if (upper.includes("NO DATA") || upper.includes("ERROR")) return null;
+  for (const message of splitMessages(raw, 0x42)) {
+    const [, pid, , a, b] = message.bytes;
+    if (pid === 0x02 && a !== undefined && b !== undefined && (a !== 0 || b !== 0)) return decodePair(a, b);
+  }
+  return null;
+}
+
 /** true se il protocollo ELM327 (cifra di ATDPN) è un CAN, null se sconosciuto. */
 export function isCanProtocol(protocol: string | null | undefined): boolean | null {
   if (!protocol) return null;

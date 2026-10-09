@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decodeDtcResponse, isCanProtocol, isManufacturerSpecificDtc } from "../obdDtc";
+import { decodeDtcResponse, decodeFreezeFrameDtc, isCanProtocol, isManufacturerSpecificDtc } from "../obdDtc";
 
 describe("decodeDtcResponse", () => {
   it("CAN, un codice: salta il contatore", () => {
@@ -65,5 +65,15 @@ describe("isManufacturerSpecificDtc", () => {
     expect(isManufacturerSpecificDtc("U0100")).toBe(false);
     expect(isManufacturerSpecificDtc("B1001")).toBe(true);
     expect(isManufacturerSpecificDtc("C2100")).toBe(true);
+  });
+});
+
+describe("decodeFreezeFrameDtc", () => {
+  it("legge il codice che ha causato il freeze frame", () => {
+    expect(decodeFreezeFrameDtc("42 02 00 01 71\r>")).toBe("P0171");
+  });
+  it("null se non c'è un freeze frame", () => {
+    expect(decodeFreezeFrameDtc("42 02 00 00 00\r>")).toBeNull();
+    expect(decodeFreezeFrameDtc("NO DATA\r>")).toBeNull();
   });
 });

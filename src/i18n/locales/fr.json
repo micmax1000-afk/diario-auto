@@ -504,7 +504,9 @@
     },
     "freezeFrame": {
       "title": "Arrêt sur image",
-      "read": "Lire la dernière image figée"
+      "read": "Lire la dernière image figée",
+      "cause": "Enregistré à l'apparition de {{code}} : {{description}}",
+      "noCause": "Aucun code défaut associé à ce freeze frame."
     },
     "pickDeviceTitle": "Choisissez l'adaptateur",
     "noPairedDevices": "Aucun adaptateur n'est appairé. Rendez-vous dans les paramètres Bluetooth d'Android, appairez votre adaptateur OBD2 (code PIN généralement 1234 ou 0000), puis revenez ici.",

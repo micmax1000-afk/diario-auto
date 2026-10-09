@@ -504,7 +504,9 @@
     },
     "freezeFrame": {
       "title": "Freeze frame",
-      "read": "Read the latest freeze frame"
+      "read": "Read the latest freeze frame",
+      "cause": "Recorded when {{code}} appeared: {{description}}",
+      "noCause": "No fault code is associated with this freeze frame."
     },
     "pickDeviceTitle": "Choose the adapter",
     "noPairedDevices": "No adapter is paired. Go to the Bluetooth settings on your Android device, pair your OBD2 adapter (the PIN is usually 1234 or 0000), then come back here.",

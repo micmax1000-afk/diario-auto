@@ -10,7 +10,7 @@
 
 import { Capacitor } from "@capacitor/core";
 import NativeObdBluetooth, { type PairedDevice } from "./nativeObdBridge";
-import { decodeDtcResponse, isCanProtocol } from "./obdDtc";
+import { decodeDtcResponse, decodeFreezeFrameDtc, isCanProtocol } from "./obdDtc";
 
 export type { PairedDevice };
 
@@ -696,6 +696,15 @@ export class ObdConnection {
       }
     }
     return result;
+  }
+
+  /** Codice errore che ha fatto registrare il freeze frame (Mode 02 PID 02), null se nessuno. */
+  async readFreezeFrameDtc(): Promise<string | null> {
+    try {
+      return decodeFreezeFrameDtc(await this.sendRaw("020200"));
+    } catch {
+      return null;
+    }
   }
 
   async disconnect(): Promise<void> {

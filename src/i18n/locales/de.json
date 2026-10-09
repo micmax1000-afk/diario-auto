@@ -504,7 +504,9 @@
     },
     "freezeFrame": {
       "title": "Standbild",
-      "read": "Letztes Standbild anzeigen"
+      "read": "Letztes Standbild anzeigen",
+      "cause": "Aufgezeichnet, als {{code}} auftrat: {{description}}",
+      "noCause": "Diesem Freeze Frame ist kein Fehlercode zugeordnet."
     },
     "pickDeviceTitle": "Wähle den Adapter aus",
     "noPairedDevices": "Es ist kein Adapter gekoppelt. Gehe zu den Bluetooth-Einstellungen von Android, koppele deinen OBD2-Adapter (PIN in der Regel 1234 oder 0000) und kehre dann hierher zurück.",
