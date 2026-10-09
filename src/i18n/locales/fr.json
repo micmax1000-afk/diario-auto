@@ -489,7 +489,8 @@
       "none": "Aucun code {{mode}}.",
       "unknownCode": "Code propre au constructeur : absent du dictionnaire générique.",
       "noClearHint": "Cette app n'efface pas les codes défaut : faites-le après la réparation, en atelier ou avec un outil professionnel.",
-      "manufacturerNote": "Les codes commençant par P1 (ou B1, C1, U1) sont propres au constructeur : leur signification dépend de la marque et du modèle. Consultez le manuel d'atelier ou faites lire le code par un garage."
+      "manufacturerNote": "Les codes commençant par P1, P30-P33, B1/B2, C1/C2 ou U1/U2 sont propres au constructeur : leur signification dépend de la marque et du modèle. Consultez le manuel d'atelier ou faites lire le code par un garage.",
+      "unknownGeneric": "Code générique (identique sur toutes les voitures) pas encore dans le dictionnaire de l'app : recherchez-le avec le code exact ou demandez à un garage."
     },
     "readiness": {
       "title": "Suivi de l'état de préparation (avant révision)",
@@ -925,7 +926,8 @@
     "exportFailed": "L'exportation a échoué. Veuillez réessayer.",
     "dtcTitle": "Diagnostic OBD : historique des codes défaut",
     "dtcCleared": "Aucun code : résolus depuis la lecture précédente.",
-    "dtcUnknown": "Code spécifique au constructeur."
+    "dtcUnknown": "Code spécifique au constructeur.",
+    "dtcUnknownGeneric": "Code générique, description non disponible."
   },
   "obdNotice": {
     "title": "Avant de vous connecter",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adaptateur non reconnu : aucun service Bluetooth compatible trouvé.",
     "notConnected": "Non connecté.",
     "pairedDevicesError": "Impossible de lire les appareils associés.",
-    "timeout": "Aucune réponse à la commande « {{command}} »."
+    "timeout": "Aucune réponse à la commande « {{command}} ».",
+    "nmhcCatalyst": "Catalyseur NMHC",
+    "noxScr": "Réduction des NOx / SCR (AdBlue)",
+    "boostPressure": "Pression de suralimentation",
+    "exhaustGasSensor": "Capteur de gaz d'échappement",
+    "particulateFilter": "Filtre à particules (FAP)",
+    "egrVvt": "EGR / distribution variable"
   }
 }

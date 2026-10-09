@@ -489,7 +489,8 @@
       "none": "No {{mode}} code.",
       "unknownCode": "Manufacturer-specific code: not in the generic dictionary.",
       "noClearHint": "This app does not clear fault codes: do it after the repair, at a workshop or with a professional tool.",
-      "manufacturerNote": "Codes starting with P1 (or B1, C1, U1) are manufacturer-specific: their meaning depends on the make and model. Check the workshop manual or have a garage read the code."
+      "manufacturerNote": "Codes starting with P1, P30-P33, B1/B2, C1/C2 or U1/U2 are manufacturer-specific: their meaning depends on make and model. Check the workshop manual or have a workshop read the code.",
+      "unknownGeneric": "Generic code (same on every car) not yet in the app's dictionary: look it up by the exact code or ask a workshop."
     },
     "readiness": {
       "title": "Readiness Monitor (Pre-Inspection)",
@@ -925,7 +926,8 @@
     "exportFailed": "Export failed. Please try again.",
     "dtcTitle": "OBD diagnostics: fault code history",
     "dtcCleared": "No codes: cleared since the previous reading.",
-    "dtcUnknown": "Manufacturer-specific code."
+    "dtcUnknown": "Manufacturer-specific code.",
+    "dtcUnknownGeneric": "Generic code, description not available."
   },
   "obdNotice": {
     "title": "Before you connect",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adapter not recognised: no compatible Bluetooth service found.",
     "notConnected": "Not connected.",
     "pairedDevicesError": "Unable to read the paired devices.",
-    "timeout": "No reply to the command \"{{command}}\"."
+    "timeout": "No reply to the command \"{{command}}\".",
+    "nmhcCatalyst": "NMHC catalyst",
+    "noxScr": "NOx/SCR aftertreatment (AdBlue)",
+    "boostPressure": "Boost pressure",
+    "exhaustGasSensor": "Exhaust gas sensor",
+    "particulateFilter": "Particulate filter (DPF)",
+    "egrVvt": "EGR / variable valve timing"
   }
 }

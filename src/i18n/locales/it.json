@@ -489,7 +489,8 @@
       "none": "Nessun codice {{mode}}.",
       "unknownCode": "Codice specifico del costruttore: non presente nel dizionario generico.",
       "noClearHint": "Questa app non cancella i codici errore: fallo dopo la riparazione, in officina o con uno strumento professionale.",
-      "manufacturerNote": "I codici che iniziano con P1 (o B1, C1, U1) sono specifici del costruttore: il significato dipende dalla marca e dal modello. Consulta il manuale di officina o fai leggere il codice a un'officina."
+      "manufacturerNote": "I codici che iniziano con P1, P30-P33, B1/B2, C1/C2 o U1/U2 sono specifici del costruttore: il significato dipende dalla marca e dal modello. Consulta il manuale di officina o fai leggere il codice a un'officina.",
+      "unknownGeneric": "Codice generico (uguale per tutte le auto) non ancora presente nel dizionario dell'app: cercalo con il codice esatto o chiedi all'officina."
     },
     "readiness": {
       "title": "Readiness monitor (pre-revisione)",
@@ -925,7 +926,8 @@
     "exportFailed": "Esportazione non riuscita. Riprova.",
     "dtcTitle": "Diagnosi OBD: storico codici errore",
     "dtcCleared": "Nessun codice: risolti rispetto alla lettura precedente.",
-    "dtcUnknown": "Codice specifico del costruttore."
+    "dtcUnknown": "Codice specifico del costruttore.",
+    "dtcUnknownGeneric": "Codice generico, descrizione non disponibile."
   },
   "obdNotice": {
     "title": "Prima di connetterti",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adattatore non riconosciuto: nessun servizio Bluetooth compatibile trovato.",
     "notConnected": "Non connesso.",
     "pairedDevicesError": "Impossibile leggere i dispositivi accoppiati.",
-    "timeout": "Nessuna risposta al comando \"{{command}}\"."
+    "timeout": "Nessuna risposta al comando \"{{command}}\".",
+    "nmhcCatalyst": "Catalizzatore NMHC",
+    "noxScr": "Riduzione NOx / SCR (AdBlue)",
+    "boostPressure": "Pressione di sovralimentazione",
+    "exhaustGasSensor": "Sensore gas di scarico",
+    "particulateFilter": "Filtro antiparticolato (FAP/DPF)",
+    "egrVvt": "EGR / fasatura variabile"
   }
 }

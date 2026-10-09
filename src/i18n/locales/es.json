@@ -489,7 +489,8 @@
       "none": "No hay ningún código {{mode}}.",
       "unknownCode": "Código específico del fabricante: no figura en el diccionario genérico.",
       "noClearHint": "Esta app no borra los códigos de error: hazlo tras la reparación, en un taller o con una herramienta profesional.",
-      "manufacturerNote": "Los códigos que empiezan por P1 (o B1, C1, U1) son específicos del fabricante: su significado depende de la marca y el modelo. Consulta el manual de taller o pide a un taller que lea el código."
+      "manufacturerNote": "Los códigos que empiezan por P1, P30-P33, B1/B2, C1/C2 o U1/U2 son específicos del fabricante: su significado depende de la marca y el modelo. Consulta el manual de taller o haz que un taller lea el código.",
+      "unknownGeneric": "Código genérico (igual en todos los coches) que aún no está en el diccionario de la app: búscalo por el código exacto o consulta a un taller."
     },
     "readiness": {
       "title": "Monitor de preparación (antes de la revisión)",
@@ -925,7 +926,8 @@
     "exportFailed": "La exportación no se ha realizado correctamente. Inténtalo de nuevo.",
     "dtcTitle": "Diagnóstico OBD: historial de códigos de error",
     "dtcCleared": "Sin códigos: resueltos respecto a la lectura anterior.",
-    "dtcUnknown": "Código específico del fabricante."
+    "dtcUnknown": "Código específico del fabricante.",
+    "dtcUnknownGeneric": "Código genérico, descripción no disponible."
   },
   "obdNotice": {
     "title": "Antes de conectarte",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adaptador no reconocido: no se encontró ningún servicio Bluetooth compatible.",
     "notConnected": "No conectado.",
     "pairedDevicesError": "No se pueden leer los dispositivos emparejados.",
-    "timeout": "Sin respuesta al comando \"{{command}}\"."
+    "timeout": "Sin respuesta al comando \"{{command}}\".",
+    "nmhcCatalyst": "Catalizador NMHC",
+    "noxScr": "Reducción de NOx / SCR (AdBlue)",
+    "boostPressure": "Presión de sobrealimentación",
+    "exhaustGasSensor": "Sensor de gases de escape",
+    "particulateFilter": "Filtro de partículas (FAP/DPF)",
+    "egrVvt": "EGR / distribución variable"
   }
 }

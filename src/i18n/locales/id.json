@@ -489,7 +489,8 @@
       "none": "Tidak ada kode {{mode}}.",
       "unknownCode": "Kode khusus pabrikan: tidak ada dalam kamus umum.",
       "noClearHint": "Aplikasi ini tidak menghapus kode kesalahan: lakukan setelah perbaikan, di bengkel atau dengan alat profesional.",
-      "manufacturerNote": "Kode yang diawali P1 (atau B1, C1, U1) khusus pabrikan: artinya bergantung pada merek dan model. Lihat buku manual bengkel atau minta bengkel membaca kodenya."
+      "manufacturerNote": "Kode yang diawali P1, P30-P33, B1/B2, C1/C2, atau U1/U2 khusus pabrikan: artinya bergantung pada merek dan model. Lihat manual bengkel atau minta bengkel membaca kodenya.",
+      "unknownGeneric": "Kode umum (sama di semua mobil) yang belum ada di kamus aplikasi: cari dengan kode persisnya atau tanyakan ke bengkel."
     },
     "readiness": {
       "title": "Monitor kesiapan (pra-revisi)",
@@ -925,7 +926,8 @@
     "exportFailed": "Ekspor gagal. Coba lagi.",
     "dtcTitle": "Diagnostik OBD: riwayat kode kesalahan",
     "dtcCleared": "Tidak ada kode: sudah teratasi sejak pembacaan sebelumnya.",
-    "dtcUnknown": "Kode khusus pabrikan."
+    "dtcUnknown": "Kode khusus pabrikan.",
+    "dtcUnknownGeneric": "Kode umum, deskripsi tidak tersedia."
   },
   "obdNotice": {
     "title": "Sebelum terhubung",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adaptor tidak dikenali: tidak ditemukan layanan Bluetooth yang kompatibel.",
     "notConnected": "Tidak terhubung.",
     "pairedDevicesError": "Tidak dapat membaca perangkat yang dipasangkan.",
-    "timeout": "Tidak ada balasan untuk perintah \"{{command}}\"."
+    "timeout": "Tidak ada balasan untuk perintah \"{{command}}\".",
+    "nmhcCatalyst": "Katalis NMHC",
+    "noxScr": "Pengolahan NOx / SCR (AdBlue)",
+    "boostPressure": "Tekanan turbo",
+    "exhaustGasSensor": "Sensor gas buang",
+    "particulateFilter": "Filter partikulat (DPF)",
+    "egrVvt": "EGR / katup variabel"
   }
 }

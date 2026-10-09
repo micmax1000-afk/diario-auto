@@ -489,7 +489,8 @@
       "none": "Kein Code {{mode}}.",
       "unknownCode": "Herstellerspezifischer Code: nicht im allgemeinen Verzeichnis enthalten.",
       "noClearHint": "Diese App löscht keine Fehlercodes: Tun Sie das nach der Reparatur, in einer Werkstatt oder mit einem professionellen Gerät.",
-      "manufacturerNote": "Codes, die mit P1 (oder B1, C1, U1) beginnen, sind herstellerspezifisch: Ihre Bedeutung hängt von Marke und Modell ab. Siehe Werkstatthandbuch oder lassen Sie den Code in einer Werkstatt auslesen."
+      "manufacturerNote": "Codes, die mit P1, P30-P33, B1/B2, C1/C2 oder U1/U2 beginnen, sind herstellerspezifisch: Ihre Bedeutung hängt von Marke und Modell ab. Sieh im Werkstatthandbuch nach oder lass den Code in einer Werkstatt auslesen.",
+      "unknownGeneric": "Generischer Code (bei allen Autos gleich), noch nicht im Wörterbuch der App: Suche ihn über den genauen Code oder frag eine Werkstatt."
     },
     "readiness": {
       "title": "Readiness-Monitor (vor der Überprüfung)",
@@ -925,7 +926,8 @@
     "exportFailed": "Der Export ist fehlgeschlagen. Bitte versuche es erneut.",
     "dtcTitle": "OBD-Diagnose: Fehlercode-Verlauf",
     "dtcCleared": "Keine Codes: seit der vorherigen Auslesung behoben.",
-    "dtcUnknown": "Herstellerspezifischer Code."
+    "dtcUnknown": "Herstellerspezifischer Code.",
+    "dtcUnknownGeneric": "Generischer Code, keine Beschreibung verfügbar."
   },
   "obdNotice": {
     "title": "Bevor du dich verbindest",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adapter nicht erkannt: kein kompatibler Bluetooth-Dienst gefunden.",
     "notConnected": "Nicht verbunden.",
     "pairedDevicesError": "Gekoppelte Geräte können nicht gelesen werden.",
-    "timeout": "Keine Antwort auf den Befehl „{{command}}“."
+    "timeout": "Keine Antwort auf den Befehl „{{command}}“.",
+    "nmhcCatalyst": "NMHC-Katalysator",
+    "noxScr": "NOx-Reduktion / SCR (AdBlue)",
+    "boostPressure": "Ladedruck",
+    "exhaustGasSensor": "Abgassensor",
+    "particulateFilter": "Partikelfilter (DPF)",
+    "egrVvt": "AGR / variable Ventilsteuerung"
   }
 }
