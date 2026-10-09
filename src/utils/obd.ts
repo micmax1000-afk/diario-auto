@@ -10,6 +10,7 @@
 
 import { Capacitor } from "@capacitor/core";
 import NativeObdBluetooth, { type PairedDevice } from "./nativeObdBridge";
+import { decodeDtcResponse, isCanProtocol } from "./obdDtc";
 
 export type { PairedDevice };
 
@@ -110,6 +111,16 @@ const READINESS_MONITOR_LABELS_SPARK: { bit: number; label: string }[] = [
   { bit: 7, label: "Ricircolo gas di scarico (EGR)" },
 ];
 
+// Motori diesel (accensione per compressione): stessi bit, significato diverso (SAE J1979).
+const READINESS_MONITOR_LABELS_DIESEL: { bit: number; label: string }[] = [
+  { bit: 0, label: "Catalizzatore NMHC" },
+  { bit: 1, label: "Riduzione NOx / SCR (AdBlue)" },
+  { bit: 3, label: "Pressione di sovralimentazione" },
+  { bit: 5, label: "Sensore gas di scarico" },
+  { bit: 6, label: "Filtro antiparticolato (FAP/DPF)" },
+  { bit: 7, label: "EGR / fasatura variabile" },
+];
+
 export interface ReadinessResult {
   milOn: boolean;
   storedCodesCount: number;
@@ -144,6 +155,12 @@ const OBD_TEXT_KEYS: Record<string, string> = {
   "Sonda lambda (O2)": "o2Sensor",
   "Riscaldamento sonda lambda": "o2Heater",
   "Ricircolo gas di scarico (EGR)": "egr",
+  "Catalizzatore NMHC": "nmhcCatalyst",
+  "Riduzione NOx / SCR (AdBlue)": "noxScr",
+  "Pressione di sovralimentazione": "boostPressure",
+  "Sensore gas di scarico": "exhaustGasSensor",
+  "Filtro antiparticolato (FAP/DPF)": "particulateFilter",
+  "EGR / fasatura variabile": "egrVvt",
   "Automatico": "automatic",
   "Questo browser non supporta Web Bluetooth. Usa Chrome o Edge su Android.": "noWebBluetooth",
   "Il Bluetooth nativo è disponibile solo nell'app Android, non nel browser.": "nativeOnlyInApp",
@@ -416,8 +433,12 @@ export class ObdConnection {
     await this.sendRaw("ATS1").catch(() => ""); // risposte con spazi tra i byte (più leggibili nel terminale)
     await this.sendRaw("ATH0").catch(() => "");
     const chosen = this.normalizeProtocol(protocol);
+    this.protocolDigit = chosen;
     await this.sendRaw(chosen ? `ATSP${chosen}` : "ATSP0").catch(() => "");
   }
+
+  /** Protocollo in uso (cifra di ATSP/ATDPN), serve a decodificare i codici errore; null se non noto. */
+  private protocolDigit: string | null = null;
 
   /** true/false dopo il primo contatto con l'auto, null se non ancora provato. */
   public vehicleResponds: boolean | null = null;
@@ -485,7 +506,9 @@ export class ObdConnection {
     try {
       const raw = await this.sendRaw("ATDPN");
       const cleaned = raw.replace(/>/g, "").replace(/[\r\n]/g, "").trim();
-      return this.normalizeProtocol(cleaned);
+      const digit = this.normalizeProtocol(cleaned);
+      if (digit) this.protocolDigit = digit;
+      return digit;
     } catch {
       return null;
     }
@@ -610,29 +633,12 @@ export class ObdConnection {
     const responseMode = mode === "03" ? "43" : mode === "07" ? "47" : "4A";
     try {
       const raw = await this.sendRaw(mode);
-      const bytes = this.parseHexResponse(raw, responseMode);
-      if (!bytes) return [];
-
-      const codes: string[] = [];
-      for (let i = 0; i + 1 < bytes.length; i += 2) {
-        const a = bytes[i];
-        const b = bytes[i + 1];
-        if (a === 0 && b === 0) continue;
-
-        const firstCharMap = ["P", "C", "B", "U"];
-        const firstChar = firstCharMap[(a >> 6) & 0x03];
-        const secondDigit = (a >> 4) & 0x03;
-        const rest = ((a & 0x0f) << 8) | b;
-        const code = `${firstChar}${secondDigit}${rest.toString(16).toUpperCase().padStart(3, "0")}`;
-        codes.push(code);
-      }
-      return codes;
+      return decodeDtcResponse(raw, responseMode, isCanProtocol(this.protocolDigit));
     } catch {
       return [];
     }
   }
 
-  /** Cancella i codici errore memorizzati/pending e spegne la spia motore (Mode 04). */
   /**
    * Chilometri letti dal contachilometri del veicolo, solo se l'auto lo fornisce
    * (PID 01A6): null se non è supportato o la lettura non riesce.
@@ -644,19 +650,22 @@ export class ObdConnection {
     return Math.round(value);
   }
 
-  /** Stato spia motore e monitor di controllo emissioni (Mode 01 PID 01), per veicoli benzina/GPL. */
+  /** Stato spia motore e monitor di controllo emissioni (Mode 01 PID 01), benzina/GPL o diesel. */
   async readReadiness(): Promise<ReadinessResult | null> {
     try {
       const raw = await this.sendRaw("0101");
       const bytes = this.parseHexResponse(raw, "41", "01");
       if (!bytes || bytes.length < 4) return null;
 
-      const [a, , c, d] = bytes;
+      const [a, b, c, d] = bytes;
       const milOn = (a & 0x80) !== 0;
       const storedCodesCount = a & 0x7f;
+      // byte B, bit 3: 1 = motore diesel, i monitor dei byte C/D hanno un altro significato
+      const diesel = (b & 0x08) !== 0;
 
       // byte C: bit=1 → monitor supportato dal veicolo; byte D: bit=1 → monitor non ancora completato
-      const monitors = READINESS_MONITOR_LABELS_SPARK.map(({ bit, label }) => {
+      const labels = diesel ? READINESS_MONITOR_LABELS_DIESEL : READINESS_MONITOR_LABELS_SPARK;
+      const monitors = labels.map(({ bit, label }) => {
         const supported = ((c >> bit) & 0x01) === 1;
         const ready = supported ? ((d >> bit) & 0x01) === 0 : false;
         return { label, supported, ready };

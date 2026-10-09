@@ -7,6 +7,7 @@ import { ObdConnection, type LiveReading, type LivePidKey, type ObdStatus, type 
 import { DemoObdConnection } from "../utils/obdDemo";
 import { describeDtc } from "../utils/dtcCodes";
 import { addDtcReading, previousOccurrences, sameCodes } from "../utils/dtcHistory";
+import { isManufacturerSpecificDtc } from "../utils/obdDtc";
 import { getMeta, setMeta } from "../utils/db";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -966,7 +967,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                       <li key={code} className="dtc-list__item dtc-list__item--described">
                         <span className="dtc-list__code">{code}</span>
                         <span className="dtc-list__desc">
-                          {description ?? t("live.dtc.unknownCode")}
+                          {description ?? t(isManufacturerSpecificDtc(code) ? "live.dtc.unknownCode" : "live.dtc.unknownGeneric")}
                         </span>
                         {(() => {
                           const seen = previousOccurrences(dtcHistory, code, currentReadingId);
@@ -986,7 +987,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                 </ul>
               ))}
 
-            {dtcCodes !== null && dtcCodes.some((c) => /^[PBCU]1/i.test(c)) && (
+            {dtcCodes !== null && dtcCodes.some((c) => isManufacturerSpecificDtc(c)) && (
               <p className="obd-hint">{t("live.dtc.manufacturerNote")}</p>
             )}
           </div>

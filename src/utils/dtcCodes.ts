@@ -1,8 +1,9 @@
-// Descrizioni dei codici DTC generici OBD-II (P0xxx) più comuni, basate sullo
+// Descrizioni dei codici DTC generici OBD-II più comuni, basate sullo
 // standard SAE J2012 / ISO 15031-6 (definizione pubblica di settore, non
 // proprietaria di nessun singolo produttore o rivenditore). Sono "generici":
-// validi per qualunque costruttore. I codici P1xxx/P2xxx/P3xxx specifici del
-// produttore non sono coperti da questo dizionario.
+// validi per qualunque costruttore (P0, P2, P34-P39, C0, B0, U0). I codici
+// specifici del costruttore (P1, P30-P33, B1/B2, C1/C2, U1/U2) non sono
+// coperti da questo dizionario.
 //
 // Nota: queste descrizioni esistono in italiano (qui) e in inglese
 // (dtcCodes.en.ts, usato per tutte le altre lingue).
@@ -191,6 +192,67 @@ export const DTC_DESCRIPTIONS: Record<string, string> = {
   P0830: "Circuito interruttore frizione (cambio manuale) - malfunzionamento",
   P0837: "Circuito interruttore retromarcia - malfunzionamento",
   P0841: "Circuito sensore pressione fluido cambio A - malfunzionamento",
+  // ---------- Altri codici generici frequenti (diesel/FAP, turbo, candelette, AdBlue, sensori, rete CAN) ----------
+  P0087: "Pressione rail/sistema carburante - troppo bassa",
+  P0088: "Pressione rail/sistema carburante - troppo alta",
+  P0089: "Regolatore pressione carburante 1 - prestazioni",
+  P0093: "Perdita sistema carburante rilevata (grande)",
+  P0234: "Turbocompressore - sovralimentazione eccessiva (overboost)",
+  P0235: "Circuito sensore pressione sovralimentazione A - malfunzionamento",
+  P0236: "Circuito sensore pressione sovralimentazione A - range/prestazioni",
+  P0237: "Circuito sensore pressione sovralimentazione A - segnale basso",
+  P0238: "Circuito sensore pressione sovralimentazione A - segnale alto",
+  P0299: "Turbocompressore - sovralimentazione insufficiente (underboost)",
+  P0380: "Circuito candelette/riscaldatore A - malfunzionamento",
+  P0381: "Circuito spia candelette - malfunzionamento",
+  P0382: "Circuito candelette/riscaldatore B - malfunzionamento",
+  P0470: "Circuito sensore pressione gas di scarico - malfunzionamento",
+  P0471: "Circuito sensore pressione gas di scarico - range/prestazioni",
+  P0480: "Circuito comando ventola raffreddamento 1 - malfunzionamento",
+  P0521: "Sensore/interruttore pressione olio motore - range/prestazioni",
+  P0524: "Pressione olio motore troppo bassa",
+  P0561: "Tensione di sistema instabile",
+  P0571: "Circuito interruttore freno A - malfunzionamento",
+  P0627: "Circuito comando pompa carburante A - interrotto",
+  P0641: "Circuito tensione di riferimento sensori A - interrotto",
+  P0670: "Circuito comando centralina candelette - malfunzionamento",
+  P0671: "Circuito candeletta cilindro 1 - malfunzionamento",
+  P0672: "Circuito candeletta cilindro 2 - malfunzionamento",
+  P0673: "Circuito candeletta cilindro 3 - malfunzionamento",
+  P0674: "Circuito candeletta cilindro 4 - malfunzionamento",
+  P0683: "Comunicazione centralina candelette / centralina motore - malfunzionamento",
+  P2002: "Efficienza filtro antiparticolato (FAP/DPF) banco1 sotto soglia",
+  P2096: "Correzione carburante dopo il catalizzatore banco1 - miscela troppo povera",
+  P2097: "Correzione carburante dopo il catalizzatore banco1 - miscela troppo ricca",
+  P2135: "Sensori posizione farfalla/pedale A/B - tensioni non coerenti",
+  P2138: "Sensori posizione farfalla/pedale D/E - tensioni non coerenti",
+  P2187: "Miscela troppo povera al minimo - banco1",
+  P2188: "Miscela troppo ricca al minimo - banco1",
+  P2195: "Sonda lambda banco1 sensore1 - segnale bloccato su povero",
+  P2196: "Sonda lambda banco1 sensore1 - segnale bloccato su ricco",
+  P2200: "Circuito sensore NOx banco1 - malfunzionamento",
+  P2263: "Sistema di sovralimentazione turbo - prestazioni",
+  P2279: "Perdita nel sistema di aspirazione aria",
+  P2452: "Circuito sensore pressione filtro antiparticolato A - malfunzionamento",
+  P2453: "Circuito sensore pressione filtro antiparticolato A - range/prestazioni",
+  P2458: "Filtro antiparticolato - durata rigenerazione",
+  P2459: "Filtro antiparticolato - frequenza rigenerazione",
+  P2463: "Filtro antiparticolato - intasamento da accumulo di fuliggine",
+  P203F: "Livello agente riducente (AdBlue) troppo basso",
+  P20E8: "Pressione agente riducente (AdBlue) troppo bassa",
+  P20EE: "Efficienza catalizzatore SCR (NOx) banco1 sotto soglia",
+  P2BAD: "Emissioni NOx eccessive - causa non identificata",
+  C0035: "Circuito sensore velocità ruota anteriore sinistra",
+  C0040: "Circuito sensore velocità ruota anteriore destra",
+  C0045: "Circuito sensore velocità ruota posteriore sinistra",
+  C0050: "Circuito sensore velocità ruota posteriore destra",
+  U0001: "Bus di comunicazione CAN alta velocità - malfunzionamento",
+  U0073: "Bus di comunicazione centraline A spento",
+  U0100: "Comunicazione persa con la centralina motore (ECM/PCM)",
+  U0101: "Comunicazione persa con la centralina del cambio (TCM)",
+  U0121: "Comunicazione persa con la centralina ABS",
+  U0140: "Comunicazione persa con la centralina carrozzeria (BCM)",
+  U0155: "Comunicazione persa con il quadro strumenti",
 };
 
 /**

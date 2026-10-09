@@ -489,7 +489,8 @@
       "none": "Não existe nenhum código {{mode}}.",
       "unknownCode": "Código específico do fabricante: não consta do dicionário genérico.",
       "noClearHint": "Este app não apaga os códigos de erro: faça-o após a reparação, numa oficina ou com uma ferramenta profissional.",
-      "manufacturerNote": "Os códigos que começam por P1 (ou B1, C1, U1) são específicos do fabricante: o significado depende da marca e do modelo. Consulte o manual de oficina ou peça a uma oficina que leia o código."
+      "manufacturerNote": "Os códigos que começam por P1, P30-P33, B1/B2, C1/C2 ou U1/U2 são específicos do fabricante: o significado depende da marca e do modelo. Consulte o manual de oficina ou peça a uma oficina para ler o código.",
+      "unknownGeneric": "Código genérico (igual em todos os carros) ainda não presente no dicionário da app: procure-o pelo código exato ou pergunte a uma oficina."
     },
     "readiness": {
       "title": "Monitor de prontidão (pré-revisão)",
@@ -925,7 +926,8 @@
     "exportFailed": "A exportação não foi bem-sucedida. Tente novamente.",
     "dtcTitle": "Diagnóstico OBD: histórico de códigos de erro",
     "dtcCleared": "Sem códigos: resolvidos face à leitura anterior.",
-    "dtcUnknown": "Código específico do fabricante."
+    "dtcUnknown": "Código específico do fabricante.",
+    "dtcUnknownGeneric": "Código genérico, descrição não disponível."
   },
   "obdNotice": {
     "title": "Antes de te ligares",
@@ -996,6 +998,12 @@
     "adapterUnknown": "Adaptador não reconhecido: nenhum serviço Bluetooth compatível encontrado.",
     "notConnected": "Não ligado.",
     "pairedDevicesError": "Não foi possível ler os dispositivos emparelhados.",
-    "timeout": "Sem resposta ao comando \"{{command}}\"."
+    "timeout": "Sem resposta ao comando \"{{command}}\".",
+    "nmhcCatalyst": "Catalisador NMHC",
+    "noxScr": "Redução de NOx / SCR (AdBlue)",
+    "boostPressure": "Pressão de sobrealimentação",
+    "exhaustGasSensor": "Sensor de gases de escape",
+    "particulateFilter": "Filtro de partículas (DPF)",
+    "egrVvt": "EGR / distribuição variável"
   }
 }

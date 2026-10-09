@@ -9,6 +9,7 @@ import { useAppSettings } from "../contexts/AppSettingsContext";
 import { isRtlLanguage } from "../i18n";
 import { generateMaintenancePassportPdf } from "../utils/vehiclePassport";
 import { describeDtc } from "../utils/dtcCodes";
+import { isManufacturerSpecificDtc } from "../utils/obdDtc";
 import { exportPdfBytes } from "../utils/nativeFileExport";
 import { getObdProfile } from "../utils/storage";
 import { useProStatus } from "../services/billing/useProStatus";
@@ -212,7 +213,7 @@ export default function VehicleDetail({
           dateLabel: new Date(r.date).toLocaleDateString(locale),
           kmLabel: formatDistance(r.km, distanceUnit, locale),
           modeLabel: t(dtcModeKeys[r.mode]),
-          codes: r.codes.map((code) => ({ code, description: describeDtc(code, i18n.language) ?? t("passport.dtcUnknown") })),
+          codes: r.codes.map((code) => ({ code, description: describeDtc(code, i18n.language) ?? t(isManufacturerSpecificDtc(code) ? "passport.dtcUnknown" : "passport.dtcUnknownGeneric") })),
         })),
         labels: {
           title: t("passport.title"),
