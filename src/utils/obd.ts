@@ -685,8 +685,9 @@ export class ObdConnection {
       if (!def) continue;
       try {
         const raw = await this.sendRaw(`02${def.pid}00`);
-        const bytes = this.parseHexResponse(raw, "42", def.pid);
-        if (bytes) {
+        // Risposta: 42 <PID> <numero frame> <dati>: il numero del frame va saltato.
+        const bytes = this.parseHexResponse(raw, "42", def.pid)?.slice(1);
+        if (bytes && bytes.length > 0) {
           const value = def.parse(bytes);
           if (!Number.isNaN(value)) result[key] = Math.round(value * 10) / 10;
         }
