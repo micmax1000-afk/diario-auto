@@ -121,6 +121,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
   const [loadingReadiness, setLoadingReadiness] = useState(false);
 
   const [freezeFrame, setFreezeFrame] = useState<Record<string, number | undefined> | null>(null);
+  const [freezeFrameDtc, setFreezeFrameDtc] = useState<string | null>(null);
   const [loadingFreeze, setLoadingFreeze] = useState(false);
 
   const [vin, setVin] = useState<string | null>(null);
@@ -485,6 +486,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
     if (!connRef.current) return;
     setLoadingFreeze(true);
     const result = await connRef.current.readFreezeFrame(["rpm", "speedKmh", "coolantTempC", "engineLoadPercent"]);
+    setFreezeFrameDtc(await connRef.current.readFreezeFrameDtc());
     setFreezeFrame(result);
     setLoadingFreeze(false);
   }
@@ -1048,6 +1050,18 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
               </button>
             </div>
             {freezeFrame && (
+              <p className="obd-hint freeze-frame-cause">
+                {freezeFrameDtc
+                  ? t("live.freezeFrame.cause", {
+                      code: freezeFrameDtc,
+                      description:
+                        describeDtc(freezeFrameDtc, i18n.language) ??
+                        t(isManufacturerSpecificDtc(freezeFrameDtc) ? "passport.dtcUnknown" : "passport.dtcUnknownGeneric"),
+                    })
+                  : t("live.freezeFrame.noCause")}
+              </p>
+            )}
+            {freezeFrame && (
               <div className="stat-row">
                 {Object.entries(freezeFrame).map(([key, value]) => {
                   const isTemp = key === "coolantTempC" || key === "intakeTempC";
@@ -1060,7 +1074,13 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                       <span className="stat-chip__label">{t(`live.gauges.${key}`, key)}</span>
                       <span className="stat-chip__value">
                         {displayValue ?? "—"}
-                        {isTemp && displayValue !== undefined && displayValue !== null ? `°${temperatureUnit}` : ""}
+                        {displayValue !== undefined && displayValue !== null
+                          ? isTemp
+                            ? `°${temperatureUnit}`
+                            : GAUGE_UNITS[key]
+                              ? ` ${GAUGE_UNITS[key]}`
+                              : ""
+                          : ""}
                       </span>
                     </div>
                   );

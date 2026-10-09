@@ -504,7 +504,9 @@
     },
     "freezeFrame": {
       "title": "Imagem congelada",
-      "read": "Ver o último fotograma"
+      "read": "Ver o último fotograma",
+      "cause": "Registado quando surgiu {{code}}: {{description}}",
+      "noCause": "Nenhum código de erro associado a este freeze frame."
     },
     "pickDeviceTitle": "Escolha o adaptador",
     "noPairedDevices": "Não há nenhum adaptador emparelhado. Aceda às definições de Bluetooth do Android, emparelhe o seu adaptador OBD2 (o PIN é normalmente 1234 ou 0000) e, em seguida, volte aqui.",

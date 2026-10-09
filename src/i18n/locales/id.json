@@ -504,7 +504,9 @@
     },
     "freezeFrame": {
       "title": "Jendela beku",
-      "read": "Baca bingkai terakhir"
+      "read": "Baca bingkai terakhir",
+      "cause": "Direkam saat {{code}} muncul: {{description}}",
+      "noCause": "Tidak ada kode kesalahan yang terkait dengan freeze frame ini."
     },
     "pickDeviceTitle": "Pilih adaptor",
     "noPairedDevices": "Tidak ada adaptor yang terpasangkan. Buka Pengaturan Bluetooth di Android, pasangkan adaptor OBD2 Anda (kode PIN biasanya 1234 atau 0000), lalu kembali ke sini.",

@@ -127,6 +127,10 @@ export class DemoObdConnection extends ObdConnection {
     };
   }
 
+  async readFreezeFrameDtc(): Promise<string | null> {
+    return "P0420";
+  }
+
   async readFreezeFrame(): Promise<FreezeFrameResult> {
     return { rpm: 2150, speedKmh: 62, coolantTempC: 88, engineLoadPercent: 43.5 };
   }
