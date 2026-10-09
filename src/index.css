@@ -4400,11 +4400,11 @@ textarea {
 .dash-featured-vehicle--hero .dash-pill { background: rgba(0, 0, 0, 0.45); }
 .dash-clist { margin: 0 1rem 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
 .dash-ccard { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem; border-radius: 16px; background: var(--card); border: 1px solid color-mix(in srgb, var(--border) 60%, transparent); cursor: pointer; }
-.dash-ccard__thumb { position: relative; flex: none; width: 64px; height: 64px; border-radius: 12px; background: var(--bg-elevated, rgba(127, 127, 127, 0.15)) center / cover no-repeat; display: grid; place-items: center; }
+.dash-ccard__thumb { position: relative; flex: none; width: 96px; height: 54px; border-radius: 12px; background: var(--bg-elevated, rgba(127, 127, 127, 0.15)) center / cover no-repeat; display: grid; place-items: center; }
 .dash-ccard__icon { width: 36px; height: 36px; color: var(--text-muted); }
 .dash-ccard__badge { position: absolute; top: -6px; inset-inline-end: -6px; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--danger); color: #fff; font-size: 0.68rem; font-weight: 700; display: grid; place-items: center; }
 .dash-ccard__body { flex: 1; min-width: 0; }
-.dash-ccard__name { margin: 0; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dash-ccard__name { margin: 0; font-size: 0.95rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow-wrap: anywhere; }
 .dash-ccard__km { margin: 0.1rem 0 0; font-size: 0.78rem; color: var(--text-muted); font-family: var(--font-mono); }
 .dash-ccard .dash-pills { margin-top: 0.4rem; }
 .dash-move { display: flex; flex-direction: column; gap: 2px; flex: none; }
@@ -4470,3 +4470,23 @@ textarea {
   .dash-quick__row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dash-quick__row--4 .dash-quick__item--primary { grid-column: auto; }
 }
+
+/* Inquadratura della foto del veicolo */
+.photo-cropper-overlay { z-index: 400; }
+.photo-cropper__body { padding: 0.5rem 1.5rem 0.5rem; }
+.photo-cropper__frame { position: relative; width: 100%; overflow: hidden; border-radius: 8px; background: #000; touch-action: none; cursor: grab; user-select: none; }
+.photo-cropper__frame:active { cursor: grabbing; }
+.photo-cropper__frame img { position: absolute; top: 0; left: 0; max-width: none; transform-origin: 0 0; pointer-events: none; }
+.photo-cropper__zoom { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.75rem; font-size: 0.85rem; color: var(--text-muted); }
+.photo-cropper .modal__actions { padding: 0 1.5rem 1.25rem; }
+.photo-cropper__zoom input { flex: 1; accent-color: var(--amber); }
+
+/* Storico codici errore OBD */
+.dtc-list__seen { display: block; font-family: var(--font-body); font-size: 0.75rem; font-weight: 600; color: var(--amber); }
+.dtc-history { list-style: none; margin: 0.5rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.dtc-history__item { padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 10px; }
+.dtc-history__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 0.8rem; font-size: 0.75rem; color: var(--text-muted); }
+.dtc-history__meta .photo-preview__remove { margin-inline-start: auto; }
+.dtc-history__codes { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
+.dtc-history__none { margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--ok); }
+.photo-cropper__body .obd-hint { margin-top: 0.6rem; }

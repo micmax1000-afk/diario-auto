@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getNumberLocale } from "../utils/locale";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
-import type { Vehicle, LogSession, LogSample, AlarmThresholds } from "../types";
+import type { Vehicle, LogSession, LogSample, AlarmThresholds, DtcReading } from "../types";
 import { ObdConnection, type LiveReading, type LivePidKey, type ObdStatus, type DtcMode, type ReadinessResult, type PairedDevice, PROTOCOL_DESCRIPTIONS, localizeObdText } from "../utils/obd";
 import { DemoObdConnection } from "../utils/obdDemo";
 import { describeDtc } from "../utils/dtcCodes";
+import { addDtcReading, previousOccurrences, sameCodes } from "../utils/dtcHistory";
 import { getMeta, setMeta } from "../utils/db";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -110,6 +111,10 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
   const [dtcMode, setDtcMode] = useState<DtcMode>("03");
   const [dtcCodes, setDtcCodes] = useState<string[] | null>(null);
   const [loadingDtc, setLoadingDtc] = useState(false);
+  const [dtcHistory, setDtcHistory] = useState<DtcReading[]>([]);
+  // Lettura dello storico che corrisponde ai codici mostrati ora (esclusa dal conteggio "già visto").
+  const [currentReadingId, setCurrentReadingId] = useState<string | undefined>(undefined);
+  const [showDtcHistory, setShowDtcHistory] = useState(false);
 
   const [readiness, setReadiness] = useState<ReadinessResult | null>(null);
   const [loadingReadiness, setLoadingReadiness] = useState(false);
@@ -157,6 +162,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
   useEffect(() => {
     getObdProfile(vehicle.id).then((profile) => setAlarms(profile?.alarms ?? {}));
     loadLogSessionsForVehicle(vehicle.id).then(setSessions);
+    getObdProfile(vehicle.id).then((profile) => setDtcHistory(profile?.dtcHistory ?? []));
   }, [vehicle.id]);
 
   useEffect(() => {
@@ -395,6 +401,75 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
     const codes = await connRef.current.readDtcCodes(mode);
     setDtcCodes(codes);
     setLoadingDtc(false);
+    setCurrentReadingId(undefined);
+    // Le letture della modalità demo non finiscono nello storico.
+    if (connRef.current.isDemo) return;
+
+    const profile = await getObdProfile(vehicle.id);
+    const history = profile?.dtcHistory ?? [];
+    const km = odometerKm !== null && odometerKm > 0 ? odometerKm : vehicle.currentKm;
+    const updated = addDtcReading(history, { id: generateId(), date: new Date().toISOString(), km, mode, codes });
+    const finalHistory = updated ?? history;
+    if (updated) await upsertObdProfile(vehicle.id, { dtcHistory: updated });
+    setDtcHistory(finalHistory);
+    const last = [...finalHistory].reverse().find((r) => r.mode === mode);
+    setCurrentReadingId(last && sameCodes(last.codes, codes) ? last.id : undefined);
+  }
+
+  async function handleDeleteDtcReading(id: string) {
+    const next = dtcHistory.filter((r) => r.id !== id);
+    setDtcHistory(next);
+    if (id === currentReadingId) setCurrentReadingId(undefined);
+    await upsertObdProfile(vehicle.id, { dtcHistory: next });
+  }
+
+  function formatReadingDate(iso: string) {
+    return new Date(iso).toLocaleDateString(getNumberLocale(i18n.language));
+  }
+
+  function renderDtcHistory() {
+    if (dtcHistory.length === 0) return null;
+    const locale = getNumberLocale(i18n.language);
+    return (
+      <div className="obd-block">
+        <div className="section-head section-head--tight">
+          <h2>{t("live.dtcHistory.title")}</h2>
+          <button type="button" className="btn btn--ghost btn--small" onClick={() => setShowDtcHistory((v) => !v)}>
+            {showDtcHistory ? t("live.dtcHistory.hide") : t("live.dtcHistory.show", { n: dtcHistory.length })}
+          </button>
+        </div>
+        {showDtcHistory && (
+          <>
+            <p className="obd-hint">{t("live.dtcHistory.hint")}</p>
+            <ul className="dtc-history">
+              {[...dtcHistory].reverse().map((r) => (
+                <li key={r.id} className="dtc-history__item">
+                  <div className="dtc-history__meta">
+                    <span>{formatReadingDate(r.date)}</span>
+                    <span className="mono">{formatDistance(r.km, distanceUnit, locale)}</span>
+                    <span>{t(DTC_MODE_I18N_KEYS[r.mode])}</span>
+                    <button type="button" className="photo-preview__remove" onClick={() => handleDeleteDtcReading(r.id)}>
+                      {t("live.dtcHistory.delete")}
+                    </button>
+                  </div>
+                  {r.codes.length === 0 ? (
+                    <p className="dtc-history__none">{t("live.dtcHistory.cleared")}</p>
+                  ) : (
+                    <div className="dtc-history__codes">
+                      {r.codes.map((code) => (
+                        <span key={code} className="dtc-list__code" title={describeDtc(code, i18n.language) ?? undefined}>
+                          {code}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </div>
+    );
   }
 
   async function handleReadReadiness() {
@@ -562,13 +637,16 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
 
   if (!supported && !nativeSupported && !(connRef.current?.isDemo && status !== "disconnected")) {
     return (
-      <div className="empty-state">
-        <p className="empty-state__title">{t("live.notSupportedTitle")}</p>
-        <p className="empty-state__body">{t("live.notSupportedBody")}</p>
-        <button type="button" className="btn btn--ghost btn--small" onClick={handleStartDemo}>
-          {t("live.demo.start")}
-        </button>
-      </div>
+      <>
+        <div className="empty-state">
+          <p className="empty-state__title">{t("live.notSupportedTitle")}</p>
+          <p className="empty-state__body">{t("live.notSupportedBody")}</p>
+          <button type="button" className="btn btn--ghost btn--small" onClick={handleStartDemo}>
+            {t("live.demo.start")}
+          </button>
+        </div>
+        {renderDtcHistory()}
+      </>
     );
   }
 
@@ -890,6 +968,18 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                         <span className="dtc-list__desc">
                           {description ?? t("live.dtc.unknownCode")}
                         </span>
+                        {(() => {
+                          const seen = previousOccurrences(dtcHistory, code, currentReadingId);
+                          return seen ? (
+                            <span className="dtc-list__seen">
+                              {t("live.dtcHistory.seenBefore", {
+                                n: seen.count,
+                                date: formatReadingDate(seen.first.date),
+                                km: formatDistance(seen.first.km, distanceUnit, getNumberLocale(i18n.language)),
+                              })}
+                            </span>
+                          ) : null;
+                        })()}
                       </li>
                     );
                   })}
@@ -900,6 +990,8 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
               <p className="obd-hint">{t("live.dtc.manufacturerNote")}</p>
             )}
           </div>
+
+          {renderDtcHistory()}
 
           {/* Readiness monitors */}
           <div className="obd-block">
@@ -989,6 +1081,8 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
           isNative={nativeSupported}
         />
       )}
+
+      {status !== "connected" && renderDtcHistory()}
 
       {showDevicePicker && (
         <div className="modal-overlay" role="dialog" aria-modal="true">

@@ -60,7 +60,7 @@
     "errorNameGeneric": "Geben Sie den Namen des Fahrzeugs ein.",
     "bodyType": "Kategorie (optional)",
     "photo": "Foto des Autos (optional)",
-    "photoHint": "Sie wird in der Mitte auf das breite Format zugeschnitten und auf der Fahrzeugkarte angezeigt. Sie wird nur auf diesem Gerät gespeichert und ist im Backup enthalten.",
+    "photoHint": "Nach der Auswahl kannst du es verschieben und vergrößern, um den Ausschnitt festzulegen. Es wird auf der Fahrzeugkarte angezeigt, nur auf diesem Gerät gespeichert und ist im Backup enthalten.",
     "photoPreviewAlt": "Vorschau des Autofotos",
     "photoCompressing": "Ich komprimiere das Bild…",
     "photoError": "Ich konnte das Foto nicht hochladen.",
@@ -531,6 +531,15 @@
       "body": "Das Fahrzeug meldet {{carKm}}, das Tagebuch {{diaryKm}}. Tagebuch aktualisieren?",
       "update": "Aktualisieren",
       "ignore": "Ignorieren"
+    },
+    "dtcHistory": {
+      "title": "Fehlercode-Verlauf",
+      "show": "Anzeigen ({{n}})",
+      "hide": "Ausblenden",
+      "hint": "Jede Auslesung mit Codes wird mit Datum und Kilometerstand gespeichert, damit du siehst, ob ein Code wiederkommt. Auslesungen im Demo-Modus werden nicht gespeichert.",
+      "cleared": "Keine Codes: Bei der vorherigen Auslesung waren welche vorhanden.",
+      "delete": "Löschen",
+      "seenBefore": "Schon gesehen: {{n}}× · zuerst am {{date}} bei {{km}}"
     }
   },
   "chargingCategory": {
@@ -952,5 +961,11 @@
     "costPerKm": "Kosten/km",
     "urgent": "Dringend",
     "hint": "Fahrzeug antippen, um es zu öffnen."
+  },
+  "photoCrop": {
+    "title": "Foto zuschneiden",
+    "hint": "Ziehe das Foto, um es zu verschieben; mit zwei Fingern oder dem Schieberegler vergrößern.",
+    "zoom": "Zoom",
+    "confirm": "Bestätigen"
   }
 }

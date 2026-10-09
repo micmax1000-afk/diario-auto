@@ -60,7 +60,7 @@
     "errorNameGeneric": "Enter the vehicle's name.",
     "bodyType": "Category (optional)",
     "photo": "Photo of the car (optional)",
-    "photoHint": "It is cropped in the center to a wide format and displayed on the vehicle card. It is saved only on this device and is included in the backup.",
+    "photoHint": "After choosing it you can drag and zoom it to pick the framing. It is shown on the vehicle card, saved only on this device and included in the backup.",
     "photoPreviewAlt": "Photo preview of the car",
     "photoCompressing": "I'm compressing the image…",
     "photoError": "I wasn't able to upload the photo.",
@@ -531,6 +531,15 @@
       "body": "The vehicle reports {{carKm}}, the diary has {{diaryKm}}. Update the diary?",
       "update": "Update",
       "ignore": "Ignore"
+    },
+    "dtcHistory": {
+      "title": "Fault code history",
+      "show": "Show ({{n}})",
+      "hide": "Hide",
+      "hint": "Every reading with codes is saved with date and mileage, so you can see if a code comes back. Demo mode readings are not saved.",
+      "cleared": "No codes: they were present in the previous reading.",
+      "delete": "Delete",
+      "seenBefore": "Seen before: {{n}}× · first on {{date}} at {{km}}"
     }
   },
   "chargingCategory": {
@@ -952,5 +961,11 @@
     "costPerKm": "Cost/km",
     "urgent": "Urgent",
     "hint": "Tap a vehicle to open it."
+  },
+  "photoCrop": {
+    "title": "Frame the photo",
+    "hint": "Drag the photo to move it, use two fingers or the slider to zoom.",
+    "zoom": "Zoom",
+    "confirm": "Confirm"
   }
 }

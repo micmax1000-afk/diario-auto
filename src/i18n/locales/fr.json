@@ -60,7 +60,7 @@
     "errorNameGeneric": "Indiquez le nom du véhicule.",
     "bodyType": "Catégorie (facultatif)",
     "photo": "Photo de la voiture (facultatif)",
-    "photoHint": "Elle est recadrée au centre au format large et affichée sur la fiche du véhicule. Elle n'est enregistrée que sur cet appareil et est incluse dans la sauvegarde.",
+    "photoHint": "Après l'avoir choisie, vous pouvez la faire glisser et l'agrandir pour choisir le cadrage. Elle s'affiche sur la fiche du véhicule, n'est enregistrée que sur cet appareil et est incluse dans la sauvegarde.",
     "photoPreviewAlt": "Aperçu de la photo de la voiture",
     "photoCompressing": "Je compresse l'image…",
     "photoError": "Je n'ai pas réussi à télécharger la photo.",
@@ -531,6 +531,15 @@
       "body": "Le véhicule indique {{carKm}}, le carnet {{diaryKm}}. Mettre le carnet à jour ?",
       "update": "Mettre à jour",
       "ignore": "Ignorer"
+    },
+    "dtcHistory": {
+      "title": "Historique des codes défaut",
+      "show": "Afficher ({{n}})",
+      "hide": "Masquer",
+      "hint": "Chaque lecture avec des codes est enregistrée avec la date et le kilométrage, pour voir si un code revient. Les lectures du mode démo ne sont pas enregistrées.",
+      "cleared": "Aucun code : ils étaient présents lors de la lecture précédente.",
+      "delete": "Supprimer",
+      "seenBefore": "Déjà vu : {{n}}× · la première fois le {{date}} à {{km}}"
     }
   },
   "chargingCategory": {
@@ -952,5 +961,11 @@
     "costPerKm": "Coût/km",
     "urgent": "Urgents",
     "hint": "Touchez un véhicule pour l'ouvrir."
+  },
+  "photoCrop": {
+    "title": "Cadrer la photo",
+    "hint": "Faites glisser la photo pour la déplacer, utilisez deux doigts ou le curseur pour zoomer.",
+    "zoom": "Zoom",
+    "confirm": "Confirmer"
   }
 }
