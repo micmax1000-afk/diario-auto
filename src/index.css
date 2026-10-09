@@ -4510,3 +4510,12 @@ textarea {
 }
 /* Scadenze in home: il nome del veicolo resta su una riga */
 .upcoming-reminders__vehicle { display: inline-block; max-width: 100%; vertical-align: middle; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Grafico spese: dettaglio del mese toccato (di base l'ultimo), sotto il grafico */
+.cost-detail { display: flex; flex-direction: column; gap: 0.3rem; margin-top: 0.75rem; padding: 0.7rem 0.85rem; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text); }
+.cost-detail > strong { font-size: 0.8rem; text-transform: capitalize; }
+.cost-detail span { display: flex; align-items: center; gap: 0.45rem; }
+.cost-detail i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.cost-detail b { margin-inline-start: auto; padding-inline-start: 0.8rem; white-space: nowrap; }
+.cost-detail__total { border-top: 1px solid var(--border); padding-top: 0.3rem; font-weight: 700; }
+.chart-wrap .recharts-wrapper:focus, .chart-wrap .recharts-surface:focus, .chart-wrap :focus-visible { outline: none; }

@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
 import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -36,6 +37,8 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
   const { t, i18n } = useTranslation();
   const { formatMoney, currency } = useAppSettings();
   const currencySymbol = getCurrencySymbol(currency);
+  // Mese selezionato (toccando una barra); se nessuno, l'ultimo.
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   if (fuelEntries.length === 0 && chargingEntries.length === 0 && maintenanceEntries.length === 0 && expenseEntries.length === 0) {
     return (
@@ -46,6 +49,7 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
     );
   }
 
+  const locale = getNumberLocale(i18n.language);
   const buckets = new Map<string, MonthBucket>();
 
   function getBucket(key: string): MonthBucket {
@@ -68,11 +72,24 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
     getBucket(monthKey(entry.date)).spese += entry.amount;
   }
 
+  // Anche i mesi senza spese, così l'asse del tempo è continuo e i buchi si vedono.
+  const keys = [...buckets.keys()].sort();
+  const lastKey = keys[keys.length - 1];
+  let [year, month] = keys[0].split("-").map(Number);
+  while (`${year}-${String(month).padStart(2, "0")}` < lastKey) {
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+    getBucket(`${year}-${String(month).padStart(2, "0")}`);
+  }
+
   const data = Array.from(buckets.values())
     .sort((a, b) => a.month.localeCompare(b.month))
     .map((b) => ({
       ...b,
-      monthLabel: monthLabel(b.month, getNumberLocale(i18n.language)),
+      monthLabel: monthLabel(b.month, locale),
       carburante: Math.round(b.carburante * 100) / 100,
       ricarica: Math.round(b.ricarica * 100) / 100,
       manutenzione: Math.round(b.manutenzione * 100) / 100,
@@ -84,26 +101,42 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
   const hasCharging = data.some((d) => d.ricarica > 0);
   const hasMaintenance = data.some((d) => d.manutenzione > 0);
   const hasExpenses = data.some((d) => d.spese > 0);
+  const series = [
+    { key: "carburante", name: t("summary.chartFuel"), color: "#f5901f", show: hasFuel },
+    { key: "ricarica", name: t("summary.charging"), color: "#22b8cf", show: hasCharging },
+    { key: "manutenzione", name: t("summary.chartMaintenance"), color: "#3fbb72", show: hasMaintenance },
+    { key: "spese", name: t("summary.chartExpenses"), color: "#a58fd1", show: hasExpenses },
+  ].filter((serie) => serie.show) as { key: "carburante" | "ricarica" | "manutenzione" | "spese"; name: string; color: string; show: boolean }[];
+
+  const selected = selectedIndex !== null && selectedIndex < data.length ? selectedIndex : data.length - 1;
+  const row = data[selected];
+  const rowTotal = row.carburante + row.ricarica + row.manutenzione + row.spese;
 
   return (
     <div className="chart-wrap">
       <ResponsiveContainer width="100%" height={280}>
-        <BarChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 8, right: 8, left: 0, bottom: 0 }}
+          onMouseMove={(state) => {
+            const index = Number(state?.activeTooltipIndex);
+            if (Number.isInteger(index) && index >= 0) setSelectedIndex(index);
+          }}
+          onClick={(state) => {
+            const index = Number(state?.activeTooltipIndex);
+            if (Number.isInteger(index) && index >= 0) setSelectedIndex(index);
+          }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis dataKey="monthLabel" interval="preserveStartEnd" minTickGap={12} tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }} stroke="var(--border)" />
-          <YAxis tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }} stroke="var(--border)" unit={currencySymbol} />
-          <Tooltip
-            contentStyle={{
-              fontFamily: "JetBrains Mono",
-              fontSize: 12,
-              background: "var(--card)",
-              border: "1px solid var(--border)",
-              borderRadius: 4,
-              color: "var(--text)",
-            }}
-            labelStyle={{ color: "var(--text)" }}
-            formatter={(value) => [formatMoney(Number(value)), undefined]}
+          <YAxis
+            tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }}
+            stroke="var(--border)"
+            width={56}
+            allowDecimals={false}
+            tickFormatter={(v: number) => `${currencySymbol} ${v.toLocaleString(locale, { maximumFractionDigits: 0 })}`}
           />
+          <Tooltip cursor={{ fill: "color-mix(in srgb, var(--text-muted) 12%, transparent)" }} content={() => null} />
           <Legend
             content={() => (
               <div className="chart-legend">
@@ -134,12 +167,32 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
               </div>
             )}
           />
-          {hasFuel && <Bar dataKey="carburante" name={t("summary.chartFuel")} fill="#f5901f" radius={[8, 8, 0, 0]} />}
-          {hasCharging && <Bar dataKey="ricarica" name={t("summary.charging")} fill="#22b8cf" radius={[8, 8, 0, 0]} />}
-          {hasMaintenance && <Bar dataKey="manutenzione" name={t("summary.chartMaintenance")} fill="#3fbb72" radius={[8, 8, 0, 0]} />}
-          {hasExpenses && <Bar dataKey="spese" name={t("summary.chartExpenses")} fill="#a58fd1" radius={[8, 8, 0, 0]} />}
+          {series.map((serie) => (
+            <Bar key={serie.key} dataKey={serie.key} name={serie.name} stackId="costs" fill={serie.color} maxBarSize={28} stroke="var(--card)" strokeWidth={1}>
+              {data.map((_, i) => (
+                <Cell key={i} fillOpacity={i === selected ? 1 : 0.55} />
+              ))}
+            </Bar>
+          ))}
         </BarChart>
       </ResponsiveContainer>
+
+      <div className="cost-detail" aria-live="polite">
+        <strong>{row.monthLabel}</strong>
+        {series
+          .filter((serie) => row[serie.key] > 0)
+          .map((serie) => (
+            <span key={serie.key}>
+              <i style={{ background: serie.color }} />
+              {serie.name}
+              <b>{formatMoney(row[serie.key])}</b>
+            </span>
+          ))}
+        <span className="cost-detail__total">
+          {t("summary.total")}
+          <b>{formatMoney(rowTotal)}</b>
+        </span>
+      </div>
     </div>
   );
 }

@@ -23,10 +23,12 @@ export default function KmHistory({ vehicle, fuelEntries, chargingEntries, onBac
     .map((e) => ({ date: e.date, km: e.km }))
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
+  // Asse X sul tempo reale (non una lettura = un passo), così la pendenza è la percorrenza vera.
   const chartData = readings.map((r) => ({
-    label: new Date(r.date).toLocaleDateString(locale, { month: "short" }),
+    t: new Date(r.date).getTime(),
     km: kmToDisplayDistance(r.km, distanceUnit),
   }));
+  const formatKm = (value: number) => value.toLocaleString(locale, { maximumFractionDigits: 0 });
 
   const sortedDesc = [...readings].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -46,15 +48,33 @@ export default function KmHistory({ vehicle, fuelEntries, chargingEntries, onBac
           <div className="km-history-chart">
             <p className="quick-entry-page__section-label">{t("kmHistory.trend", "Andamento percorrenza")}</p>
             <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={chartData} margin={{ top: 8, right: 8, left: -20, bottom: 0 }}>
+              <LineChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis dataKey="label" stroke="var(--text-muted)" fontSize={11} />
-                <YAxis stroke="var(--text-muted)" fontSize={11} domain={["dataMin - 100", "dataMax + 100"]} />
-                <Tooltip
-                  contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
-                  formatter={(value) => [`${Number(value).toLocaleString(locale, { maximumFractionDigits: 0 })} ${distanceUnit}`, ""]}
+                <XAxis
+                  dataKey="t"
+                  type="number"
+                  scale="time"
+                  domain={["dataMin", "dataMax"]}
+                  stroke="var(--text-muted)"
+                  fontSize={11}
+                  minTickGap={16}
+                  tickFormatter={(v: number) => new Date(v).toLocaleDateString(locale, { month: "short", year: "2-digit" })}
                 />
-                <Line type="monotone" dataKey="km" stroke="#f5901f" strokeWidth={2} dot={{ r: 3 }} />
+                <YAxis
+                  stroke="var(--text-muted)"
+                  fontSize={11}
+                  width={58}
+                  domain={["auto", "auto"]}
+                  allowDecimals={false}
+                  tickFormatter={(v: number) => formatKm(v)}
+                />
+                <Tooltip
+                  contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12, color: "var(--text)" }}
+                  separator=""
+                  labelFormatter={(v) => new Date(Number(v)).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })}
+                  formatter={(value) => [`${formatKm(Number(value))} ${distanceUnit}`, ""]}
+                />
+                <Line type="linear" dataKey="km" stroke="#f5901f" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
