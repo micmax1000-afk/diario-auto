@@ -365,7 +365,7 @@
     "driveSave": "حفظ في Drive",
     "driveRestore": "الاستعادة من Drive",
     "driveWorking": "قيد التنفيذ…",
-    "driveSavedOk": "تم حفظ النسخة الاحتياطية على Google Drive.",
+    "driveSavedOk": "تم حفظ النسخة الاحتياطية في Google Drive. يتم الاحتفاظ بآخر {{n}} نسخ، وتنتقل الأقدم إلى سلة مهملات Drive.",
     "driveNoBackups": "لم يتم العثور على أي نسخة احتياطية على Google Drive.",
     "driveNotConfigured": "هذه الميزة غير نشطة بعد على هذا الجهاز — الخدمة قيد الإعداد.",
     "driveCancelled": "تم إلغاء تسجيل الدخول إلى Google.",
@@ -912,7 +912,10 @@
     "totalCost": "إجمالي النفقات",
     "generatedBy": "تم إنشاؤه بواسطة Diario Auto",
     "noEntries": "لم يتم تسجيل أي أعمال صيانة.",
-    "exportFailed": "فشل التصدير. حاول مرة أخرى."
+    "exportFailed": "فشل التصدير. حاول مرة أخرى.",
+    "dtcTitle": "تشخيص OBD: سجل رموز الأعطال",
+    "dtcCleared": "لا توجد رموز: تم حلها منذ القراءة السابقة.",
+    "dtcUnknown": "رمز خاص بالشركة المصنعة."
   },
   "obdNotice": {
     "title": "قبل الاتصال",

@@ -365,7 +365,7 @@
     "driveSave": "Simpan di Drive",
     "driveRestore": "Pulihkan dari Drive",
     "driveWorking": "Sedang berlangsung…",
-    "driveSavedOk": "Cadangan telah disimpan di Google Drive.",
+    "driveSavedOk": "Cadangan disimpan di Google Drive. {{n}} cadangan terbaru disimpan, yang lebih lama dipindahkan ke sampah Drive.",
     "driveNoBackups": "Tidak ditemukan cadangan apa pun di Google Drive.",
     "driveNotConfigured": "Fungsi ini belum aktif di perangkat ini — layanan sedang dalam proses konfigurasi.",
     "driveCancelled": "Akses ke Google telah dibatalkan.",
@@ -912,7 +912,10 @@
     "totalCost": "Total pengeluaran",
     "generatedBy": "Dibuat oleh Diario Auto",
     "noEntries": "Tidak ada kegiatan pemeliharaan yang tercatat.",
-    "exportFailed": "Ekspor gagal. Coba lagi."
+    "exportFailed": "Ekspor gagal. Coba lagi.",
+    "dtcTitle": "Diagnostik OBD: riwayat kode kesalahan",
+    "dtcCleared": "Tidak ada kode: sudah teratasi sejak pembacaan sebelumnya.",
+    "dtcUnknown": "Kode khusus pabrikan."
   },
   "obdNotice": {
     "title": "Sebelum terhubung",

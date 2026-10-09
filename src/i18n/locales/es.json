@@ -365,7 +365,7 @@
     "driveSave": "Guardar en Drive",
     "driveRestore": "Restaurar desde Drive",
     "driveWorking": "En curso…",
-    "driveSavedOk": "Copia de seguridad guardada en Google Drive.",
+    "driveSavedOk": "Copia guardada en Google Drive. Se conservan las últimas {{n}}: las más antiguas van a la papelera de Drive.",
     "driveNoBackups": "No se ha encontrado ninguna copia de seguridad en Google Drive.",
     "driveNotConfigured": "Esta función aún no está activa en este dispositivo — el servicio se está configurando.",
     "driveCancelled": "Se ha cancelado el acceso a Google.",
@@ -912,7 +912,10 @@
     "totalCost": "Gasto total",
     "generatedBy": "Generado por Diario Auto",
     "noEntries": "No se ha registrado ninguna intervención de mantenimiento.",
-    "exportFailed": "La exportación no se ha realizado correctamente. Inténtalo de nuevo."
+    "exportFailed": "La exportación no se ha realizado correctamente. Inténtalo de nuevo.",
+    "dtcTitle": "Diagnóstico OBD: historial de códigos de error",
+    "dtcCleared": "Sin códigos: resueltos respecto a la lectura anterior.",
+    "dtcUnknown": "Código específico del fabricante."
   },
   "obdNotice": {
     "title": "Antes de conectarte",

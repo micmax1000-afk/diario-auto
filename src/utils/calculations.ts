@@ -13,9 +13,11 @@ export interface ConsumptionPoint {
 
 /**
  * Calcola il consumo tra rifornimenti "pieno" consecutivi con la stessa alimentazione.
- * Il consumo tra il pieno N-1 e il pieno N usa i litri versati AL pieno N
- * (metodo standard: il pieno precedente segna il punto di partenza, il litraggio
- * del pieno successivo rappresenta quanto consumato per percorrere la distanza).
+ * Metodo standard "da pieno a pieno": il pieno precedente segna il punto di
+ * partenza; il carburante consumato per percorrere la distanza è quello
+ * versato in tutti i rifornimenti successivi fino al pieno attuale compreso
+ * (anche i parziali fatti in mezzo, altrimenti il consumo risulterebbe più
+ * basso del reale).
  */
 export function calculateConsumption(entries: FuelEntry[]): ConsumptionPoint[] {
   const sorted = [...entries].sort((a, b) => a.km - b.km);
@@ -29,25 +31,34 @@ export function calculateConsumption(entries: FuelEntry[]): ConsumptionPoint[] {
   }
 
   for (const [source, list] of bySource) {
-    const fullTanks = list.filter((e) => e.fullTank);
-    for (let i = 1; i < fullTanks.length; i++) {
-      const prev = fullTanks[i - 1];
-      const curr = fullTanks[i];
-      const distance = curr.km - prev.km;
-      if (distance <= 0) continue;
-      const kmPerLiter = distance / curr.liters;
-      const litersPer100Km = (curr.liters / distance) * 100;
-      const costPerKm = curr.totalCost / distance;
-      points.push({
-        fromKm: prev.km,
-        toKm: curr.km,
-        date: curr.date,
-        liters: curr.liters,
-        kmPerLiter,
-        litersPer100Km,
-        source,
-        costPerKm,
-      });
+    let prevFull: FuelEntry | null = null;
+    let liters = 0;
+    let cost = 0;
+    for (const curr of list) {
+      if (!prevFull) {
+        if (curr.fullTank) prevFull = curr;
+        continue;
+      }
+      liters += curr.liters;
+      cost += curr.totalCost;
+      if (!curr.fullTank) continue;
+
+      const distance = curr.km - prevFull.km;
+      if (distance > 0 && liters > 0) {
+        points.push({
+          fromKm: prevFull.km,
+          toKm: curr.km,
+          date: curr.date,
+          liters,
+          kmPerLiter: distance / liters,
+          litersPer100Km: (liters / distance) * 100,
+          source,
+          costPerKm: cost / distance,
+        });
+      }
+      prevFull = curr;
+      liters = 0;
+      cost = 0;
     }
   }
 

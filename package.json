@@ -1,7 +1,7 @@
 {
   "name": "auto",
   "private": true,
-  "version": "1.0.16",
+  "version": "1.0.17",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,7 +11,8 @@
     "deploy": "npm run build && wrangler deploy",
     "android:sync": "npm run build && npx cap sync android",
     "android:debug": "npm run android:sync && cd android && ./gradlew assembleDebug",
-    "android:release": "npm run android:sync && cd android && ./gradlew bundleRelease"
+    "android:release": "npm run android:sync && cd android && ./gradlew bundleRelease",
+    "test": "vitest run"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.2",
@@ -44,6 +45,7 @@
     "oxlint": "^1.75.0",
     "typescript": "~6.0.2",
     "vite": "^8.2.0",
+    "vitest": "^5.0.3",
     "wrangler": "^4.0.0"
   }
 }
