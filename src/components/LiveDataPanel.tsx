@@ -254,7 +254,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
 
   function connectionErrorMessage(e: unknown): string {
     if (e instanceof Error && e.message === "ADAPTER_SILENT") return t("live.adapterNotResponding");
-    return e instanceof Error ? localizeObdText(e.message, i18n.language) : "Connection failed.";
+    return e instanceof Error ? localizeObdText(e.message, t) : t("obdText.gattFailed");
   }
 
   async function performConnect() {
@@ -302,7 +302,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
       setPairedDevices(devices);
       setShowDevicePicker(true);
     } catch (e) {
-      setDevicePickerError(localizeObdText(e instanceof Error ? e.message : "Impossibile leggere i dispositivi accoppiati.", i18n.language));
+      setDevicePickerError(localizeObdText(e instanceof Error ? e.message : "Impossibile leggere i dispositivi accoppiati.", t));
     }
   }
 
@@ -915,7 +915,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                 {protocol && (
                   <div className="ecu-info__row">
                     <dt>{t("live.vehicleId.protocol")}</dt>
-                    <dd>{localizeObdText(PROTOCOL_DESCRIPTIONS[protocol] ?? protocol, i18n.language)}</dd>
+                    <dd>{localizeObdText(PROTOCOL_DESCRIPTIONS[protocol] ?? protocol, t)}</dd>
                   </div>
                 )}
                 {ecuName && (
@@ -1022,7 +1022,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                           !m.supported ? "monitor-list__dot--na" : m.ready ? "monitor-list__dot--ok" : "monitor-list__dot--pending"
                         }`}
                       />
-                      <span>{localizeObdText(m.label, i18n.language)}</span>
+                      <span>{localizeObdText(m.label, t)}</span>
                       <span className="monitor-list__status">
                         {!m.supported ? t("live.readiness.notSupported") : m.ready ? t("live.readiness.ready") : t("live.readiness.notReady")}
                       </span>

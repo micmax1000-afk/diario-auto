@@ -137,7 +137,7 @@
     "periodLast12": "الـ 12 شهراً الماضية",
     "periodAll": "دائمًا",
     "fillupsCount": "{{count}} عملية تزويد",
-    "pricePerUnitLabel": "€/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}"
   },
   "fuelForm": {
     "title": "تزويد جديد",
@@ -146,7 +146,7 @@
     "source": "الأغذية المستعملة",
     "liters": "لترات *",
     "kwh": "كيلووات/ساعة *",
-    "cost": "التكلفة الإجمالية (يورو) *",
+    "cost": "التكلفة الإجمالية ({{cur}}) *",
     "fullTank": "ممتلئ (يُستخدم لحساب الاستهلاك)",
     "notes": "ملاحظات",
     "notesPlaceholder": "مثل: الطريق السريع، محطة الوقود...",
@@ -157,7 +157,7 @@
     "save": "حفظ التزويد",
     "cancel": "إلغاء",
     "titleEdit": "تعديل التزويد",
-    "pricePerUnit": "€/{{unit}} *",
+    "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (محسوبة)",
     "errorPrice": "أدخل سعرًا صالحًا لـ {{unit}}.",
     "errorTotalCost": "أدخل مبلغًا إجماليًا صالحًا."
@@ -169,7 +169,12 @@
     "back": "رجوع",
     "pressBackAgainToExit": "اضغط مرة أخرى على زر «الرجوع» للخروج",
     "takePhoto": "التقط صورة",
-    "chooseFromGallery": "اختر من المعرض"
+    "chooseFromGallery": "اختر من المعرض",
+    "deleted": "تم الحذف",
+    "undo": "تراجع",
+    "edit": "تعديل",
+    "menu": "القائمة",
+    "notifications": "الإشعارات"
   },
   "backup": {
     "title": "النسخ الاحتياطي والتصدير"
@@ -226,9 +231,9 @@
     "description": "الوصف *",
     "descriptionPlaceholder": "مثال: استبدال وسادات الفرامل الأمامية",
     "splitCost": "افصل بين قطع الغيار وأجور اليد العاملة",
-    "parts": "قطع الغيار (يورو)",
-    "labor": "العمالة (يورو)",
-    "totalCost": "التكلفة الإجمالية (يورو) *",
+    "parts": "قطع الغيار ({{cur}})",
+    "labor": "العمالة ({{cur}})",
+    "totalCost": "التكلفة الإجمالية ({{cur}}) *",
     "workshop": "ورشة",
     "workshopPlaceholder": "مثال: ورشة روسي",
     "notes": "ملاحظات",
@@ -242,7 +247,8 @@
     "errorSplitCost": "أدخل مبالغ صحيحة لقطع الغيار وأجور اليد العاملة.",
     "errorCost": "أدخل تكلفة صالحة.",
     "save": "توفير تكاليف الصيانة",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "editTitle": "تعديل الصيانة"
   },
   "expenseCategory": {
     "assicurazione": "التأمين",
@@ -270,7 +276,7 @@
     "category": "الفئة",
     "description": "الوصف *",
     "descriptionPlaceholder": "مثال: تأمين المسؤولية المدنية للسيارات لعام 2026",
-    "amount": "المبلغ (يورو) *",
+    "amount": "المبلغ ({{cur}}) *",
     "notes": "ملاحظات",
     "photo": "الصور (فاتورة، محضر، إلخ)",
     "photoCompressing": "أقوم بضغط الصورة…",
@@ -280,7 +286,8 @@
     "errorDescription": "حدد ماهية الأمر (مثل: تأمين المسؤولية المدنية للسيارات لعام 2026).",
     "errorAmount": "أدخل مبلغًا صحيحًا.",
     "save": "توفير في النفقات",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "editTitle": "تعديل المصروف"
   },
   "reminders": {
     "title": "المواعيد النهائية",
@@ -317,7 +324,8 @@
     "errorKm": "أدخل عدد كيلومترات صالحًا لانتهاء الصلاحية.",
     "save": "حفظ تاريخ الاستحقاق",
     "cancel": "إلغاء",
-    "months": "شهور"
+    "months": "شهور",
+    "editTitle": "تعديل الموعد"
   },
   "summary": {
     "title": "ملخص التكاليف",
@@ -566,8 +574,8 @@
     "date": "التاريخ",
     "km": "عدد الكيلومترات الحالي *",
     "atHome": "الشحن في المنزل (صندوق الشحن/مقبس)",
-    "price": "يورو/كيلوواط ساعة *",
-    "cost": "التكلفة الإجمالية (يورو) *",
+    "price": "{{cur}}/كيلوواط ساعة *",
+    "cost": "التكلفة الإجمالية ({{cur}}) *",
     "kwhComputed": "كيلووات/ساعة (محسوبة)",
     "power": "القدرة (كيلوواط)",
     "powerPlaceholderHome": "المثال 7.4 (صندوق الحائط)",
@@ -632,7 +640,7 @@
     "routeLabel": "المسار: {{label}}",
     "tripsPerDay": "عدد الرحلات اليومية *",
     "workDays": "أيام العمل في الأسبوع *",
-    "fuelPrice": "سعر الوقود (يورو/لتر) *",
+    "fuelPrice": "سعر الوقود ({{cur}}/لتر) *",
     "fuelPricePlaceholder": "مثال: 1,750",
     "estimatedConsumption": "الاستهلاك التقديري (كم/لتر، اختياري)",
     "estimatedConsumptionPlaceholder": "المثال 15 (يكفي تقدير تقريبي)",
@@ -651,7 +659,7 @@
     "kmPerUnit": "كيلومتر لكل 1 {{unit}} *",
     "kmPerUnitPlaceholderLiter": "مثال 18",
     "kmPerUnitPlaceholderKwh": "المثال 6",
-    "pricePerUnit": "السعر لـ 1 {{unit}} (يورو) *",
+    "pricePerUnit": "السعر لـ 1 {{unit}} ({{cur}}) *",
     "pricePerUnitPlaceholderLiter": "مثال: 0.700",
     "pricePerUnitPlaceholderKwh": "مثال: 0.250",
     "note": "ملاحظة (اختيارية)",
@@ -972,5 +980,22 @@
     "hint": "اسحب الصورة لتحريكها، واستخدم إصبعين أو شريط التمرير للتكبير.",
     "zoom": "تكبير",
     "confirm": "تأكيد"
+  },
+  "obdText": {
+    "catalyst": "المحفز",
+    "heatedCatalyst": "المحفز المسخن",
+    "evap": "نظام التبخر (EVAP)",
+    "secondaryAir": "الهواء الثانوي",
+    "o2Sensor": "حساس الأكسجين (O2)",
+    "o2Heater": "سخان حساس الأكسجين",
+    "egr": "إعادة تدوير غازات العادم (EGR)",
+    "automatic": "تلقائي",
+    "noWebBluetooth": "هذا المتصفح لا يدعم Web Bluetooth. استخدم Chrome أو Edge على Android.",
+    "nativeOnlyInApp": "البلوتوث الأصلي متاح فقط في تطبيق Android، وليس في المتصفح.",
+    "gattFailed": "فشل الاتصال بالمحول.",
+    "adapterUnknown": "لم يتم التعرف على المحول: لم يتم العثور على خدمة Bluetooth متوافقة.",
+    "notConnected": "غير متصل.",
+    "pairedDevicesError": "تعذرت قراءة الأجهزة المقترنة.",
+    "timeout": "لا يوجد رد على الأمر \"{{command}}\"."
   }
 }

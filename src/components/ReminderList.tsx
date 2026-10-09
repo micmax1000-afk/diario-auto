@@ -9,10 +9,11 @@ interface Props {
   reminders: Reminder[];
   currentKm: number;
   onToggleComplete: (id: string) => void;
+  onEdit: (reminder: Reminder) => void;
   onDelete: (id: string) => void;
 }
 
-export default function ReminderList({ reminders, currentKm, onToggleComplete, onDelete }: Props) {
+export default function ReminderList({ reminders, currentKm, onToggleComplete, onEdit, onDelete }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit } = useAppSettings();
   const active = reminders.filter((r) => !r.completed);
@@ -59,6 +60,9 @@ export default function ReminderList({ reminders, currentKm, onToggleComplete, o
             <div className="reminder-item__actions">
               <button type="button" className="btn btn--ghost btn--small" onClick={() => onToggleComplete(reminder.id)}>
                 {t("reminders.done")}
+              </button>
+              <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(reminder)}>
+                {t("common.edit")}
               </button>
               <button
                 type="button"

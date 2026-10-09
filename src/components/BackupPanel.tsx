@@ -6,6 +6,7 @@ import { getNumberLocale } from "../utils/locale";
 import { useProStatus } from "../services/billing/useProStatus";
 import { exportTextFile } from "../utils/nativeFileExport";
 import PremiumScreen from "./PremiumScreen";
+import { localDateString } from "../utils/dates";
 import {
   uploadBackupToDrive,
   DRIVE_BACKUPS_TO_KEEP,
@@ -71,7 +72,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
 
   async function handleExportJson() {
     const backup = await buildBackup();
-    const filename = `diario-auto-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    const filename = `diario-auto-backup-${localDateString()}.json`;
     try {
       await exportTextFile(filename, JSON.stringify(backup, null, 2), "application/json");
     } catch {
@@ -95,7 +96,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     }
     const csv = fuelEntriesToCsv(fuelEntries, vehicles);
     try {
-      await exportTextFile(`rifornimenti-${new Date().toISOString().slice(0, 10)}.csv`, csv, "text/csv");
+      await exportTextFile(`rifornimenti-${localDateString()}.csv`, csv, "text/csv");
     } catch {
       setError(t("backupPanel.exportFailed"));
       return;
@@ -115,7 +116,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     }
     const csv = maintenanceEntriesToCsv(maintenanceEntries, vehicles);
     try {
-      await exportTextFile(`manutenzioni-${new Date().toISOString().slice(0, 10)}.csv`, csv, "text/csv");
+      await exportTextFile(`manutenzioni-${localDateString()}.csv`, csv, "text/csv");
     } catch {
       setError(t("backupPanel.exportFailed"));
       return;
@@ -135,7 +136,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     }
     const csv = expenseEntriesToCsv(expenseEntries, vehicles);
     try {
-      await exportTextFile(`spese-${new Date().toISOString().slice(0, 10)}.csv`, csv, "text/csv");
+      await exportTextFile(`spese-${localDateString()}.csv`, csv, "text/csv");
     } catch {
       setError(t("backupPanel.exportFailed"));
       return;

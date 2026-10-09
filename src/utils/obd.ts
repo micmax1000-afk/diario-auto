@@ -134,31 +134,31 @@ export const PROTOCOL_DESCRIPTIONS: Record<string, string> = {
   A: "SAE J1939 CAN (29 bit ID, 250 kbaud)",
 };
 
-// Testi italiani prodotti dalla logica OBD (etichette, protocollo, errori).
-// Per tutte le lingue diverse dall'italiano vengono mostrati in inglese.
-const OBD_TEXT_EN: Record<string, string> = {
-  "Catalizzatore": "Catalyst",
-  "Catalizzatore riscaldato": "Heated catalyst",
-  "Sistema evaporativo (EVAP)": "Evaporative system (EVAP)",
-  "Aria secondaria": "Secondary air",
-  "Sonda lambda (O2)": "Oxygen sensor (O2)",
-  "Riscaldamento sonda lambda": "Oxygen sensor heater",
-  "Ricircolo gas di scarico (EGR)": "Exhaust gas recirculation (EGR)",
-  "Automatico": "Automatic",
-  "Questo browser non supporta Web Bluetooth. Usa Chrome o Edge su Android.": "This browser does not support Web Bluetooth. Use Chrome or Edge on Android.",
-  "Il Bluetooth nativo è disponibile solo nell'app Android, non nel browser.": "Native Bluetooth is only available in the Android app, not in the browser.",
-  "Connessione GATT non riuscita.": "GATT connection failed.",
-  "Adattatore non riconosciuto: nessun servizio Bluetooth compatibile trovato.": "Adapter not recognised: no compatible Bluetooth service found.",
-  "Non connesso.": "Not connected.",
-  "Impossibile leggere i dispositivi accoppiati.": "Unable to read the paired devices.",
+// Testi italiani prodotti dalla logica OBD (etichette, protocollo, errori):
+// la chiave di traduzione corrispondente sta in "obdText" nei file delle lingue.
+const OBD_TEXT_KEYS: Record<string, string> = {
+  "Catalizzatore": "catalyst",
+  "Catalizzatore riscaldato": "heatedCatalyst",
+  "Sistema evaporativo (EVAP)": "evap",
+  "Aria secondaria": "secondaryAir",
+  "Sonda lambda (O2)": "o2Sensor",
+  "Riscaldamento sonda lambda": "o2Heater",
+  "Ricircolo gas di scarico (EGR)": "egr",
+  "Automatico": "automatic",
+  "Questo browser non supporta Web Bluetooth. Usa Chrome o Edge su Android.": "noWebBluetooth",
+  "Il Bluetooth nativo è disponibile solo nell'app Android, non nel browser.": "nativeOnlyInApp",
+  "Connessione GATT non riuscita.": "gattFailed",
+  "Adattatore non riconosciuto: nessun servizio Bluetooth compatibile trovato.": "adapterUnknown",
+  "Non connesso.": "notConnected",
+  "Impossibile leggere i dispositivi accoppiati.": "pairedDevicesError",
 };
 
-/** Traduce in inglese i testi OBD italiani quando la lingua dell'app non è l'italiano. */
-export function localizeObdText(text: string, language: string): string {
-  if (language.toLowerCase().startsWith("it")) return text;
-  if (OBD_TEXT_EN[text]) return OBD_TEXT_EN[text];
+/** Traduce nella lingua dell'app i testi OBD (scritti in italiano nella logica di connessione). */
+export function localizeObdText(text: string, t: (key: string, options?: Record<string, string>) => string): string {
+  const key = OBD_TEXT_KEYS[text];
+  if (key) return t(`obdText.${key}`);
   const timeout = /^Timeout in attesa di risposta a "(.*)"$/.exec(text);
-  if (timeout) return `Timed out waiting for a reply to "${timeout[1]}"`;
+  if (timeout) return t("obdText.timeout", { command: timeout[1] });
   return text;
 }
 

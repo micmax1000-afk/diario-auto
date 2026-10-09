@@ -7,10 +7,11 @@ import CategoryIcon from "./CategoryIcon";
 
 interface Props {
   entries: ExpenseEntry[];
+  onEdit: (entry: ExpenseEntry) => void;
   onDelete: (id: string) => void;
 }
 
-export default function ExpenseList({ entries, onDelete }: Props) {
+export default function ExpenseList({ entries, onEdit, onDelete }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney } = useAppSettings();
   const [zoomPhoto, setZoomPhoto] = useState<string | null>(null);
@@ -76,6 +77,9 @@ export default function ExpenseList({ entries, onDelete }: Props) {
                   <img src={entry.photo} alt="" />
                 </button>
               )}
+              <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(entry)}>
+                {t("common.edit")}
+              </button>
               <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => onDelete(entry.id)}>
                 {t("common.remove")}
               </button>

@@ -10,6 +10,7 @@ import type {
   CommuteSettings,
   CommuteScenario,
 } from "../types";
+import { isoToLocalDate } from "./dates";
 import {
   getAll,
   getAllByVehicle,
@@ -352,7 +353,7 @@ export function fuelEntriesToCsv(entries: FuelEntry[], vehicles: Vehicle[]): str
   const rows = entries.map((e) => {
     const vehicleName = vehicles.find((v) => v.id === e.vehicleId)?.name ?? "";
     return toCsvRow([
-      e.date.slice(0, 10),
+      isoToLocalDate(e.date),
       vehicleName,
       e.km,
       e.liters,
@@ -381,7 +382,7 @@ export function maintenanceEntriesToCsv(entries: MaintenanceEntry[], vehicles: V
   const rows = entries.map((e) => {
     const vehicleName = vehicles.find((v) => v.id === e.vehicleId)?.name ?? "";
     return toCsvRow([
-      e.date.slice(0, 10),
+      isoToLocalDate(e.date),
       vehicleName,
       e.km,
       e.category,
@@ -400,7 +401,7 @@ export function expenseEntriesToCsv(entries: ExpenseEntry[], vehicles: Vehicle[]
   const header = toCsvRow(["Data", "Veicolo", "Categoria", "Descrizione", "Importo (EUR)", "Note"]);
   const rows = entries.map((e) => {
     const vehicleName = vehicles.find((v) => v.id === e.vehicleId)?.name ?? "";
-    return toCsvRow([e.date.slice(0, 10), vehicleName, e.category, e.description, e.amount.toFixed(2), e.notes ?? ""]);
+    return toCsvRow([isoToLocalDate(e.date), vehicleName, e.category, e.description, e.amount.toFixed(2), e.notes ?? ""]);
   });
   return [header, ...rows].join("\n");
 }

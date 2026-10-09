@@ -137,7 +137,7 @@
     "periodLast12": "पिछले 12 महीने",
     "periodAll": "हमेशा",
     "fillupsCount": "{{count}} ईंधन भरने के ठहराव",
-    "pricePerUnitLabel": "€/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}"
   },
   "fuelForm": {
     "title": "नया स्टॉक",
@@ -146,7 +146,7 @@
     "source": "उपयोग किया गया पावर सप्लाई",
     "liters": "लीटर *",
     "kwh": "किलोवाट-घंटा *",
-    "cost": "कुल लागत (€) *",
+    "cost": "कुल लागत ({{cur}}) *",
     "fullTank": "पूर्ण (उपभोग की गणना के लिए उपयोग किया जाता है)",
     "notes": "टिप्पणियां",
     "notesPlaceholder": "जैसे मोटरवे, पेट्रोल पंप...",
@@ -157,7 +157,7 @@
     "save": "ईंधन भरवाने की बचत करें",
     "cancel": "रद्द करें",
     "titleEdit": "ईंधन भरने में संपादन",
-    "pricePerUnit": "€/{{unit}} *",
+    "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (गणना किया गया)",
     "errorPrice": "कृपया {{unit}} के लिए एक मान्य मूल्य दर्ज करें।",
     "errorTotalCost": "एक मान्य कुल लागत दर्ज करें।"
@@ -169,7 +169,12 @@
     "back": "वापस",
     "pressBackAgainToExit": "निकलने के लिए फिर से बैक बटन दबाएं।",
     "takePhoto": "फ़ोटो खींचें",
-    "chooseFromGallery": "गैलरी से चुनें"
+    "chooseFromGallery": "गैलरी से चुनें",
+    "deleted": "हटाया गया",
+    "undo": "पूर्ववत करें",
+    "edit": "संपादित करें",
+    "menu": "मेनू",
+    "notifications": "सूचनाएँ"
   },
   "backup": {
     "title": "बैकअप और निर्यात"
@@ -226,9 +231,9 @@
     "description": "विवरण *",
     "descriptionPlaceholder": "जैसे कि फ्रंट ब्रेक पैड का प्रतिस्थापन",
     "splitCost": "भागों और श्रम में विभाजित करें",
-    "parts": "स्पेयर पार्ट्स (€)",
-    "labor": "श्रम (€)",
-    "totalCost": "कुल लागत (€) *",
+    "parts": "स्पेयर पार्ट्स ({{cur}})",
+    "labor": "श्रम ({{cur}})",
+    "totalCost": "कुल लागत ({{cur}}) *",
     "workshop": "कार्यशाला",
     "workshopPlaceholder": "उदा. रोसी गैराज",
     "notes": "टिप्पणियां",
@@ -242,7 +247,8 @@
     "errorSplitCost": "कृपया स्पेयर पार्ट्स और श्रम के लिए वैध राशि दर्ज करें।",
     "errorCost": "कृपया एक मान्य लागत दर्ज करें।",
     "save": "रखरखाव का पूर्वावलोकन",
-    "cancel": "रद्द करें"
+    "cancel": "रद्द करें",
+    "editTitle": "रखरखाव संपादित करें"
   },
   "expenseCategory": {
     "assicurazione": "बीमा",
@@ -270,7 +276,7 @@
     "category": "श्रेणी",
     "description": "विवरण *",
     "descriptionPlaceholder": "उदाहरण के लिए मोटर तृतीय-पक्ष देयता बीमा 2026",
-    "amount": "राशि (€) *",
+    "amount": "राशि ({{cur}}) *",
     "notes": "टिप्पणियां",
     "photo": "फ़ोटो (यूटिलिटी बिल, रिपोर्ट, आदि)",
     "photoCompressing": "मैं छवि को संपीड़ित कर रहा हूँ…",
@@ -280,7 +286,8 @@
     "errorDescription": "कृपया निर्दिष्ट करें कि यह क्या है (उदाहरण के लिए: मोटर तृतीय-पक्ष देयता बीमा 2026)।",
     "errorAmount": "कृपया एक मान्य राशि दर्ज करें।",
     "save": "खर्च सहेजें",
-    "cancel": "रद्द करें"
+    "cancel": "रद्द करें",
+    "editTitle": "खर्च संपादित करें"
   },
   "reminders": {
     "title": "अंतिम तिथियां",
@@ -317,7 +324,8 @@
     "errorKm": "एक वैध समाप्ति माइलेज दर्ज करें।",
     "save": "अंतिम तिथि सहेजें",
     "cancel": "रद्द करें",
-    "months": "महीने"
+    "months": "महीने",
+    "editTitle": "समय सीमा संपादित करें"
   },
   "summary": {
     "title": "लागत सारांश",
@@ -566,8 +574,8 @@
     "date": "दिनांक",
     "km": "वर्तमान किमी *",
     "atHome": "घर पर चार्जिंग (वॉलबॉक्स/सॉकेट)",
-    "price": "€/kWh *",
-    "cost": "कुल लागत (€) *",
+    "price": "{{cur}}/kWh *",
+    "cost": "कुल लागत ({{cur}}) *",
     "kwhComputed": "किलोवाट-घंटा (गणना किया गया)",
     "power": "शक्ति (किलोवाट)",
     "powerPlaceholderHome": "उदाहरण 7.4 (वॉलबॉक्स)",
@@ -632,7 +640,7 @@
     "routeLabel": "मार्ग: {{label}}",
     "tripsPerDay": "दैनिक यात्राएं *",
     "workDays": "प्रति सप्ताह कार्य दिवस *",
-    "fuelPrice": "ईंधन की कीमत (€/लीटर) *",
+    "fuelPrice": "ईंधन की कीमत ({{cur}}/लीटर) *",
     "fuelPricePlaceholder": "उदा. 1,750",
     "estimatedConsumption": "अनुमानित ईंधन खपत (किमी/ली, वैकल्पिक)",
     "estimatedConsumptionPlaceholder": "उदा. 15 (एक मोटा अनुमान ठीक है)",
@@ -651,7 +659,7 @@
     "kmPerUnit": "प्रति 1 {{unit}} किमी *",
     "kmPerUnitPlaceholderLiter": "उदा. 18",
     "kmPerUnitPlaceholderKwh": "उदाहरण 6",
-    "pricePerUnit": "प्रति 1 {{unit}} मूल्य (€) *",
+    "pricePerUnit": "प्रति 1 {{unit}} मूल्य ({{cur}}) *",
     "pricePerUnitPlaceholderLiter": "उदा. 0.700",
     "pricePerUnitPlaceholderKwh": "उदा. 0.250",
     "note": "नोट (वैकल्पिक)",
@@ -972,5 +980,22 @@
     "hint": "फ़ोटो को खिसकाने के लिए खींचें, बड़ा करने के लिए दो उंगलियों या स्लाइडर का उपयोग करें।",
     "zoom": "ज़ूम",
     "confirm": "पुष्टि करें"
+  },
+  "obdText": {
+    "catalyst": "कैटेलिस्ट",
+    "heatedCatalyst": "गर्म कैटेलिस्ट",
+    "evap": "वाष्पीकरण प्रणाली (EVAP)",
+    "secondaryAir": "द्वितीयक वायु",
+    "o2Sensor": "ऑक्सीजन सेंसर (O2)",
+    "o2Heater": "ऑक्सीजन सेंसर हीटर",
+    "egr": "निकास गैस पुनर्चक्रण (EGR)",
+    "automatic": "स्वचालित",
+    "noWebBluetooth": "यह ब्राउज़र Web Bluetooth का समर्थन नहीं करता। Android पर Chrome या Edge का उपयोग करें।",
+    "nativeOnlyInApp": "नेटिव Bluetooth केवल Android ऐप में उपलब्ध है, ब्राउज़र में नहीं।",
+    "gattFailed": "एडाप्टर से कनेक्शन विफल रहा।",
+    "adapterUnknown": "एडाप्टर पहचाना नहीं गया: कोई संगत Bluetooth सेवा नहीं मिली।",
+    "notConnected": "कनेक्ट नहीं है।",
+    "pairedDevicesError": "युग्मित डिवाइस पढ़े नहीं जा सके।",
+    "timeout": "कमांड \"{{command}}\" का कोई उत्तर नहीं।"
   }
 }

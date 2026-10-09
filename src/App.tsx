@@ -45,6 +45,7 @@ import { getMeta, setMeta } from "./utils/db";
 import { resolveVehicleColors } from "./utils/vehicleColor";
 import QuickFuelForm from "./components/QuickFuelForm";
 import QuickChargeForm from "./components/QuickChargeForm";
+import UndoToast from "./components/UndoToast";
 import { useProStatus, FREE_VEHICLE_LIMIT } from "./services/billing/useProStatus";
 
 // Schermate raggiunte solo dopo un'azione dell'utente (mai visibili al primo
@@ -116,6 +117,8 @@ export default function App() {
   const [quickKmVehicle, setQuickKmVehicle] = useState<Vehicle | null>(null);
   const [kmHistoryVehicleId, setKmHistoryVehicleId] = useState<string | null>(null);
   const [showFleet, setShowFleet] = useState(false);
+  // Ultima cancellazione annullabile: il messaggio "Eliminato · Annulla" resta qualche secondo.
+  const [undoable, setUndoable] = useState<{ id: number; restore: () => Promise<void> } | null>(null);
 
   // Ogni schermata/modulo "chiudibile" si registra per il tasto indietro
   // hardware di Android — vedi backButtonStack.ts. L'ordine qui non conta:
@@ -385,7 +388,25 @@ export default function App() {
     await bumpVehicleKmIfNeeded(entry.vehicleId, entry.km);
   }
 
+  /** Mostra "Eliminato · Annulla": restore rimette il record nello stato e nel database. */
+  function offerUndo<T extends { id: string; deletedAt?: string }>(
+    item: T | undefined,
+    setList: (update: (prev: T[]) => T[]) => void,
+    put: (item: T) => Promise<void>,
+  ) {
+    if (!item) return;
+    const restored = { ...item, deletedAt: undefined };
+    setUndoable({
+      id: Date.now(),
+      restore: async () => {
+        setList((prev) => (prev.some((e) => e.id === item.id) ? prev : [...prev, restored]));
+        await put(restored);
+      },
+    });
+  }
+
   async function handleDeleteFuel(id: string) {
+    offerUndo(fuelEntries.find((e) => e.id === id), setFuelEntries, putFuelEntry);
     setFuelEntries((prev) => prev.filter((e) => e.id !== id));
     await deleteFuelEntry(id);
   }
@@ -400,6 +421,7 @@ export default function App() {
   }
 
   async function handleDeleteCharging(id: string) {
+    offerUndo(chargingEntries.find((e) => e.id === id), setChargingEntries, putChargingEntry);
     setChargingEntries((prev) => prev.filter((e) => e.id !== id));
     await deleteChargingEntry(id);
   }
@@ -407,12 +429,13 @@ export default function App() {
   // ---------- Manutenzioni ----------
 
   async function handleAddMaintenance(entry: MaintenanceEntry) {
-    setMaintenanceEntries((prev) => [...prev, entry]);
+    setMaintenanceEntries((prev) => (prev.some((e) => e.id === entry.id) ? prev.map((e) => (e.id === entry.id ? entry : e)) : [...prev, entry]));
     await putMaintenanceEntry(entry);
     await bumpVehicleKmIfNeeded(entry.vehicleId, entry.km);
   }
 
   async function handleDeleteMaintenance(id: string) {
+    offerUndo(maintenanceEntries.find((e) => e.id === id), setMaintenanceEntries, putMaintenanceEntry);
     setMaintenanceEntries((prev) => prev.filter((e) => e.id !== id));
     await deleteMaintenanceEntry(id);
   }
@@ -420,11 +443,12 @@ export default function App() {
   // ---------- Spese ----------
 
   async function handleAddExpense(entry: ExpenseEntry) {
-    setExpenseEntries((prev) => [...prev, entry]);
+    setExpenseEntries((prev) => (prev.some((e) => e.id === entry.id) ? prev.map((e) => (e.id === entry.id ? entry : e)) : [...prev, entry]));
     await putExpenseEntry(entry);
   }
 
   async function handleDeleteExpense(id: string) {
+    offerUndo(expenseEntries.find((e) => e.id === id), setExpenseEntries, putExpenseEntry);
     setExpenseEntries((prev) => prev.filter((e) => e.id !== id));
     await deleteExpenseEntry(id);
   }
@@ -432,7 +456,7 @@ export default function App() {
   // ---------- Scadenze ----------
 
   async function handleAddReminder(reminder: Reminder) {
-    setReminders((prev) => [...prev, reminder]);
+    setReminders((prev) => (prev.some((r) => r.id === reminder.id) ? prev.map((r) => (r.id === reminder.id ? reminder : r)) : [...prev, reminder]));
     await putReminder(reminder);
   }
 
@@ -466,6 +490,7 @@ export default function App() {
   }
 
   async function handleDeleteReminder(id: string) {
+    offerUndo(reminders.find((r) => r.id === id), setReminders, putReminder);
     setReminders((prev) => prev.filter((r) => r.id !== id));
     await deleteReminder(id);
   }
@@ -985,6 +1010,17 @@ export default function App() {
             />
           );
         })()}
+
+      {undoable && (
+        <UndoToast
+          key={undoable.id}
+          onUndo={() => {
+            void undoable.restore();
+            setUndoable(null);
+          }}
+          onDismiss={() => setUndoable(null)}
+        />
+      )}
 
       {showExitHint && (
         <div className="exit-hint-toast" role="status">

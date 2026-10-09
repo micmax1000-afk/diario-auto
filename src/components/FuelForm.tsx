@@ -1,8 +1,10 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
+import { isoToLocalDate, localDateString, localDateToIso } from "../utils/dates";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, FuelSource, Vehicle } from "../types";
 import { generateId } from "../utils/storage";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 const SOURCE_TYPES: FuelSource[] = ["benzina", "diesel", "gpl", "metano", "elettrico"];
 
@@ -15,8 +17,9 @@ interface Props {
 
 export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Props) {
   const { t } = useTranslation();
+  const cur = useCurrencySymbol();
   const isEditing = Boolean(initialEntry);
-  const [date, setDate] = useState(() => initialEntry?.date.slice(0, 10) ?? new Date().toISOString().slice(0, 10));
+  const [date, setDate] = useState(() => (initialEntry ? isoToLocalDate(initialEntry.date) : localDateString()));
   const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
   const [pricePerUnit, setPricePerUnit] = useState(
     initialEntry && initialEntry.liters > 0 ? (initialEntry.totalCost / initialEntry.liters).toFixed(3) : "",
@@ -66,7 +69,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
     const entry: FuelEntry = {
       id: initialEntry?.id ?? generateId(),
       vehicleId: vehicle.id,
-      date: new Date(date).toISOString(),
+      date: localDateToIso(date, initialEntry?.date),
       km: Math.round(kmValue),
       liters: costValue / priceValue,
       totalCost: costValue,
@@ -120,7 +123,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
 
           <div className="field-row">
             <div className="field">
-              <label htmlFor="fuel-price">{t("fuelForm.pricePerUnit", { unit: unitShort })}</label>
+              <label htmlFor="fuel-price">{t("fuelForm.pricePerUnit", { unit: unitShort, cur })}</label>
               <input
                 id="fuel-price"
                 type="number"
@@ -131,7 +134,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose }: Pro
               />
             </div>
             <div className="field">
-              <label htmlFor="fuel-cost">{t("fuelForm.cost")}</label>
+              <label htmlFor="fuel-cost">{t("fuelForm.cost", { cur })}</label>
               <input
                 id="fuel-cost"
                 type="number"

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { celsiusToDisplayTemp, displayTempToCelsius, kmToDisplayDistance } from "../settings";
 import { computeDueFromCatalog } from "../reminderCatalog";
+import { localDateString } from "../dates";
 
 describe("conversioni di unità", () => {
   it("km → miglia", () => {
@@ -24,6 +25,6 @@ describe("computeDueFromCatalog", () => {
     const { dueDate } = computeDueFromCatalog({ key: "x", months: 24 } as never, 0);
     const expected = new Date();
     expected.setMonth(expected.getMonth() + 24);
-    expect(dueDate).toBe(expected.toISOString().slice(0, 10));
+    expect(dueDate).toBe(localDateString(expected));
   });
 });

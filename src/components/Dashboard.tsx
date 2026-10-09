@@ -12,6 +12,7 @@ import { getMeta, setMeta } from "../utils/db";
 import { daysSince } from "../utils/storage";
 import { resolveVehicleColors } from "../utils/vehicleColor";
 import { calculateConsumption, averageConsumption, isReminderDue } from "../utils/calculations";
+import { isoToLocalDate, localMonthString } from "../utils/dates";
 
 interface Props {
   vehicles: Vehicle[];
@@ -85,8 +86,8 @@ export default function Dashboard({
     void setMeta(HOME_VIEW_KEY, next).catch(() => undefined);
   }
 
-  const ym = new Date().toISOString().slice(0, 7);
-  const inMonth = (d: string) => d.slice(0, 7) === ym;
+  const ym = localMonthString();
+  const inMonth = (d: string) => isoToLocalDate(d).slice(0, 7) === ym;
 
   function monthStats(vehicleId: string) {
     const fuel = fuelEntries.filter((e) => e.vehicleId === vehicleId);

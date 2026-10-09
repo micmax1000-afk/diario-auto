@@ -3,6 +3,7 @@ import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { CommuteScenario, CommuteFuelType } from "../types";
 import { generateId } from "../utils/storage";
+import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 interface Props {
   vehicleId: string;
@@ -22,6 +23,7 @@ const FUEL_TYPE_ORDER: CommuteFuelType[] = ["gpl", "benzina", "diesel", "elettri
 
 export default function CommuteScenarioForm({ vehicleId, onSave, onClose }: Props) {
   const { t } = useTranslation();
+  const cur = useCurrencySymbol();
   const [fuelType, setFuelType] = useState<CommuteFuelType>("gpl");
   const [note, setNote] = useState("");
   const [kmPerUnit, setKmPerUnit] = useState("");
@@ -102,7 +104,7 @@ export default function CommuteScenarioForm({ vehicleId, onSave, onClose }: Prop
               />
             </div>
             <div className="field">
-              <label htmlFor="scenario-price">{t("commuteScenarioForm.pricePerUnit", { unit })}</label>
+              <label htmlFor="scenario-price">{t("commuteScenarioForm.pricePerUnit", { unit, cur })}</label>
               <input
                 id="scenario-price"
                 type="number"

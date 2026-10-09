@@ -137,7 +137,7 @@
     "periodLast12": "Last 12 months",
     "periodAll": "Always",
     "fillupsCount": "{{count}} refueling stops",
-    "pricePerUnitLabel": "€/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}"
   },
   "fuelForm": {
     "title": "New Supply",
@@ -146,7 +146,7 @@
     "source": "Used power supply",
     "liters": "Liters *",
     "kwh": "kWh *",
-    "cost": "Total cost (€) *",
+    "cost": "Total cost ({{cur}}) *",
     "fullTank": "Full (used to calculate consumption)",
     "notes": "Notes",
     "notesPlaceholder": "e.g., highway, gas station...",
@@ -157,7 +157,7 @@
     "save": "Save Fuel",
     "cancel": "Cancel",
     "titleEdit": "Edit Refueling",
-    "pricePerUnit": "€/{{unit}} *",
+    "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (calculated)",
     "errorPrice": "Enter a valid price for {{unit}}.",
     "errorTotalCost": "Enter a valid total cost."
@@ -169,7 +169,12 @@
     "back": "Back",
     "pressBackAgainToExit": "Press the back button again to exit",
     "takePhoto": "Take photo",
-    "chooseFromGallery": "Choose from gallery"
+    "chooseFromGallery": "Choose from gallery",
+    "deleted": "Deleted",
+    "undo": "Undo",
+    "edit": "Edit",
+    "menu": "Menu",
+    "notifications": "Notifications"
   },
   "backup": {
     "title": "Backup and Export"
@@ -226,9 +231,9 @@
     "description": "Description *",
     "descriptionPlaceholder": "e.g., Replacement of front brake pads",
     "splitCost": "Separate parts and labor",
-    "parts": "Replacement Parts (€)",
-    "labor": "Labor (€)",
-    "totalCost": "Total cost (€) *",
+    "parts": "Replacement Parts ({{cur}})",
+    "labor": "Labor ({{cur}})",
+    "totalCost": "Total cost ({{cur}}) *",
     "workshop": "Workshop",
     "workshopPlaceholder": "e.g., Rossi Workshop",
     "notes": "Notes",
@@ -242,7 +247,8 @@
     "errorSplitCost": "Enter valid amounts for parts and labor.",
     "errorCost": "Enter a valid cost.",
     "save": "Save Maintenance",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "editTitle": "Edit maintenance"
   },
   "expenseCategory": {
     "assicurazione": "Insurance",
@@ -270,7 +276,7 @@
     "category": "Category",
     "description": "Description *",
     "descriptionPlaceholder": "e.g., 2026 Motor Vehicle Liability Insurance",
-    "amount": "Amount (€) *",
+    "amount": "Amount ({{cur}}) *",
     "notes": "Notes",
     "photo": "Photos (bill, report, etc.)",
     "photoCompressing": "I'm compressing the image…",
@@ -280,7 +286,8 @@
     "errorDescription": "Indicate what it is (e.g., 2026 Motor Vehicle Liability Insurance).",
     "errorAmount": "Enter a valid amount.",
     "save": "Save Expense",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "editTitle": "Edit expense"
   },
   "reminders": {
     "title": "Deadlines",
@@ -317,7 +324,8 @@
     "errorKm": "Enter a valid mileage limit.",
     "save": "Save Deadline",
     "cancel": "Cancel",
-    "months": "months"
+    "months": "months",
+    "editTitle": "Edit deadline"
   },
   "summary": {
     "title": "Cost Summary",
@@ -566,8 +574,8 @@
     "date": "Date",
     "km": "Current km *",
     "atHome": "Charging at home (wallbox/outlet)",
-    "price": "€/kWh *",
-    "cost": "Total cost (€) *",
+    "price": "{{cur}}/kWh *",
+    "cost": "Total cost ({{cur}}) *",
     "kwhComputed": "kWh (calculated)",
     "power": "Power (kW)",
     "powerPlaceholderHome": "Ex. 7.4 (wallbox)",
@@ -632,7 +640,7 @@
     "routeLabel": "Route: {{label}}",
     "tripsPerDay": "Daily routes *",
     "workDays": "Workdays per week *",
-    "fuelPrice": "Fuel price (€/liter) *",
+    "fuelPrice": "Fuel price ({{cur}}/liter) *",
     "fuelPricePlaceholder": "e.g., 1,750",
     "estimatedConsumption": "Estimated fuel economy (km/l, optional)",
     "estimatedConsumptionPlaceholder": "Ex. 15 (a rough estimate is fine)",
@@ -651,7 +659,7 @@
     "kmPerUnit": "Km per 1 {{unit}} *",
     "kmPerUnitPlaceholderLiter": "Ex. 18",
     "kmPerUnitPlaceholderKwh": "Ex. 6",
-    "pricePerUnit": "Price per 1 {{unit}} (€) *",
+    "pricePerUnit": "Price per 1 {{unit}} ({{cur}}) *",
     "pricePerUnitPlaceholderLiter": "e.g., 0.700",
     "pricePerUnitPlaceholderKwh": "e.g., 0.250",
     "note": "Note (optional)",
@@ -972,5 +980,22 @@
     "hint": "Drag the photo to move it, use two fingers or the slider to zoom.",
     "zoom": "Zoom",
     "confirm": "Confirm"
+  },
+  "obdText": {
+    "catalyst": "Catalyst",
+    "heatedCatalyst": "Heated catalyst",
+    "evap": "Evaporative system (EVAP)",
+    "secondaryAir": "Secondary air",
+    "o2Sensor": "Oxygen sensor (O2)",
+    "o2Heater": "Oxygen sensor heater",
+    "egr": "Exhaust gas recirculation (EGR)",
+    "automatic": "Automatic",
+    "noWebBluetooth": "This browser does not support Web Bluetooth. Use Chrome or Edge on Android.",
+    "nativeOnlyInApp": "Native Bluetooth is only available in the Android app, not in the browser.",
+    "gattFailed": "Connection to the adapter failed.",
+    "adapterUnknown": "Adapter not recognised: no compatible Bluetooth service found.",
+    "notConnected": "Not connected.",
+    "pairedDevicesError": "Unable to read the paired devices.",
+    "timeout": "No reply to the command \"{{command}}\"."
   }
 }
