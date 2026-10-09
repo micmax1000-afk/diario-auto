@@ -106,7 +106,9 @@
     "notificationsNotSupported": "Notifications are not available on this device.",
     "notificationsDenied": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here.",
     "notificationsOnHintNative": "Active: Deadlines with a specific date trigger a notification even when the app is closed. Mileage-based deadlines are checked only when you open the app.",
-    "notificationsDeniedNative": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here."
+    "notificationsDeniedNative": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here.",
+    "fuelSubtitleBoth": "Fuel and electric charging",
+    "fuelSubtitleFuel": "Refuels and fuel consumption"
   },
   "fuel": {
     "title": "Supplies",

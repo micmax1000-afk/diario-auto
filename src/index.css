@@ -4490,3 +4490,8 @@ textarea {
 .dtc-history__codes { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.4rem; }
 .dtc-history__none { margin: 0.35rem 0 0; font-size: 0.8rem; color: var(--ok); }
 .photo-cropper__body .obd-hint { margin-top: 0.6rem; }
+
+/* Pulsanti Rifornimento / Ricarica nella scheda del veicolo: stesso stile della home */
+.fuel-actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin: 0 0 1rem; }
+.fuel-actions--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.fuel-actions .dash-quick__item { flex-direction: row; justify-content: center; gap: 0.6rem; padding: 0.8rem; font-size: 0.85rem; min-height: 52px; }

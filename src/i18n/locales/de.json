@@ -106,7 +106,9 @@
     "notificationsNotSupported": "Benachrichtigungen sind auf diesem Gerät nicht verfügbar.",
     "notificationsDenied": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut.",
     "notificationsOnHintNative": "Aktiv: Termine mit einem Datum werden auch bei geschlossener App angezeigt. Termine, die auf der Kilometerleistung basieren, werden erst beim Öffnen der App überprüft.",
-    "notificationsDeniedNative": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut."
+    "notificationsDeniedNative": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut.",
+    "fuelSubtitleBoth": "Kraftstoff und Elektroladen",
+    "fuelSubtitleFuel": "Tankvorgänge und Verbrauch"
   },
   "fuel": {
     "title": "Nachschub",

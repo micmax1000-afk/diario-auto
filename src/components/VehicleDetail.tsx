@@ -238,6 +238,10 @@ export default function VehicleDetail({
     }
   }
 
+  // Ricarica e filtri carburante/elettrico solo per veicoli che si ricaricano
+  // (o che hanno già ricariche registrate, così non spariscono dalla vista).
+  const canCharge = vehicle.fuelType === "elettrico" || vehicle.fuelType === "ibrido" || chargingEntries.length > 0;
+
   const activeRemindersCount = reminders.filter((r) => !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
 
   const currentYear = new Date().getFullYear();
@@ -354,15 +358,27 @@ export default function VehicleDetail({
         {tab === "rifornimenti" && (
           <>
             <div className="section-head section-head--tight">
-              <div><h2>Rifornimento</h2><p className="section-subtitle">Carburante e ricarica elettrica</p></div>
-              <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
-                <button type="button" className="btn btn--primary btn--icon" onClick={() => setShowFuelForm(true)}><ActionGridIcon name="fuel" /> Rifornimento</button>
-                <button type="button" className="btn btn--ghost btn--icon" onClick={() => setShowChargingForm(true)}><ActionGridIcon name="bolt" /> Ricarica</button>
+              <div>
+                <h2>{t("dashboardGarage.fuel")}</h2>
+                <p className="section-subtitle">{t(canCharge ? "detail.fuelSubtitleBoth" : "detail.fuelSubtitleFuel")}</p>
               </div>
+            </div>
+            <div className={`fuel-actions${canCharge ? " fuel-actions--2" : ""}`}>
+              <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowFuelForm(true)}>
+                <ActionGridIcon name="fuel" className="dash-quick__icon" />
+                <span>{t("dashboardGarage.fuel")}</span>
+              </button>
+              {canCharge && (
+                <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowChargingForm(true)}>
+                  <ActionGridIcon name="bolt" className="dash-quick__icon" />
+                  <span>{t("dashboardGarage.charge")}</span>
+                </button>
+              )}
             </div>
             <FuelChargeList
               fuelEntries={fuelEntries}
               chargingEntries={chargingEntries}
+              showSourceFilters={canCharge}
               onEditFuel={setEditingFuel}
               onDeleteFuel={onDeleteFuel}
               onEditCharging={setEditingCharging}

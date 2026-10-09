@@ -106,7 +106,9 @@
     "notificationsNotSupported": "Les notifications ne sont pas disponibles sur cet appareil.",
     "notificationsDenied": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici.",
     "notificationsOnHintNative": "Actives : les échéances avec une date font l'objet d'une notification même lorsque l'application est fermée. Celles liées au kilométrage ne sont vérifiées que lorsque vous ouvrez l'application.",
-    "notificationsDeniedNative": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici."
+    "notificationsDeniedNative": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici.",
+    "fuelSubtitleBoth": "Carburant et recharge électrique",
+    "fuelSubtitleFuel": "Pleins et consommation"
   },
   "fuel": {
     "title": "Approvisionnements",

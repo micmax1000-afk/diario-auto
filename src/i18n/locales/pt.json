@@ -106,7 +106,9 @@
     "notificationsNotSupported": "As notificações não estão disponíveis neste dispositivo.",
     "notificationsDenied": "Permissão negada. Vai a Definições do Android → Aplicações → Diario Auto → Notificações, ativa-as e, em seguida, tenta novamente aqui.",
     "notificationsOnHintNative": "Ativas: os prazos com data recebem uma notificação mesmo com a aplicação fechada. Os prazos baseados na quilometragem só são verificados quando abres a aplicação.",
-    "notificationsDeniedNative": "Permissão negada. Vai a Definições do Android → Aplicações → Diario Auto → Notificações, ativa-as e, em seguida, tenta novamente aqui."
+    "notificationsDeniedNative": "Permissão negada. Vai a Definições do Android → Aplicações → Diario Auto → Notificações, ativa-as e, em seguida, tenta novamente aqui.",
+    "fuelSubtitleBoth": "Combustível e carregamento elétrico",
+    "fuelSubtitleFuel": "Abastecimentos e consumo"
   },
   "fuel": {
     "title": "Abastecimentos",
