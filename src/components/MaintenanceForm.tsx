@@ -19,15 +19,19 @@ interface Props {
   onClose: () => void;
   /** Se presente (in modifica), mostra "Elimina" nel modulo. */
   onDelete?: () => void;
+  /** Valori iniziali per una nuova manutenzione (es. dopo "Fatto" su una scadenza). */
+  defaults?: Partial<Pick<MaintenanceEntry, "category" | "description">>;
+  /** Messaggio in cima al modulo. */
+  notice?: string;
 }
 
-export default function MaintenanceForm({ vehicle, initialEntry, onSave, onClose, onDelete }: Props) {
+export default function MaintenanceForm({ vehicle, initialEntry, onSave, onClose, onDelete, defaults, notice }: Props) {
   const { t } = useTranslation();
   const cur = useCurrencySymbol();
   const [date, setDate] = useState(() => initialEntry ? isoToLocalDate(initialEntry.date) : localDateString());
   const [km, setKm] = useState(String(initialEntry?.km ?? vehicle.currentKm));
-  const [category, setCategory] = useState<MaintenanceCategory>(initialEntry?.category ?? "tagliando");
-  const [description, setDescription] = useState(initialEntry?.description ?? "");
+  const [category, setCategory] = useState<MaintenanceCategory>(initialEntry?.category ?? defaults?.category ?? "tagliando");
+  const [description, setDescription] = useState(initialEntry?.description ?? defaults?.description ?? "");
   const [splitCost, setSplitCost] = useState(initialEntry?.partsCost !== undefined || initialEntry?.laborCost !== undefined);
   const [cost, setCost] = useState(initialEntry ? String(initialEntry.cost) : "");
   const [partsCost, setPartsCost] = useState(initialEntry?.partsCost !== undefined ? String(initialEntry.partsCost) : "");
@@ -103,6 +107,7 @@ export default function MaintenanceForm({ vehicle, initialEntry, onSave, onClose
         </div>
 
         <form onSubmit={handleSubmit} className="vehicle-form">
+          {notice && <p className="form-notice">{notice}</p>}
           <div className="field-row">
             <div className="field">
               <label htmlFor="maint-date">{t("maintenanceForm.date")}</label>

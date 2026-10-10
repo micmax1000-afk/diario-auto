@@ -305,7 +305,8 @@
     "completed": "Selesai ({{count}})",
     "kmForecast": "dalam {{km}} · sekitar {{date}}",
     "kmRemaining": "dalam {{km}}",
-    "aroundDate": "sekitar {{date}}"
+    "aroundDate": "sekitar {{date}}",
+    "doneFollowUp": "Tenggat ditandai selesai. Ingin mencatat juga pekerjaan dan biayanya? Anda bisa menutup tanpa menyimpan."
   },
   "reminderForm": {
     "title": "Batas waktu baru",
@@ -353,7 +354,12 @@
     "averageEnergyPrice": "Harga rata-rata energi",
     "dataQualityTitle": "Kualitas data",
     "dataQualityConsumption": "Konsumsi dihitung berdasarkan {{count}} interval antara pengisian bahan bakar.",
-    "dataQualityHint": "Catat setidaknya dua kali pengisian bahan bakar yang ditandai sebagai \"penuh\" untuk mendapatkan angka konsumsi rata-rata yang akurat."
+    "dataQualityHint": "Catat setidaknya dua kali pengisian bahan bakar yang ditandai sebagai \"penuh\" untuk mendapatkan angka konsumsi rata-rata yang akurat.",
+    "fuelPriceTitle": "Harga bahan bakar per liter",
+    "fuelPriceLast": "terakhir {{price}}",
+    "fuelPriceAverage": "rata-rata {{price}}",
+    "monthKm": "Jarak tempuh: {{km}}",
+    "monthCostPerKm": "{{cost}}/{{unit}}"
   },
   "backupPanel": {
     "noBackupYet": "Kamu belum membuat cadangan",

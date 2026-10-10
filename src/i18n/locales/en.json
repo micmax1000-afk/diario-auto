@@ -305,7 +305,8 @@
     "completed": "Completed ({{count}})",
     "kmForecast": "in {{km}} · around {{date}}",
     "kmRemaining": "in {{km}}",
-    "aroundDate": "around {{date}}"
+    "aroundDate": "around {{date}}",
+    "doneFollowUp": "Deadline marked as done. Do you also want to record the work and its cost? You can close without saving."
   },
   "reminderForm": {
     "title": "New Deadline",
@@ -353,7 +354,12 @@
     "averageEnergyPrice": "Average Energy Price",
     "dataQualityTitle": "Data Quality",
     "dataQualityConsumption": "Fuel consumption calculated based on {{count}} intervals between fill-ups.",
-    "dataQualityHint": "Record at least two refueling events marked as \"full\" to obtain a reliable average fuel consumption figure."
+    "dataQualityHint": "Record at least two refueling events marked as \"full\" to obtain a reliable average fuel consumption figure.",
+    "fuelPriceTitle": "Fuel price per litre",
+    "fuelPriceLast": "latest {{price}}",
+    "fuelPriceAverage": "average {{price}}",
+    "monthKm": "Distance driven: {{km}}",
+    "monthCostPerKm": "{{cost}}/{{unit}}"
   },
   "backupPanel": {
     "noBackupYet": "You haven't made a backup yet",

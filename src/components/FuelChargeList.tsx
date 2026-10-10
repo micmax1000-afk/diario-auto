@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, ChargingEntry } from "../types";
-import { calculateConsumption, averageConsumption } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, groupByMonth } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
@@ -62,10 +62,12 @@ export default function FuelChargeList({
     ? filteredRows.filter((r) => new Date(r.entry.date) >= periodCutoff)
     : filteredRows;
 
-  const totalCost = rows.reduce((sum, r) => sum + r.entry.totalCost, 0);
-  const consumptionPoints = calculateConsumption(fuelEntries);
+  // Totali del periodo scelto (prima erano sempre quelli di tutto lo storico).
+  const totalCost = periodFilteredRows.reduce((sum, r) => sum + r.entry.totalCost, 0);
+  const periodFuel = periodFilteredRows.filter((r) => r.kind === "fuel").map((r) => r.entry as FuelEntry);
+  const consumptionPoints = calculateConsumption(periodFuel);
   const avgConsumption = averageConsumption(consumptionPoints);
-  const allKm = rows.map((r) => r.entry.km);
+  const allKm = periodFilteredRows.map((r) => r.entry.km);
   const totalDistance = allKm.length > 1 ? Math.max(...allKm) - Math.min(...allKm) : 0;
 
   // per calcolare il delta "+XXX km" rispetto alla voce precedente nello storico completo (non filtrato)
@@ -118,60 +120,70 @@ export default function FuelChargeList({
       </div>
 
       <div className="fc-list__items">
-        {periodFilteredRows.map((row) => {
-          const { entry } = row;
-          const isFuel = row.kind === "fuel";
-          const unit = isFuel ? "L" : "kWh";
-          const quantity = isFuel ? (entry as FuelEntry).liters : (entry as ChargingEntry).kWh;
-          const pricePerUnit = quantity > 0 ? entry.totalCost / quantity : null;
-          const delta = deltaByEntryId.get(entry.id);
-          const date = new Date(entry.date);
-
-          return (
-            <div
-              key={entry.id}
-              className="fc-item fc-item--tappable"
-              role="button"
-              tabIndex={0}
-              aria-label={t("fuel.edit")}
-              onClick={() => (isFuel ? onEditFuel(entry as FuelEntry) : onEditCharging(entry as ChargingEntry))}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  if (isFuel) onEditFuel(entry as FuelEntry);
-                  else onEditCharging(entry as ChargingEntry);
-                }
-              }}
-            >
-              <div className={`fc-item__icon fc-item__icon--${isFuel ? "fuel" : "charge"}`}>
-                <ActionGridIcon name={isFuel ? "fuel" : "bolt"} />
-              </div>
-              <div className="fc-item__body">
-                <div className="fc-item__top">
-                  <span className="fc-item__date">
-                    {date.toLocaleDateString(locale, {
-                      day: "2-digit",
-                      month: "short",
-                      ...(date.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}),
-                    })}
-                  </span>
-                  <span className={`fc-item__badge fc-item__badge--${isFuel ? "fuel" : "charge"}`}>
-                    {isFuel ? t("fuel.filterFuel", "Carburante") : t("fuel.filterElectric", "Elettrico")}
-                  </span>
-                </div>
-                <div className="fc-item__mid">
-                  <span>{formatMoney(entry.totalCost)}</span>
-                  {pricePerUnit !== null && <span>{getCurrencySymbol(currency)} {pricePerUnit.toFixed(3)}/{unit}</span>}
-                  <span>{quantity.toFixed(2)} {unit}</span>
-                </div>
-              </div>
-              <div className="fc-item__right">
-                {delta != null && delta > 0 && <span className="fc-item__delta">+{delta} km</span>}
-                <span className="fc-item__km">{kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} km</span>
-              </div>
+        {groupByMonth(periodFilteredRows, (r) => r.entry.date, locale).map((group) => (
+          <section key={group.key} className="fc-month">
+            <div className="fc-month__head">
+              <span className="fc-month__label">{group.label}</span>
+              <span className="fc-month__total">
+                {group.entries.length}× · {formatMoney(group.entries.reduce((sum, r) => sum + r.entry.totalCost, 0))}
+              </span>
             </div>
-          );
-        })}
+            {group.entries.map((row) => {
+              const { entry } = row;
+              const isFuel = row.kind === "fuel";
+              const unit = isFuel ? "L" : "kWh";
+              const quantity = isFuel ? (entry as FuelEntry).liters : (entry as ChargingEntry).kWh;
+              const pricePerUnit = quantity > 0 ? entry.totalCost / quantity : null;
+              const delta = deltaByEntryId.get(entry.id);
+              const date = new Date(entry.date);
+
+              return (
+                <div
+                  key={entry.id}
+                  className="fc-item fc-item--tappable"
+                  role="button"
+                  tabIndex={0}
+                  aria-label={t("fuel.edit")}
+                  onClick={() => (isFuel ? onEditFuel(entry as FuelEntry) : onEditCharging(entry as ChargingEntry))}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      if (isFuel) onEditFuel(entry as FuelEntry);
+                      else onEditCharging(entry as ChargingEntry);
+                    }
+                  }}
+                >
+                  <div className={`fc-item__icon fc-item__icon--${isFuel ? "fuel" : "charge"}`}>
+                    <ActionGridIcon name={isFuel ? "fuel" : "bolt"} />
+                  </div>
+                  <div className="fc-item__body">
+                    <div className="fc-item__top">
+                      <span className="fc-item__date">
+                        {date.toLocaleDateString(locale, {
+                          day: "2-digit",
+                          month: "short",
+                          ...(date.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}),
+                        })}
+                      </span>
+                      <span className={`fc-item__badge fc-item__badge--${isFuel ? "fuel" : "charge"}`}>
+                        {isFuel ? t("fuel.filterFuel", "Carburante") : t("fuel.filterElectric", "Elettrico")}
+                      </span>
+                    </div>
+                    <div className="fc-item__mid">
+                      <span>{formatMoney(entry.totalCost)}</span>
+                      {pricePerUnit !== null && <span>{getCurrencySymbol(currency)} {pricePerUnit.toFixed(3)}/{unit}</span>}
+                      <span>{quantity.toFixed(2)} {unit}</span>
+                    </div>
+                  </div>
+                  <div className="fc-item__right">
+                    {delta != null && delta > 0 && <span className="fc-item__delta">+{delta} km</span>}
+                    <span className="fc-item__km">{kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} km</span>
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        ))}
       </div>
     </div>
   );

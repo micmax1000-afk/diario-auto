@@ -4544,3 +4544,20 @@ textarea {
 .reminder-item__actions .btn--small { min-height: 40px; }
 .reminder-item__forecast { display: block; margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--amber); }
 .upcoming-reminders__forecast { display: block; margin-top: 0.1rem; font-size: 0.68rem; color: var(--amber); text-align: end; }
+
+/* Lista rifornimenti divisa per mese */
+.fc-month { display: flex; flex-direction: column; gap: 0.5rem; }
+.fc-month + .fc-month { margin-top: 0.9rem; }
+.fc-month__head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem; padding: 0 0.15rem; }
+.fc-month__label { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.fc-month__total { font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700; color: var(--amber); white-space: nowrap; }
+.form-notice { margin: 0; padding: 0.65rem 0.8rem; border-radius: 10px; border: 1px solid color-mix(in srgb, var(--ok) 50%, transparent); background: color-mix(in srgb, var(--ok) 12%, var(--card)); font-size: 0.85rem; line-height: 1.4; }
+
+/* Grafico prezzo carburante e costo al km del mese */
+.price-chart { margin-top: 1rem; }
+.price-chart__head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.3rem 0.8rem; margin-bottom: 0.4rem; }
+.price-chart__head strong { font-size: 0.95rem; }
+.price-chart__head span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+.price-chart__dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
+.cost-detail__km { color: var(--text-muted); }
+.cost-detail__km b { color: var(--text); }
