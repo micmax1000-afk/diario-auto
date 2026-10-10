@@ -1018,5 +1018,29 @@
     "exhaustGasSensor": "Exhaust gas sensor",
     "particulateFilter": "Particulate filter (DPF)",
     "egrVvt": "EGR / variable valve timing"
+  },
+  "csvImport": {
+    "title": "Import refuels from another app",
+    "hint": "CSV file exported from Fuelio, Drivvo, an Excel sheet or Diario Auto. Columns are detected automatically; you see a preview and can fix them before importing.",
+    "chooseFile": "Choose CSV file",
+    "noTable": "The file has no table with dates and mileage.",
+    "readError": "The file cannot be read.",
+    "saveError": "Import failed. Please try again.",
+    "rowsFound": "rows found: {{count}}",
+    "vehicle": "Vehicle to add them to",
+    "columnsHint": "Check which column of the file matches each field.",
+    "missingColumns": "Choose at least the date, mileage and litres columns.",
+    "summary": "To import: {{count}} · already present: {{duplicates}} · rows skipped: {{skipped}}",
+    "done": "Imported {{count}} refuels into {{name}}.",
+    "fields": {
+      "date": "Date",
+      "km": "Mileage",
+      "liters": "Litres / kWh",
+      "totalCost": "Total cost",
+      "unitPrice": "Price per litre",
+      "fullTank": "Full tank",
+      "notes": "Notes"
+    },
+    "import": "Import ({{count}})"
   }
 }

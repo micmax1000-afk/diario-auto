@@ -1018,5 +1018,29 @@
     "exhaustGasSensor": "Sensor de gases de escape",
     "particulateFilter": "Filtro de partículas (DPF)",
     "egrVvt": "EGR / distribuição variável"
+  },
+  "csvImport": {
+    "title": "Importar abastecimentos de outra app",
+    "hint": "Ficheiro CSV exportado do Fuelio, Drivvo, uma folha de Excel ou do Diario Auto. As colunas são reconhecidas automaticamente; antes de importar vê uma pré-visualização e pode corrigi-las.",
+    "chooseFile": "Escolher ficheiro CSV",
+    "noTable": "O ficheiro não tem uma tabela com datas e quilometragem.",
+    "readError": "Não é possível ler o ficheiro.",
+    "saveError": "A importação falhou. Tente novamente.",
+    "rowsFound": "linhas encontradas: {{count}}",
+    "vehicle": "Veículo a que os adicionar",
+    "columnsHint": "Verifique a que coluna do ficheiro corresponde cada dado.",
+    "missingColumns": "Escolha pelo menos as colunas de data, km e litros.",
+    "summary": "A importar: {{count}} · já presentes: {{duplicates}} · linhas ignoradas: {{skipped}}",
+    "done": "Importados {{count}} abastecimentos em {{name}}.",
+    "fields": {
+      "date": "Data",
+      "km": "Km",
+      "liters": "Litros / kWh",
+      "totalCost": "Custo total",
+      "unitPrice": "Preço por litro",
+      "fullTank": "Cheio",
+      "notes": "Notas"
+    },
+    "import": "Importar ({{count}})"
   }
 }

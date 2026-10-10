@@ -707,6 +707,7 @@ export default function App() {
                 fuelEntries={fuelEntries}
                 maintenanceEntries={maintenanceEntries}
                 expenseEntries={expenseEntries}
+                chargingEntries={chargingEntries}
                 onRestored={reloadAll}
               />
             </Suspense>
