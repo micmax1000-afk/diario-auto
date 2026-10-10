@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
-import { calculateVehicleCosts, isReminderDue } from "../utils/calculations";
+import { calculateVehicleCosts } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -37,6 +37,7 @@ import ReminderList from "./ReminderList";
 import CostChart from "./CostChart";
 import LiveDataPanel from "./LiveDataPanel";
 import CommutePanel from "./CommutePanel";
+import { reminderStatus } from "../utils/kmForecast";
 
 type DetailTab =
   | "live"
@@ -249,7 +250,7 @@ export default function VehicleDetail({
   // (o che hanno già ricariche registrate, così non spariscono dalla vista).
   const canCharge = vehicle.fuelType === "elettrico" || vehicle.fuelType === "ibrido" || chargingEntries.length > 0;
 
-  const activeRemindersCount = reminders.filter((r) => !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
+  const activeRemindersCount = reminders.filter((r) => !r.completed && reminderStatus(r, vehicle.currentKm) !== "ok").length;
 
   const currentYear = new Date().getFullYear();
   const availableYears = Array.from(
@@ -306,13 +307,12 @@ export default function VehicleDetail({
       className={`vehicle-detail-page${vehicleColor ? " vehicle-detail-page--colored" : ""}`}
       style={vehicleColor ? ({ ["--c" as string]: vehicleColor } as CSSProperties) : undefined}
     >
-      <button type="button" className="back-link" onClick={onBack}>
-        {isRtlLanguage(i18n.language) ? "→ " : "← "}
-        {t("detail.back")}
-      </button>
-
-      <div className="section-head">
-        <h1>
+      {/* Intestazione compatta: indietro, nome e km su una riga, così i dati iniziano più in alto */}
+      <div className="detail-header">
+        <button type="button" className="detail-header__back" onClick={onBack} aria-label={t("detail.back")} title={t("detail.back")}>
+          {isRtlLanguage(i18n.language) ? "→" : "←"}
+        </button>
+        <h1 className="detail-header__name">
           {vehicleColor && allVehicles && allVehicles.length > 1 && <span className="vdot" aria-hidden="true" />}
           {vehicle.name}
         </h1>
@@ -387,9 +387,7 @@ export default function VehicleDetail({
               chargingEntries={chargingEntries}
               showSourceFilters={canCharge}
               onEditFuel={setEditingFuel}
-              onDeleteFuel={onDeleteFuel}
               onEditCharging={setEditingCharging}
-              onDeleteCharging={onDeleteCharging}
             />
           </>
         )}
@@ -448,7 +446,6 @@ export default function VehicleDetail({
                   : maintenanceEntries
               }
               onEdit={setEditingMaintenance}
-              onDelete={onDeleteMaintenance}
             />
           </>
         )}
@@ -459,7 +456,7 @@ export default function VehicleDetail({
               <div><h2>{t("expenses.title")}</h2><p className="section-subtitle">Spese collegate alla gestione dell'auto (bollo, assicurazione, ecc.)</p></div>
               <button type="button" className="btn btn--primary" onClick={() => setShowExpenseForm(true)}>{t("expenses.add")}</button>
             </div>
-            <ExpenseList entries={expenseEntries} onEdit={setEditingExpense} onDelete={onDeleteExpense} />
+            <ExpenseList entries={expenseEntries} onEdit={setEditingExpense} />
           </>
         )}
 
@@ -691,6 +688,10 @@ export default function VehicleDetail({
             setEditingFuel(null);
           }}
           onClose={() => setEditingFuel(null)}
+          onDelete={() => {
+            onDeleteFuel(editingFuel.id);
+            setEditingFuel(null);
+          }}
         />
       )}
 
@@ -714,6 +715,10 @@ export default function VehicleDetail({
             setEditingCharging(null);
           }}
           onClose={() => setEditingCharging(null)}
+          onDelete={() => {
+            onDeleteCharging(editingCharging.id);
+            setEditingCharging(null);
+          }}
         />
       )}
 
@@ -761,6 +766,10 @@ export default function VehicleDetail({
             setEditingMaintenance(null);
           }}
           onClose={() => setEditingMaintenance(null)}
+          onDelete={() => {
+            onDeleteMaintenance(editingMaintenance.id);
+            setEditingMaintenance(null);
+          }}
         />
       )}
 
@@ -773,6 +782,10 @@ export default function VehicleDetail({
             setEditingExpense(null);
           }}
           onClose={() => setEditingExpense(null)}
+          onDelete={() => {
+            onDeleteExpense(editingExpense.id);
+            setEditingExpense(null);
+          }}
         />
       )}
 
@@ -785,6 +798,10 @@ export default function VehicleDetail({
             setEditingReminder(null);
           }}
           onClose={() => setEditingReminder(null)}
+          onDelete={() => {
+            onDeleteReminder(editingReminder.id);
+            setEditingReminder(null);
+          }}
         />
       )}
     </section>

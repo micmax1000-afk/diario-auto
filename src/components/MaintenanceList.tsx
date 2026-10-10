@@ -9,10 +9,9 @@ import CategoryIcon from "./CategoryIcon";
 interface Props {
   entries: MaintenanceEntry[];
   onEdit: (entry: MaintenanceEntry) => void;
-  onDelete: (id: string) => void;
 }
 
-export default function MaintenanceList({ entries, onEdit, onDelete }: Props) {
+export default function MaintenanceList({ entries, onEdit }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney, distanceUnit } = useAppSettings();
   const [zoomPhoto, setZoomPhoto] = useState<string | null>(null);
@@ -44,7 +43,20 @@ export default function MaintenanceList({ entries, onEdit, onDelete }: Props) {
 
       <div className="record-list">
         {sorted.map((entry) => (
-          <div key={entry.id} className="record-card">
+          <div
+            key={entry.id}
+            className="record-card record-card--tappable"
+            aria-label={t("common.edit")}
+            role="button"
+            tabIndex={0}
+            onClick={() => onEdit(entry)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onEdit(entry);
+              }
+            }}
+          >
             <div className="record-card__header">
               <CategoryIcon kind="maintenance" category={entry.category} />
               <div className="record-card__title-group">
@@ -88,16 +100,18 @@ export default function MaintenanceList({ entries, onEdit, onDelete }: Props) {
             <p className="record-card__note">{entry.description}</p>
             <div className="record-card__actions">
               {entry.photo && (
-                <button type="button" className="thumb-btn" onClick={() => setZoomPhoto(entry.photo!)}>
+                <button
+                  type="button"
+                  className="thumb-btn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setZoomPhoto(entry.photo!);
+                  }}
+                >
                   <img src={entry.photo} alt="" />
                 </button>
               )}
-              <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(entry)}>
-                {t("common.edit")}
-              </button>
-              <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => onDelete(entry.id)}>
-                {t("common.remove")}
-              </button>
+              <span className="record-card__edit-hint">{t("common.tapToEdit")}</span>
             </div>
           </div>
         ))}

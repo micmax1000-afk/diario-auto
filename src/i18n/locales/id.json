@@ -174,7 +174,9 @@
     "undo": "Urungkan",
     "edit": "Ubah",
     "menu": "Menu",
-    "notifications": "Notifikasi"
+    "notifications": "Notifikasi",
+    "delete": "Hapus",
+    "tapToEdit": "Ketuk untuk mengubah"
   },
   "backup": {
     "title": "Pencadangan dan ekspor"
@@ -300,7 +302,10 @@
     "done": "Selesai",
     "remove": "Hapus",
     "reactivate": "Aktifkan kembali",
-    "completed": "Selesai ({{count}})"
+    "completed": "Selesai ({{count}})",
+    "kmForecast": "dalam {{km}} · sekitar {{date}}",
+    "kmRemaining": "dalam {{km}}",
+    "aroundDate": "sekitar {{date}}"
   },
   "reminderForm": {
     "title": "Batas waktu baru",

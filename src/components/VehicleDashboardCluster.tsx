@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { Reminder } from "../types";
-import { isReminderDue } from "../utils/calculations";
+import { reminderStatus } from "../utils/kmForecast";
 
 type LightId = "oil" | "battery" | "coolant" | "brake" | "tires" | "wrench";
 type LightStatus = "off" | "amber" | "red";
@@ -50,7 +50,7 @@ function computeLightStatuses(reminders: Reminder[], currentKm: number): Record<
     if (r.completed || !r.catalogKey) continue;
     const light = CATALOG_KEY_TO_LIGHT[r.catalogKey];
     if (!light) continue;
-    const due = isReminderDue(r.dueDate, r.dueKm, currentKm);
+    const due = reminderStatus(r, currentKm);
     if (due === "overdue") {
       statuses[light] = "red";
     } else if (due === "soon" && statuses[light] !== "red") {

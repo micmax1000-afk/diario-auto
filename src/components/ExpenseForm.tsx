@@ -15,9 +15,11 @@ interface Props {
   initialEntry?: ExpenseEntry;
   onSave: (entry: ExpenseEntry) => void;
   onClose: () => void;
+  /** Se presente (in modifica), mostra "Elimina" nel modulo. */
+  onDelete?: () => void;
 }
 
-export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose }: Props) {
+export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose, onDelete }: Props) {
   const { t } = useTranslation();
   const cur = useCurrencySymbol();
   const [date, setDate] = useState(() => initialEntry ? isoToLocalDate(initialEntry.date) : localDateString());
@@ -114,6 +116,11 @@ export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose }: 
           {error && <p className="form-error">{error}</p>}
 
           <div className="modal__actions">
+            {onDelete && (
+              <button type="button" className="btn btn--ghost btn--danger modal__delete" onClick={onDelete}>
+                {t("common.delete")}
+              </button>
+            )}
             <button type="button" className="btn btn--ghost" onClick={onClose}>
               {t("expenseForm.cancel")}
             </button>

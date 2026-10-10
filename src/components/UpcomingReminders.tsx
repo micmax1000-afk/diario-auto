@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 import type { Reminder, Vehicle } from "../types";
-import { isReminderDue } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { kmToDisplayDistance, type DistanceUnit } from "../utils/settings";
+import { estimateDateForKm, getKmPerDay, reminderStatus } from "../utils/kmForecast";
+import { formatForecastDate } from "../utils/dates";
 
 type LightId = "oil" | "battery" | "coolant" | "brake" | "tires" | "wrench";
 
@@ -40,24 +41,29 @@ interface RowData {
   status: "overdue" | "soon" | "ok";
   progress: number; // 0-100, quanta "strada" resta prima della scadenza (100 = appena fatta, 0 = scaduta)
   remainingText: string;
+  /** Data stimata per le scadenze a km (es. "circa il 20 nov"), sotto i km rimanenti. */
+  forecastText?: string;
 }
 
 function buildRow(r: Reminder, vehicle: Vehicle | undefined, locale: string, t: (k: string, o?: Record<string, unknown>) => string, distanceUnit: DistanceUnit): RowData | null {
   if (!vehicle || r.completed) return null;
-  const status = isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm);
+  const status = reminderStatus(r, vehicle.currentKm);
   if (status === "ok") return null;
 
   const icon: LightId | "clipboard" = (r.catalogKey && CATALOG_KEY_TO_ICON[r.catalogKey]) || "clipboard";
 
   let progress = 40;
   let remainingText = r.label;
+  let forecastText: string | undefined;
 
   if (r.type === "km" && r.dueKm != null) {
     const remaining = r.dueKm - vehicle.currentKm;
     const remainingDisplay = kmToDisplayDistance(remaining, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 });
+    const estimated = estimateDateForKm(r.dueKm, vehicle.currentKm, getKmPerDay(vehicle.id));
     remainingText = remaining > 0
       ? t("dashboardGarage.reminderInKm", { label: "", km: `${remainingDisplay} ${distanceUnit}` }).trim()
       : t("dashboardGarage.reminderOverdue", { label: "" }).trim();
+    if (remaining > 0 && estimated) forecastText = t("reminders.aroundDate", { date: formatForecastDate(estimated, locale) });
     const warningKm = 1000;
     progress = Math.max(0, Math.min(100, (remaining / warningKm) * 100));
   } else if (r.type === "data" && r.dueDate) {
@@ -69,7 +75,7 @@ function buildRow(r: Reminder, vehicle: Vehicle | undefined, locale: string, t: 
     progress = Math.max(0, Math.min(100, (diffDays / warningDays) * 100));
   }
 
-  return { key: r.id, vehicleId: vehicle.id, vehicleName: vehicle.name, icon, label: r.label, status, progress, remainingText };
+  return { key: r.id, vehicleId: vehicle.id, vehicleName: vehicle.name, icon, label: r.label, status, progress, remainingText, forecastText };
 }
 
 interface Props {
@@ -132,7 +138,10 @@ export default function UpcomingReminders({ vehicles, reminders, distanceUnit, o
                 <div className="upcoming-reminders__bar-fill" style={{ width: `${Math.max(6, 100 - row.progress)}%` }} />
               </div>
             </div>
-            <span className="upcoming-reminders__remaining">{row.remainingText}</span>
+            <span className="upcoming-reminders__remaining">
+              {row.remainingText}
+              {row.forecastText && <small className="upcoming-reminders__forecast">{row.forecastText}</small>}
+            </span>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="upcoming-reminders__chevron">
               <path d="m9 6 6 6-6 6" />
             </svg>

@@ -174,7 +174,9 @@
     "undo": "Deshacer",
     "edit": "Editar",
     "menu": "Menú",
-    "notifications": "Notificaciones"
+    "notifications": "Notificaciones",
+    "delete": "Eliminar",
+    "tapToEdit": "Toca para editar"
   },
   "backup": {
     "title": "Copias de seguridad y exportación"
@@ -300,7 +302,10 @@
     "done": "Hecho",
     "remove": "Eliminar",
     "reactivate": "Reactivar",
-    "completed": "Completadas ({{count}})"
+    "completed": "Completadas ({{count}})",
+    "kmForecast": "dentro de {{km}} · hacia el {{date}}",
+    "kmRemaining": "dentro de {{km}}",
+    "aroundDate": "hacia el {{date}}"
   },
   "reminderForm": {
     "title": "Nuevo plazo",

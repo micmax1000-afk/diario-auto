@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import type { Reminder } from "../types";
-import { isReminderDue } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { kmToDisplayDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
+import { estimateDateForKm, getKmPerDay, reminderStatus } from "../utils/kmForecast";
+import { formatForecastDate } from "../utils/dates";
 
 interface Props {
   reminders: Reminder[];
@@ -26,8 +27,8 @@ export default function ReminderList({ reminders, currentKm, onToggleComplete, o
   };
 
   const sorted = [...active].sort((a, b) => {
-    const statusA = isReminderDue(a.dueDate, a.dueKm, currentKm);
-    const statusB = isReminderDue(b.dueDate, b.dueKm, currentKm);
+    const statusA = reminderStatus(a, currentKm);
+    const statusB = reminderStatus(b, currentKm);
     const rank = { overdue: 0, soon: 1, ok: 2 };
     return rank[statusA] - rank[statusB];
   });
@@ -44,9 +45,22 @@ export default function ReminderList({ reminders, currentKm, onToggleComplete, o
   return (
     <div className="reminder-list">
       {sorted.map((reminder) => {
-        const status = isReminderDue(reminder.dueDate, reminder.dueKm, currentKm);
+        const status = reminderStatus(reminder, currentKm);
         return (
-          <div key={reminder.id} className={`reminder-item reminder-item--${status}`}>
+          <div
+            key={reminder.id}
+            className={`reminder-item reminder-item--${status} reminder-item--tappable`}
+            role="button"
+            tabIndex={0}
+            aria-label={t("common.edit")}
+            onClick={() => onEdit(reminder)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onEdit(reminder);
+              }
+            }}
+          >
             <div className="reminder-item__badge">{STATUS_LABELS[status]}</div>
             <div className="reminder-item__body">
               <span className="reminder-item__label">{reminder.label}</span>
@@ -55,21 +69,30 @@ export default function ReminderList({ reminders, currentKm, onToggleComplete, o
                   ? new Date(reminder.dueDate).toLocaleDateString(getNumberLocale(i18n.language))
                   : `${kmToDisplayDistance(reminder.dueKm ?? 0, distanceUnit).toLocaleString(getNumberLocale(i18n.language), { maximumFractionDigits: 0 })} ${distanceUnit}`}
               </span>
+              {reminder.dueKm !== undefined && !reminder.dueDate && reminder.dueKm > currentKm && (
+                <span className="reminder-item__forecast">
+                  {(() => {
+                    const locale = getNumberLocale(i18n.language);
+                    const km = `${kmToDisplayDistance(reminder.dueKm - currentKm, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} ${distanceUnit}`;
+                    const date = estimateDateForKm(reminder.dueKm, currentKm, getKmPerDay(reminder.vehicleId));
+                    return date
+                      ? t("reminders.kmForecast", { km, date: formatForecastDate(date, locale) })
+                      : t("reminders.kmRemaining", { km });
+                  })()}
+                </span>
+              )}
               {reminder.notes && <span className="reminder-item__notes">{reminder.notes}</span>}
             </div>
             <div className="reminder-item__actions">
-              <button type="button" className="btn btn--ghost btn--small" onClick={() => onToggleComplete(reminder.id)}>
-                {t("reminders.done")}
-              </button>
-              <button type="button" className="btn btn--ghost btn--small" onClick={() => onEdit(reminder)}>
-                {t("common.edit")}
-              </button>
               <button
                 type="button"
-                className="btn btn--ghost btn--danger btn--small"
-                onClick={() => onDelete(reminder.id)}
+                className="btn btn--ghost btn--small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleComplete(reminder.id);
+                }}
               >
-                {t("reminders.remove")}
+                {t("reminders.done")}
               </button>
             </div>
           </div>
