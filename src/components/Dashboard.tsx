@@ -11,8 +11,9 @@ import VehicleBodyIcon from "./VehicleBodyIcon";
 import { getMeta, setMeta } from "../utils/db";
 import { daysSince } from "../utils/storage";
 import { resolveVehicleColors } from "../utils/vehicleColor";
-import { calculateConsumption, averageConsumption, isReminderDue } from "../utils/calculations";
+import { calculateConsumption, averageConsumption } from "../utils/calculations";
 import { isoToLocalDate, localMonthString } from "../utils/dates";
+import { reminderStatus } from "../utils/kmForecast";
 
 interface Props {
   vehicles: Vehicle[];
@@ -143,7 +144,7 @@ export default function Dashboard({
   const multi = vehicles.filter((v) => !v.archived).length > 1;
 
   const urgentFor = (vehicle: Vehicle) =>
-    reminders.filter((r) => r.vehicleId === vehicle.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok").length;
+    reminders.filter((r) => r.vehicleId === vehicle.id && !r.completed && reminderStatus(r, vehicle.currentKm) !== "ok").length;
   const urgentCount = activeVehicles.reduce((a, v) => a + urgentFor(v), 0);
 
   const fmtMoney = (n: number) => formatMoney(n, 0);

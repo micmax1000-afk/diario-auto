@@ -4524,3 +4524,23 @@ textarea {
 .undo-toast { position: fixed; left: 50%; bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 2000; display: flex; align-items: center; gap: 1rem; max-width: calc(100% - 2rem); padding: 0.55rem 0.6rem 0.55rem 1.1rem; border-radius: 999px; background: var(--text); color: var(--bg); font-size: 0.85rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); animation: contentFadeIn 0.15s ease; }
 .undo-toast button { border: none; border-radius: 999px; padding: 0.35rem 0.8rem; background: var(--amber); color: #1a1205; font: inherit; font-weight: 700; cursor: pointer; }
 .freeze-frame-cause { margin: 0.25rem 0 0.6rem; color: var(--text); font-weight: 600; }
+
+/* Intestazione compatta del veicolo */
+.detail-header { max-width: 960px; margin: 0 auto 0.75rem; display: flex; align-items: center; gap: 0.6rem; }
+.detail-header__back { flex: none; width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--text); font-size: 1.2rem; cursor: pointer; }
+.detail-header__name { flex: 1; min-width: 0; margin: 0; font-family: var(--font-display); font-size: 1.6rem; letter-spacing: 0.02em; line-height: 1.05; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.detail-header .detail-km { flex: none; padding: 0.3rem 0.7rem; font-size: 0.8rem; }
+.vehicle-detail-page .section-head--tight { margin-bottom: 0.9rem; }
+.vehicle-detail-page .vehicle-switcher { margin-bottom: 0.9rem; }
+
+/* Schede che si toccano per modificare; Elimina dentro il modulo */
+.record-card--tappable, .reminder-item--tappable, .fc-item--tappable { cursor: pointer; transition: border-color 0.15s ease, transform 0.1s ease; }
+.record-card--tappable:active, .reminder-item--tappable:active, .fc-item--tappable:active { transform: scale(0.99); border-color: var(--amber); }
+.record-card--tappable:focus-visible, .reminder-item--tappable:focus-visible, .fc-item--tappable:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.record-card__edit-hint { margin-inline-start: auto; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-muted); }
+.modal__actions .modal__delete { margin-inline-end: auto; }
+/* Pulsanti piccoli: area di tocco di almeno 44 px */
+.dash-move button { width: 40px; height: 36px; font-size: 0.75rem; }
+.reminder-item__actions .btn--small { min-height: 40px; }
+.reminder-item__forecast { display: block; margin-top: 0.15rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--amber); }
+.upcoming-reminders__forecast { display: block; margin-top: 0.1rem; font-size: 0.68rem; color: var(--amber); text-align: end; }

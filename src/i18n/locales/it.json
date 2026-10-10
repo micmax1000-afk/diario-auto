@@ -174,7 +174,9 @@
     "undo": "Annulla",
     "edit": "Modifica",
     "menu": "Menu",
-    "notifications": "Notifiche"
+    "notifications": "Notifiche",
+    "delete": "Elimina",
+    "tapToEdit": "Tocca per modificare"
   },
   "backup": {
     "title": "Backup e esportazione"
@@ -300,7 +302,10 @@
     "done": "Fatto",
     "remove": "Rimuovi",
     "reactivate": "Riattiva",
-    "completed": "Completate ({{count}})"
+    "completed": "Completate ({{count}})",
+    "kmForecast": "tra {{km}} · circa il {{date}}",
+    "kmRemaining": "tra {{km}}",
+    "aroundDate": "circa il {{date}}"
   },
   "reminderForm": {
     "title": "Nuova scadenza",

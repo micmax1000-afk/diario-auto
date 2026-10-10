@@ -174,7 +174,9 @@
     "undo": "تراجع",
     "edit": "تعديل",
     "menu": "القائمة",
-    "notifications": "الإشعارات"
+    "notifications": "الإشعارات",
+    "delete": "حذف",
+    "tapToEdit": "اضغط للتعديل"
   },
   "backup": {
     "title": "النسخ الاحتياطي والتصدير"
@@ -300,7 +302,10 @@
     "done": "تم",
     "remove": "إزالة",
     "reactivate": "إعادة تنشيط",
-    "completed": "تم إكمال ({{count}})"
+    "completed": "تم إكمال ({{count}})",
+    "kmForecast": "بعد {{km}} · حوالي {{date}}",
+    "kmRemaining": "بعد {{km}}",
+    "aroundDate": "حوالي {{date}}"
   },
   "reminderForm": {
     "title": "موعد نهائي جديد",

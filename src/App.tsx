@@ -25,7 +25,6 @@ import {
   deleteReminder,
   generateId,
 } from "./utils/storage";
-import { isReminderDue } from "./utils/calculations";
 import { areNotificationsEnabled, notifyDueReminders, scheduleUpcomingReminders, type NotifiableReminder } from "./utils/notifications";
 import { getNumberLocale } from "./utils/locale";
 import { formatDistance } from "./utils/settings";
@@ -47,6 +46,7 @@ import QuickFuelForm from "./components/QuickFuelForm";
 import QuickChargeForm from "./components/QuickChargeForm";
 import UndoToast from "./components/UndoToast";
 import { useProStatus, FREE_VEHICLE_LIMIT } from "./services/billing/useProStatus";
+import { estimateKmPerDay, reminderStatus, setKmPerDayRates } from "./utils/kmForecast";
 
 // Schermate raggiunte solo dopo un'azione dell'utente (mai visibili al primo
 // avvio): caricate solo quando servono davvero, invece di appesantire il
@@ -119,6 +119,19 @@ export default function App() {
   const [showFleet, setShowFleet] = useState(false);
   // Ultima cancellazione annullabile: il messaggio "Eliminato · Annulla" resta qualche secondo.
   const [undoable, setUndoable] = useState<{ id: number; restore: () => Promise<void> } | null>(null);
+
+  // Km al giorno di ogni veicolo (ultimi 12 mesi): servono a stimare quando
+  // si raggiungeranno le scadenze a km. Impostati prima del render dei figli.
+  const kmPerDayRates = useMemo(() => {
+    const rates = new Map<string, number>();
+    for (const v of vehicles) {
+      const readings = [...fuelEntries, ...chargingEntries, ...maintenanceEntries].filter((e) => e.vehicleId === v.id);
+      const rate = estimateKmPerDay(readings);
+      if (rate) rates.set(v.id, rate);
+    }
+    return rates;
+  }, [vehicles, fuelEntries, chargingEntries, maintenanceEntries]);
+  setKmPerDayRates(kmPerDayRates);
 
   // Ogni schermata/modulo "chiudibile" si registra per il tasto indietro
   // hardware di Android — vedi backButtonStack.ts. L'ordine qui non conta:
@@ -206,7 +219,7 @@ export default function App() {
       if (reminder.completed) continue;
       const vehicle = vehicles.find((v) => v.id === reminder.vehicleId);
       if (!vehicle) continue;
-      const status = isReminderDue(reminder.dueDate, reminder.dueKm, vehicle.currentKm);
+      const status = reminderStatus(reminder, vehicle.currentKm);
       if (status === "ok") continue;
       items.push({
         id: reminder.id,
@@ -237,7 +250,7 @@ export default function App() {
       if (reminder.completed) continue;
       const vehicle = vehicles.find((v) => v.id === reminder.vehicleId);
       if (!vehicle) continue;
-      const status = isReminderDue(reminder.dueDate, reminder.dueKm, vehicle.currentKm);
+      const status = reminderStatus(reminder, vehicle.currentKm);
       if (status === "ok") continue;
       const isOverdue = status === "overdue";
       // Una scadenza scaduta ha sempre priorità su una semplicemente in arrivo.
@@ -571,7 +584,7 @@ export default function App() {
     const out: Record<string, number> = {};
     for (const v of vehicles) {
       out[v.id] = reminders.filter(
-        (r) => r.vehicleId === v.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, v.currentKm) !== "ok",
+        (r) => r.vehicleId === v.id && !r.completed && reminderStatus(r, v.currentKm) !== "ok",
       ).length;
     }
     return out;
@@ -600,7 +613,7 @@ export default function App() {
     if (r.completed) return false;
     const vehicle = vehicles.find((v) => v.id === r.vehicleId);
     if (!vehicle || vehicle.archived) return false;
-    return isReminderDue(r.dueDate, r.dueKm, vehicle.currentKm) !== "ok";
+    return reminderStatus(r, vehicle.currentKm) !== "ok";
   }).length;
 
   // Navigazione principale mobile: 5 aree, con le funzioni secondarie raccolte in "Altro".
@@ -642,7 +655,7 @@ export default function App() {
 
   function urgentRemindersCount(vehicleId: string, currentKm: number): number {
     return reminders.filter(
-      (r) => r.vehicleId === vehicleId && !r.completed && isReminderDue(r.dueDate, r.dueKm, currentKm) !== "ok",
+      (r) => r.vehicleId === vehicleId && !r.completed && reminderStatus(r, currentKm) !== "ok",
     ).length;
   }
 
@@ -651,7 +664,7 @@ export default function App() {
       (r) =>
         r.vehicleId === vehicleId &&
         !r.completed &&
-        isReminderDue(r.dueDate, r.dueKm, currentKm) !== "ok",
+        reminderStatus(r, currentKm) !== "ok",
     );
   }
 

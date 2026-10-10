@@ -16,9 +16,11 @@ interface Props {
   initialReminder?: Reminder;
   onSave: (reminder: Reminder) => void;
   onClose: () => void;
+  /** Se presente (in modifica), mostra "Elimina" nel modulo. */
+  onDelete?: () => void;
 }
 
-export default function ReminderForm({ vehicle, initialReminder, onSave, onClose }: Props) {
+export default function ReminderForm({ vehicle, initialReminder, onSave, onClose, onDelete }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit } = useAppSettings();
   const [showCatalog, setShowCatalog] = useState(!initialReminder);
@@ -239,6 +241,11 @@ export default function ReminderForm({ vehicle, initialReminder, onSave, onClose
             {error && <p className="form-error">{error}</p>}
 
             <div className="modal__actions">
+              {onDelete && (
+                <button type="button" className="btn btn--ghost btn--danger modal__delete" onClick={onDelete}>
+                  {t("common.delete")}
+                </button>
+              )}
               <button type="button" className="btn btn--ghost" onClick={onClose}>
                 {t("reminderForm.cancel")}
               </button>

@@ -174,7 +174,9 @@
     "undo": "पूर्ववत करें",
     "edit": "संपादित करें",
     "menu": "मेनू",
-    "notifications": "सूचनाएँ"
+    "notifications": "सूचनाएँ",
+    "delete": "हटाएँ",
+    "tapToEdit": "संपादित करने के लिए टैप करें"
   },
   "backup": {
     "title": "बैकअप और निर्यात"
@@ -300,7 +302,10 @@
     "done": "हो गया",
     "remove": "हटाएं",
     "reactivate": "पुनः सक्रिय करें",
-    "completed": "पूरा हुआ ({{count}})"
+    "completed": "पूरा हुआ ({{count}})",
+    "kmForecast": "{{km}} में · लगभग {{date}}",
+    "kmRemaining": "{{km}} में",
+    "aroundDate": "लगभग {{date}}"
   },
   "reminderForm": {
     "title": "नई समयसीमा",

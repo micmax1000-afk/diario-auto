@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { MaintenanceEntry, Reminder } from "../types";
-import { isReminderDue } from "../utils/calculations";
 import { useAppSettings } from "../contexts/AppSettingsContext";
+import { reminderStatus } from "../utils/kmForecast";
 
 interface Props {
   entries: MaintenanceEntry[];
@@ -20,7 +20,7 @@ export default function MaintenanceOverview({ entries, reminders, currentKm, onO
     let overdue = 0;
     let soon = 0;
     for (const reminder of active) {
-      const status = isReminderDue(reminder.dueDate, reminder.dueKm, currentKm);
+      const status = reminderStatus(reminder, currentKm);
       if (status === "overdue") overdue++;
       else if (status === "soon") soon++;
     }

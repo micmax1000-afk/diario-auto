@@ -174,7 +174,9 @@
     "undo": "Отменить",
     "edit": "Изменить",
     "menu": "Меню",
-    "notifications": "Уведомления"
+    "notifications": "Уведомления",
+    "delete": "Удалить",
+    "tapToEdit": "Нажмите, чтобы изменить"
   },
   "backup": {
     "title": "Резервное копирование и экспорт"
@@ -300,7 +302,10 @@
     "done": "Готово",
     "remove": "Удалить",
     "reactivate": "Восстановить",
-    "completed": "Завершено ({{count}})"
+    "completed": "Завершено ({{count}})",
+    "kmForecast": "через {{km}} · примерно {{date}}",
+    "kmRemaining": "через {{km}}",
+    "aroundDate": "примерно {{date}}"
   },
   "reminderForm": {
     "title": "Новый срок",

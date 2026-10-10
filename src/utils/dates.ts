@@ -32,3 +32,12 @@ export function localDateToIso(date: string, original?: string): string {
   const [y, m, d] = date.split("-").map(Number);
   return new Date(y, m - 1, d, 12).toISOString();
 }
+
+/** Data di una previsione, es. "20 nov" (con l'anno se non è quello in corso). */
+export function formatForecastDate(d: Date, locale: string): string {
+  return d.toLocaleDateString(locale, {
+    day: "numeric",
+    month: "short",
+    ...(d.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}),
+  });
+}

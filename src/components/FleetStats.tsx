@@ -1,9 +1,10 @@
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
-import { calculateConsumption, averageConsumption, calculateVehicleCosts, isReminderDue } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateVehicleCosts } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import VehicleSwitcher from "./VehicleSwitcher";
+import { reminderStatus } from "../utils/kmForecast";
 
 interface Props {
   vehicles: Vehicle[];
@@ -40,7 +41,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
     );
     const consumption = averageConsumption(calculateConsumption(fuel));
     const urgent = reminders.filter(
-      (r) => r.vehicleId === v.id && !r.completed && isReminderDue(r.dueDate, r.dueKm, v.currentKm) !== "ok",
+      (r) => r.vehicleId === v.id && !r.completed && reminderStatus(r, v.currentKm) !== "ok",
     ).length;
     return { vehicle: v, total: costs.totalCost, costPerKm: costs.costPerKm, consumption, urgent };
   });

@@ -174,7 +174,9 @@
     "undo": "Undo",
     "edit": "Edit",
     "menu": "Menu",
-    "notifications": "Notifications"
+    "notifications": "Notifications",
+    "delete": "Delete",
+    "tapToEdit": "Tap to edit"
   },
   "backup": {
     "title": "Backup and Export"
@@ -300,7 +302,10 @@
     "done": "Done",
     "remove": "Remove",
     "reactivate": "Reactivate",
-    "completed": "Completed ({{count}})"
+    "completed": "Completed ({{count}})",
+    "kmForecast": "in {{km}} · around {{date}}",
+    "kmRemaining": "in {{km}}",
+    "aroundDate": "around {{date}}"
   },
   "reminderForm": {
     "title": "New Deadline",

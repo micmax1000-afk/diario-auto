@@ -20,9 +20,7 @@ interface Props {
   /** Mostra i filtri Tutti / Carburante / Elettrico (inutili per un veicolo che non si ricarica). */
   showSourceFilters?: boolean;
   onEditFuel: (entry: FuelEntry) => void;
-  onDeleteFuel: (id: string) => void;
   onEditCharging: (entry: ChargingEntry) => void;
-  onDeleteCharging: (id: string) => void;
 }
 
 export default function FuelChargeList({
@@ -30,9 +28,7 @@ export default function FuelChargeList({
   chargingEntries,
   showSourceFilters = true,
   onEditFuel,
-  onDeleteFuel,
   onEditCharging,
-  onDeleteCharging,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney, currency, distanceUnit } = useAppSettings();
@@ -132,15 +128,32 @@ export default function FuelChargeList({
           const date = new Date(entry.date);
 
           return (
-            <div key={entry.id} className="fc-item">
+            <div
+              key={entry.id}
+              className="fc-item fc-item--tappable"
+              role="button"
+              tabIndex={0}
+              aria-label={t("fuel.edit")}
+              onClick={() => (isFuel ? onEditFuel(entry as FuelEntry) : onEditCharging(entry as ChargingEntry))}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  if (isFuel) onEditFuel(entry as FuelEntry);
+                  else onEditCharging(entry as ChargingEntry);
+                }
+              }}
+            >
               <div className={`fc-item__icon fc-item__icon--${isFuel ? "fuel" : "charge"}`}>
                 <ActionGridIcon name={isFuel ? "fuel" : "bolt"} />
               </div>
               <div className="fc-item__body">
                 <div className="fc-item__top">
                   <span className="fc-item__date">
-                    {date.toLocaleDateString(locale, { day: "2-digit", month: "short" })}{" "}
-                    {date.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })}
+                    {date.toLocaleDateString(locale, {
+                      day: "2-digit",
+                      month: "short",
+                      ...(date.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}),
+                    })}
                   </span>
                   <span className={`fc-item__badge fc-item__badge--${isFuel ? "fuel" : "charge"}`}>
                     {isFuel ? t("fuel.filterFuel", "Carburante") : t("fuel.filterElectric", "Elettrico")}
@@ -155,22 +168,6 @@ export default function FuelChargeList({
               <div className="fc-item__right">
                 {delta != null && delta > 0 && <span className="fc-item__delta">+{delta} km</span>}
                 <span className="fc-item__km">{kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} km</span>
-                <div className="fc-item__actions">
-                  <button
-                    type="button"
-                    className="fc-item__link"
-                    onClick={() => (isFuel ? onEditFuel(entry as FuelEntry) : onEditCharging(entry as ChargingEntry))}
-                  >
-                    {t("fuel.edit")}
-                  </button>
-                  <button
-                    type="button"
-                    className="fc-item__link fc-item__link--danger"
-                    onClick={() => (isFuel ? onDeleteFuel(entry.id) : onDeleteCharging(entry.id))}
-                  >
-                    {t("common.remove")}
-                  </button>
-                </div>
               </div>
             </div>
           );
