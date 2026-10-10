@@ -1018,5 +1018,29 @@
     "exhaustGasSensor": "Sensor gas buang",
     "particulateFilter": "Filter partikulat (DPF)",
     "egrVvt": "EGR / katup variabel"
+  },
+  "csvImport": {
+    "title": "Impor pengisian dari aplikasi lain",
+    "hint": "File CSV yang diekspor dari Fuelio, Drivvo, lembar Excel, atau Diario Auto. Kolom dikenali otomatis; sebelum mengimpor Anda melihat pratinjau dan bisa memperbaikinya.",
+    "chooseFile": "Pilih file CSV",
+    "noTable": "File tidak berisi tabel dengan tanggal dan jarak tempuh.",
+    "readError": "File tidak dapat dibaca.",
+    "saveError": "Impor gagal. Coba lagi.",
+    "rowsFound": "baris ditemukan: {{count}}",
+    "vehicle": "Kendaraan tujuan",
+    "columnsHint": "Periksa kolom file mana yang sesuai dengan tiap data.",
+    "missingColumns": "Pilih setidaknya kolom tanggal, km, dan liter.",
+    "summary": "Akan diimpor: {{count}} · sudah ada: {{duplicates}} · baris dilewati: {{skipped}}",
+    "done": "{{count}} pengisian diimpor ke {{name}}.",
+    "fields": {
+      "date": "Tanggal",
+      "km": "Km",
+      "liters": "Liter / kWh",
+      "totalCost": "Total biaya",
+      "unitPrice": "Harga per liter",
+      "fullTank": "Penuh",
+      "notes": "Catatan"
+    },
+    "import": "Impor ({{count}})"
   }
 }

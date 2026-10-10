@@ -4561,3 +4561,13 @@ textarea {
 .price-chart__dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; }
 .cost-detail__km { color: var(--text-muted); }
 .cost-detail__km b { color: var(--text); }
+
+/* Importazione CSV */
+.csv-import__pick { display: inline-flex; align-self: flex-start; cursor: pointer; margin-top: 0.4rem; }
+.csv-import__preview { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; padding: 0.8rem; border: 1px solid var(--border); border-radius: 12px; }
+.csv-import__file { margin: 0; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); overflow-wrap: anywhere; }
+.csv-import__mapping { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+.csv-import__mapping .field span, .csv-import__preview > .field span { font-size: 0.72rem; }
+.csv-import__mapping select { min-width: 0; width: 100%; }
+.csv-import__sample { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.75rem; }
+.csv-import__sample li { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; white-space: nowrap; font-size: 0.7rem; gap: 0.4rem; padding: 0.35rem 0.5rem; border-radius: 8px; background: color-mix(in srgb, var(--text-muted) 10%, transparent); }

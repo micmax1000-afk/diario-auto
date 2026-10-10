@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Vehicle, FuelEntry, MaintenanceEntry, ExpenseEntry } from "../types";
+import type { Vehicle, FuelEntry, MaintenanceEntry, ExpenseEntry, ChargingEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
 import { useProStatus } from "../services/billing/useProStatus";
 import { exportTextFile } from "../utils/nativeFileExport";
 import PremiumScreen from "./PremiumScreen";
 import { localDateString } from "../utils/dates";
+import CsvImportPanel from "./CsvImportPanel";
 import {
   uploadBackupToDrive,
   DRIVE_BACKUPS_TO_KEEP,
@@ -33,10 +34,11 @@ interface Props {
   fuelEntries: FuelEntry[];
   maintenanceEntries: MaintenanceEntry[];
   expenseEntries: ExpenseEntry[];
+  chargingEntries: ChargingEntry[];
   onRestored: () => void;
 }
 
-export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries, expenseEntries, onRestored }: Props) {
+export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries, expenseEntries, chargingEntries, onRestored }: Props) {
   const { t, i18n } = useTranslation();
   const { isPro } = useProStatus();
   const [showPremium, setShowPremium] = useState(false);
@@ -343,6 +345,10 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
           </button>
         </div>
       </div>
+
+      {vehicles.some((v) => !v.archived) && (
+        <CsvImportPanel vehicles={vehicles} fuelEntries={fuelEntries} chargingEntries={chargingEntries} onImported={onRestored} />
+      )}
 
       <div className="backup-panel__csv">
         <span className="backup-panel__csv-label">

@@ -1018,5 +1018,29 @@
     "exhaustGasSensor": "Abgassensor",
     "particulateFilter": "Partikelfilter (DPF)",
     "egrVvt": "AGR / variable Ventilsteuerung"
+  },
+  "csvImport": {
+    "title": "Tankvorgänge aus einer anderen App importieren",
+    "hint": "CSV-Datei aus Fuelio, Drivvo, einer Excel-Tabelle oder Diario Auto. Die Spalten werden automatisch erkannt; vor dem Import siehst du eine Vorschau und kannst sie korrigieren.",
+    "chooseFile": "CSV-Datei wählen",
+    "noTable": "Die Datei enthält keine Tabelle mit Datum und Kilometerstand.",
+    "readError": "Die Datei kann nicht gelesen werden.",
+    "saveError": "Import fehlgeschlagen. Bitte erneut versuchen.",
+    "rowsFound": "gefundene Zeilen: {{count}}",
+    "vehicle": "Fahrzeug, dem sie hinzugefügt werden",
+    "columnsHint": "Prüfe, welche Spalte der Datei zu welchem Wert gehört.",
+    "missingColumns": "Wähle mindestens die Spalten Datum, km und Liter.",
+    "summary": "Zu importieren: {{count}} · bereits vorhanden: {{duplicates}} · übersprungene Zeilen: {{skipped}}",
+    "done": "{{count}} Tankvorgänge zu {{name}} importiert.",
+    "fields": {
+      "date": "Datum",
+      "km": "Km",
+      "liters": "Liter / kWh",
+      "totalCost": "Gesamtkosten",
+      "unitPrice": "Preis pro Liter",
+      "fullTank": "Voll",
+      "notes": "Notizen"
+    },
+    "import": "Importieren ({{count}})"
   }
 }

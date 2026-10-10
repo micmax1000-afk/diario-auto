@@ -1018,5 +1018,29 @@
     "exhaustGasSensor": "Sensor de gases de escape",
     "particulateFilter": "Filtro de partículas (FAP/DPF)",
     "egrVvt": "EGR / distribución variable"
+  },
+  "csvImport": {
+    "title": "Importar repostajes de otra app",
+    "hint": "Archivo CSV exportado de Fuelio, Drivvo, una hoja de Excel o Diario Auto. Las columnas se reconocen solas; antes de importar ves una vista previa y puedes corregirlas.",
+    "chooseFile": "Elegir archivo CSV",
+    "noTable": "El archivo no tiene una tabla con fechas y kilómetros.",
+    "readError": "No se puede leer el archivo.",
+    "saveError": "La importación falló. Inténtalo de nuevo.",
+    "rowsFound": "filas encontradas: {{count}}",
+    "vehicle": "Vehículo al que añadirlos",
+    "columnsHint": "Comprueba a qué columna del archivo corresponde cada dato.",
+    "missingColumns": "Elige al menos las columnas de fecha, km y litros.",
+    "summary": "Para importar: {{count}} · ya presentes: {{duplicates}} · filas descartadas: {{skipped}}",
+    "done": "Importados {{count}} repostajes en {{name}}.",
+    "fields": {
+      "date": "Fecha",
+      "km": "Km",
+      "liters": "Litros / kWh",
+      "totalCost": "Coste total",
+      "unitPrice": "Precio por litro",
+      "fullTank": "Lleno",
+      "notes": "Notas"
+    },
+    "import": "Importar ({{count}})"
   }
 }

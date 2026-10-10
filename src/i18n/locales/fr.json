@@ -1018,5 +1018,29 @@
     "exhaustGasSensor": "Capteur de gaz d'échappement",
     "particulateFilter": "Filtre à particules (FAP)",
     "egrVvt": "EGR / distribution variable"
+  },
+  "csvImport": {
+    "title": "Importer des pleins d'une autre app",
+    "hint": "Fichier CSV exporté de Fuelio, Drivvo, une feuille Excel ou Diario Auto. Les colonnes sont reconnues automatiquement ; vous voyez un aperçu et pouvez les corriger avant d'importer.",
+    "chooseFile": "Choisir un fichier CSV",
+    "noTable": "Le fichier ne contient pas de tableau avec dates et kilométrage.",
+    "readError": "Le fichier est illisible.",
+    "saveError": "L'importation a échoué. Réessayez.",
+    "rowsFound": "lignes trouvées : {{count}}",
+    "vehicle": "Véhicule auquel les ajouter",
+    "columnsHint": "Vérifiez quelle colonne du fichier correspond à chaque donnée.",
+    "missingColumns": "Choisissez au moins les colonnes date, km et litres.",
+    "summary": "À importer : {{count}} · déjà présents : {{duplicates}} · lignes ignorées : {{skipped}}",
+    "done": "{{count}} pleins importés dans {{name}}.",
+    "fields": {
+      "date": "Date",
+      "km": "Km",
+      "liters": "Litres / kWh",
+      "totalCost": "Coût total",
+      "unitPrice": "Prix au litre",
+      "fullTank": "Plein",
+      "notes": "Notes"
+    },
+    "import": "Importer ({{count}})"
   }
 }
