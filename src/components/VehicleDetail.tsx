@@ -35,6 +35,7 @@ import ExpenseList from "./ExpenseList";
 import ReminderForm from "./ReminderForm";
 import ReminderList from "./ReminderList";
 import CostChart from "./CostChart";
+import FuelPriceChart from "./FuelPriceChart";
 import LiveDataPanel from "./LiveDataPanel";
 import CommutePanel from "./CommutePanel";
 import { reminderStatus } from "../utils/kmForecast";
@@ -81,6 +82,28 @@ interface Props {
 }
 
 const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "riepilogo"];
+// Scadenze del catalogo → cosa registrare quando si segnano come fatte.
+const REMINDER_FOLLOW_UP: Record<
+  string,
+  { kind: "maintenance"; category: MaintenanceCategory } | { kind: "expense"; category: "bollo" | "assicurazione" }
+> = {
+  oilFilter: { kind: "maintenance", category: "olio" },
+  periodicService: { kind: "maintenance", category: "tagliando" },
+  seasonalTires: { kind: "maintenance", category: "gomme" },
+  cabinFilter: { kind: "maintenance", category: "tagliando" },
+  airFilter: { kind: "maintenance", category: "tagliando" },
+  brakeFluid: { kind: "maintenance", category: "freni" },
+  sparkPlugs: { kind: "maintenance", category: "tagliando" },
+  timingBelt: { kind: "maintenance", category: "tagliando" },
+  fuelFilter: { kind: "maintenance", category: "tagliando" },
+  inspection: { kind: "maintenance", category: "revisione" },
+  lpgSticker: { kind: "maintenance", category: "revisione" },
+  coolant: { kind: "maintenance", category: "raffreddamento" },
+  battery: { kind: "maintenance", category: "batteria" },
+  roadTax: { kind: "expense", category: "bollo" },
+  insurance: { kind: "expense", category: "assicurazione" },
+};
+
 const TAB_I18N_KEYS: Record<DetailTab, string> = {
   live: "detail.tabs.live",
   rifornimenti: "detail.tabs.fuel",
@@ -145,6 +168,12 @@ export default function VehicleDetail({
   const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceEntry | null>(null);
   const [editingExpense, setEditingExpense] = useState<ExpenseEntry | null>(null);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  // Dopo "Fatto" su una scadenza del catalogo: modulo manutenzione o spesa già compilato.
+  const [doneFollowUp, setDoneFollowUp] = useState<
+    | { kind: "maintenance"; category: MaintenanceCategory; description: string }
+    | { kind: "expense"; category: "bollo" | "assicurazione"; description: string }
+    | null
+  >(null);
   const [period, setPeriod] = useState<Period>("sempre");
 
   // Tasto indietro Android: chiude il modulo aperto più di recente invece di
@@ -159,6 +188,16 @@ export default function VehicleDetail({
   useBackButtonClose(editingMaintenance !== null, () => setEditingMaintenance(null));
   useBackButtonClose(editingExpense !== null, () => setEditingExpense(null));
   useBackButtonClose(editingReminder !== null, () => setEditingReminder(null));
+  useBackButtonClose(doneFollowUp !== null, () => setDoneFollowUp(null));
+
+  function handleReminderDone(id: string) {
+    const reminder = reminders.find((r) => r.id === id);
+    onToggleReminder(id);
+    if (!reminder || reminder.completed || !reminder.catalogKey) return;
+    const followUp = REMINDER_FOLLOW_UP[reminder.catalogKey];
+    if (followUp?.kind === "maintenance") setDoneFollowUp({ kind: "maintenance", category: followUp.category, description: reminder.label });
+    if (followUp?.kind === "expense") setDoneFollowUp({ kind: "expense", category: followUp.category, description: reminder.label });
+  }
   useBackButtonClose(showPassportPremium, () => setShowPassportPremium(false));
   const [notificationsOn, setNotificationsOn] = useState(() => areNotificationsEnabled());
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
@@ -485,7 +524,7 @@ export default function VehicleDetail({
             <ReminderList
               reminders={reminders}
               currentKm={vehicle.currentKm}
-              onToggleComplete={onToggleReminder}
+              onToggleComplete={handleReminderDone}
               onEdit={setEditingReminder}
               onDelete={onDeleteReminder}
             />
@@ -663,7 +702,14 @@ export default function VehicleDetail({
               }</span>
             </div>
 
-            <CostChart fuelEntries={filteredFuel} chargingEntries={filteredCharging} maintenanceEntries={filteredMaintenance} expenseEntries={filteredExpenses} />
+            <CostChart
+              fuelEntries={filteredFuel}
+              chargingEntries={filteredCharging}
+              maintenanceEntries={filteredMaintenance}
+              expenseEntries={filteredExpenses}
+              kmReadings={[...fuelEntries, ...chargingEntries, ...maintenanceEntries]}
+            />
+            <FuelPriceChart fuelEntries={filteredFuel} />
           </>
         )}
       </div>
@@ -754,6 +800,32 @@ export default function VehicleDetail({
             setShowReminderForm(false);
           }}
           onClose={() => setShowReminderForm(false)}
+        />
+      )}
+
+      {doneFollowUp?.kind === "maintenance" && (
+        <MaintenanceForm
+          vehicle={vehicle}
+          defaults={{ category: doneFollowUp.category, description: doneFollowUp.description }}
+          notice={t("reminders.doneFollowUp")}
+          onSave={(entry) => {
+            onAddMaintenance(entry);
+            setDoneFollowUp(null);
+          }}
+          onClose={() => setDoneFollowUp(null)}
+        />
+      )}
+
+      {doneFollowUp?.kind === "expense" && (
+        <ExpenseForm
+          vehicle={vehicle}
+          defaults={{ category: doneFollowUp.category, description: doneFollowUp.description }}
+          notice={t("reminders.doneFollowUp")}
+          onSave={(entry) => {
+            onAddExpense(entry);
+            setDoneFollowUp(null);
+          }}
+          onClose={() => setDoneFollowUp(null)}
         />
       )}
 

@@ -305,7 +305,8 @@
     "completed": "Abgeschlossen ({{count}})",
     "kmForecast": "in {{km}} · etwa am {{date}}",
     "kmRemaining": "in {{km}}",
-    "aroundDate": "etwa am {{date}}"
+    "aroundDate": "etwa am {{date}}",
+    "doneFollowUp": "Frist als erledigt markiert. Möchtest du auch die Arbeit und die Kosten erfassen? Du kannst auch ohne Speichern schließen."
   },
   "reminderForm": {
     "title": "Neue Frist",
@@ -353,7 +354,12 @@
     "averageEnergyPrice": "Durchschnittlicher Energiepreis",
     "dataQualityTitle": "Datenqualität",
     "dataQualityConsumption": "Verbrauch berechnet auf der Grundlage von {{count}} Tankfüllungen.",
-    "dataQualityHint": "Erfassen Sie mindestens zwei als „voll“ markierte Tankvorgänge, um einen zuverlässigen Durchschnittsverbrauch zu erhalten."
+    "dataQualityHint": "Erfassen Sie mindestens zwei als „voll“ markierte Tankvorgänge, um einen zuverlässigen Durchschnittsverbrauch zu erhalten.",
+    "fuelPriceTitle": "Kraftstoffpreis pro Liter",
+    "fuelPriceLast": "zuletzt {{price}}",
+    "fuelPriceAverage": "Durchschnitt {{price}}",
+    "monthKm": "Gefahrene Strecke: {{km}}",
+    "monthCostPerKm": "{{cost}}/{{unit}}"
   },
   "backupPanel": {
     "noBackupYet": "Du hast noch kein Backup erstellt.",

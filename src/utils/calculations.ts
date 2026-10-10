@@ -173,7 +173,7 @@ export interface MonthGroup<T> {
   entries: T[];
 }
 
-export function groupByMonth<T>(entries: T[], getDate: (e: T) => string): MonthGroup<T>[] {
+export function groupByMonth<T>(entries: T[], getDate: (e: T) => string, locale = "it-IT"): MonthGroup<T>[] {
   const map = new Map<string, T[]>();
   for (const entry of entries) {
     const d = new Date(getDate(entry));
@@ -187,7 +187,7 @@ export function groupByMonth<T>(entries: T[], getDate: (e: T) => string): MonthG
     const d = new Date(Number(year), Number(month) - 1, 1);
     return {
       key,
-      label: d.toLocaleDateString("it-IT", { month: "long", year: "numeric" }),
+      label: d.toLocaleDateString(locale, { month: "long", year: "numeric" }),
       entries: groupEntries,
     };
   });

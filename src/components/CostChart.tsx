@@ -4,7 +4,7 @@ import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend
 import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { getCurrencySymbol } from "../utils/settings";
+import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
 import CategoryIcon from "./CategoryIcon";
 
 interface Props {
@@ -12,6 +12,8 @@ interface Props {
   maintenanceEntries: MaintenanceEntry[];
   expenseEntries?: ExpenseEntry[];
   chargingEntries?: ChargingEntry[];
+  /** Letture dei km di tutto lo storico (non solo del periodo), per i km percorsi nel mese. */
+  kmReadings?: { date: string; km: number }[];
 }
 
 interface MonthBucket {
@@ -27,15 +29,31 @@ function monthKey(iso: string): string {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
 }
 
+/**
+ * Km percorsi in un mese (AAAA-MM): lettura più alta del mese meno la più alta
+ * dei mesi precedenti. null se mancano letture nel mese o prima.
+ */
+function kmDrivenInMonth(readings: { date: string; km: number }[], month: string): number | null {
+  let inMonth = -Infinity;
+  let before = -Infinity;
+  for (const r of readings) {
+    const key = monthKey(r.date);
+    if (key === month) inMonth = Math.max(inMonth, r.km);
+    else if (key < month) before = Math.max(before, r.km);
+  }
+  if (!Number.isFinite(inMonth) || !Number.isFinite(before) || inMonth <= before) return null;
+  return inMonth - before;
+}
+
 function monthLabel(key: string, locale: string): string {
   const [year, month] = key.split("-");
   const d = new Date(Number(year), Number(month) - 1, 1);
   return d.toLocaleDateString(locale, { month: "short", year: "2-digit" });
 }
 
-export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntries = [], chargingEntries = [] }: Props) {
+export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntries = [], chargingEntries = [], kmReadings = [] }: Props) {
   const { t, i18n } = useTranslation();
-  const { formatMoney, currency } = useAppSettings();
+  const { formatMoney, currency, distanceUnit } = useAppSettings();
   const currencySymbol = getCurrencySymbol(currency);
   // Mese selezionato (toccando una barra); se nessuno, l'ultimo.
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -111,6 +129,7 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
   const selected = selectedIndex !== null && selectedIndex < data.length ? selectedIndex : data.length - 1;
   const row = data[selected];
   const rowTotal = row.carburante + row.ricarica + row.manutenzione + row.spese;
+  const kmInMonth = kmDrivenInMonth(kmReadings, row.month);
 
   return (
     <div className="chart-wrap">
@@ -192,6 +211,12 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
           {t("summary.total")}
           <b>{formatMoney(rowTotal)}</b>
         </span>
+        {kmInMonth !== null && (
+          <span className="cost-detail__km">
+            {t("summary.monthKm", { km: `${kmToDisplayDistance(kmInMonth, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} ${distanceUnit}` })}
+            <b>{t("summary.monthCostPerKm", { cost: formatMoney(rowTotal / kmToDisplayDistance(kmInMonth, distanceUnit), 3), unit: distanceUnit })}</b>
+          </span>
+        )}
       </div>
     </div>
   );

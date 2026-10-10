@@ -305,7 +305,8 @@
     "completed": "Completadas ({{count}})",
     "kmForecast": "dentro de {{km}} · hacia el {{date}}",
     "kmRemaining": "dentro de {{km}}",
-    "aroundDate": "hacia el {{date}}"
+    "aroundDate": "hacia el {{date}}",
+    "doneFollowUp": "Vencimiento marcado como hecho. ¿Quieres registrar también la intervención y el gasto? Puedes cerrar sin guardar."
   },
   "reminderForm": {
     "title": "Nuevo plazo",
@@ -353,7 +354,12 @@
     "averageEnergyPrice": "Precio medio de la energía",
     "dataQualityTitle": "Calidad de los datos",
     "dataQualityConsumption": "Consumo calculado sobre la base de {{count}} intervalos entre repostajes.",
-    "dataQualityHint": "Registra al menos dos repostajes marcados como «lleno» para obtener un consumo medio fiable."
+    "dataQualityHint": "Registra al menos dos repostajes marcados como «lleno» para obtener un consumo medio fiable.",
+    "fuelPriceTitle": "Precio del combustible por litro",
+    "fuelPriceLast": "último {{price}}",
+    "fuelPriceAverage": "media {{price}}",
+    "monthKm": "Km recorridos: {{km}}",
+    "monthCostPerKm": "{{cost}}/{{unit}}"
   },
   "backupPanel": {
     "noBackupYet": "Aún no has hecho una copia de seguridad",

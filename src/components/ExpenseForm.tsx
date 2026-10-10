@@ -17,14 +17,18 @@ interface Props {
   onClose: () => void;
   /** Se presente (in modifica), mostra "Elimina" nel modulo. */
   onDelete?: () => void;
+  /** Valori iniziali per una nuova spesa (es. dopo "Fatto" su una scadenza). */
+  defaults?: Partial<Pick<ExpenseEntry, "category" | "description">>;
+  /** Messaggio in cima al modulo. */
+  notice?: string;
 }
 
-export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose, onDelete }: Props) {
+export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose, onDelete, defaults, notice }: Props) {
   const { t } = useTranslation();
   const cur = useCurrencySymbol();
   const [date, setDate] = useState(() => initialEntry ? isoToLocalDate(initialEntry.date) : localDateString());
-  const [category, setCategory] = useState<ExpenseCategory>(initialEntry?.category ?? "assicurazione");
-  const [description, setDescription] = useState(initialEntry?.description ?? "");
+  const [category, setCategory] = useState<ExpenseCategory>(initialEntry?.category ?? defaults?.category ?? "assicurazione");
+  const [description, setDescription] = useState(initialEntry?.description ?? defaults?.description ?? "");
   const [amount, setAmount] = useState(initialEntry ? String(initialEntry.amount) : "");
   const [notes, setNotes] = useState(initialEntry?.notes ?? "");
   const [photo, setPhoto] = useState<string | null>(initialEntry?.photo ?? null);
@@ -69,6 +73,7 @@ export default function ExpenseForm({ vehicle, initialEntry, onSave, onClose, on
         </div>
 
         <form onSubmit={handleSubmit} className="vehicle-form">
+          {notice && <p className="form-notice">{notice}</p>}
           <div className="field">
             <label htmlFor="expense-date">{t("expenseForm.date")}</label>
             <input id="expense-date" type="date" value={date} onChange={(e) => setDate(e.target.value)} />

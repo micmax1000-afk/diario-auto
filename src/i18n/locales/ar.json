@@ -305,7 +305,8 @@
     "completed": "تم إكمال ({{count}})",
     "kmForecast": "بعد {{km}} · حوالي {{date}}",
     "kmRemaining": "بعد {{km}}",
-    "aroundDate": "حوالي {{date}}"
+    "aroundDate": "حوالي {{date}}",
+    "doneFollowUp": "تم وضع علامة على الموعد كمنجز. هل تريد أيضًا تسجيل العمل وتكلفته؟ يمكنك الإغلاق دون حفظ."
   },
   "reminderForm": {
     "title": "موعد نهائي جديد",
@@ -353,7 +354,12 @@
     "averageEnergyPrice": "متوسط سعر الطاقة",
     "dataQualityTitle": "جودة البيانات",
     "dataQualityConsumption": "الاستهلاك محسوب على أساس {{count}} فترات بين كل تعبئة وقود.",
-    "dataQualityHint": "سجل ما لا يقل عن عمليتي تعبئة تم تحديدهما على أنهما «ممتلئتان» للحصول على معدل استهلاك موثوق به."
+    "dataQualityHint": "سجل ما لا يقل عن عمليتي تعبئة تم تحديدهما على أنهما «ممتلئتان» للحصول على معدل استهلاك موثوق به.",
+    "fuelPriceTitle": "سعر الوقود لكل لتر",
+    "fuelPriceLast": "الأخير {{price}}",
+    "fuelPriceAverage": "المتوسط {{price}}",
+    "monthKm": "المسافة المقطوعة: {{km}}",
+    "monthCostPerKm": "{{cost}}/{{unit}}"
   },
   "backupPanel": {
     "noBackupYet": "لم تقم بعمل نسخة احتياطية بعد",

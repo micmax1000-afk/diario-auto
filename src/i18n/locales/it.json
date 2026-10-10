@@ -305,7 +305,8 @@
     "completed": "Completate ({{count}})",
     "kmForecast": "tra {{km}} · circa il {{date}}",
     "kmRemaining": "tra {{km}}",
-    "aroundDate": "circa il {{date}}"
+    "aroundDate": "circa il {{date}}",
+    "doneFollowUp": "Scadenza segnata come fatta. Vuoi registrare anche l'intervento e la spesa? Puoi anche chiudere senza salvare."
   },
   "reminderForm": {
     "title": "Nuova scadenza",
@@ -353,7 +354,12 @@
     "averageEnergyPrice": "Prezzo medio energia",
     "dataQualityTitle": "Qualità dei dati",
     "dataQualityConsumption": "Consumo calcolato su {{count}} intervalli tra pieni.",
-    "dataQualityHint": "Registra almeno due rifornimenti segnati come pieno per ottenere un consumo medio affidabile."
+    "dataQualityHint": "Registra almeno due rifornimenti segnati come pieno per ottenere un consumo medio affidabile.",
+    "fuelPriceTitle": "Prezzo carburante al litro",
+    "fuelPriceLast": "ultimo {{price}}",
+    "fuelPriceAverage": "media {{price}}",
+    "monthKm": "Km percorsi: {{km}}",
+    "monthCostPerKm": "{{cost}}/{{unit}}"
   },
   "backupPanel": {
     "noBackupYet": "Non hai ancora fatto un backup",
