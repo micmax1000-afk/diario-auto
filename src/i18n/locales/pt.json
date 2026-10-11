@@ -638,7 +638,11 @@
     "perMonthLabel": "por mês: {{value}}",
     "consumption": "Consumo",
     "price": "Preço",
-    "remove": "Remover"
+    "remove": "Remover",
+    "notConfiguredBodyElectric": "Defina os km do trajeto casa-trabalho e o preço da energia para calcular o custo real das suas deslocações, com base no consumo médio calculado a partir dos carregamentos registados.",
+    "noConsumptionBodyElectric": "Adicione um consumo estimado nas definições (mesmo aproximado) para ver já o custo do trajeto, ou registe pelo menos dois carregamentos para o Diario Auto o calcular automaticamente.",
+    "summaryLineElectric": "{{km}} km por trajeto × {{trips}}/dia × {{days}} dias/semana, consumo {{estimateLabel}} {{consumption}} a {{price}}/kWh.",
+    "estimateProvisionalElectric": " Dado provisório — será substituído automaticamente quando tiver registado carregamentos suficientes."
   },
   "commuteFuelType": {
     "benzina": "Gasolina",
@@ -667,7 +671,13 @@
     "errorPrice": "Introduza um preço válido para o combustível.",
     "errorEstimate": "O consumo estimado deve ser um número maior que zero.",
     "save": "Guardar",
-    "cancel": "Anular"
+    "cancel": "Anular",
+    "energyPrice": "Preço da energia ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "ex. 0.30",
+    "estimatedConsumptionElectric": "Consumo estimado (kWh/100 km, opcional)",
+    "estimatedConsumptionElectricPlaceholder": "ex. 16 (uma estimativa aproximada serve)",
+    "estimatedConsumptionElectricHint": "Usado apenas até ter registado carregamentos suficientes para calcular o consumo real — a partir daí é substituído automaticamente, sem precisar de alterar nada aqui.",
+    "errorPriceElectric": "Introduza um preço da energia válido."
   },
   "commuteScenarioForm": {
     "title": "Novo cenário de comparação",

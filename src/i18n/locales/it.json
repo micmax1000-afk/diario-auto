@@ -638,7 +638,11 @@
     "perMonthLabel": "al mese: {{value}}",
     "consumption": "Consumo",
     "price": "Prezzo",
-    "remove": "Rimuovi"
+    "remove": "Rimuovi",
+    "notConfiguredBodyElectric": "Imposta i km della tratta casa-lavoro e il prezzo dell'energia per calcolare il costo reale del tuo pendolarismo, basato sul consumo medio calcolato dalle ricariche registrate.",
+    "noConsumptionBodyElectric": "Aggiungi un consumo stimato nelle impostazioni (anche approssimativo) per vedere subito il costo del tragitto, oppure registra almeno due ricariche per farlo calcolare a Diario Auto in automatico.",
+    "summaryLineElectric": "{{km}} km a tratta × {{trips}}/giorno × {{days}} giorni/settimana, consumo {{estimateLabel}} {{consumption}} a {{price}}/kWh.",
+    "estimateProvisionalElectric": " Dato provvisorio — verrà sostituito in automatico appena avrai abbastanza ricariche registrate."
   },
   "commuteFuelType": {
     "benzina": "Benzina",
@@ -667,7 +671,13 @@
     "errorPrice": "Inserisci un prezzo carburante valido.",
     "errorEstimate": "Il consumo stimato deve essere un numero maggiore di zero.",
     "save": "Salva",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "energyPrice": "Prezzo energia ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "es. 0.30",
+    "estimatedConsumptionElectric": "Consumo stimato (kWh/100 km, opzionale)",
+    "estimatedConsumptionElectricPlaceholder": "es. 16 (una stima approssimativa va bene)",
+    "estimatedConsumptionElectricHint": "Usato solo finché non hai registrato abbastanza ricariche per calcolare il consumo reale — da quel momento lo sostituisco automaticamente, senza bisogno di modificare nulla qui.",
+    "errorPriceElectric": "Inserisci un prezzo dell'energia valido."
   },
   "commuteScenarioForm": {
     "title": "Nuovo scenario di confronto",

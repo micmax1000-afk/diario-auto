@@ -529,7 +529,7 @@ export default function VehicleDetail({
           </>
         )}
 
-        {tab === "tragitto" && <CommutePanel vehicle={vehicle} fuelEntries={fuelEntries} />}
+        {tab === "tragitto" && <CommutePanel vehicle={vehicle} fuelEntries={fuelEntries} chargingEntries={chargingEntries} />}
 
         {tab === "riepilogo" && (
           <>

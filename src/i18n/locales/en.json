@@ -638,7 +638,11 @@
     "perMonthLabel": "per month: {{value}}",
     "consumption": "Consumption",
     "price": "Price",
-    "remove": "Remove"
+    "remove": "Remove",
+    "notConfiguredBodyElectric": "Set the km of your home-work trip and the energy price to calculate the real cost of your commute, based on the average consumption calculated from your recorded charges.",
+    "noConsumptionBodyElectric": "Add an estimated consumption in the settings (even a rough one) to see the trip cost right away, or record at least two charges to let Diario Auto calculate it automatically.",
+    "summaryLineElectric": "{{km}} km per trip × {{trips}}/day × {{days}} days/week, {{estimateLabel}} consumption {{consumption}} at {{price}}/kWh.",
+    "estimateProvisionalElectric": " Provisional figure — it will be replaced automatically once you have recorded enough charges."
   },
   "commuteFuelType": {
     "benzina": "Gasoline",
@@ -667,7 +671,13 @@
     "errorPrice": "Enter a valid fuel price.",
     "errorEstimate": "The estimated consumption must be a number greater than zero.",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "energyPrice": "Energy price ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "e.g. 0.30",
+    "estimatedConsumptionElectric": "Estimated consumption (kWh/100 km, optional)",
+    "estimatedConsumptionElectricPlaceholder": "e.g. 16 (a rough estimate is fine)",
+    "estimatedConsumptionElectricHint": "Used only until you have recorded enough charges to calculate the real consumption — from then on it is replaced automatically, with no need to change anything here.",
+    "errorPriceElectric": "Enter a valid energy price."
   },
   "commuteScenarioForm": {
     "title": "New comparison scenario",

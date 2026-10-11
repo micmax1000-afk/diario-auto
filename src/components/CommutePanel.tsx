@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Vehicle, FuelEntry, CommuteSettings, CommuteScenario } from "../types";
-import { calculateConsumption, averageConsumption, calculateCommuteCost } from "../utils/calculations";
+import type { Vehicle, FuelEntry, ChargingEntry, CommuteSettings, CommuteScenario } from "../types";
+import {
+  calculateConsumption,
+  averageConsumption,
+  calculateCommuteCost,
+  calculateElectricConsumption,
+  averageElectricConsumption,
+} from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import {
@@ -17,6 +23,7 @@ import CommuteScenarioForm from "./CommuteScenarioForm";
 interface Props {
   vehicle: Vehicle;
   fuelEntries: FuelEntry[];
+  chargingEntries: ChargingEntry[];
 }
 
 const DEFAULT_SETTINGS = (vehicleId: string): CommuteSettings => ({
@@ -27,7 +34,7 @@ const DEFAULT_SETTINGS = (vehicleId: string): CommuteSettings => ({
   fuelPricePerLiter: 0,
 });
 
-export default function CommutePanel({ vehicle, fuelEntries }: Props) {
+export default function CommutePanel({ vehicle, fuelEntries, chargingEntries }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
@@ -52,10 +59,21 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
 
   const isConfigured = settings.kmPerTrip > 0 && settings.fuelPricePerLiter > 0;
 
-  const consumptionPoints = calculateConsumption(fuelEntries);
-  const avgKmPerLiter = averageConsumption(consumptionPoints);
+  // Per le elettriche il consumo viene dalle ricariche e si ragiona in km/kWh
+  // (il prezzo e la stima salvati sono quindi per kWh); a video si mostra in kWh/100 km.
+  const electric = vehicle.fuelType === "elettrico";
+  const kWhPer100 = electric ? averageElectricConsumption(calculateElectricConsumption(chargingEntries)) : null;
+  const avgKmPerLiter = electric
+    ? kWhPer100 && kWhPer100 > 0
+      ? 100 / kWhPer100
+      : null
+    : averageConsumption(calculateConsumption(fuelEntries));
   const usingEstimate = avgKmPerLiter === null && !!settings.estimatedKmPerLiter;
   const effectiveKmPerLiter = avgKmPerLiter ?? settings.estimatedKmPerLiter ?? null;
+
+  function formatConsumption(kmPerUnit: number): string {
+    return electric ? `${formatNumber(100 / kmPerUnit, 1, locale)} kWh/100 km` : `${formatNumber(kmPerUnit, 1, locale)} km/l`;
+  }
 
   const realCost =
     isConfigured && effectiveKmPerLiter !== null
@@ -97,7 +115,7 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
       {!isConfigured && (
         <div className="empty-state">
           <p className="empty-state__title">{t("commute.notConfiguredTitle")}</p>
-          <p className="empty-state__body">{t("commute.notConfiguredBody")}</p>
+          <p className="empty-state__body">{t(electric ? "commute.notConfiguredBodyElectric" : "commute.notConfiguredBody")}</p>
           <button type="button" className="btn btn--primary" onClick={() => setShowSettingsForm(true)}>
             {t("commute.setup")}
           </button>
@@ -107,22 +125,22 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
       {isConfigured && effectiveKmPerLiter === null && (
         <div className="empty-state">
           <p className="empty-state__title">{t("commute.noConsumptionTitle")}</p>
-          <p className="empty-state__body">{t("commute.noConsumptionBody")}</p>
+          <p className="empty-state__body">{t(electric ? "commute.noConsumptionBodyElectric" : "commute.noConsumptionBody")}</p>
         </div>
       )}
 
       {isConfigured && realCost && effectiveKmPerLiter !== null && (
         <>
           <p className="empty-state__body" style={{ marginBottom: "0.75rem" }}>
-            {t("commute.summaryLine", {
+            {t(electric ? "commute.summaryLineElectric" : "commute.summaryLine", {
               km: settings.kmPerTrip.toLocaleString(locale),
               trips: settings.tripsPerDay,
               days: settings.workDaysPerWeek,
               estimateLabel: usingEstimate ? t("commute.estimateLabelEstimated") : t("commute.estimateLabelReal"),
-              consumption: formatNumber(effectiveKmPerLiter, 1, locale),
+              consumption: formatConsumption(effectiveKmPerLiter),
               price: formatMoney(settings.fuelPricePerLiter),
             })}
-            {usingEstimate && t("commute.estimateProvisional")}
+            {usingEstimate && t(electric ? "commute.estimateProvisionalElectric" : "commute.estimateProvisional")}
           </p>
           <div className="stat-row">
             <div className="stat-chip">
@@ -170,11 +188,11 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
               <div className="record-card__rows">
                 <div className="record-card__row">
                   <span className="record-card__row-label">{t("commute.consumption")}</span>
-                  <span className="record-card__row-value mono">{effectiveKmPerLiter !== null ? formatNumber(effectiveKmPerLiter, 1, locale) : "—"} km/l</span>
+                  <span className="record-card__row-value mono">{effectiveKmPerLiter !== null ? formatConsumption(effectiveKmPerLiter) : "—"}</span>
                 </div>
                 <div className="record-card__row">
                   <span className="record-card__row-label">{t("commute.price")}</span>
-                  <span className="record-card__row-value mono">{formatMoney(settings.fuelPricePerLiter)}/l</span>
+                  <span className="record-card__row-value mono">{formatMoney(settings.fuelPricePerLiter)}/{electric ? "kWh" : "l"}</span>
                 </div>
                 <div className="record-card__row">
                   <span className="record-card__row-label">{t("commute.perTrip")}</span>
@@ -211,7 +229,7 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
                   <div className="record-card__row">
                     <span className="record-card__row-label">{t("commute.consumption")}</span>
                     <span className="record-card__row-value mono">
-                      {formatNumber(s.kmPerUnit, 1, locale)} km/{s.unit}
+                      {s.unit === "kWh" ? `${formatNumber(100 / s.kmPerUnit, 1, locale)} kWh/100 km` : `${formatNumber(s.kmPerUnit, 1, locale)} km/${s.unit}`}
                     </span>
                   </div>
                   <div className="record-card__row">
@@ -242,7 +260,7 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
       )}
 
       {showSettingsForm && (
-        <CommuteSettingsForm initial={settings} onSave={handleSaveSettings} onClose={() => setShowSettingsForm(false)} />
+        <CommuteSettingsForm initial={settings} electric={electric} onSave={handleSaveSettings} onClose={() => setShowSettingsForm(false)} />
       )}
 
       {showScenarioForm && (

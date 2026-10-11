@@ -638,7 +638,11 @@
     "perMonthLabel": "per bulan: {{value}}",
     "consumption": "Konsumsi",
     "price": "Harga",
-    "remove": "Hapus"
+    "remove": "Hapus",
+    "notConfiguredBodyElectric": "Atur km perjalanan rumah-kantor dan harga listrik untuk menghitung biaya nyata perjalanan Anda, berdasarkan konsumsi rata-rata dari pengisian daya yang tercatat.",
+    "noConsumptionBodyElectric": "Tambahkan perkiraan konsumsi di pengaturan (meski kasar) untuk langsung melihat biaya perjalanan, atau catat setidaknya dua pengisian daya agar Diario Auto menghitungnya otomatis.",
+    "summaryLineElectric": "{{km}} km per perjalanan × {{trips}}/hari × {{days}} hari/minggu, konsumsi {{estimateLabel}} {{consumption}} dengan {{price}}/kWh.",
+    "estimateProvisionalElectric": " Data sementara — akan diganti otomatis setelah Anda mencatat cukup pengisian daya."
   },
   "commuteFuelType": {
     "benzina": "Bensin",
@@ -667,7 +671,13 @@
     "errorPrice": "Masukkan harga bahan bakar yang valid.",
     "errorEstimate": "Perkiraan konsumsi harus berupa angka yang lebih besar dari nol.",
     "save": "Simpan",
-    "cancel": "Batalkan"
+    "cancel": "Batalkan",
+    "energyPrice": "Harga listrik ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "mis. 0.30",
+    "estimatedConsumptionElectric": "Perkiraan konsumsi (kWh/100 km, opsional)",
+    "estimatedConsumptionElectricPlaceholder": "mis. 16 (perkiraan kasar sudah cukup)",
+    "estimatedConsumptionElectricHint": "Hanya digunakan sampai Anda mencatat cukup pengisian daya untuk menghitung konsumsi nyata — setelah itu diganti otomatis, tanpa perlu mengubah apa pun di sini.",
+    "errorPriceElectric": "Masukkan harga listrik yang valid."
   },
   "commuteScenarioForm": {
     "title": "Skenario perbandingan baru",

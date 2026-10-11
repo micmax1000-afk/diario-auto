@@ -7,11 +7,13 @@ import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 interface Props {
   initial: CommuteSettings;
+  /** Veicolo elettrico: prezzo per kWh e consumo stimato in kWh/100 km. */
+  electric?: boolean;
   onSave: (patch: Partial<CommuteSettings>) => void;
   onClose: () => void;
 }
 
-export default function CommuteSettingsForm({ initial, onSave, onClose }: Props) {
+export default function CommuteSettingsForm({ initial, electric = false, onSave, onClose }: Props) {
   const { t } = useTranslation();
   const cur = useCurrencySymbol();
   const [kmPerTrip, setKmPerTrip] = useState(String(initial.kmPerTrip || ""));
@@ -19,7 +21,10 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
   const [workDaysPerWeek, setWorkDaysPerWeek] = useState(String(initial.workDaysPerWeek || 6));
   const [fuelPricePerLiter, setFuelPricePerLiter] = useState(String(initial.fuelPricePerLiter || ""));
   const [estimatedKmPerLiter, setEstimatedKmPerLiter] = useState(
-    initial.estimatedKmPerLiter ? String(initial.estimatedKmPerLiter) : "",
+    // Salvato sempre in km per unità; per le elettriche si chiede in kWh/100 km.
+    initial.estimatedKmPerLiter
+      ? String(electric ? Math.round((100 / initial.estimatedKmPerLiter) * 10) / 10 : initial.estimatedKmPerLiter)
+      : "",
   );
   const [error, setError] = useState("");
   const [showRouteMap, setShowRouteMap] = useState(false);
@@ -46,7 +51,7 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
       return;
     }
     if (Number.isNaN(price) || price < 0) {
-      setError(t("commuteSettingsForm.errorPrice"));
+      setError(t(electric ? "commuteSettingsForm.errorPriceElectric" : "commuteSettingsForm.errorPrice"));
       return;
     }
 
@@ -61,7 +66,7 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
       tripsPerDay: trips,
       workDaysPerWeek: days,
       fuelPricePerLiter: price,
-      estimatedKmPerLiter: estimate,
+      estimatedKmPerLiter: estimate !== undefined && electric ? 100 / estimate : estimate,
     });
   }
 
@@ -133,13 +138,13 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
               />
             </div>
             <div className="field">
-              <label htmlFor="commute-price">{t("commuteSettingsForm.fuelPrice", { cur })}</label>
+              <label htmlFor="commute-price">{t(electric ? "commuteSettingsForm.energyPrice" : "commuteSettingsForm.fuelPrice", { cur })}</label>
               <input
                 id="commute-price"
                 type="number"
                 step="0.001"
                 inputMode="decimal"
-                placeholder={t("commuteSettingsForm.fuelPricePlaceholder")}
+                placeholder={electric ? t("commuteSettingsForm.energyPricePlaceholder") : t("commuteSettingsForm.fuelPricePlaceholder")}
                 value={fuelPricePerLiter}
                 onChange={(e) => setFuelPricePerLiter(e.target.value)}
               />
@@ -147,18 +152,18 @@ export default function CommuteSettingsForm({ initial, onSave, onClose }: Props)
           </div>
 
           <div className="field">
-            <label htmlFor="commute-estimate">{t("commuteSettingsForm.estimatedConsumption")}</label>
+            <label htmlFor="commute-estimate">{t(electric ? "commuteSettingsForm.estimatedConsumptionElectric" : "commuteSettingsForm.estimatedConsumption")}</label>
             <input
               id="commute-estimate"
               type="number"
               step="0.1"
               inputMode="decimal"
-              placeholder={t("commuteSettingsForm.estimatedConsumptionPlaceholder")}
+              placeholder={t(electric ? "commuteSettingsForm.estimatedConsumptionElectricPlaceholder" : "commuteSettingsForm.estimatedConsumptionPlaceholder")}
               value={estimatedKmPerLiter}
               onChange={(e) => setEstimatedKmPerLiter(e.target.value)}
             />
             <p className="empty-state__body" style={{ margin: "0.25rem 0 0" }}>
-              {t("commuteSettingsForm.estimatedConsumptionHint")}
+              {t(electric ? "commuteSettingsForm.estimatedConsumptionElectricHint" : "commuteSettingsForm.estimatedConsumptionHint")}
             </p>
           </div>
 
