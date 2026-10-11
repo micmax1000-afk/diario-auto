@@ -359,7 +359,9 @@
     "fuelPriceLast": "latest {{price}}",
     "fuelPriceAverage": "average {{price}}",
     "monthKm": "Distance driven: {{km}}",
-    "monthCostPerKm": "{{cost}}/{{unit}}"
+    "monthCostPerKm": "{{cost}}/{{unit}}",
+    "dataQualityElectric": "Charging sessions used for consumption: {{count}}.",
+    "dataQualityHintElectric": "Log at least two charging sessions with mileage to get consumption in kWh/100 km."
   },
   "backupPanel": {
     "noBackupYet": "You haven't made a backup yet",
@@ -1041,6 +1043,7 @@
       "fullTank": "Full tank",
       "notes": "Notes"
     },
-    "import": "Import ({{count}})"
+    "import": "Import ({{count}})",
+    "doneCharging": "Imported {{count}} charging sessions into {{name}}."
   }
 }

@@ -359,7 +359,9 @@
     "fuelPriceLast": "terakhir {{price}}",
     "fuelPriceAverage": "rata-rata {{price}}",
     "monthKm": "Jarak tempuh: {{km}}",
-    "monthCostPerKm": "{{cost}}/{{unit}}"
+    "monthCostPerKm": "{{cost}}/{{unit}}",
+    "dataQualityElectric": "Pengisian daya yang dipakai untuk konsumsi: {{count}}.",
+    "dataQualityHintElectric": "Catat setidaknya dua pengisian daya dengan km untuk mendapatkan konsumsi dalam kWh/100 km."
   },
   "backupPanel": {
     "noBackupYet": "Kamu belum membuat cadangan",
@@ -1041,6 +1043,7 @@
       "fullTank": "Penuh",
       "notes": "Catatan"
     },
-    "import": "Impor ({{count}})"
+    "import": "Impor ({{count}})",
+    "doneCharging": "{{count}} pengisian daya diimpor ke {{name}}."
   }
 }

@@ -359,7 +359,9 @@
     "fuelPriceLast": "नवीनतम {{price}}",
     "fuelPriceAverage": "औसत {{price}}",
     "monthKm": "तय दूरी: {{km}}",
-    "monthCostPerKm": "{{cost}}/{{unit}}"
+    "monthCostPerKm": "{{cost}}/{{unit}}",
+    "dataQualityElectric": "खपत के लिए उपयोग की गई चार्जिंग: {{count}}।",
+    "dataQualityHintElectric": "kWh/100 किमी में खपत पाने के लिए किमी सहित कम से कम दो चार्जिंग दर्ज करें।"
   },
   "backupPanel": {
     "noBackupYet": "आपने अभी तक बैकअप नहीं बनाया है।",
@@ -1041,6 +1043,7 @@
       "fullTank": "पूरा टैंक",
       "notes": "नोट्स"
     },
-    "import": "आयात करें ({{count}})"
+    "import": "आयात करें ({{count}})",
+    "doneCharging": "{{name}} में {{count}} चार्जिंग आयात की गईं।"
   }
 }

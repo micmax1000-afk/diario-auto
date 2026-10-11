@@ -359,7 +359,9 @@
     "fuelPriceLast": "الأخير {{price}}",
     "fuelPriceAverage": "المتوسط {{price}}",
     "monthKm": "المسافة المقطوعة: {{km}}",
-    "monthCostPerKm": "{{cost}}/{{unit}}"
+    "monthCostPerKm": "{{cost}}/{{unit}}",
+    "dataQualityElectric": "عمليات الشحن المستخدمة لحساب الاستهلاك: {{count}}.",
+    "dataQualityHintElectric": "سجّل عمليتي شحن على الأقل مع الكيلومترات للحصول على الاستهلاك بوحدة kWh/100 كم."
   },
   "backupPanel": {
     "noBackupYet": "لم تقم بعمل نسخة احتياطية بعد",
@@ -1041,6 +1043,7 @@
       "fullTank": "خزان ممتلئ",
       "notes": "ملاحظات"
     },
-    "import": "استيراد ({{count}})"
+    "import": "استيراد ({{count}})",
+    "doneCharging": "تم استيراد {{count}} عملية شحن إلى {{name}}."
   }
 }

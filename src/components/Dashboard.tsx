@@ -11,7 +11,7 @@ import VehicleBodyIcon from "./VehicleBodyIcon";
 import { getMeta, setMeta } from "../utils/db";
 import { daysSince } from "../utils/storage";
 import { resolveVehicleColors } from "../utils/vehicleColor";
-import { calculateConsumption, averageConsumption } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption } from "../utils/calculations";
 import { isoToLocalDate, localMonthString } from "../utils/dates";
 import { reminderStatus } from "../utils/kmForecast";
 
@@ -30,6 +30,7 @@ interface Props {
   onQuickFuelVehicle: (vehicleId: string) => void;
   onMoveVehicle: (vehicleId: string, direction: -1 | 1) => void;
   onQuickCharge: () => void;
+  onQuickChargeVehicle: (vehicleId: string) => void;
   onQuickKm: (vehicle: Vehicle) => void;
   onOpenReminder: (vehicleId: string) => void;
   onOpenReminders: () => void;
@@ -58,6 +59,7 @@ export default function Dashboard({
   onManageVehicles,
   onQuickFuel,
   onQuickCharge,
+  onQuickChargeVehicle,
   onQuickFuelVehicle,
   onMoveVehicle,
   onQuickKm,
@@ -91,7 +93,9 @@ export default function Dashboard({
   const inMonth = (d: string) => isoToLocalDate(d).slice(0, 7) === ym;
 
   function monthStats(vehicleId: string) {
+    const electric = vehicles.find((v) => v.id === vehicleId)?.fuelType === "elettrico";
     const fuel = fuelEntries.filter((e) => e.vehicleId === vehicleId);
+    const charging = chargingEntries.filter((e) => e.vehicleId === vehicleId);
     const monthFuel = fuel.filter((e) => inMonth(e.date));
     const spend =
       monthFuel.reduce((a, e) => a + e.totalCost, 0) +
@@ -100,13 +104,19 @@ export default function Dashboard({
       expenseEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.amount, 0);
     // Consumo del mese: solo i tratti da pieno a pieno che si chiudono in questo mese.
     const kmPerL = averageConsumption(calculateConsumption(fuel).filter((p) => inMonth(p.date)));
-    return { spend, per100: kmPerL ? 100 / kmPerL : null, refuels: monthFuel.length };
+    if (electric) {
+      // Elettriche: kWh/100 km e numero di ricariche del mese.
+      const kWh100 = averageElectricConsumption(calculateElectricConsumption(charging).filter((p) => inMonth(p.date)));
+      return { spend, per100: kWh100, refuels: charging.filter((e) => inMonth(e.date)).length, electric };
+    }
+    return { spend, per100: kmPerL ? 100 / kmPerL : null, refuels: monthFuel.length, electric };
   }
 
   const stats = new Map(activeVehicles.map((v) => [v.id, monthStats(v.id)]));
   const totalSpend = [...stats.values()].reduce((a, x) => a + x.spend, 0);
   const totalRefuels = [...stats.values()].reduce((a, x) => a + x.refuels, 0);
-  const per100List = [...stats.values()].map((x) => x.per100).filter((x): x is number => x !== null);
+  // Media dei consumi in litri: le elettriche (kWh) non si mescolano.
+  const per100List = [...stats.values()].filter((x) => !x.electric).map((x) => x.per100).filter((x): x is number => x !== null);
   const avgPer100 = per100List.length ? per100List.reduce((a, x) => a + x, 0) / per100List.length : null;
 
   const [backupStaleDays, setBackupStaleDays] = useState<number | null>(null);
@@ -167,10 +177,17 @@ export default function Dashboard({
           <ActionGridIcon name="gauge" className="dash-pill__icon" />
           {t("dashboardGarage.updateKm", "Aggiorna km")}
         </button>
-        <button type="button" className="dash-pill dash-pill--fuel" onClick={() => onQuickFuelVehicle(vehicle.id)}>
-          <ActionGridIcon name="fuel" className="dash-pill__icon" />
-          {t("dashboardGarage.fuel", "Rifornimento")}
-        </button>
+        {vehicle.fuelType === "elettrico" ? (
+          <button type="button" className="dash-pill dash-pill--fuel" onClick={() => onQuickChargeVehicle(vehicle.id)}>
+            <ActionGridIcon name="bolt" className="dash-pill__icon" />
+            {t("dashboardGarage.charge", "Ricarica")}
+          </button>
+        ) : (
+          <button type="button" className="dash-pill dash-pill--fuel" onClick={() => onQuickFuelVehicle(vehicle.id)}>
+            <ActionGridIcon name="fuel" className="dash-pill__icon" />
+            {t("dashboardGarage.fuel", "Rifornimento")}
+          </button>
+        )}
       </span>
     );
   }
@@ -217,7 +234,8 @@ export default function Dashboard({
           <div className="dash-vmonth">
             <span>{t("dashboardGarage.thisMonth", "Questo mese")}</span>
             <span>
-              <b>{fmtMoney(st.spend)}</b> · {fmtCons(st.per100)} {t("dashboardGarage.avgConsumptionUnit", "l/100km")} · {st.refuels}× {t("dashboardGarage.fuel", "Rifornimento").toLowerCase()}
+              <b>{fmtMoney(st.spend)}</b> · {fmtCons(st.per100)} {st.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")} · {st.refuels}×{" "}
+              {(st.electric ? t("dashboardGarage.charge", "Ricarica") : t("dashboardGarage.fuel", "Rifornimento")).toLowerCase()}
             </span>
           </div>
         )}

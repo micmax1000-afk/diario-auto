@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
-import { calculateVehicleCosts } from "../utils/calculations";
+import { calculateVehicleCosts, calculateConsumption, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -288,6 +288,8 @@ export default function VehicleDetail({
   // Ricarica e filtri carburante/elettrico solo per veicoli che si ricaricano
   // (o che hanno già ricariche registrate, così non spariscono dalla vista).
   const canCharge = vehicle.fuelType === "elettrico" || vehicle.fuelType === "ibrido" || chargingEntries.length > 0;
+  // Un'auto solo elettrica non fa rifornimenti (a meno che non ne abbia già registrati).
+  const showFuelButton = vehicle.fuelType !== "elettrico" || fuelEntries.length > 0;
 
   const activeRemindersCount = reminders.filter((r) => !r.completed && reminderStatus(r, vehicle.currentKm) !== "ok").length;
 
@@ -320,21 +322,15 @@ export default function VehicleDetail({
     filteredCharging,
   );
 
-  // Consumo reale: usiamo solo i rifornimenti segnati come "pieno",
-  // evitando di presentare come preciso un dato ricavato da rabbocchi parziali.
-  const fullFuel = [...filteredFuel]
-    .filter((e) => e.fullTank && e.liters > 0)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-  let consumptionSum = 0;
-  let consumptionSamples = 0;
-  for (let i = 1; i < fullFuel.length; i += 1) {
-    const distance = fullFuel[i].km - fullFuel[i - 1].km;
-    if (distance > 0) {
-      consumptionSum += (fullFuel[i].liters / distance) * 100;
-      consumptionSamples += 1;
-    }
-  }
-  const averageConsumption = consumptionSamples > 0 ? consumptionSum / consumptionSamples : null;
+  // Consumo reale da pieno a pieno (con i parziali in mezzo), lo stesso calcolo
+  // usato nel resto dell'app; per le elettriche in kWh/100 km dalle ricariche.
+  const isElectric = vehicle.fuelType === "elettrico";
+  const fuelPoints = calculateConsumption(filteredFuel);
+  const electricPoints = calculateElectricConsumption(filteredCharging);
+  const kmPerL = averageConsumptionKmPerL(fuelPoints);
+  const averageConsumption = kmPerL ? 100 / kmPerL : null;
+  const averageElectric = averageElectricConsumption(electricPoints);
+  const consumptionSamples = isElectric ? electricPoints.length : fuelPoints.length;
   const totalChargingKwh = filteredCharging.reduce((sum, e) => sum + (Number(e.kWh) || 0), 0);
   const averageChargingPrice = totalChargingKwh > 0 ? costs.chargingCost / totalChargingKwh : null;
   const totalRecordedKm = costs.totalKm;
@@ -409,11 +405,13 @@ export default function VehicleDetail({
                 <p className="section-subtitle">{t(canCharge ? "detail.fuelSubtitleBoth" : "detail.fuelSubtitleFuel")}</p>
               </div>
             </div>
-            <div className={`fuel-actions${canCharge ? " fuel-actions--2" : ""}`}>
-              <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowFuelForm(true)}>
-                <ActionGridIcon name="fuel" className="dash-quick__icon" />
-                <span>{t("dashboardGarage.fuel")}</span>
-              </button>
+            <div className={`fuel-actions${canCharge && showFuelButton ? " fuel-actions--2" : ""}`}>
+              {showFuelButton && (
+                <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowFuelForm(true)}>
+                  <ActionGridIcon name="fuel" className="dash-quick__icon" />
+                  <span>{t("dashboardGarage.fuel")}</span>
+                </button>
+              )}
               {canCharge && (
                 <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowChargingForm(true)}>
                   <ActionGridIcon name="bolt" className="dash-quick__icon" />
@@ -424,7 +422,7 @@ export default function VehicleDetail({
             <FuelChargeList
               fuelEntries={fuelEntries}
               chargingEntries={chargingEntries}
-              showSourceFilters={canCharge}
+              showSourceFilters={canCharge && showFuelButton}
               onEditFuel={setEditingFuel}
               onEditCharging={setEditingCharging}
             />
@@ -650,19 +648,23 @@ export default function VehicleDetail({
                   </span>
                 </div>
               </div>
-              {vehicle.fuelType !== "elettrico" && (
-                <div className="stat-chip stat-chip--icon">
-                  <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
-                    <ActionGridIcon name="fuel" />
-                  </div>
-                  <div>
-                    <span className="stat-chip__label">{t("summary.consumption")}</span>
-                    <span className="stat-chip__value">
-                      {averageConsumption !== null ? `${formatNumber(averageConsumption, 1, getNumberLocale(i18n.language))} L/100 km` : "—"}
-                    </span>
-                  </div>
+              <div className="stat-chip stat-chip--icon">
+                <div className={`record-card__icon record-card__icon--${isElectric ? "cyan" : "amber"} record-card__icon--sm`}>
+                  <ActionGridIcon name={isElectric ? "bolt" : "fuel"} />
                 </div>
-              )}
+                <div>
+                  <span className="stat-chip__label">{t("summary.consumption")}</span>
+                  <span className="stat-chip__value">
+                    {isElectric
+                      ? averageElectric !== null
+                        ? `${formatNumber(averageElectric, 1, getNumberLocale(i18n.language))} kWh/100 km`
+                        : "—"
+                      : averageConsumption !== null
+                        ? `${formatNumber(averageConsumption, 1, getNumberLocale(i18n.language))} L/100 km`
+                        : "—"}
+                  </span>
+                </div>
+              </div>
               {canCharge && (
                 <>
                   <div className="stat-chip stat-chip--icon">
@@ -696,9 +698,9 @@ export default function VehicleDetail({
             <div className="summary-insight">
               <strong>{t("summary.dataQualityTitle")}</strong>
               <span>{
-                averageConsumption !== null
-                  ? t("summary.dataQualityConsumption", { count: consumptionSamples })
-                  : t("summary.dataQualityHint")
+                consumptionSamples > 0
+                  ? t(isElectric ? "summary.dataQualityElectric" : "summary.dataQualityConsumption", { count: consumptionSamples })
+                  : t(isElectric ? "summary.dataQualityHintElectric" : "summary.dataQualityHint")
               }</span>
             </div>
 

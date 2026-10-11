@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, ChargingEntry } from "../types";
-import { calculateConsumption, averageConsumption, groupByMonth } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
@@ -67,6 +67,9 @@ export default function FuelChargeList({
   const periodFuel = periodFilteredRows.filter((r) => r.kind === "fuel").map((r) => r.entry as FuelEntry);
   const consumptionPoints = calculateConsumption(periodFuel);
   const avgConsumption = averageConsumption(consumptionPoints);
+  // Solo ricariche nel periodo (auto elettrica): consumo in kWh/100 km.
+  const periodCharging = periodFilteredRows.filter((r) => r.kind === "charge").map((r) => r.entry as ChargingEntry);
+  const avgElectric = periodFuel.length === 0 ? averageElectricConsumption(calculateElectricConsumption(periodCharging)) : null;
   const allKm = periodFilteredRows.map((r) => r.entry.km);
   const totalDistance = allKm.length > 1 ? Math.max(...allKm) - Math.min(...allKm) : 0;
 
@@ -111,7 +114,11 @@ export default function FuelChargeList({
         </div>
         <div className="fc-list__summary-item">
           <span>{t("fuel.summaryAvgConsumption", "Consumo medio")}</span>
-          <strong>{avgConsumption !== null && avgConsumption > 0 ? `${(100 / avgConsumption).toLocaleString(locale, { maximumFractionDigits: 1 })} l/100km` : "—"}</strong>
+          <strong>{avgConsumption !== null && avgConsumption > 0
+              ? `${(100 / avgConsumption).toLocaleString(locale, { maximumFractionDigits: 1 })} l/100km`
+              : avgElectric !== null
+                ? `${avgElectric.toLocaleString(locale, { maximumFractionDigits: 1 })} kWh/100km`
+                : "—"}</strong>
         </div>
         <div className="fc-list__summary-item">
           <span>{t("fuel.summaryTotalDistance", "Distanza totale")}</span>

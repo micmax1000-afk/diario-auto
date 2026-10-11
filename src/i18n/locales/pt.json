@@ -359,7 +359,9 @@
     "fuelPriceLast": "último {{price}}",
     "fuelPriceAverage": "média {{price}}",
     "monthKm": "Km percorridos: {{km}}",
-    "monthCostPerKm": "{{cost}}/{{unit}}"
+    "monthCostPerKm": "{{cost}}/{{unit}}",
+    "dataQualityElectric": "Carregamentos usados no consumo: {{count}}.",
+    "dataQualityHintElectric": "Registe pelo menos dois carregamentos com os km para obter o consumo em kWh/100 km."
   },
   "backupPanel": {
     "noBackupYet": "Ainda não fizeste uma cópia de segurança",
@@ -1041,6 +1043,7 @@
       "fullTank": "Cheio",
       "notes": "Notas"
     },
-    "import": "Importar ({{count}})"
+    "import": "Importar ({{count}})",
+    "doneCharging": "Importados {{count}} carregamentos em {{name}}."
   }
 }

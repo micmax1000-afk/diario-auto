@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
-import { calculateConsumption, averageConsumption, calculateVehicleCosts } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateVehicleCosts, calculateElectricConsumption, averageElectricConsumption } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import VehicleSwitcher from "./VehicleSwitcher";
@@ -39,11 +39,14 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
       inRange(expenseEntries.filter((e) => e.vehicleId === v.id)),
       inRange(charging),
     );
-    const consumption = averageConsumption(calculateConsumption(fuel));
+    // Elettriche in kWh/100 km dalle ricariche, le altre in l/100 km (averageConsumption dà km/l).
+    const electric = v.fuelType === "elettrico";
+    const kmPerL = averageConsumption(calculateConsumption(fuel));
+    const consumption = electric ? averageElectricConsumption(calculateElectricConsumption(charging)) : kmPerL ? 100 / kmPerL : null;
     const urgent = reminders.filter(
       (r) => r.vehicleId === v.id && !r.completed && reminderStatus(r, v.currentKm) !== "ok",
     ).length;
-    return { vehicle: v, total: costs.totalCost, costPerKm: costs.costPerKm, consumption, urgent };
+    return { vehicle: v, total: costs.totalCost, costPerKm: costs.costPerKm, consumption, electric, urgent };
   });
 
   const grandTotal = rows.reduce((a, r) => a + r.total, 0);
@@ -93,7 +96,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
             </span>
             <span>
               <b>{r.consumption !== null ? r.consumption.toLocaleString(locale, { maximumFractionDigits: 1 }) : "–"}</b>
-              {t("dashboardGarage.avgConsumptionUnit", "l/100km")}
+              {r.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")}
             </span>
             <span>
               <b className={r.urgent > 0 ? "is-urgent" : "is-ok"}>{r.urgent}</b>

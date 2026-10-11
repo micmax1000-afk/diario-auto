@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import type { FuelEntry } from "../../types";
-import { averageConsumption, calculateCommuteCost, calculateConsumption, calculateVehicleCosts, isReminderDue } from "../calculations";
+import { averageConsumption, averageElectricConsumption, calculateCommuteCost, calculateConsumption, calculateElectricConsumption, calculateVehicleCosts, isReminderDue } from "../calculations";
 
 let n = 0;
 function fuel(km: number, liters: number, fullTank: boolean, totalCost = liters * 2, source: FuelEntry["source"] = "benzina"): FuelEntry {
@@ -130,5 +130,17 @@ describe("isReminderDue", () => {
   it("la scadenza per data prevale su 'in arrivo' per km", () => {
     at("2026-10-09T12:00:00Z");
     expect(isReminderDue("2026-10-01", 71000, 70100)).toBe("overdue");
+  });
+});
+
+describe("consumo delle elettriche", () => {
+  const charge = (km: number, kWh: number) => ({ id: `c${km}`, vehicleId: "v1", date: "2026-01-01", km, kWh, pricePerKWh: 0.3, totalCost: kWh * 0.3 });
+  it("kWh ogni 100 km tra una ricarica e l'altra", () => {
+    const points = calculateElectricConsumption([charge(1000, 50), charge(1300, 48), charge(1500, 32)]);
+    expect(points).toHaveLength(2);
+    expect(averageElectricConsumption(points)).toBeCloseTo(16);
+  });
+  it("null senza almeno due ricariche", () => {
+    expect(averageElectricConsumption(calculateElectricConsumption([charge(1000, 50)]))).toBeNull();
   });
 });

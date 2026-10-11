@@ -65,6 +65,34 @@ export function calculateConsumption(entries: FuelEntry[]): ConsumptionPoint[] {
   return points.sort((a, b) => a.toKm - b.toKm);
 }
 
+export interface ElectricConsumptionPoint {
+  fromKm: number;
+  toKm: number;
+  date: string;
+  kWh: number;
+}
+
+/**
+ * Consumo delle elettriche tra una ricarica e la successiva: l'energia
+ * caricata a una ricarica è quella usata dalla ricarica precedente.
+ */
+export function calculateElectricConsumption(entries: ChargingEntry[]): ElectricConsumptionPoint[] {
+  const sorted = [...entries].filter((e) => e.kWh > 0).sort((a, b) => a.km - b.km);
+  const points: ElectricConsumptionPoint[] = [];
+  for (let i = 1; i < sorted.length; i++) {
+    const distance = sorted[i].km - sorted[i - 1].km;
+    if (distance > 0) points.push({ fromKm: sorted[i - 1].km, toKm: sorted[i].km, date: sorted[i].date, kWh: sorted[i].kWh });
+  }
+  return points;
+}
+
+/** kWh ogni 100 km (null senza dati). */
+export function averageElectricConsumption(points: ElectricConsumptionPoint[]): number | null {
+  const distance = points.reduce((sum, p) => sum + (p.toKm - p.fromKm), 0);
+  if (distance <= 0) return null;
+  return (points.reduce((sum, p) => sum + p.kWh, 0) / distance) * 100;
+}
+
 export function averageConsumption(points: ConsumptionPoint[], source?: FuelSource): number | null {
   const filtered = source ? points.filter((p) => p.source === source) : points;
   if (filtered.length === 0) return null;

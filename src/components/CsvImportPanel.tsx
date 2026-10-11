@@ -110,7 +110,7 @@ export default function CsvImportPanel({ vehicles, fuelEntries, chargingEntries,
       }
       const maxKm = Math.max(...toImport.map((r) => r.km));
       if (maxKm > vehicle.currentKm) await putVehicle({ ...vehicle, currentKm: maxKm });
-      setDone(t("csvImport.done", { count: toImport.length, name: vehicle.name }));
+      setDone(t(electric ? "csvImport.doneCharging" : "csvImport.done", { count: toImport.length, name: vehicle.name }));
       setTable(null);
       onImported();
     } catch {
