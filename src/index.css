@@ -4596,3 +4596,62 @@ textarea {
 .csv-import__mapping select { min-width: 0; width: 100%; }
 .csv-import__sample { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; font-family: var(--font-mono); font-size: 0.75rem; }
 .csv-import__sample li { display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; white-space: nowrap; font-size: 0.7rem; gap: 0.4rem; padding: 0.35rem 0.5rem; border-radius: 8px; background: color-mix(in srgb, var(--text-muted) 10%, transparent); }
+
+/* ---- Guida iniziale (prima apertura) ---- */
+.welcome-guide {
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+}
+.welcome-guide__top {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 3.25rem;
+  padding: calc(0.75rem + env(safe-area-inset-top, 0px)) 1rem 0;
+}
+.welcome-guide__skip {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.95rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+.welcome-guide__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0 2rem 2rem;
+  animation: welcome-guide-in 0.25s ease-out;
+}
+.welcome-guide__icon {
+  display: grid;
+  place-items: center;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 1.5rem;
+  border-radius: 28px;
+  background: color-mix(in srgb, var(--amber) 16%, transparent);
+  color: var(--amber);
+}
+.welcome-guide__icon svg { width: 48px; height: 48px; }
+.welcome-guide__body h1 { margin: 0 0 0.75rem; font-size: 1.6rem; }
+.welcome-guide__body p { margin: 0; max-width: 22rem; color: var(--text-muted); font-size: 1rem; line-height: 1.5; }
+.welcome-guide__footer {
+  display: grid;
+  gap: 1rem;
+  padding: 0 1.5rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
+}
+.welcome-guide__dots { display: flex; justify-content: center; gap: 0.5rem; }
+.welcome-guide__dots span { width: 8px; height: 8px; border-radius: 999px; background: var(--border); transition: width 0.2s, background 0.2s; }
+.welcome-guide__dots span.is-active { width: 22px; background: var(--amber); }
+.welcome-guide__next { width: 100%; padding: 0.9rem; font-size: 1rem; }
+@keyframes welcome-guide-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .welcome-guide__body { animation: none; } }

@@ -1062,5 +1062,16 @@
     },
     "import": "Importa ({{count}})",
     "doneCharging": "Importate {{count}} ricariche su {{name}}."
+  },
+  "welcomeGuide": {
+    "skip": "Salta",
+    "next": "Avanti",
+    "start": "Inizia",
+    "fuelTitle": "Rifornimenti e ricariche",
+    "fuelBody": "Segna ogni pieno o ricarica con km e importo: Diario Auto calcola il consumo reale, il costo al km e quanto spendi ogni mese.",
+    "deadlinesTitle": "Scadenze e manutenzioni",
+    "deadlinesBody": "Revisione, bollo, assicurazione, tagliando: un avviso prima di ogni scadenza e lo storico completo degli interventi.",
+    "dataTitle": "I tuoi dati restano tuoi",
+    "dataBody": "Tutto è salvato solo su questo telefono, senza account. Fai un backup ogni tanto, anche su Google Drive, per non perdere nulla se cambi telefono."
   }
 }

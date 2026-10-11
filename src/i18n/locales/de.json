@@ -1062,5 +1062,16 @@
     },
     "import": "Importieren ({{count}})",
     "doneCharging": "{{count}} Ladevorgänge zu {{name}} importiert."
+  },
+  "welcomeGuide": {
+    "skip": "Überspringen",
+    "next": "Weiter",
+    "start": "Los geht's",
+    "fuelTitle": "Tanken und Laden",
+    "fuelBody": "Erfasse jeden Tank- oder Ladevorgang mit km und Betrag: Diario Auto berechnet deinen echten Verbrauch, die Kosten pro km und deine Ausgaben im Monat.",
+    "deadlinesTitle": "Fristen und Wartung",
+    "deadlinesBody": "HU, Kfz-Steuer, Versicherung, Inspektion: eine Erinnerung vor jeder Frist und die komplette Historie der Arbeiten.",
+    "dataTitle": "Deine Daten bleiben bei dir",
+    "dataBody": "Alles wird nur auf diesem Handy gespeichert, ohne Konto. Mach ab und zu ein Backup, auch auf Google Drive, damit beim Handywechsel nichts verloren geht."
   }
 }

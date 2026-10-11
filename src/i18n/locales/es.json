@@ -1062,5 +1062,16 @@
     },
     "import": "Importar ({{count}})",
     "doneCharging": "Importadas {{count}} recargas en {{name}}."
+  },
+  "welcomeGuide": {
+    "skip": "Omitir",
+    "next": "Siguiente",
+    "start": "Empezar",
+    "fuelTitle": "Repostajes y recargas",
+    "fuelBody": "Anota cada repostaje o recarga con km e importe: Diario Auto calcula el consumo real, el coste por km y lo que gastas cada mes.",
+    "deadlinesTitle": "Vencimientos y mantenimiento",
+    "deadlinesBody": "ITV, impuesto de circulación, seguro, revisión: un aviso antes de cada vencimiento y el historial completo de trabajos.",
+    "dataTitle": "Tus datos son tuyos",
+    "dataBody": "Todo se guarda solo en este teléfono, sin cuenta. Haz una copia de seguridad de vez en cuando, también en Google Drive, para no perder nada si cambias de teléfono."
   }
 }

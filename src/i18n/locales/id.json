@@ -1060,5 +1060,16 @@
     },
     "import": "Impor ({{count}})",
     "doneCharging": "{{count}} pengisian daya diimpor ke {{name}}."
+  },
+  "welcomeGuide": {
+    "skip": "Lewati",
+    "next": "Lanjut",
+    "start": "Mulai",
+    "fuelTitle": "Isi BBM dan pengisian daya",
+    "fuelBody": "Catat setiap isi BBM atau pengisian daya dengan km dan biayanya: Diario Auto menghitung konsumsi nyata, biaya per km, dan pengeluaran bulanan.",
+    "deadlinesTitle": "Jatuh tempo dan perawatan",
+    "deadlinesBody": "Uji kelayakan, pajak kendaraan, asuransi, servis: pengingat sebelum setiap jatuh tempo dan riwayat lengkap pekerjaan servis.",
+    "dataTitle": "Data Anda tetap milik Anda",
+    "dataBody": "Semua data hanya disimpan di ponsel ini, tanpa akun. Buat cadangan sesekali, juga ke Google Drive, agar tidak ada yang hilang saat ganti ponsel."
   }
 }
