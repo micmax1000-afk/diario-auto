@@ -198,7 +198,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
           </div>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.newAvgConsumption")}</span>
-            <strong>{newAvgConsumption !== null ? `${newAvgConsumption.toLocaleString(locale, { maximumFractionDigits: 2 })} l/100km` : "—"}</strong>
+            <strong>{newAvgConsumption !== null && newAvgConsumption > 0 ? `${formatNumber(100 / newAvgConsumption, 1, locale)} l/100km` : "—"}</strong>
           </div>
         </div>
 

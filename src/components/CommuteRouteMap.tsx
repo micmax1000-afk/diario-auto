@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { geocodeAddress, type GeocodeResult } from "../utils/geocoding";
 import { kmToDisplayDistance } from "../utils/settings";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getDrivingRoute, type RouteResult } from "../utils/routing";
 import AddressAutocompleteInput from "./AddressAutocompleteInput";
@@ -127,7 +128,7 @@ export default function CommuteRouteMap({ initialOrigin = "", initialDestination
             <div className="stat-chip">
               <span className="stat-chip__label">{t("commuteRouteMap.distance")}</span>
               <span className="stat-chip__value">
-                {kmToDisplayDistance(route.distanceKm, distanceUnit).toFixed(1)} {distanceUnit}
+                {formatNumber(kmToDisplayDistance(route.distanceKm, distanceUnit), 1, getNumberLocale(i18n.language))} {distanceUnit}
               </span>
             </div>
             <div className="stat-chip">

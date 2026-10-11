@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelEntry, MaintenanceEntry, ExpenseEntry, ChargingEntry } from "../types";
-import { getNumberLocale } from "../utils/locale";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useProStatus } from "../services/billing/useProStatus";
 import { exportTextFile } from "../utils/nativeFileExport";
 import PremiumScreen from "./PremiumScreen";
@@ -304,7 +304,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
 
       {storageUsedKb !== null && (
         <p className="backup-panel__status">
-          {t("backupPanel.storageUsed", { mb: (storageUsedKb / 1024).toFixed(1) })}
+          {t("backupPanel.storageUsed", { mb: formatNumber(storageUsedKb / 1024, 1, getNumberLocale(i18n.language)) })}
         </p>
       )}
 

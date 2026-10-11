@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { compareTires, parseTireSizeString, type TireSize } from "../utils/tireCalculator";
 
 interface Props {
@@ -56,7 +57,8 @@ function TireSizeFields({
 }
 
 export default function TireCalculator({ onClose }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = getNumberLocale(i18n.language);
   const [original, setOriginal] = useState<TireSize>(DEFAULT_ORIGINAL);
   const [alternative, setAlternative] = useState<TireSize>(DEFAULT_ALTERNATIVE);
   const [quickInput, setQuickInput] = useState("");
@@ -116,24 +118,24 @@ export default function TireCalculator({ onClose }: Props) {
             <div className="stat-row">
               <div className="stat-chip">
                 <span className="stat-chip__label">{t("tireCalc.originalDiameter")}</span>
-                <span className="stat-chip__value">{result.original.overallDiameterMm.toFixed(1)} mm</span>
+                <span className="stat-chip__value">{formatNumber(result.original.overallDiameterMm, 1, locale)} mm</span>
               </div>
               <div className="stat-chip">
                 <span className="stat-chip__label">{t("tireCalc.alternativeDiameter")}</span>
-                <span className="stat-chip__value">{result.alternative.overallDiameterMm.toFixed(1)} mm</span>
+                <span className="stat-chip__value">{formatNumber(result.alternative.overallDiameterMm, 1, locale)} mm</span>
               </div>
               <div className="stat-chip">
                 <span className="stat-chip__label">{t("tireCalc.diameterDiff")}</span>
                 <span className="stat-chip__value">
                   {result.diameterDiffPercent > 0 ? "+" : ""}
-                  {result.diameterDiffPercent.toFixed(2)}%
+                  {formatNumber(result.diameterDiffPercent, 2, locale)}%
                 </span>
               </div>
               <div className="stat-chip">
                 <span className="stat-chip__label">{t("tireCalc.speedoError")}</span>
                 <span className="stat-chip__value">
                   {result.speedometerErrorPercent > 0 ? "+" : ""}
-                  {result.speedometerErrorPercent.toFixed(2)}%
+                  {formatNumber(result.speedometerErrorPercent, 2, locale)}%
                 </span>
               </div>
             </div>
