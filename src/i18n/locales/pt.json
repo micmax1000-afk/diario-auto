@@ -1062,5 +1062,16 @@
     },
     "import": "Importar ({{count}})",
     "doneCharging": "Importados {{count}} carregamentos em {{name}}."
+  },
+  "welcomeGuide": {
+    "skip": "Saltar",
+    "next": "Seguinte",
+    "start": "Começar",
+    "fuelTitle": "Abastecimentos e carregamentos",
+    "fuelBody": "Registe cada abastecimento ou carregamento com km e valor: o Diario Auto calcula o consumo real, o custo por km e quanto gasta por mês.",
+    "deadlinesTitle": "Prazos e manutenção",
+    "deadlinesBody": "Inspeção, imposto de circulação, seguro, revisão: um aviso antes de cada prazo e o histórico completo dos trabalhos.",
+    "dataTitle": "Os seus dados são seus",
+    "dataBody": "Tudo fica guardado apenas neste telemóvel, sem conta. Faça uma cópia de segurança de vez em quando, também no Google Drive, para não perder nada se mudar de telemóvel."
   }
 }

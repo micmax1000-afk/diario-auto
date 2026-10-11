@@ -40,6 +40,7 @@ import BottomTabBar, { type TabId } from "./components/BottomTabBar";
 import VehiclePickerModal from "./components/VehiclePickerModal";
 import LanguagePicker from "./components/LanguagePicker";
 import DisclaimerGate from "./components/DisclaimerGate";
+import WelcomeGuide from "./components/WelcomeGuide";
 import { getMeta, setMeta } from "./utils/db";
 import { resolveVehicleColors } from "./utils/vehicleColor";
 import QuickFuelForm from "./components/QuickFuelForm";
@@ -85,12 +86,14 @@ function LazyFallback() {
 // Cambia la versione se il testo delle avvertenze cambia in modo sostanziale: verranno riproposte a tutti.
 const DISCLAIMER_META_KEY = "disclaimer:accepted";
 const DISCLAIMER_VERSION = "v1";
+const GUIDE_META_KEY = "welcome-guide:seen";
 
 export default function App() {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [disclaimerAccepted, setDisclaimerAccepted] = useState(true);
+  const [guideSeen, setGuideSeen] = useState(true);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [fuelEntries, setFuelEntries] = useState<FuelEntry[]>([]);
   const [chargingEntries, setChargingEntries] = useState<ChargingEntry[]>([]);
@@ -195,6 +198,7 @@ export default function App() {
       const seen = await getMeta("onboarding:seen");
       setShowOnboarding(seen !== "true");
       setDisclaimerAccepted((await getMeta(DISCLAIMER_META_KEY)) === DISCLAIMER_VERSION);
+      setGuideSeen((await getMeta(GUIDE_META_KEY)) === "true");
       setLoading(false);
     })();
   }, []);
@@ -202,6 +206,11 @@ export default function App() {
   async function handleDisclaimerAccepted() {
     await setMeta(DISCLAIMER_META_KEY, DISCLAIMER_VERSION);
     setDisclaimerAccepted(true);
+  }
+
+  async function handleGuideDone() {
+    await setMeta(GUIDE_META_KEY, "true");
+    setGuideSeen(true);
   }
 
   async function handleLanguagePickerDone() {
@@ -684,6 +693,11 @@ export default function App() {
 
   if (!disclaimerAccepted) {
     return <DisclaimerGate onAccept={handleDisclaimerAccepted} />;
+  }
+
+  // Guida iniziale: solo per chi parte da zero (chi aggiorna l'app ha già i suoi veicoli).
+  if (!guideSeen && vehicles.length === 0) {
+    return <WelcomeGuide onDone={handleGuideDone} />;
   }
 
   return (

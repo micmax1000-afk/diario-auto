@@ -1062,5 +1062,16 @@
     },
     "import": "Import ({{count}})",
     "doneCharging": "Imported {{count}} charging sessions into {{name}}."
+  },
+  "welcomeGuide": {
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Get started",
+    "fuelTitle": "Refuels and charging",
+    "fuelBody": "Log every fill-up or charge with km and amount: Diario Auto works out your real consumption, cost per km and monthly spending.",
+    "deadlinesTitle": "Due dates and maintenance",
+    "deadlinesBody": "Inspection, road tax, insurance, service: a reminder before every due date and a full history of the work done.",
+    "dataTitle": "Your data stays yours",
+    "dataBody": "Everything is stored only on this phone, no account needed. Make a backup now and then, also to Google Drive, so you lose nothing if you change phone."
   }
 }

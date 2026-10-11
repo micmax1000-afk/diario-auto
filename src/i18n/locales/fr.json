@@ -1062,5 +1062,16 @@
     },
     "import": "Importer ({{count}})",
     "doneCharging": "{{count}} recharges importées dans {{name}}."
+  },
+  "welcomeGuide": {
+    "skip": "Passer",
+    "next": "Suivant",
+    "start": "Commencer",
+    "fuelTitle": "Pleins et recharges",
+    "fuelBody": "Notez chaque plein ou recharge avec les km et le montant : Diario Auto calcule la consommation réelle, le coût au km et vos dépenses du mois.",
+    "deadlinesTitle": "Échéances et entretien",
+    "deadlinesBody": "Contrôle technique, taxe, assurance, révision : un rappel avant chaque échéance et l'historique complet des travaux.",
+    "dataTitle": "Vos données restent à vous",
+    "dataBody": "Tout est enregistré uniquement sur ce téléphone, sans compte. Faites une sauvegarde de temps en temps, aussi sur Google Drive, pour ne rien perdre en changeant de téléphone."
   }
 }
