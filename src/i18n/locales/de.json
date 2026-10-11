@@ -638,7 +638,11 @@
     "perMonthLabel": "pro Monat: {{value}}",
     "consumption": "Verbrauch",
     "price": "Preis",
-    "remove": "Entfernen"
+    "remove": "Entfernen",
+    "notConfiguredBodyElectric": "Gib die km der Strecke zur Arbeit und den Strompreis ein, um die echten Kosten deines Arbeitswegs zu berechnen – auf Basis des Durchschnittsverbrauchs aus deinen erfassten Ladevorgängen.",
+    "noConsumptionBodyElectric": "Füge in den Einstellungen einen geschätzten Verbrauch hinzu (auch grob), um die Fahrtkosten sofort zu sehen, oder erfasse mindestens zwei Ladevorgänge, damit Diario Auto ihn automatisch berechnet.",
+    "summaryLineElectric": "{{km}} km pro Strecke × {{trips}}/Tag × {{days}} Tage/Woche, Verbrauch {{estimateLabel}} {{consumption}} zu {{price}}/kWh.",
+    "estimateProvisionalElectric": " Vorläufiger Wert – er wird automatisch ersetzt, sobald genug Ladevorgänge erfasst sind."
   },
   "commuteFuelType": {
     "benzina": "Benzin",
@@ -667,7 +671,13 @@
     "errorPrice": "Geben Sie einen gültigen Kraftstoffpreis ein.",
     "errorEstimate": "Der geschätzte Verbrauch muss größer als Null sein.",
     "save": "Speichern",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "energyPrice": "Strompreis ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "z. B. 0.30",
+    "estimatedConsumptionElectric": "Geschätzter Verbrauch (kWh/100 km, optional)",
+    "estimatedConsumptionElectricPlaceholder": "z. B. 16 (eine grobe Schätzung reicht)",
+    "estimatedConsumptionElectricHint": "Wird nur verwendet, bis genug Ladevorgänge erfasst sind, um den echten Verbrauch zu berechnen – danach wird er automatisch ersetzt, ohne dass du hier etwas ändern musst.",
+    "errorPriceElectric": "Gib einen gültigen Strompreis ein."
   },
   "commuteScenarioForm": {
     "title": "Neues Vergleichsszenario",

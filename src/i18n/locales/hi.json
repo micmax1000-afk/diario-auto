@@ -638,7 +638,11 @@
     "perMonthLabel": "प्रति माह: {{value}}",
     "consumption": "उपभोग",
     "price": "कीमत",
-    "remove": "हटाएं"
+    "remove": "हटाएं",
+    "notConfiguredBodyElectric": "घर-ऑफ़िस यात्रा के किमी और बिजली की कीमत दर्ज करें, ताकि दर्ज चार्जिंग से निकली औसत खपत के आधार पर आपकी यात्रा की असली लागत की गणना हो सके।",
+    "noConsumptionBodyElectric": "यात्रा की लागत तुरंत देखने के लिए सेटिंग्स में अनुमानित खपत (मोटा अनुमान भी चलेगा) जोड़ें, या कम से कम दो चार्जिंग दर्ज करें ताकि Diario Auto इसे अपने आप गणना करे।",
+    "summaryLineElectric": "{{km}} किमी प्रति यात्रा × {{trips}}/दिन × {{days}} दिन/सप्ताह, {{estimateLabel}} खपत {{consumption}}, {{price}}/kWh पर।",
+    "estimateProvisionalElectric": " अस्थायी आंकड़ा — पर्याप्त चार्जिंग दर्ज होते ही यह अपने आप बदल जाएगा।"
   },
   "commuteFuelType": {
     "benzina": "पेट्रोल",
@@ -667,7 +671,13 @@
     "errorPrice": "एक मान्य ईंधन मूल्य दर्ज करें।",
     "errorEstimate": "अनुमानित खपत शून्य से अधिक संख्या होनी चाहिए।",
     "save": "सहेजें",
-    "cancel": "रद्द करें"
+    "cancel": "रद्द करें",
+    "energyPrice": "बिजली की कीमत ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "जैसे 0.30",
+    "estimatedConsumptionElectric": "अनुमानित खपत (kWh/100 किमी, वैकल्पिक)",
+    "estimatedConsumptionElectricPlaceholder": "जैसे 16 (मोटा अनुमान ठीक है)",
+    "estimatedConsumptionElectricHint": "केवल तब तक उपयोग होता है जब तक असली खपत की गणना के लिए पर्याप्त चार्जिंग दर्ज न हो जाएँ — उसके बाद यह अपने आप बदल जाता है, यहाँ कुछ बदलने की ज़रूरत नहीं।",
+    "errorPriceElectric": "बिजली की मान्य कीमत दर्ज करें।"
   },
   "commuteScenarioForm": {
     "title": "नया तुलनात्मक परिदृश्य",

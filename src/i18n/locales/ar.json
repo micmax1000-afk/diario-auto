@@ -638,7 +638,11 @@
     "perMonthLabel": "شهريًا: {{value}}",
     "consumption": "الاستهلاك",
     "price": "السعر",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "notConfiguredBodyElectric": "أدخل كيلومترات رحلة المنزل-العمل وسعر الكهرباء لحساب التكلفة الحقيقية لتنقلك، بناءً على متوسط الاستهلاك المحسوب من عمليات الشحن المسجلة.",
+    "noConsumptionBodyElectric": "أضف استهلاكًا تقديريًا في الإعدادات (ولو تقريبيًا) لرؤية تكلفة الرحلة فورًا، أو سجّل عمليتي شحن على الأقل ليحسبه Diario Auto تلقائيًا.",
+    "summaryLineElectric": "{{km}} كم لكل رحلة × {{trips}}/يوم × {{days}} أيام/أسبوع، الاستهلاك {{estimateLabel}} {{consumption}} بسعر {{price}}/kWh.",
+    "estimateProvisionalElectric": " قيمة مؤقتة — ستُستبدل تلقائيًا عندما تسجّل عددًا كافيًا من عمليات الشحن."
   },
   "commuteFuelType": {
     "benzina": "البنزين",
@@ -667,7 +671,13 @@
     "errorPrice": "أدخل سعر وقود صحيحًا.",
     "errorEstimate": "يجب أن يكون الاستهلاك المقدر رقماً أكبر من الصفر.",
     "save": "حفظ",
-    "cancel": "إلغاء"
+    "cancel": "إلغاء",
+    "energyPrice": "سعر الكهرباء ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "مثال 0.30",
+    "estimatedConsumptionElectric": "الاستهلاك التقديري (kWh/100 كم، اختياري)",
+    "estimatedConsumptionElectricPlaceholder": "مثال 16 (يكفي تقدير تقريبي)",
+    "estimatedConsumptionElectricHint": "يُستخدم فقط حتى تسجّل عددًا كافيًا من عمليات الشحن لحساب الاستهلاك الحقيقي — بعد ذلك يُستبدل تلقائيًا دون الحاجة لتغيير أي شيء هنا.",
+    "errorPriceElectric": "أدخل سعر كهرباء صالحًا."
   },
   "commuteScenarioForm": {
     "title": "سيناريو جديد للمقارنة",

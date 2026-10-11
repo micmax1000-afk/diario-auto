@@ -638,7 +638,11 @@
     "perMonthLabel": "al mes: {{value}}",
     "consumption": "Consumo",
     "price": "Precio",
-    "remove": "Eliminar"
+    "remove": "Eliminar",
+    "notConfiguredBodyElectric": "Indica los km del trayecto casa-trabajo y el precio de la energía para calcular el coste real de tus desplazamientos, basado en el consumo medio calculado a partir de las recargas registradas.",
+    "noConsumptionBodyElectric": "Añade un consumo estimado en los ajustes (aunque sea aproximado) para ver ya el coste del trayecto, o registra al menos dos recargas para que Diario Auto lo calcule automáticamente.",
+    "summaryLineElectric": "{{km}} km por trayecto × {{trips}}/día × {{days}} días/semana, consumo {{estimateLabel}} {{consumption}} a {{price}}/kWh.",
+    "estimateProvisionalElectric": " Dato provisional: se sustituirá automáticamente cuando hayas registrado suficientes recargas."
   },
   "commuteFuelType": {
     "benzina": "Gasolina",
@@ -667,7 +671,13 @@
     "errorPrice": "Introduce un precio válido del combustible.",
     "errorEstimate": "El consumo estimado debe ser un número mayor que cero.",
     "save": "Guardar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "energyPrice": "Precio de la energía ({{cur}}/kWh) *",
+    "energyPricePlaceholder": "ej. 0.30",
+    "estimatedConsumptionElectric": "Consumo estimado (kWh/100 km, opcional)",
+    "estimatedConsumptionElectricPlaceholder": "ej. 16 (una estimación aproximada vale)",
+    "estimatedConsumptionElectricHint": "Se usa solo hasta que hayas registrado suficientes recargas para calcular el consumo real; a partir de entonces se sustituye automáticamente, sin necesidad de cambiar nada aquí.",
+    "errorPriceElectric": "Introduce un precio de la energía válido."
   },
   "commuteScenarioForm": {
     "title": "Nuevo escenario de comparación",
