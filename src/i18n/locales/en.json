@@ -908,7 +908,8 @@
     "MXN": "Mexican peso",
     "ARS": "Argentine peso",
     "CAD": "Canadian dollar",
-    "AUD": "Australian dollar"
+    "AUD": "Australian dollar",
+    "SAR": "Saudi riyal"
   },
   "settingsScreen": {
     "title": "Settings",
@@ -978,7 +979,8 @@
   },
   "languagePicker": {
     "title": "Choose a language",
-    "continue": "Continue"
+    "continue": "Continue",
+    "currency": "Currency"
   },
   "disclaimer": {
     "title": "Important notices",

@@ -40,6 +40,7 @@ export const CURRENCIES: CurrencyOption[] = [
   { code: "CAD", symbol: "$", labelKey: "currency.CAD" },
   { code: "AUD", symbol: "$", labelKey: "currency.AUD" },
   { code: "AED", symbol: "د.إ", labelKey: "currency.AED" },
+  { code: "SAR", symbol: "ر.س", labelKey: "currency.SAR" },
 ];
 
 const DEFAULT_CURRENCY = "EUR";
@@ -51,23 +52,32 @@ const CURRENCY_META_KEY = "settings:currency";
 // modificabile a mano in qualunque momento dalle Impostazioni.
 const REGION_TO_CURRENCY: Record<string, string> = {
   IT: "EUR", ES: "EUR", PT: "EUR", DE: "EUR", FR: "EUR", NL: "EUR", AT: "EUR", IE: "EUR", GR: "EUR",
+  BE: "EUR", LU: "EUR", FI: "EUR", SK: "EUR", SI: "EUR", EE: "EUR", LV: "EUR", LT: "EUR", MT: "EUR", CY: "EUR", HR: "EUR",
+  SM: "EUR", VA: "EUR", MC: "EUR", AD: "EUR", ME: "EUR", XK: "EUR", LI: "CHF",
   PL: "PLN", RO: "RON", CZ: "CZK", HU: "HUF", SE: "SEK", NO: "NOK", DK: "DKK", TR: "TRY",
   GB: "GBP", CH: "CHF",
   RU: "RUB", IN: "INR", ID: "IDR", BR: "BRL", TH: "THB", VN: "VND", PH: "PHP",
   MX: "MXN", AR: "ARS", CA: "CAD", AU: "AUD",
   CN: "CNY", KR: "KRW",
-  AE: "AED", SA: "AED", JP: "JPY", US: "USD",
+  AE: "AED", SA: "SAR", JP: "JPY", US: "USD",
 };
 
-function guessCurrencyFromDeviceLocale(): string {
+/** Regione del dispositivo (es. "PL" da "pl-PL"), o null se non indicata. */
+function deviceRegion(locale?: string): string | null {
   try {
-    const locale = navigator.language || "";
-    const region = locale.split("-")[1]?.toUpperCase();
-    if (region && REGION_TO_CURRENCY[region]) return REGION_TO_CURRENCY[region];
+    const tag = locale ?? navigator.language ?? "";
+    // "zh-Hant-TW" → "TW": la regione è la parte di due lettere o tre cifre.
+    const region = tag.split("-").slice(1).find((part) => /^([A-Za-z]{2}|\d{3})$/.test(part));
+    return region ? region.toUpperCase() : null;
   } catch {
-    // navigator non disponibile (es. rendering lato server) - ignora e usa il default
+    // navigator non disponibile (es. rendering lato server)
+    return null;
   }
-  return DEFAULT_CURRENCY;
+}
+
+export function guessCurrencyFromDeviceLocale(locale?: string): string {
+  const region = deviceRegion(locale);
+  return (region && REGION_TO_CURRENCY[region]) || DEFAULT_CURRENCY;
 }
 
 export function getCurrencySymbol(code: string): string {
@@ -148,9 +158,18 @@ export function formatTemp(celsius: number, unit: TemperatureUnit): string {
   return `${Math.round(celsiusToDisplayTemp(celsius, unit))}°${unit}`;
 }
 
+// Paesi che usano ancora i gradi Fahrenheit.
+const FAHRENHEIT_REGIONS = new Set(["US", "LR", "BS", "BZ", "KY", "PW", "FM", "MH"]);
+
+export function guessTemperatureUnitFromDeviceLocale(locale?: string): TemperatureUnit {
+  const region = deviceRegion(locale);
+  return region && FAHRENHEIT_REGIONS.has(region) ? "F" : "C";
+}
+
 export async function loadTemperatureUnitPreference(): Promise<TemperatureUnit> {
   const stored = await getMeta(TEMPERATURE_UNIT_META_KEY);
-  return stored === "F" ? "F" : "C";
+  if (stored === "F" || stored === "C") return stored;
+  return guessTemperatureUnitFromDeviceLocale();
 }
 
 export async function saveTemperatureUnitPreference(unit: TemperatureUnit): Promise<void> {
