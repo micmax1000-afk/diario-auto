@@ -183,8 +183,8 @@ export default function FuelChargeList({
                     </div>
                   </div>
                   <div className="fc-item__right">
-                    {delta != null && delta > 0 && <span className="fc-item__delta">+{delta} km</span>}
-                    <span className="fc-item__km">{kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} km</span>
+                    {delta != null && delta > 0 && <span className="fc-item__delta">+{Math.round(kmToDisplayDistance(delta, distanceUnit)).toLocaleString(locale)} {distanceUnit}</span>}
+                    <span className="fc-item__km">{kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} {distanceUnit}</span>
                   </div>
                 </div>
               );

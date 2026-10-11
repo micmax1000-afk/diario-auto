@@ -234,8 +234,7 @@ export default function Dashboard({
           <div className="dash-vmonth">
             <span>{t("dashboardGarage.thisMonth", "Questo mese")}</span>
             <span>
-              <b>{fmtMoney(st.spend)}</b> · {fmtCons(st.per100)} {st.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")} · {st.refuels}×{" "}
-              {(st.electric ? t("dashboardGarage.charge", "Ricarica") : t("dashboardGarage.fuel", "Rifornimento")).toLowerCase()}
+              <b>{fmtMoney(st.spend)}</b> · {fmtCons(st.per100)} {st.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")} · {t(st.electric ? "dashboardGarage.chargeCount" : "dashboardGarage.refuelCount", { count: st.refuels })}
             </span>
           </div>
         )}

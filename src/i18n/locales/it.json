@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Attive: le scadenze con data ricevono una notifica anche ad app chiusa. Quelle a chilometraggio vengono controllate solo quando apri l'app.",
     "notificationsDeniedNative": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui.",
     "fuelSubtitleBoth": "Carburante e ricarica elettrica",
-    "fuelSubtitleFuel": "Rifornimenti di carburante e consumi"
+    "fuelSubtitleFuel": "Rifornimenti di carburante e consumi",
+    "expensesSubtitle": "Bollo, assicurazione, multe e altre spese dell'auto."
   },
   "fuel": {
     "title": "Rifornimenti",
@@ -804,7 +805,11 @@
     "backupNag": "Non salvi un backup da {{days}} giorni. Una copia ti protegge se cambi o perdi il telefono.",
     "backupNagAction": "Fai backup",
     "backupNagLater": "Più tardi",
-    "charge": "Ricarica"
+    "charge": "Ricarica",
+    "refuelCount_one": "{{count}} rifornimento",
+    "refuelCount_other": "{{count}} rifornimenti",
+    "chargeCount_one": "{{count}} ricarica",
+    "chargeCount_other": "{{count}} ricariche"
   },
   "premium": {
     "title": "Diario Auto Premium",

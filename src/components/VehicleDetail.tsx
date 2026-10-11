@@ -490,7 +490,7 @@ export default function VehicleDetail({
         {tab === "spese" && (
           <>
             <div className="section-head section-head--tight">
-              <div><h2>{t("expenses.title")}</h2><p className="section-subtitle">Spese collegate alla gestione dell'auto (bollo, assicurazione, ecc.)</p></div>
+              <div><h2>{t("expenses.title")}</h2><p className="section-subtitle">{t("detail.expensesSubtitle")}</p></div>
               <button type="button" className="btn btn--primary" onClick={() => setShowExpenseForm(true)}>{t("expenses.add")}</button>
             </div>
             <ExpenseList entries={expenseEntries} onEdit={setEditingExpense} />
@@ -644,7 +644,7 @@ export default function VehicleDetail({
                 <div>
                   <span className="stat-chip__label">{t("summary.distance")}</span>
                   <span className="stat-chip__value">
-                    {totalRecordedKm > 0 ? `${Math.round(totalRecordedKm).toLocaleString(getNumberLocale(i18n.language))} ${distanceUnit}` : "—"}
+                    {totalRecordedKm > 0 ? formatDistance(totalRecordedKm, distanceUnit, getNumberLocale(i18n.language)) : "—"}
                   </span>
                 </div>
               </div>

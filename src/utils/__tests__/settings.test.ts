@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { celsiusToDisplayTemp, displayTempToCelsius, kmToDisplayDistance } from "../settings";
+import { celsiusToDisplayTemp, displayTempToCelsius, formatCurrency, formatDistance, kmToDisplayDistance } from "../settings";
 import { computeDueFromCatalog } from "../reminderCatalog";
 import { localDateString } from "../dates";
 
@@ -26,5 +26,17 @@ describe("computeDueFromCatalog", () => {
     const expected = new Date();
     expected.setMonth(expected.getMonth() + 24);
     expect(dueDate).toBe(localDateString(expected));
+  });
+});
+
+describe("formattazione importi e distanze", () => {
+  it("usa il simbolo della valuta scelta e i separatori della lingua", () => {
+    expect(formatCurrency(12345.5, "EUR", 2, "it-IT")).toBe("€ 12.345,50");
+    expect(formatCurrency(0.0523, "USD", 3, "en-US")).toBe("$ 0.052");
+  });
+
+  it("converte e etichetta le distanze", () => {
+    expect(formatDistance(45000, "km", "it-IT")).toBe("45.000 km");
+    expect(formatDistance(1000, "mi", "en-US")).toBe("621 mi");
   });
 });

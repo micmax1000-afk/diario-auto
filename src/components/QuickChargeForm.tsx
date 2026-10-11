@@ -5,7 +5,7 @@ import type { ChargingEntry, Vehicle } from "../types";
 import { generateId, getHomeChargingDefaults, setHomeChargingDefaults } from "../utils/storage";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { getCurrencySymbol } from "../utils/settings";
+import { formatCurrency, getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
 import ActionGridIcon from "./ActionGridIcon";
 import VehicleSwitcher from "./VehicleSwitcher";
@@ -22,8 +22,9 @@ interface Props {
   onClose: () => void;
 }
 
-function formatEuro(value: number, locale: string) {
-  return value.toLocaleString(locale, { style: "currency", currency: "EUR", maximumFractionDigits: 4 });
+function formatPrice(value: number, locale: string, currency: string) {
+  // Costo al km: con 3 decimali (es. € 0,052), come gli altri importi ma più preciso.
+  return formatCurrency(value, currency, 3, locale);
 }
 
 export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
@@ -180,7 +181,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
           </div>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.costPerKm")}</span>
-            <strong>{costPerKm !== null ? formatEuro(costPerKm, locale) : "—"}</strong>
+            <strong>{costPerKm !== null ? formatPrice(costPerKm, locale, currency) : "—"}</strong>
           </div>
         </div>
 
