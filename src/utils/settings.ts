@@ -109,7 +109,15 @@ export function formatDistance(km: number, unit: DistanceUnit, locale: string): 
   return `${converted.toLocaleString(locale, { maximumFractionDigits: 0 })} ${unit}`;
 }
 
+/**
+ * Le miglia sono disattivate finché i form non accettano l'inserimento in miglia
+ * e i consumi in mpg: con la sola conversione a video l'app risultava incoerente
+ * (intestazione in miglia, campi in km). Chi le aveva scelte torna ai km.
+ */
+export const MILES_ENABLED = false;
+
 export async function loadDistanceUnitPreference(): Promise<DistanceUnit> {
+  if (!MILES_ENABLED) return "km";
   const stored = await getMeta(DISTANCE_UNIT_META_KEY);
   return stored === "mi" ? "mi" : "km";
 }
