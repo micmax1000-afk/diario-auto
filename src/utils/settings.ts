@@ -75,9 +75,9 @@ export function getCurrencySymbol(code: string): string {
 }
 
 /** Formatta un importo con il simbolo scelto, es. "€ 42.50" oppure "$ 42.50". */
-export function formatCurrency(value: number, code: string, decimals = 2): string {
+export function formatCurrency(value: number, code: string, decimals = 2, locale = "it-IT"): string {
   const symbol = getCurrencySymbol(code);
-  return `${symbol} ${value.toFixed(decimals)}`;
+  return `${symbol} ${value.toLocaleString(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;
 }
 
 export async function loadCurrencyPreference(): Promise<string> {

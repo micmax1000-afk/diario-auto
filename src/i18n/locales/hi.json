@@ -353,7 +353,7 @@
     "energy": "पुनः ऊर्जावान",
     "averageEnergyPrice": "औसत ऊर्जा मूल्य",
     "dataQualityTitle": "डेटा गुणवत्ता",
-    "dataQualityConsumption": "ईंधन की खपत {{count}} बार रिफ्यूलिंग के बीच के अंतरालों के आधार पर गणना की गई।",
+    "dataQualityConsumption": "खपत के लिए उपयोग किए गए फुल-टैंक अंतराल: {{count}}।",
     "dataQualityHint": "एक विश्वसनीय औसत ईंधन खपत का आँकड़ा प्राप्त करने के लिए कम से कम दो ईंधन भरने के सत्रों को 'पूर्ण' के रूप में चिह्नित करें।",
     "fuelPriceTitle": "प्रति लीटर ईंधन मूल्य",
     "fuelPriceLast": "नवीनतम {{price}}",

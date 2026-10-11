@@ -353,7 +353,7 @@
     "energy": "Energi terisi kembali",
     "averageEnergyPrice": "Harga rata-rata energi",
     "dataQualityTitle": "Kualitas data",
-    "dataQualityConsumption": "Konsumsi dihitung berdasarkan {{count}} interval antara pengisian bahan bakar.",
+    "dataQualityConsumption": "Interval tangki penuh yang dipakai untuk konsumsi: {{count}}.",
     "dataQualityHint": "Catat setidaknya dua kali pengisian bahan bakar yang ditandai sebagai \"penuh\" untuk mendapatkan angka konsumsi rata-rata yang akurat.",
     "fuelPriceTitle": "Harga bahan bakar per liter",
     "fuelPriceLast": "terakhir {{price}}",

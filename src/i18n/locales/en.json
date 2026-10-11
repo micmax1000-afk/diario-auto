@@ -353,7 +353,7 @@
     "energy": "Recharged Energy",
     "averageEnergyPrice": "Average Energy Price",
     "dataQualityTitle": "Data Quality",
-    "dataQualityConsumption": "Fuel consumption calculated based on {{count}} intervals between fill-ups.",
+    "dataQualityConsumption": "Full-to-full intervals used for consumption: {{count}}.",
     "dataQualityHint": "Record at least two refueling events marked as \"full\" to obtain a reliable average fuel consumption figure.",
     "fuelPriceTitle": "Fuel price per litre",
     "fuelPriceLast": "latest {{price}}",

@@ -353,7 +353,7 @@
     "energy": "Energia recarregada",
     "averageEnergyPrice": "Preço médio da energia",
     "dataQualityTitle": "Qualidade dos dados",
-    "dataQualityConsumption": "Consumo calculado com base em {{count}} intervalos entre reabastecimentos.",
+    "dataQualityConsumption": "Intervalos entre depósitos cheios usados no consumo: {{count}}.",
     "dataQualityHint": "Registe pelo menos dois reabastecimentos marcados como «cheio» para obter um consumo médio fiável.",
     "fuelPriceTitle": "Preço do combustível por litro",
     "fuelPriceLast": "último {{price}}",

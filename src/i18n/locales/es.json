@@ -353,7 +353,7 @@
     "energy": "Energía renovada",
     "averageEnergyPrice": "Precio medio de la energía",
     "dataQualityTitle": "Calidad de los datos",
-    "dataQualityConsumption": "Consumo calculado sobre la base de {{count}} intervalos entre repostajes.",
+    "dataQualityConsumption": "Intervalos entre llenos usados para el consumo: {{count}}.",
     "dataQualityHint": "Registra al menos dos repostajes marcados como «lleno» para obtener un consumo medio fiable.",
     "fuelPriceTitle": "Precio del combustible por litro",
     "fuelPriceLast": "último {{price}}",

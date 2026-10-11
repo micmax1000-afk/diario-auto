@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
 import { calculateVehicleCosts } from "../utils/calculations";
-import { getNumberLocale } from "../utils/locale";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { isRtlLanguage } from "../i18n";
@@ -658,7 +658,7 @@ export default function VehicleDetail({
                   <div>
                     <span className="stat-chip__label">{t("summary.consumption")}</span>
                     <span className="stat-chip__value">
-                      {averageConsumption !== null ? `${averageConsumption.toFixed(1)} L/100 km` : "—"}
+                      {averageConsumption !== null ? `${formatNumber(averageConsumption, 1, getNumberLocale(i18n.language))} L/100 km` : "—"}
                     </span>
                   </div>
                 </div>
@@ -672,7 +672,7 @@ export default function VehicleDetail({
                     <div>
                       <span className="stat-chip__label">{t("summary.energy")}</span>
                       <span className="stat-chip__value">
-                        {totalChargingKwh > 0 ? `${totalChargingKwh.toFixed(1)} kWh` : "—"}
+                        {totalChargingKwh > 0 ? `${formatNumber(totalChargingKwh, 1, getNumberLocale(i18n.language))} kWh` : "—"}
                       </span>
                     </div>
                   </div>

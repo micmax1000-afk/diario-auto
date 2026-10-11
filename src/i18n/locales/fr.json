@@ -353,7 +353,7 @@
     "energy": "Une énergie renouvelée",
     "averageEnergyPrice": "Prix moyen de l'énergie",
     "dataQualityTitle": "Qualité des données",
-    "dataQualityConsumption": "Consommation calculée sur {{count}} pleins.",
+    "dataQualityConsumption": "Intervalles entre pleins utilisés pour la consommation : {{count}}.",
     "dataQualityHint": "Enregistrez au moins deux pleins pour obtenir une consommation moyenne fiable.",
     "fuelPriceTitle": "Prix du carburant au litre",
     "fuelPriceLast": "dernier {{price}}",
