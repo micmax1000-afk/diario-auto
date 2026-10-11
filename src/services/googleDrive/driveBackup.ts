@@ -26,7 +26,7 @@ function loadGisScript(): Promise<void> {
   return gisLoadPromise;
 }
 
-export type DriveErrorReason = "not_configured" | "script_failed" | "cancelled" | "auth_failed" | "network";
+export type DriveErrorReason = "not_configured" | "script_failed" | "cancelled" | "auth_failed" | "network" | "not_signed_in";
 
 export class DriveError extends Error {
   reason: DriveErrorReason;
@@ -36,13 +36,19 @@ export class DriveError extends Error {
   }
 }
 
-async function getAccessToken(): Promise<string> {
+/**
+ * Token di accesso a Drive. Con interactive = false (backup automatico) non
+ * apre mai la schermata di accesso Google né il popup: se l'utente non ha
+ * ancora dato il permesso, errore "not_signed_in".
+ */
+async function getAccessToken(interactive = true): Promise<string> {
   if (Capacitor.isNativePlatform()) {
     try {
-      const { accessToken } = await NativeGoogleDriveAuth.getAccessToken();
+      const { accessToken } = await NativeGoogleDriveAuth.getAccessToken({ interactive });
       return accessToken;
     } catch (err) {
-      const reason = (err as { code?: string })?.code === "cancelled" ? "cancelled" : "auth_failed";
+      const code = (err as { code?: string })?.code;
+      const reason: DriveErrorReason = code === "cancelled" ? "cancelled" : code === "not_signed_in" ? "not_signed_in" : code === "network" ? "network" : "auth_failed";
       throw new DriveError(reason, "Autenticazione Google fallita");
     }
   }
@@ -52,6 +58,9 @@ async function getAccessToken(): Promise<string> {
   }
   if (cachedToken && cachedToken.expiresAt > Date.now() + 30_000) {
     return cachedToken.value;
+  }
+  if (!interactive) {
+    throw new DriveError("not_signed_in", "Accesso a Google Drive non disponibile senza interazione");
   }
 
   try {
@@ -102,8 +111,8 @@ export const DRIVE_BACKUPS_TO_KEEP = 5;
 const MULTIPART_MAX_BYTES = 4 * 1024 * 1024;
 
 /** Carica il backup JSON su Google Drive dell'utente (nella sezione "File creati da questa app", non nel resto del Drive). */
-export async function uploadBackupToDrive(jsonContent: string): Promise<void> {
-  const token = await getAccessToken();
+export async function uploadBackupToDrive(jsonContent: string, options: { interactive?: boolean } = {}): Promise<void> {
+  const token = await getAccessToken(options.interactive ?? true);
   const filename = `${DRIVE_FILE_NAME_PREFIX}${localDateString()}.json`;
   const metadata = { name: filename, mimeType: "application/json" };
   const content = new Blob([jsonContent], { type: "application/json" });

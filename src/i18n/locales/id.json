@@ -400,7 +400,15 @@
     "confirmTitle": "Konfirmasi pemulihan",
     "confirmBody": "Anda akan memulihkan “{{name}}” (cadangan tanggal {{date}}). Semua data aplikasi saat ini akan DIGANTI dengan data cadangan: yang Anda tambahkan setelah tanggal itu akan hilang. Lanjutkan?",
     "confirmCancel": "Batal",
-    "confirmRestore": "Pulihkan"
+    "confirmRestore": "Pulihkan",
+    "autoTitle": "Cadangan otomatis ke Drive setiap {{days}} hari",
+    "autoHintOn": "Berjalan sendiri saat aplikasi dibuka, jika cadangan terakhir lebih lama. Data di ponsel tidak pernah diubah.",
+    "autoHintLast": "Cadangan otomatis terakhir: {{date}}. Berjalan sendiri saat aplikasi dibuka.",
+    "autoHintFirst": "Aktif setelah «Simpan di Drive» pertama Anda.",
+    "autoHintOff": "Nonaktif: jangan lupa membuat cadangan sesekali.",
+    "autoHintPro": "Tersedia dengan Pro.",
+    "autoBlocked": "Cadangan otomatis dijeda: data di ponsel ini jauh lebih sedikit daripada di cadangan terakhir, jadi tidak ada yang disimpan agar cadangan yang baik di Drive tidak tergantikan. Jika Anda sengaja menghapus data, buat cadangan manual; jika data hilang, pulihkan dari Drive.",
+    "autoBlockedOpen": "Buka cadangan"
   },
   "reminderCatalog": {
     "oilFilter": "Oli dan filter oli",

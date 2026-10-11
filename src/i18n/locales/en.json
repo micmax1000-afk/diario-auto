@@ -400,7 +400,15 @@
     "confirmTitle": "Confirm restore",
     "confirmBody": "You are about to restore “{{name}}” (backup of {{date}}). All current app data will be REPLACED with the backup: anything you added after that date will be lost. Continue?",
     "confirmCancel": "Cancel",
-    "confirmRestore": "Restore"
+    "confirmRestore": "Restore",
+    "autoTitle": "Automatic Drive backup every {{days}} days",
+    "autoHintOn": "Runs by itself when you open the app, if the last backup is older. The data on your phone is never touched.",
+    "autoHintLast": "Last automatic backup: {{date}}. Runs by itself when you open the app.",
+    "autoHintFirst": "Turns on after your first “Save to Drive”.",
+    "autoHintOff": "Off: remember to make a backup now and then.",
+    "autoHintPro": "Available with Pro.",
+    "autoBlocked": "Automatic backup paused: there is much less data on this phone than in the last backup, so nothing was saved to avoid replacing your good backups on Drive. If you deleted data on purpose, make a manual backup; if it disappeared, restore from Drive.",
+    "autoBlockedOpen": "Open backup"
   },
   "reminderCatalog": {
     "oilFilter": "Oil and filter",

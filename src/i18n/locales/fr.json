@@ -400,7 +400,15 @@
     "confirmTitle": "Confirmer la restauration",
     "confirmBody": "Vous allez restaurer « {{name}} » (sauvegarde du {{date}}). Toutes les données actuelles de l'app seront REMPLACÉES par celles de la sauvegarde : ce que vous avez ajouté après cette date sera perdu. Continuer ?",
     "confirmCancel": "Annuler",
-    "confirmRestore": "Restaurer"
+    "confirmRestore": "Restaurer",
+    "autoTitle": "Sauvegarde automatique sur Drive tous les {{days}} jours",
+    "autoHintOn": "Se lance seule à l'ouverture de l'app si la dernière sauvegarde est plus ancienne. Les données du téléphone ne sont jamais modifiées.",
+    "autoHintLast": "Dernière sauvegarde automatique : {{date}}. Se lance seule à l'ouverture de l'app.",
+    "autoHintFirst": "S'active après votre premier « Enregistrer sur Drive ».",
+    "autoHintOff": "Désactivée : pensez à faire une sauvegarde de temps en temps.",
+    "autoHintPro": "Disponible avec Pro.",
+    "autoBlocked": "Sauvegarde automatique suspendue : il y a beaucoup moins de données sur ce téléphone que dans la dernière sauvegarde, donc rien n'a été enregistré pour ne pas remplacer vos bonnes sauvegardes sur Drive. Si vous avez supprimé des données volontairement, faites une sauvegarde manuelle ; si elles ont disparu, restaurez depuis Drive.",
+    "autoBlockedOpen": "Ouvrir la sauvegarde"
   },
   "reminderCatalog": {
     "oilFilter": "Huile et filtre",

@@ -400,7 +400,15 @@
     "confirmTitle": "Confirmar restauro",
     "confirmBody": "Vai restaurar «{{name}}» (backup de {{date}}). Todos os dados atuais da app serão SUBSTITUÍDOS pelos do backup: o que adicionou depois dessa data será perdido. Continuar?",
     "confirmCancel": "Cancelar",
-    "confirmRestore": "Restaurar"
+    "confirmRestore": "Restaurar",
+    "autoTitle": "Cópia automática no Drive a cada {{days}} dias",
+    "autoHintOn": "É feita sozinha ao abrir a app, se a última cópia for mais antiga. Os dados do telemóvel nunca são alterados.",
+    "autoHintLast": "Última cópia automática: {{date}}. É feita sozinha ao abrir a app.",
+    "autoHintFirst": "Ativa-se depois do primeiro «Guardar no Drive».",
+    "autoHintOff": "Desativada: lembre-se de fazer uma cópia de vez em quando.",
+    "autoHintPro": "Disponível com Pro.",
+    "autoBlocked": "Cópia automática em pausa: há muito menos dados neste telemóvel do que na última cópia, por isso nada foi guardado para não substituir as cópias boas no Drive. Se apagou dados de propósito, faça uma cópia manual; se desapareceram, restaure a partir do Drive.",
+    "autoBlockedOpen": "Abrir cópias"
   },
   "reminderCatalog": {
     "oilFilter": "Óleo com filtro",

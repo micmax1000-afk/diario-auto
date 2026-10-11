@@ -62,6 +62,11 @@ class GoogleDriveAuthPlugin : Plugin() {
             resolveToken(call, existing)
             return
         }
+        // Modalità silenziosa (backup automatico): mai aprire la schermata di accesso Google.
+        if (call.getBoolean("interactive", true) == false) {
+            call.reject("Accesso a Google Drive non ancora fatto", "not_signed_in")
+            return
+        }
         startActivityForResult(call, signInClient().signInIntent, "handleSignInResult")
     }
 
