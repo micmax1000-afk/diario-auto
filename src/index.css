@@ -2894,6 +2894,28 @@ textarea {
   border-top: 1px solid var(--chrome-border);
 }
 
+.language-picker__currency {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+  color: var(--chrome-text-muted);
+  font-size: 0.9rem;
+}
+
+.language-picker__currency select {
+  min-width: 0;
+  max-width: 65%;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid var(--chrome-border);
+  background: var(--asphalt-light);
+  color: var(--paper, #f3f1ea);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
 .language-picker__ok {
   width: 100%;
   padding: 0.9rem;

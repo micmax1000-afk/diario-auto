@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { celsiusToDisplayTemp, displayTempToCelsius, formatCurrency, formatDistance, kmToDisplayDistance } from "../settings";
+import {
+  celsiusToDisplayTemp,
+  displayTempToCelsius,
+  formatCurrency,
+  formatDistance,
+  guessCurrencyFromDeviceLocale,
+  guessTemperatureUnitFromDeviceLocale,
+  kmToDisplayDistance,
+} from "../settings";
 import { computeDueFromCatalog } from "../reminderCatalog";
 import { localDateString } from "../dates";
 
@@ -38,5 +46,27 @@ describe("formattazione importi e distanze", () => {
   it("converte e etichetta le distanze", () => {
     expect(formatDistance(45000, "km", "it-IT")).toBe("45.000 km");
     expect(formatDistance(1000, "mi", "en-US")).toBe("621 mi");
+  });
+});
+
+describe("stima da regione del telefono", () => {
+  it("valuta", () => {
+    expect(guessCurrencyFromDeviceLocale("it-IT")).toBe("EUR");
+    expect(guessCurrencyFromDeviceLocale("en-GB")).toBe("GBP");
+    expect(guessCurrencyFromDeviceLocale("en-US")).toBe("USD");
+    expect(guessCurrencyFromDeviceLocale("nl-BE")).toBe("EUR");
+    expect(guessCurrencyFromDeviceLocale("hr-HR")).toBe("EUR");
+    expect(guessCurrencyFromDeviceLocale("ar-SA")).toBe("SAR");
+    expect(guessCurrencyFromDeviceLocale("zh-Hans-CN")).toBe("CNY");
+    // senza regione o regione sconosciuta: euro
+    expect(guessCurrencyFromDeviceLocale("it")).toBe("EUR");
+    expect(guessCurrencyFromDeviceLocale("es-419")).toBe("EUR");
+  });
+
+  it("temperatura", () => {
+    expect(guessTemperatureUnitFromDeviceLocale("en-US")).toBe("F");
+    expect(guessTemperatureUnitFromDeviceLocale("en-GB")).toBe("C");
+    expect(guessTemperatureUnitFromDeviceLocale("it-IT")).toBe("C");
+    expect(guessTemperatureUnitFromDeviceLocale("es")).toBe("C");
   });
 });

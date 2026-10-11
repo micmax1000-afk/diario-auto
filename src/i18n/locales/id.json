@@ -906,7 +906,8 @@
     "MXN": "Peso Meksiko",
     "ARS": "Peso Argentina",
     "CAD": "Dolar Kanada",
-    "AUD": "Dolar Australia"
+    "AUD": "Dolar Australia",
+    "SAR": "Riyal Saudi"
   },
   "settingsScreen": {
     "title": "Pengaturan",
@@ -976,7 +977,8 @@
   },
   "languagePicker": {
     "title": "Pilih bahasa",
-    "continue": "Lanjutkan"
+    "continue": "Lanjutkan",
+    "currency": "Mata uang"
   },
   "disclaimer": {
     "title": "Peringatan penting",
