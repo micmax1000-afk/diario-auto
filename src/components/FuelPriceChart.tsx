@@ -46,7 +46,7 @@ export default function FuelPriceChart({ fuelEntries }: Props) {
         </span>
       </div>
       <ResponsiveContainer width="100%" height={200}>
-        <LineChart data={data} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+        <LineChart data={data} margin={{ top: 8, right: 22, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
           <XAxis
             dataKey="t"
@@ -68,6 +68,7 @@ export default function FuelPriceChart({ fuelEntries }: Props) {
           />
           <Tooltip
             contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12, color: "var(--text)" }}
+            separator=": "
             labelFormatter={(v) => new Date(Number(v)).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })}
             formatter={(value, name) => [`${fmt(Number(value))}/L`, t(`fuelType.${String(name)}`)]}
           />

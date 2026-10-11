@@ -359,7 +359,9 @@
     "fuelPriceLast": "последняя {{price}}",
     "fuelPriceAverage": "средняя {{price}}",
     "monthKm": "Пробег: {{km}}",
-    "monthCostPerKm": "{{cost}}/{{unit}}"
+    "monthCostPerKm": "{{cost}}/{{unit}}",
+    "dataQualityElectric": "Зарядок для расчёта расхода: {{count}}.",
+    "dataQualityHintElectric": "Запишите как минимум две зарядки с пробегом, чтобы получить расход в кВт·ч/100 км."
   },
   "backupPanel": {
     "noBackupYet": "Ты ещё не сделал резервную копию",
@@ -1041,6 +1043,7 @@
       "fullTank": "Полный бак",
       "notes": "Заметки"
     },
-    "import": "Импортировать ({{count}})"
+    "import": "Импортировать ({{count}})",
+    "doneCharging": "Импортировано зарядок: {{count}} ({{name}})."
   }
 }

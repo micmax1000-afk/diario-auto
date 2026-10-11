@@ -850,6 +850,7 @@ export default function App() {
             onQuickFuel={() => requestVehicleAction({ kind: "quickFuel" })}
             onQuickCharge={() => requestVehicleAction({ kind: "quickCharge" })}
             onQuickFuelVehicle={(id) => completeVehicleAction(id, { kind: "quickFuel" })}
+            onQuickChargeVehicle={(id) => completeVehicleAction(id, { kind: "quickCharge" })}
             onMoveVehicle={moveVehicle}
             onQuickKm={(vehicle) => setQuickKmVehicle(vehicle)}
             onOpenReminder={(vehicleId) => completeVehicleAction(vehicleId, { kind: "navigate", tab: "scadenze" })}
