@@ -400,7 +400,15 @@
     "confirmTitle": "Conferma ripristino",
     "confirmBody": "Stai per ripristinare «{{name}}» (backup del {{date}}). Tutti i dati attuali dell'app verranno SOSTITUITI con quelli del backup: ciò che hai inserito dopo quella data andrà perso. Vuoi continuare?",
     "confirmCancel": "Annulla",
-    "confirmRestore": "Ripristina"
+    "confirmRestore": "Ripristina",
+    "autoTitle": "Backup automatico su Drive ogni {{days}} giorni",
+    "autoHintOn": "Parte da solo quando apri l'app, se l'ultimo backup è più vecchio. I dati sul telefono non vengono toccati.",
+    "autoHintLast": "Ultimo backup automatico: {{date}}. Parte da solo quando apri l'app.",
+    "autoHintFirst": "Si attiva dopo il primo «Salva su Drive».",
+    "autoHintOff": "Disattivato: ricordati di fare un backup ogni tanto.",
+    "autoHintPro": "Disponibile con Pro.",
+    "autoBlocked": "Backup automatico sospeso: sul telefono ci sono molti meno dati dell'ultimo backup, quindi non ho salvato nulla per non sovrascrivere i backup buoni su Drive. Se hai eliminato dei dati di proposito, fai un backup manuale; se invece sono spariti, ripristina da Drive.",
+    "autoBlockedOpen": "Apri backup"
   },
   "reminderCatalog": {
     "oilFilter": "Olio con filtro",

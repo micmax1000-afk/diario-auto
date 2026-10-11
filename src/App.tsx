@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, Suspense, lazy } from "react";
+import { useEffect, useMemo, useRef, useState, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
@@ -46,6 +46,7 @@ import { resolveVehicleColors } from "./utils/vehicleColor";
 import QuickFuelForm from "./components/QuickFuelForm";
 import QuickChargeForm from "./components/QuickChargeForm";
 import UndoToast from "./components/UndoToast";
+import { runAutoBackupIfDue } from "./utils/autoBackup";
 import { useProStatus, FREE_VEHICLE_LIMIT } from "./services/billing/useProStatus";
 import { estimateKmPerDay, reminderStatus, setKmPerDayRates } from "./utils/kmForecast";
 
@@ -116,6 +117,22 @@ export default function App() {
   const [showPremium, setShowPremium] = useState(false);
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
   const { isPro, refresh: refreshProStatus } = useProStatus();
+  // Backup automatico su Drive bloccato per sicurezza (molti meno dati dell'ultimo backup).
+  const [autoBackupBlocked, setAutoBackupBlocked] = useState(false);
+  // Chiuso l'avviso, non si ripropone a ogni ritorno nell'app (solo alla prossima apertura).
+  const autoBackupAlertDismissed = useRef(false);
+
+  // All'apertura (e quando lo stato Pro diventa noto) prova il backup settimanale su Drive.
+  // Anche al ritorno in primo piano: su Android l'app resta spesso aperta per giorni.
+  useEffect(() => {
+    if (loading || !isPro) return;
+    const check = () =>
+      void runAutoBackupIfDue(true).then((result) => setAutoBackupBlocked(result === "blocked" && !autoBackupAlertDismissed.current));
+    check();
+    if (!Capacitor.isNativePlatform()) return;
+    const sub = CapacitorApp.addListener("resume", check);
+    return () => void sub.then((h) => h.remove());
+  }, [loading, isPro]);
   const { distanceUnit } = useAppSettings();
   const [quickKmVehicle, setQuickKmVehicle] = useState<Vehicle | null>(null);
   const [kmHistoryVehicleId, setKmHistoryVehicleId] = useState<string | null>(null);
@@ -1049,6 +1066,35 @@ export default function App() {
           }}
           onDismiss={() => setUndoable(null)}
         />
+      )}
+
+      {autoBackupBlocked && !showBackup && (
+        <div className="auto-backup-alert" role="alert">
+          <p>{t("backupPanel.autoBlocked")}</p>
+          <div>
+            <button
+              type="button"
+              className="btn btn--ghost btn--small"
+              onClick={() => {
+                autoBackupAlertDismissed.current = true;
+                setAutoBackupBlocked(false);
+              }}
+            >
+              {t("common.close")}
+            </button>
+            <button
+              type="button"
+              className="btn btn--primary btn--small"
+              onClick={() => {
+                setAutoBackupBlocked(false);
+                setMainTab("impostazioni");
+                setShowBackup(true);
+              }}
+            >
+              {t("backupPanel.autoBlockedOpen")}
+            </button>
+          </div>
+        </div>
       )}
 
       {showExitHint && (

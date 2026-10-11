@@ -4655,3 +4655,12 @@ textarea {
 .welcome-guide__next { width: 100%; padding: 0.9rem; font-size: 1rem; }
 @keyframes welcome-guide-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .welcome-guide__body { animation: none; } }
+
+/* Backup automatico su Drive */
+.backup-panel__auto { display: flex; gap: 0.7rem; align-items: flex-start; margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border); cursor: pointer; }
+.backup-panel__auto input { margin-top: 0.2rem; width: 1.15rem; height: 1.15rem; flex: none; accent-color: var(--amber); }
+.backup-panel__auto strong { display: block; font-size: 0.92rem; }
+.backup-panel__auto-hint { display: block; margin-top: 0.2rem; font-size: 0.8rem; color: var(--text-muted); }
+.auto-backup-alert { position: fixed; left: 1rem; right: 1rem; bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); z-index: 1900; max-width: 32rem; margin: 0 auto; padding: 0.9rem 1rem; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); background: var(--card); color: var(--text); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); animation: contentFadeIn 0.15s ease; }
+.auto-backup-alert p { margin: 0 0 0.7rem; font-size: 0.88rem; line-height: 1.4; }
+.auto-backup-alert div { display: flex; justify-content: flex-end; gap: 0.5rem; }

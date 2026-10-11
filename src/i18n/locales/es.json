@@ -400,7 +400,15 @@
     "confirmTitle": "Confirmar restauración",
     "confirmBody": "Vas a restaurar «{{name}}» (copia del {{date}}). Todos los datos actuales de la app serán SUSTITUIDOS por los de la copia: lo que añadiste después de esa fecha se perderá. ¿Continuar?",
     "confirmCancel": "Cancelar",
-    "confirmRestore": "Restaurar"
+    "confirmRestore": "Restaurar",
+    "autoTitle": "Copia automática en Drive cada {{days}} días",
+    "autoHintOn": "Se hace sola al abrir la app, si la última copia es más antigua. Los datos del teléfono no se tocan.",
+    "autoHintLast": "Última copia automática: {{date}}. Se hace sola al abrir la app.",
+    "autoHintFirst": "Se activa tras el primer «Guardar en Drive».",
+    "autoHintOff": "Desactivada: acuérdate de hacer una copia de vez en cuando.",
+    "autoHintPro": "Disponible con Pro.",
+    "autoBlocked": "Copia automática en pausa: en el teléfono hay muchos menos datos que en la última copia, así que no se ha guardado nada para no sustituir las copias buenas de Drive. Si borraste datos a propósito, haz una copia manual; si han desaparecido, restaura desde Drive.",
+    "autoBlockedOpen": "Abrir copias"
   },
   "reminderCatalog": {
     "oilFilter": "Aceite con filtro",

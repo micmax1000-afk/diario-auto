@@ -400,7 +400,15 @@
     "confirmTitle": "Wiederherstellung bestätigen",
     "confirmBody": "Du stellst gleich „{{name}}“ (Sicherung vom {{date}}) wieder her. Alle aktuellen App-Daten werden durch die der Sicherung ERSETZT: Was du nach diesem Datum eingegeben hast, geht verloren. Fortfahren?",
     "confirmCancel": "Abbrechen",
-    "confirmRestore": "Wiederherstellen"
+    "confirmRestore": "Wiederherstellen",
+    "autoTitle": "Automatisches Drive-Backup alle {{days}} Tage",
+    "autoHintOn": "Startet von selbst beim Öffnen der App, wenn das letzte Backup älter ist. Die Daten auf dem Handy werden nie verändert.",
+    "autoHintLast": "Letztes automatisches Backup: {{date}}. Startet von selbst beim Öffnen der App.",
+    "autoHintFirst": "Wird nach deinem ersten „Auf Drive speichern“ aktiv.",
+    "autoHintOff": "Aus: denk daran, ab und zu ein Backup zu machen.",
+    "autoHintPro": "Mit Pro verfügbar.",
+    "autoBlocked": "Automatisches Backup pausiert: Auf dem Handy sind viel weniger Daten als im letzten Backup. Deshalb wurde nichts gespeichert, damit deine guten Backups auf Drive nicht ersetzt werden. Wenn du absichtlich Daten gelöscht hast, mach ein manuelles Backup; wenn sie verschwunden sind, stelle sie von Drive wieder her.",
+    "autoBlockedOpen": "Backup öffnen"
   },
   "reminderCatalog": {
     "oilFilter": "Öl und Ölfilter",

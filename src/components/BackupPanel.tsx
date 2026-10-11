@@ -9,6 +9,14 @@ import PremiumScreen from "./PremiumScreen";
 import { localDateString } from "../utils/dates";
 import CsvImportPanel from "./CsvImportPanel";
 import {
+  AUTO_BACKUP_DAYS,
+  getLastAutoBackupDate,
+  hasUsedDrive,
+  isAutoBackupEnabled,
+  markDataAsReference,
+  setAutoBackupEnabled,
+} from "../utils/autoBackup";
+import {
   uploadBackupToDrive,
   DRIVE_BACKUPS_TO_KEEP,
   listBackupsOnDrive,
@@ -50,10 +58,16 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
   const [driveBusy, setDriveBusy] = useState(false);
   const [driveFiles, setDriveFiles] = useState<DriveBackupFile[] | null>(null);
   // Ripristino in attesa di conferma: sostituisce TUTTI i dati attuali, quindi mai senza un "sei sicuro?"
+  const [autoEnabled, setAutoEnabled] = useState(true);
+  const [driveUsed, setDriveUsed] = useState(false);
+  const [lastAutoBackup, setLastAutoBackup] = useState<string | null>(null);
   const [pendingRestore, setPendingRestore] = useState<{ data: BackupData; label: string; source: "file" | "drive" } | null>(null);
 
   async function refreshStatus() {
     setLastBackup(await getLastBackupDate());
+    setAutoEnabled(await isAutoBackupEnabled());
+    setDriveUsed(await hasUsedDrive());
+    setLastAutoBackup(await getLastAutoBackupDate());
     // stima l'uso reale del quota browser (IndexedDB + resto), più accurata
     // del vecchio conteggio manuale dei soli byte in localStorage
     if (navigator.storage?.estimate) {
@@ -81,6 +95,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
       setError(t("backupPanel.exportFailed"));
       return;
     }
+    await markDataAsReference(backup, false);
     await setLastBackupDate(new Date().toISOString());
     await refreshStatus();
     setMessage(t("backupPanel.exportedOk"));
@@ -171,6 +186,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     try {
       const backup = await buildBackup();
       await uploadBackupToDrive(JSON.stringify(backup, null, 2));
+      await markDataAsReference(backup, true);
       await setLastBackupDate(new Date().toISOString());
       await refreshStatus();
       setMessage(t("backupPanel.driveSavedOk", { n: DRIVE_BACKUPS_TO_KEEP }));
@@ -221,6 +237,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     setPendingRestore(null);
     try {
       await restoreBackup(data);
+      await markDataAsReference(data, false);
       await refreshStatus();
       setMessage(t("backupPanel.restoredOk"));
       setError(null);
@@ -386,6 +403,35 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
         {renderConfirm("drive")}
 
         <p className="backup-panel__hint">{t("backupPanel.driveHint")}</p>
+
+        <label className="backup-panel__auto">
+          <input
+            type="checkbox"
+            checked={isPro && autoEnabled}
+            onChange={async (e) => {
+              if (!isPro) {
+                setShowPremium(true);
+                return;
+              }
+              await setAutoBackupEnabled(e.target.checked);
+              setAutoEnabled(e.target.checked);
+            }}
+          />
+          <span>
+            <strong>{t("backupPanel.autoTitle", { days: AUTO_BACKUP_DAYS })}</strong>
+            <span className="backup-panel__auto-hint">
+              {!isPro
+                ? t("backupPanel.autoHintPro")
+                : !autoEnabled
+                  ? t("backupPanel.autoHintOff")
+                  : !driveUsed
+                    ? t("backupPanel.autoHintFirst")
+                    : lastAutoBackup
+                      ? t("backupPanel.autoHintLast", { date: new Date(lastAutoBackup).toLocaleDateString(getNumberLocale(i18n.language)) })
+                      : t("backupPanel.autoHintOn")}
+            </span>
+          </span>
+        </label>
       </div>
 
       {showPremium && <PremiumScreen onClose={() => setShowPremium(false)} />}
