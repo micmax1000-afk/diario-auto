@@ -3,7 +3,7 @@ import { App as CapacitorApp } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { CURRENCIES } from "../utils/settings";
+import { CURRENCIES, MILES_ENABLED } from "../utils/settings";
 import type { Theme } from "../utils/theme";
 import { SUPPORTED_LANGUAGES, changeLanguage } from "../i18n";
 import { isGoogleDriveConfigured } from "../services/googleDrive/config";
@@ -104,6 +104,7 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
                 ))}
               </select>
             </div>
+            {MILES_ENABLED && (
             <div className="settings-subfield">
               <label>{t("settingsScreen.distanceUnit")}</label>
               <div className="settings-chip-row">
@@ -111,6 +112,7 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
                 <button type="button" className={`settings-chip ${distanceUnit === "mi" ? "is-active" : ""}`} onClick={() => setDistanceUnit("mi")}>{t("settingsScreen.mi")}</button>
               </div>
             </div>
+            )}
             <div className="settings-subfield">
               <label>{t("settingsScreen.temperatureUnit")}</label>
               <div className="settings-chip-row">
