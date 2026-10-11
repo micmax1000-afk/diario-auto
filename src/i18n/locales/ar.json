@@ -353,7 +353,7 @@
     "energy": "طاقة متجددة",
     "averageEnergyPrice": "متوسط سعر الطاقة",
     "dataQualityTitle": "جودة البيانات",
-    "dataQualityConsumption": "الاستهلاك محسوب على أساس {{count}} فترات بين كل تعبئة وقود.",
+    "dataQualityConsumption": "فترات الخزان الممتلئ المستخدمة لحساب الاستهلاك: {{count}}.",
     "dataQualityHint": "سجل ما لا يقل عن عمليتي تعبئة تم تحديدهما على أنهما «ممتلئتان» للحصول على معدل استهلاك موثوق به.",
     "fuelPriceTitle": "سعر الوقود لكل لتر",
     "fuelPriceLast": "الأخير {{price}}",

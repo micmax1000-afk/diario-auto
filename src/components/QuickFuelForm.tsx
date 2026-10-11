@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { FuelEntry, FuelSource, Vehicle } from "../types";
 import { generateId } from "../utils/storage";
 import { calculateConsumption, averageConsumption } from "../utils/calculations";
-import { getNumberLocale } from "../utils/locale";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
@@ -186,7 +186,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
           <p className="quick-entry-calc__title">{t("quickEntry.autoCalcTitle")}</p>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.litersDispensed")}</span>
-            <strong className="is-positive">{computedLiters !== null ? `${computedLiters.toFixed(2)} L` : "—"}</strong>
+            <strong className="is-positive">{computedLiters !== null ? `${formatNumber(computedLiters, 2, locale)} L` : "—"}</strong>
           </div>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.costPerKm")}</span>

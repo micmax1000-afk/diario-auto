@@ -353,7 +353,7 @@
     "energy": "Energia ricaricata",
     "averageEnergyPrice": "Prezzo medio energia",
     "dataQualityTitle": "Qualità dei dati",
-    "dataQualityConsumption": "Consumo calcolato su {{count}} intervalli tra pieni.",
+    "dataQualityConsumption": "Intervalli tra pieni usati per il consumo: {{count}}.",
     "dataQualityHint": "Registra almeno due rifornimenti segnati come pieno per ottenere un consumo medio affidabile.",
     "fuelPriceTitle": "Prezzo carburante al litro",
     "fuelPriceLast": "ultimo {{price}}",

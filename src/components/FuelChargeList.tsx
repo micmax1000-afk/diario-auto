@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, ChargingEntry } from "../types";
 import { calculateConsumption, averageConsumption, groupByMonth } from "../utils/calculations";
-import { getNumberLocale } from "../utils/locale";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
 import ActionGridIcon from "./ActionGridIcon";
@@ -39,7 +39,7 @@ export default function FuelChargeList({
   const rows: Row[] = [
     ...fuelEntries.map((entry): Row => ({ kind: "fuel", entry })),
     ...chargingEntries.map((entry): Row => ({ kind: "charge", entry })),
-  ].sort((a, b) => new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime());
+  ].sort((a, b) => new Date(b.entry.date).getTime() - new Date(a.entry.date).getTime() || b.entry.km - a.entry.km);
 
   if (rows.length === 0) {
     return (
@@ -171,8 +171,8 @@ export default function FuelChargeList({
                     </div>
                     <div className="fc-item__mid">
                       <span>{formatMoney(entry.totalCost)}</span>
-                      {pricePerUnit !== null && <span>{getCurrencySymbol(currency)} {pricePerUnit.toFixed(3)}/{unit}</span>}
-                      <span>{quantity.toFixed(2)} {unit}</span>
+                      {pricePerUnit !== null && <span>{getCurrencySymbol(currency)} {formatNumber(pricePerUnit, 3, locale)}/{unit}</span>}
+                      <span>{formatNumber(quantity, 2, locale)} {unit}</span>
                     </div>
                   </div>
                   <div className="fc-item__right">

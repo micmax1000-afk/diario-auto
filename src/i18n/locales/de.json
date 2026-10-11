@@ -353,7 +353,7 @@
     "energy": "Neue Energie getankt",
     "averageEnergyPrice": "Durchschnittlicher Energiepreis",
     "dataQualityTitle": "Datenqualität",
-    "dataQualityConsumption": "Verbrauch berechnet auf der Grundlage von {{count}} Tankfüllungen.",
+    "dataQualityConsumption": "Für den Verbrauch genutzte Intervalle zwischen Volltankungen: {{count}}.",
     "dataQualityHint": "Erfassen Sie mindestens zwei als „voll“ markierte Tankvorgänge, um einen zuverlässigen Durchschnittsverbrauch zu erhalten.",
     "fuelPriceTitle": "Kraftstoffpreis pro Liter",
     "fuelPriceLast": "zuletzt {{price}}",

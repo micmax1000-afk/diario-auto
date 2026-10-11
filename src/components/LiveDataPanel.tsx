@@ -581,7 +581,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
         <span className="live-card__label">{t(`live.gauges.${key}`)}</span>
         {tone?.tag && <span className="live-card__tag">{t(`live.tone.${tone.tag}`)}</span>}
         <span className="live-card__value">
-          {displayValue !== undefined ? displayValue : "—"}
+          {displayValue !== undefined ? displayValue.toLocaleString(getNumberLocale(i18n.language)) : "—"}
           <span className="live-card__unit">{unit}</span>
         </span>
         {bar !== null && (

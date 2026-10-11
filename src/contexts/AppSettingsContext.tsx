@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
+import { getNumberLocale } from "../utils/locale";
 import {
   loadCurrencyPreference,
   saveCurrencyPreference,
@@ -29,6 +31,7 @@ interface AppSettingsValue {
 const AppSettingsContext = createContext<AppSettingsValue | null>(null);
 
 export function AppSettingsProvider({ children }: { children: ReactNode }) {
+  const { i18n } = useTranslation();
   const [currency, setCurrencyState] = useState("EUR");
   const [distanceUnit, setDistanceUnitState] = useState<DistanceUnit>("km");
   const [temperatureUnit, setTemperatureUnitState] = useState<TemperatureUnit>("C");
@@ -55,7 +58,7 @@ export function AppSettingsProvider({ children }: { children: ReactNode }) {
   }
 
   function formatMoney(value: number, decimals = 2): string {
-    return formatCurrency(value, currency, decimals);
+    return formatCurrency(value, currency, decimals, getNumberLocale(i18n.language));
   }
 
   function formatTemperature(celsius: number): string {

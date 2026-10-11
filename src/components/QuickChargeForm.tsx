@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { ChargingEntry, Vehicle } from "../types";
 import { generateId, getHomeChargingDefaults, setHomeChargingDefaults } from "../utils/storage";
-import { getNumberLocale } from "../utils/locale";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
@@ -176,7 +176,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
           <p className="quick-entry-calc__title">{t("quickEntry.autoCalcTitle")}</p>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.kwhDispensed")}</span>
-            <strong className="is-positive">{computedKWh !== null ? `${computedKWh.toFixed(2)} kWh` : "—"}</strong>
+            <strong className="is-positive">{computedKWh !== null ? `${formatNumber(computedKWh, 2, locale)} kWh` : "—"}</strong>
           </div>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.costPerKm")}</span>
