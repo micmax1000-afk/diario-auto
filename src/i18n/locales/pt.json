@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Ativas: os prazos com data recebem uma notificação mesmo com a aplicação fechada. Os prazos baseados na quilometragem só são verificados quando abres a aplicação.",
     "notificationsDeniedNative": "Permissão negada. Vai a Definições do Android → Aplicações → Diario Auto → Notificações, ativa-as e, em seguida, tenta novamente aqui.",
     "fuelSubtitleBoth": "Combustível e carregamento elétrico",
-    "fuelSubtitleFuel": "Abastecimentos e consumo"
+    "fuelSubtitleFuel": "Abastecimentos e consumo",
+    "expensesSubtitle": "Imposto, seguro, multas e outras despesas do carro."
   },
   "fuel": {
     "title": "Abastecimentos",
@@ -804,7 +805,11 @@
     "backupNag": "Não guarda um backup há {{days}} dias. Uma cópia protege-o se mudar ou perder o telemóvel.",
     "backupNagAction": "Fazer backup",
     "backupNagLater": "Mais tarde",
-    "charge": "Carregar"
+    "charge": "Carregar",
+    "refuelCount_one": "{{count}} abastecimento",
+    "refuelCount_other": "{{count}} abastecimentos",
+    "chargeCount_one": "{{count}} carregamento",
+    "chargeCount_other": "{{count}} carregamentos"
   },
   "premium": {
     "title": "Diário Auto Premium",

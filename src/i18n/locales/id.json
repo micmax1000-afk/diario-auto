@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Aktif: tenggat waktu berdasarkan tanggal akan tetap mengirimkan pemberitahuan meskipun aplikasi dalam keadaan tertutup. Tenggat waktu berdasarkan jarak tempuh hanya akan diperiksa saat Anda membuka aplikasi.",
     "notificationsDeniedNative": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini.",
     "fuelSubtitleBoth": "Bahan bakar dan pengisian listrik",
-    "fuelSubtitleFuel": "Pengisian bahan bakar dan konsumsi"
+    "fuelSubtitleFuel": "Pengisian bahan bakar dan konsumsi",
+    "expensesSubtitle": "Pajak kendaraan, asuransi, denda, dan biaya mobil lainnya."
   },
   "fuel": {
     "title": "Pasokan",
@@ -804,7 +805,9 @@
     "backupNag": "Sudah {{days}} hari Anda tidak menyimpan cadangan. Salinan melindungi Anda jika berganti atau kehilangan ponsel.",
     "backupNagAction": "Cadangkan",
     "backupNagLater": "Nanti",
-    "charge": "Isi daya"
+    "charge": "Isi daya",
+    "refuelCount_other": "{{count}} pengisian BBM",
+    "chargeCount_other": "{{count}} pengisian daya"
   },
   "premium": {
     "title": "Buku Harian Mobil Premium",

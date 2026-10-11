@@ -3075,8 +3075,10 @@ textarea {
 .maintenance-overview__status.is-danger { border:1px solid rgba(220,60,60,.3); }
 .maintenance-overview__status.is-warning { border:1px solid rgba(220,160,40,.3); }
 .maintenance-overview__status.is-ok { border:1px solid rgba(60,170,100,.25); }
-.maintenance-overview__icon { width:30px; height:30px; display:grid; place-items:center; border-radius:50%; font-weight:900; background:currentColor; color:var(--card-bg,#fff); }
-.maintenance-overview__status strong,.maintenance-overview__status span { display:block; }
+.maintenance-overview__icon { width:30px; height:30px; display:grid; place-items:center; border-radius:50%; flex:none; font-weight:900; line-height:1; background:var(--ok); color:#fff; }
+.maintenance-overview__status.is-danger .maintenance-overview__icon { background:var(--danger); }
+.maintenance-overview__status.is-warning .maintenance-overview__icon { background:var(--amber); }
+.maintenance-overview__status strong,.maintenance-overview__status span:not(.maintenance-overview__icon) { display:block; }
 .maintenance-overview__status span:not(.maintenance-overview__icon) { margin-top:.15rem; font-size:.75rem; opacity:.7; }
 .maintenance-overview__metric span,.maintenance-overview__last span { display:block; font-size:.72rem; opacity:.65; }
 .maintenance-overview__metric strong { display:block; margin-top:.35rem; font-size:1.05rem; }

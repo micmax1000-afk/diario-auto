@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Активные: о сроках с датой вы получаете уведомление даже при закрытом приложении. Сроки, связанные с пробегом, проверяются только при открытии приложения.",
     "notificationsDeniedNative": "Разрешение отказано. Перейдите в «Настройки Android» → «Приложения» → «Diario Auto» → «Уведомления», включите их, а затем попробуйте снова здесь.",
     "fuelSubtitleBoth": "Топливо и электрозарядка",
-    "fuelSubtitleFuel": "Заправки и расход топлива"
+    "fuelSubtitleFuel": "Заправки и расход топлива",
+    "expensesSubtitle": "Налог, страховка, штрафы и другие расходы на автомобиль."
   },
   "fuel": {
     "title": "Поставки",
@@ -804,7 +805,15 @@
     "backupNag": "Вы не сохраняли резервную копию {{days}} дн. Копия защитит вас при смене или потере телефона.",
     "backupNagAction": "Сделать копию",
     "backupNagLater": "Позже",
-    "charge": "Зарядка"
+    "charge": "Зарядка",
+    "refuelCount_one": "{{count}} заправка",
+    "refuelCount_few": "{{count}} заправки",
+    "refuelCount_many": "{{count}} заправок",
+    "refuelCount_other": "{{count}} заправки",
+    "chargeCount_one": "{{count}} зарядка",
+    "chargeCount_few": "{{count}} зарядки",
+    "chargeCount_many": "{{count}} зарядок",
+    "chargeCount_other": "{{count}} зарядки"
   },
   "premium": {
     "title": "Автожурнал «Auto Premium»",

@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "सक्रिय: एक विशिष्ट तिथि वाली समय-सीमाएं ऐप बंद होने पर भी सूचना भेजती हैं। माइलेज पर आधारित समय-सीमाएं केवल ऐप खोलने पर ही जांची जाती हैं।",
     "notificationsDeniedNative": "अनुमति अस्वीकार कर दी गई। Android सेटिंग्स → ऐप्स → Diario Auto → सूचनाएं पर जाएं, उन्हें सक्षम करें, फिर यहां फिर से प्रयास करें।",
     "fuelSubtitleBoth": "ईंधन और इलेक्ट्रिक चार्जिंग",
-    "fuelSubtitleFuel": "ईंधन भराई और खपत"
+    "fuelSubtitleFuel": "ईंधन भराई और खपत",
+    "expensesSubtitle": "रोड टैक्स, बीमा, जुर्माने और कार के अन्य खर्च।"
   },
   "fuel": {
     "title": "सामान",
@@ -804,7 +805,11 @@
     "backupNag": "आपने {{days}} दिनों से बैकअप नहीं सहेजा है। फ़ोन बदलने या खोने पर कॉपी आपको बचाती है।",
     "backupNagAction": "बैकअप लें",
     "backupNagLater": "बाद में",
-    "charge": "चार्ज"
+    "charge": "चार्ज",
+    "refuelCount_one": "{{count}} ईंधन भराई",
+    "refuelCount_other": "{{count}} ईंधन भराई",
+    "chargeCount_one": "{{count}} चार्जिंग",
+    "chargeCount_other": "{{count}} चार्जिंग"
   },
   "premium": {
     "title": "प्रीमियम कार डायरी",

@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Actives : les échéances avec une date font l'objet d'une notification même lorsque l'application est fermée. Celles liées au kilométrage ne sont vérifiées que lorsque vous ouvrez l'application.",
     "notificationsDeniedNative": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici.",
     "fuelSubtitleBoth": "Carburant et recharge électrique",
-    "fuelSubtitleFuel": "Pleins et consommation"
+    "fuelSubtitleFuel": "Pleins et consommation",
+    "expensesSubtitle": "Taxe, assurance, amendes et autres dépenses de la voiture."
   },
   "fuel": {
     "title": "Approvisionnements",
@@ -804,7 +805,11 @@
     "backupNag": "Vous n'avez pas fait de sauvegarde depuis {{days}} jours. Une copie vous protège si vous changez ou perdez de téléphone.",
     "backupNagAction": "Sauvegarder",
     "backupNagLater": "Plus tard",
-    "charge": "Recharge"
+    "charge": "Recharge",
+    "refuelCount_one": "{{count}} plein",
+    "refuelCount_other": "{{count}} pleins",
+    "chargeCount_one": "{{count}} recharge",
+    "chargeCount_other": "{{count}} recharges"
   },
   "premium": {
     "title": "Journal Auto Premium",

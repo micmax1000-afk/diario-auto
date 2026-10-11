@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "النشطة: يتم إرسال إشعار بالمواعيد المحددة بتاريخ حتى عند إغلاق التطبيق. أما المواعيد المحددة بعدد الكيلومترات، فلا يتم التحقق منها إلا عند فتح التطبيق.",
     "notificationsDeniedNative": "تم رفض الإذن. انتقل إلى «إعدادات Android» → «التطبيقات» → «Diario Auto» → «الإشعارات»، وقم بتفعيلها، ثم حاول مرة أخرى هنا.",
     "fuelSubtitleBoth": "الوقود والشحن الكهربائي",
-    "fuelSubtitleFuel": "التزود بالوقود والاستهلاك"
+    "fuelSubtitleFuel": "التزود بالوقود والاستهلاك",
+    "expensesSubtitle": "ضريبة السير والتأمين والمخالفات ومصاريف السيارة الأخرى."
   },
   "fuel": {
     "title": "الإمدادات",
@@ -804,7 +805,19 @@
     "backupNag": "لم تحفظ نسخة احتياطية منذ {{days}} يومًا. النسخة تحميك إذا غيّرت هاتفك أو فقدته.",
     "backupNagAction": "نسخ احتياطي",
     "backupNagLater": "لاحقًا",
-    "charge": "شحن"
+    "charge": "شحن",
+    "refuelCount_zero": "{{count}} تعبئة",
+    "refuelCount_one": "تعبئة واحدة",
+    "refuelCount_two": "تعبئتان",
+    "refuelCount_few": "{{count}} تعبئات",
+    "refuelCount_many": "{{count}} تعبئة",
+    "refuelCount_other": "{{count}} تعبئة",
+    "chargeCount_zero": "{{count}} شحن",
+    "chargeCount_one": "شحن واحد",
+    "chargeCount_two": "شحنان",
+    "chargeCount_few": "{{count}} عمليات شحن",
+    "chargeCount_many": "{{count}} عملية شحن",
+    "chargeCount_other": "{{count}} عملية شحن"
   },
   "premium": {
     "title": "مجلة «أوتو بريميوم»",

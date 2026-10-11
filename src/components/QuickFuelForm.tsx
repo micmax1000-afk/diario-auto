@@ -6,7 +6,7 @@ import { generateId } from "../utils/storage";
 import { calculateConsumption, averageConsumption } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { getCurrencySymbol } from "../utils/settings";
+import { formatCurrency, getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
 import ActionGridIcon from "./ActionGridIcon";
 import VehicleSwitcher from "./VehicleSwitcher";
@@ -34,14 +34,15 @@ function defaultSource(vehicle: Vehicle): FuelSource {
 }
 
 function formatPrice(value: number, locale: string, currency: string) {
-  return value.toLocaleString(locale, { style: "currency", currency, maximumFractionDigits: 4 });
+  // Costo al km: con 3 decimali (es. € 0,052), come gli altri importi ma più preciso.
+  return formatCurrency(value, currency, 3, locale);
 }
 
 export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const cur = useCurrencySymbol();
   const locale = getNumberLocale(i18n.language);
-  const { currency } = useAppSettings();
+  const { currency, formatMoney } = useAppSettings();
   const source = defaultSource(vehicle);
   const [pricePerUnit, setPricePerUnit] = useState("");
   const [totalCost, setTotalCost] = useState("");
@@ -194,7 +195,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
           </div>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.costPer100Km")}</span>
-            <strong>{costPerKm !== null ? formatPrice(costPerKm * 100, locale, currency) : "—"}</strong>
+            <strong>{costPerKm !== null ? formatMoney(costPerKm * 100) : "—"}</strong>
           </div>
           <div className="quick-entry-calc__row">
             <span>{t("quickEntry.newAvgConsumption")}</span>

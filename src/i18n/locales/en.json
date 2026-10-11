@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Active: Deadlines with a specific date trigger a notification even when the app is closed. Mileage-based deadlines are checked only when you open the app.",
     "notificationsDeniedNative": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here.",
     "fuelSubtitleBoth": "Fuel and electric charging",
-    "fuelSubtitleFuel": "Refuels and fuel consumption"
+    "fuelSubtitleFuel": "Refuels and fuel consumption",
+    "expensesSubtitle": "Road tax, insurance, fines and other car expenses."
   },
   "fuel": {
     "title": "Supplies",
@@ -804,7 +805,11 @@
     "backupNag": "You haven't saved a backup in {{days}} days. A copy protects you if you change or lose your phone.",
     "backupNagAction": "Back up",
     "backupNagLater": "Later",
-    "charge": "Charge"
+    "charge": "Charge",
+    "refuelCount_one": "{{count}} refuel",
+    "refuelCount_other": "{{count}} refuels",
+    "chargeCount_one": "{{count}} charge",
+    "chargeCount_other": "{{count}} charges"
   },
   "premium": {
     "title": "Premium Car Journal",

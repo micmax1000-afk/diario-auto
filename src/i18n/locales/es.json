@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Activas: las citas con fecha reciben una notificación incluso cuando la aplicación está cerrada. Las relacionadas con el kilometraje solo se comprueban al abrir la aplicación.",
     "notificationsDeniedNative": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí.",
     "fuelSubtitleBoth": "Combustible y recarga eléctrica",
-    "fuelSubtitleFuel": "Repostajes y consumo"
+    "fuelSubtitleFuel": "Repostajes y consumo",
+    "expensesSubtitle": "Impuesto de circulación, seguro, multas y otros gastos del coche."
   },
   "fuel": {
     "title": "Abastecimiento",
@@ -804,7 +805,11 @@
     "backupNag": "Hace {{days}} días que no guardas una copia de seguridad. Una copia te protege si cambias o pierdes el móvil.",
     "backupNagAction": "Hacer copia",
     "backupNagLater": "Más tarde",
-    "charge": "Recarga"
+    "charge": "Recarga",
+    "refuelCount_one": "{{count}} repostaje",
+    "refuelCount_other": "{{count}} repostajes",
+    "chargeCount_one": "{{count}} recarga",
+    "chargeCount_other": "{{count}} recargas"
   },
   "premium": {
     "title": "Diario Auto Premium",

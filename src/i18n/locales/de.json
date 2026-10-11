@@ -108,7 +108,8 @@
     "notificationsOnHintNative": "Aktiv: Termine mit einem Datum werden auch bei geschlossener App angezeigt. Termine, die auf der Kilometerleistung basieren, werden erst beim Öffnen der App überprüft.",
     "notificationsDeniedNative": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut.",
     "fuelSubtitleBoth": "Kraftstoff und Elektroladen",
-    "fuelSubtitleFuel": "Tankvorgänge und Verbrauch"
+    "fuelSubtitleFuel": "Tankvorgänge und Verbrauch",
+    "expensesSubtitle": "Kfz-Steuer, Versicherung, Bußgelder und andere Autokosten."
   },
   "fuel": {
     "title": "Nachschub",
@@ -804,7 +805,11 @@
     "backupNag": "Seit {{days}} Tagen keine Sicherung gespeichert. Eine Kopie schützt Sie, wenn Sie das Handy wechseln oder verlieren.",
     "backupNagAction": "Sichern",
     "backupNagLater": "Später",
-    "charge": "Laden"
+    "charge": "Laden",
+    "refuelCount_one": "{{count}} Tankvorgang",
+    "refuelCount_other": "{{count}} Tankvorgänge",
+    "chargeCount_one": "{{count}} Ladevorgang",
+    "chargeCount_other": "{{count}} Ladevorgänge"
   },
   "premium": {
     "title": "Auto-Tagebuch Premium",
