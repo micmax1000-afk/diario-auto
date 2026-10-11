@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelEntry, CommuteSettings, CommuteScenario } from "../types";
 import { calculateConsumption, averageConsumption, calculateCommuteCost } from "../utils/calculations";
-import { getNumberLocale } from "../utils/locale";
+import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import {
   getCommuteSettings,
@@ -30,6 +30,7 @@ const DEFAULT_SETTINGS = (vehicleId: string): CommuteSettings => ({
 export default function CommutePanel({ vehicle, fuelEntries }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney } = useAppSettings();
+  const locale = getNumberLocale(i18n.language);
   const [settings, setSettings] = useState<CommuteSettings>(() => DEFAULT_SETTINGS(vehicle.id));
   const [scenarios, setScenarios] = useState<CommuteScenario[]>([]);
   const [showSettingsForm, setShowSettingsForm] = useState(false);
@@ -114,11 +115,11 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
         <>
           <p className="empty-state__body" style={{ marginBottom: "0.75rem" }}>
             {t("commute.summaryLine", {
-              km: settings.kmPerTrip.toLocaleString(getNumberLocale(i18n.language)),
+              km: settings.kmPerTrip.toLocaleString(locale),
               trips: settings.tripsPerDay,
               days: settings.workDaysPerWeek,
               estimateLabel: usingEstimate ? t("commute.estimateLabelEstimated") : t("commute.estimateLabelReal"),
-              consumption: effectiveKmPerLiter.toFixed(1),
+              consumption: formatNumber(effectiveKmPerLiter, 1, locale),
               price: formatMoney(settings.fuelPricePerLiter),
             })}
             {usingEstimate && t("commute.estimateProvisional")}
@@ -169,7 +170,7 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
               <div className="record-card__rows">
                 <div className="record-card__row">
                   <span className="record-card__row-label">{t("commute.consumption")}</span>
-                  <span className="record-card__row-value mono">{effectiveKmPerLiter?.toFixed(1)} km/l</span>
+                  <span className="record-card__row-value mono">{effectiveKmPerLiter !== null ? formatNumber(effectiveKmPerLiter, 1, locale) : "—"} km/l</span>
                 </div>
                 <div className="record-card__row">
                   <span className="record-card__row-label">{t("commute.price")}</span>
@@ -210,7 +211,7 @@ export default function CommutePanel({ vehicle, fuelEntries }: Props) {
                   <div className="record-card__row">
                     <span className="record-card__row-label">{t("commute.consumption")}</span>
                     <span className="record-card__row-value mono">
-                      {s.kmPerUnit.toFixed(1)} km/{s.unit}
+                      {formatNumber(s.kmPerUnit, 1, locale)} km/{s.unit}
                     </span>
                   </div>
                   <div className="record-card__row">
