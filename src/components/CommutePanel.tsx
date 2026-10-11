@@ -7,6 +7,7 @@ import {
   calculateCommuteCost,
   calculateElectricConsumption,
   averageElectricConsumption,
+  mainFuelSource,
 } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -67,7 +68,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries }: 
     ? kWhPer100 && kWhPer100 > 0
       ? 100 / kWhPer100
       : null
-    : averageConsumption(calculateConsumption(fuelEntries));
+    : averageConsumption(calculateConsumption(fuelEntries), mainFuelSource(vehicle.fuelType));
   const usingEstimate = avgKmPerLiter === null && !!settings.estimatedKmPerLiter;
   const effectiveKmPerLiter = avgKmPerLiter ?? settings.estimatedKmPerLiter ?? null;
 
