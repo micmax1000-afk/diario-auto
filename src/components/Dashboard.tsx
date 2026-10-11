@@ -11,7 +11,7 @@ import VehicleBodyIcon from "./VehicleBodyIcon";
 import { getMeta, setMeta } from "../utils/db";
 import { daysSince } from "../utils/storage";
 import { resolveVehicleColors } from "../utils/vehicleColor";
-import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { isoToLocalDate, localMonthString } from "../utils/dates";
 import { reminderStatus } from "../utils/kmForecast";
 
@@ -93,7 +93,8 @@ export default function Dashboard({
   const inMonth = (d: string) => isoToLocalDate(d).slice(0, 7) === ym;
 
   function monthStats(vehicleId: string) {
-    const electric = vehicles.find((v) => v.id === vehicleId)?.fuelType === "elettrico";
+    const fuelType = vehicles.find((v) => v.id === vehicleId)?.fuelType;
+    const electric = fuelType === "elettrico";
     const fuel = fuelEntries.filter((e) => e.vehicleId === vehicleId);
     const charging = chargingEntries.filter((e) => e.vehicleId === vehicleId);
     const monthFuel = fuel.filter((e) => inMonth(e.date));
@@ -103,7 +104,7 @@ export default function Dashboard({
       maintenanceEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.cost, 0) +
       expenseEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.amount, 0);
     // Consumo del mese: solo i tratti da pieno a pieno che si chiudono in questo mese.
-    const kmPerL = averageConsumption(calculateConsumption(fuel).filter((p) => inMonth(p.date)));
+    const kmPerL = averageConsumption(calculateConsumption(fuel).filter((p) => inMonth(p.date)), mainFuelSource(fuelType));
     if (electric) {
       // Elettriche: kWh/100 km e numero di ricariche del mese.
       const kWh100 = averageElectricConsumption(calculateElectricConsumption(charging).filter((p) => inMonth(p.date)));
@@ -151,6 +152,9 @@ export default function Dashboard({
 
   const colors = resolveVehicleColors(vehicles);
   const canCharge = activeVehicles.some((v) => v.fuelType === "elettrico" || v.fuelType === "ibrido");
+  // Rifornimento e Ricarica compaiono in entrambe le viste, ma solo se servono a qualche veicolo.
+  const canFuel = activeVehicles.some((v) => v.fuelType !== "elettrico");
+  const quickCount = 2 + (canFuel ? 1 : 0) + (canCharge ? 1 : 0);
   const multi = vehicles.filter((v) => !v.archived).length > 1;
 
   const urgentFor = (vehicle: Vehicle) =>
@@ -334,8 +338,8 @@ export default function Dashboard({
       {activeVehicles.length > 0 && (
         <section className="dash-quick">
           <h2 className="dash-section-title">{t("dashboardGarage.quickActions", "Azioni rapide")}</h2>
-          <div className={`dash-quick__row ${view === "compact" ? (canCharge ? "dash-quick__row--4" : "dash-quick__row--3") : canCharge ? "dash-quick__row--3" : "dash-quick__row--2"}`}>
-            {view === "compact" && (
+          <div className={`dash-quick__row dash-quick__row--${quickCount}`}>
+            {canFuel && (
               <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={onQuickFuel}>
                 <ActionGridIcon name="fuel" className="dash-quick__icon" />
                 <span>{t("dashboardGarage.fuel", "Rifornimento")}</span>

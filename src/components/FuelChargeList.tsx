@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { FuelEntry, ChargingEntry } from "../types";
-import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth } from "../utils/calculations";
+import type { FuelEntry, ChargingEntry, FuelType } from "../types";
+import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth, mainFuelSource } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
@@ -17,6 +17,8 @@ type Row =
 interface Props {
   fuelEntries: FuelEntry[];
   chargingEntries: ChargingEntry[];
+  /** Alimentazione del veicolo: per GPL e metano il consumo medio conta solo quella. */
+  vehicleFuelType?: FuelType;
   /** Mostra i filtri Tutti / Carburante / Elettrico (inutili per un veicolo che non si ricarica). */
   showSourceFilters?: boolean;
   onEditFuel: (entry: FuelEntry) => void;
@@ -26,6 +28,7 @@ interface Props {
 export default function FuelChargeList({
   fuelEntries,
   chargingEntries,
+  vehicleFuelType,
   showSourceFilters = true,
   onEditFuel,
   onEditCharging,
@@ -66,7 +69,7 @@ export default function FuelChargeList({
   const totalCost = periodFilteredRows.reduce((sum, r) => sum + r.entry.totalCost, 0);
   const periodFuel = periodFilteredRows.filter((r) => r.kind === "fuel").map((r) => r.entry as FuelEntry);
   const consumptionPoints = calculateConsumption(periodFuel);
-  const avgConsumption = averageConsumption(consumptionPoints);
+  const avgConsumption = averageConsumption(consumptionPoints, mainFuelSource(vehicleFuelType));
   // Solo ricariche nel periodo (auto elettrica): consumo in kWh/100 km.
   const periodCharging = periodFilteredRows.filter((r) => r.kind === "charge").map((r) => r.entry as ChargingEntry);
   const avgElectric = periodFuel.length === 0 ? averageElectricConsumption(calculateElectricConsumption(periodCharging)) : null;

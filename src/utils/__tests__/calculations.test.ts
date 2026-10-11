@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import type { FuelEntry } from "../../types";
-import { averageConsumption, averageElectricConsumption, calculateCommuteCost, calculateConsumption, calculateElectricConsumption, calculateVehicleCosts, isReminderDue } from "../calculations";
+import { averageConsumption, averageElectricConsumption, calculateCommuteCost, calculateConsumption, calculateElectricConsumption, calculateVehicleCosts, isReminderDue, mainFuelSource } from "../calculations";
 
 let n = 0;
 function fuel(km: number, liters: number, fullTank: boolean, totalCost = liters * 2, source: FuelEntry["source"] = "benzina"): FuelEntry {
@@ -142,5 +142,24 @@ describe("consumo delle elettriche", () => {
   });
   it("null senza almeno due ricariche", () => {
     expect(averageElectricConsumption(calculateElectricConsumption([charge(1000, 50)]))).toBeNull();
+  });
+});
+
+describe("auto a GPL con qualche pieno di benzina", () => {
+  const e = (km: number, liters: number, source: "gpl" | "benzina") => fuel(km, liters, true, liters, source);
+  // GPL ogni 500 km (7 l/100km); due piccoli pieni di benzina (usata solo all'avvio)
+  const entries = [e(500, 35, "gpl"), e(600, 5, "benzina"), e(1000, 35, "gpl"), e(1500, 35, "gpl"), e(1900, 5, "benzina"), e(2000, 35, "gpl")];
+
+  it("il consumo principale conta solo il GPL", () => {
+    const points = calculateConsumption(entries);
+    expect(100 / averageConsumption(points, mainFuelSource("gpl"))!).toBeCloseTo(7, 5);
+    // mescolando le due alimentazioni verrebbe un numero senza senso
+    expect(100 / averageConsumption(points)!).toBeLessThan(4);
+  });
+
+  it("per benzina e diesel nessun filtro", () => {
+    expect(mainFuelSource("benzina")).toBeUndefined();
+    expect(mainFuelSource("diesel")).toBeUndefined();
+    expect(mainFuelSource("metano")).toBe("metano");
   });
 });

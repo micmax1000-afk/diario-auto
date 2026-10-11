@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "../types";
-import { calculateConsumption, averageConsumption, calculateVehicleCosts, calculateElectricConsumption, averageElectricConsumption } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateVehicleCosts, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import VehicleSwitcher from "./VehicleSwitcher";
@@ -41,7 +41,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
     );
     // Elettriche in kWh/100 km dalle ricariche, le altre in l/100 km (averageConsumption dà km/l).
     const electric = v.fuelType === "elettrico";
-    const kmPerL = averageConsumption(calculateConsumption(fuel));
+    const kmPerL = averageConsumption(calculateConsumption(fuel), mainFuelSource(v.fuelType));
     const consumption = electric ? averageElectricConsumption(calculateElectricConsumption(charging)) : kmPerL ? 100 / kmPerL : null;
     const urgent = reminders.filter(
       (r) => r.vehicleId === v.id && !r.completed && reminderStatus(r, v.currentKm) !== "ok",

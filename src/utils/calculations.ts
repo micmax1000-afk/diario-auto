@@ -1,4 +1,4 @@
-import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, FuelSource } from "../types";
+import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, FuelSource, FuelType } from "../types";
 
 export interface ConsumptionPoint {
   fromKm: number;
@@ -91,6 +91,16 @@ export function averageElectricConsumption(points: ElectricConsumptionPoint[]): 
   const distance = points.reduce((sum, p) => sum + (p.toKm - p.fromKm), 0);
   if (distance <= 0) return null;
   return (points.reduce((sum, p) => sum + p.kWh, 0) / distance) * 100;
+}
+
+/**
+ * Alimentazione su cui calcolare il consumo "principale" di un veicolo.
+ * Le auto a GPL o metano fanno anche qualche pieno di benzina: mescolare i
+ * litri delle due alimentazioni darebbe un numero senza senso, quindi si usa
+ * solo il GPL (o il metano). Per le altre nessun filtro.
+ */
+export function mainFuelSource(fuelType: FuelType | undefined): FuelSource | undefined {
+  return fuelType === "gpl" || fuelType === "metano" ? fuelType : undefined;
 }
 
 export function averageConsumption(points: ConsumptionPoint[], source?: FuelSource): number | null {

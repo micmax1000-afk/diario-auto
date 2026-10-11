@@ -2,7 +2,7 @@ import { useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
-import { calculateVehicleCosts, calculateConsumption, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption } from "../utils/calculations";
+import { calculateVehicleCosts, calculateConsumption, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -327,7 +327,7 @@ export default function VehicleDetail({
   const isElectric = vehicle.fuelType === "elettrico";
   const fuelPoints = calculateConsumption(filteredFuel);
   const electricPoints = calculateElectricConsumption(filteredCharging);
-  const kmPerL = averageConsumptionKmPerL(fuelPoints);
+  const kmPerL = averageConsumptionKmPerL(fuelPoints, mainFuelSource(vehicle.fuelType));
   const averageConsumption = kmPerL ? 100 / kmPerL : null;
   const averageElectric = averageElectricConsumption(electricPoints);
   const consumptionSamples = isElectric ? electricPoints.length : fuelPoints.length;
@@ -422,6 +422,7 @@ export default function VehicleDetail({
             <FuelChargeList
               fuelEntries={fuelEntries}
               chargingEntries={chargingEntries}
+              vehicleFuelType={vehicle.fuelType}
               showSourceFilters={canCharge && showFuelButton}
               onEditFuel={setEditingFuel}
               onEditCharging={setEditingCharging}
