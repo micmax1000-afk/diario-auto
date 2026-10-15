@@ -75,3 +75,12 @@ jobs:
         with:
           name: diario-auto-release.aab
           path: android/app/build/outputs/bundle/release/app-release.aab
+
+      # File per leggere i report di crash del codice offuscato: da caricare in
+      # Play Console (App bundle explorer → Download → File di deoffuscamento).
+      - name: Upload mapping R8
+        if: steps.signing.outputs.available == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: diario-auto-mapping.txt
+          path: android/app/build/outputs/mapping/release/mapping.txt
