@@ -681,7 +681,9 @@
     "perMonthValue": "{{value}} per bulan",
     "extraTime": "+{{minutes}} menit per perjalanan (sekitar {{hours}} jam per tahun)",
     "paybackNever": "Dengan selisih harga ini, biayanya tidak kembali dalam waktu yang wajar.",
-    "removeConfirm": "Hapus skenario “{{name}}”?"
+    "removeConfirm": "Hapus skenario “{{name}}”?",
+    "tripOnlyNoteAverage": "Semua termasuk menambahkan rata-rata tahunan biaya mobil yang tercatat (tidak ada dalam 12 bulan terakhir): total {{total}} per tahun, atau {{perKm}} per km.",
+    "allIncludedNoteAverage": "Termasuk rata-rata tahunan perawatan dan pengeluaran yang tercatat (tanpa tilang; tidak ada dalam 12 bulan terakhir): {{perKm}} untuk setiap km perjalanan."
   },
   "commuteFuelType": {
     "benzina": "Bensin",

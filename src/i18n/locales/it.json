@@ -682,7 +682,9 @@
     "perMonthValue": "{{value}} al mese",
     "extraTime": "+{{minutes}} min a tratta (circa {{hours}} ore l'anno)",
     "paybackNever": "Con questa differenza di prezzo non rientri della spesa in tempi ragionevoli.",
-    "removeConfirm": "Eliminare lo scenario “{{name}}”?"
+    "removeConfirm": "Eliminare lo scenario “{{name}}”?",
+    "tripOnlyNoteAverage": "Con Tutto incluso si aggiunge la media annua delle spese dell'auto registrate (negli ultimi 12 mesi non ce ne sono): in totale {{total}} l'anno, cioè {{perKm}} al km.",
+    "allIncludedNoteAverage": "Comprende la media annua di manutenzioni e spese registrate (multe escluse; negli ultimi 12 mesi non ce ne sono): {{perKm}} per ogni km del tragitto."
   },
   "commuteFuelType": {
     "benzina": "Benzina",

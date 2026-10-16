@@ -26,7 +26,7 @@ import {
   extraHoursPerYear,
   latestFuelPrice,
   latestChargingPrice,
-  fixedCostsLastYear,
+  fixedCostsPerYear,
   isCarScenario,
   weeksPerYear,
 } from "../utils/commute";
@@ -70,7 +70,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
   const [scenarios, setScenarios] = useState<CommuteScenario[]>([]);
   const [showSettingsForm, setShowSettingsForm] = useState(false);
   const [scenarioForm, setScenarioForm] = useState<ScenarioForm | null>(null);
-  const [allIncluded, setAllIncluded] = useState(false);
+  const [allIncludedChoice, setAllIncluded] = useState(false);
 
   async function reload() {
     const [loadedSettings, loadedScenarios] = await Promise.all([
@@ -114,7 +114,10 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
 
   const isConfigured = settings.kmPerTrip > 0 && price > 0;
   const year = isConfigured && kmPerUnit ? commuteYearCost(settings, kmPerUnit, price) : null;
-  const fixedCosts = fixedCostsLastYear(maintenanceEntries, expenseEntries);
+  const fixed = fixedCostsPerYear(maintenanceEntries, expenseEntries);
+  const fixedCosts = fixed.perYear;
+  // Senza spese registrate "Tutto incluso" non aggiungerebbe nulla: resta disattivato.
+  const allIncluded = allIncludedChoice && fixedCosts > 0;
   const shownYear = year ? year.total + (allIncluded ? fixedCosts : 0) : 0;
   const periods = year ? commutePeriods(shownYear, settings) : null;
   const kmYear = commuteKmPerYear(settings);
@@ -218,7 +221,14 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
             <button type="button" role="tab" aria-selected={!allIncluded} className={!allIncluded ? "is-active" : ""} onClick={() => setAllIncluded(false)}>
               {t("commute.tripOnly")}
             </button>
-            <button type="button" role="tab" aria-selected={allIncluded} className={allIncluded ? "is-active" : ""} onClick={() => setAllIncluded(true)}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={allIncluded}
+              className={allIncluded ? "is-active" : ""}
+              disabled={fixedCosts <= 0}
+              onClick={() => setAllIncluded(true)}
+            >
               {t("commute.allIncluded")}
             </button>
           </div>
@@ -265,8 +275,8 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
             <p className="commute-card__note">
               {fixedCosts > 0
                 ? allIncluded
-                  ? t("commute.allIncludedNote", { perKm: formatMoney(shownYear / kmYear, 2) })
-                  : t("commute.tripOnlyNote", { total: money0(year.total + fixedCosts), perKm: formatMoney((year.total + fixedCosts) / kmYear, 2) })
+                  ? t(fixed.basis === "average" ? "commute.allIncludedNoteAverage" : "commute.allIncludedNote", { perKm: formatMoney(shownYear / kmYear, 2) })
+                  : t(fixed.basis === "average" ? "commute.tripOnlyNoteAverage" : "commute.tripOnlyNote", { total: money0(year.total + fixedCosts), perKm: formatMoney((year.total + fixedCosts) / kmYear, 2) })
                 : t("commute.noFixedCosts")}
             </p>
           </div>
