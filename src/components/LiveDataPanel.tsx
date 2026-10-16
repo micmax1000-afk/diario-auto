@@ -77,7 +77,9 @@ function toneFor(key: string, value: number, rpm: number | undefined): Tone | nu
     case "batteryVoltage": {
       const engineRunning = (rpm ?? 0) > 400;
       if (engineRunning) {
-        if (value < 13.0) return { color: "warn", tag: "low" };
+        // 12,2 V e non 13: molte auto recenti hanno l'alternatore "intelligente" che,
+        // con la batteria già carica, al minimo la tiene a 12,4–12,8 V senza alcun problema.
+        if (value < 12.2) return { color: "warn", tag: "low" };
         if (value > 15.0) return { color: "hot", tag: "high" };
       } else if (value < 11.8) {
         return { color: "hot", tag: "low" };
