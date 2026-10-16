@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Permiso denegado. Ve a Ajustes de Android → Aplicaciones → Diario Auto → Notificaciones, actívalas y vuelve a intentarlo aquí.",
     "fuelSubtitleBoth": "Combustible y recarga eléctrica",
     "fuelSubtitleFuel": "Repostajes y consumo",
-    "expensesSubtitle": "Impuesto de circulación, seguro, multas y otros gastos del coche."
+    "expensesSubtitle": "Impuesto de circulación, seguro, multas y otros gastos del coche.",
+    "notifAutoOn": "Notificaciones automáticas activadas: te avisamos 30 y 7 días antes y el día del vencimiento, incluso con la app cerrada.",
+    "notifAutoOff": "Notificaciones de vencimientos desactivadas.",
+    "notifDisable": "Desactivar",
+    "notifEnable": "Activar"
   },
   "fuel": {
     "title": "Repostajes",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "Vencido",
     "soon": "Próximo",
-    "dueOnPrefix": "vence"
+    "dueOnPrefix": "vence",
+    "inDays_one": "dentro de {{count}} día",
+    "inDays_other": "dentro de {{count}} días"
   },
   "commute": {
     "title": "Coste real del trayecto",

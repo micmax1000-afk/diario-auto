@@ -25,7 +25,14 @@ import {
   deleteReminder,
   generateId,
 } from "./utils/storage";
-import { areNotificationsEnabled, notifyDueReminders, scheduleUpcomingReminders, type NotifiableReminder } from "./utils/notifications";
+import {
+  areNotificationsEnabled,
+  autoEnableNotifications,
+  notifyDueReminders,
+  onNotificationsChange,
+  scheduleUpcomingReminders,
+  type NotifiableReminder,
+} from "./utils/notifications";
 import { getNumberLocale } from "./utils/locale";
 import { formatDistance } from "./utils/settings";
 import { useAppSettings } from "./contexts/AppSettingsContext";
@@ -235,10 +242,19 @@ export default function App() {
     setShowOnboarding(false);
   }
 
+  // Notifiche delle scadenze: sull'app Android si attivano da sole la prima
+  // volta che c'è una scadenza (chiedendo il permesso), senza pulsanti da trovare.
+  const [notificationsEnabled, setNotificationsEnabled] = useState(() => areNotificationsEnabled());
+  useEffect(() => onNotificationsChange(() => setNotificationsEnabled(areNotificationsEnabled())), []);
+  useEffect(() => {
+    if (loading || !reminders.some((r) => !r.completed)) return;
+    void autoEnableNotifications();
+  }, [loading, reminders]);
+
   // Controlla le scadenze imminenti/scadute e invia notifiche del browser,
   // se l'utente le ha attivate. Al massimo una per promemoria al giorno.
   useEffect(() => {
-    if (!areNotificationsEnabled() || vehicles.length === 0 || reminders.length === 0) return;
+    if (!notificationsEnabled || vehicles.length === 0 || reminders.length === 0) return;
 
     const items: NotifiableReminder[] = [];
     for (const reminder of reminders) {
@@ -261,7 +277,7 @@ export default function App() {
       getNumberLocale(i18n.language),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vehicles, reminders]);
+  }, [vehicles, reminders, notificationsEnabled]);
 
   // Aggiorna il widget nella home con il veicolo principale e la scadenza
   // più urgente — indipendente dalle notifiche: deve aggiornarsi anche se
@@ -306,9 +322,13 @@ export default function App() {
         return { id: r.id, label: r.label, vehicleName: vehicle.name, dueDate: r.dueDate! };
       })
       .filter((r): r is NonNullable<typeof r> => r !== null);
-    scheduleUpcomingReminders(schedulable, { dueOnPrefix: t("notif.dueOnPrefix") }, getNumberLocale(i18n.language));
+    scheduleUpcomingReminders(
+      schedulable,
+      { dueOnPrefix: t("notif.dueOnPrefix"), inDays: (count) => t("notif.inDays", { count }) },
+      getNumberLocale(i18n.language),
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vehicles, reminders]);
+  }, [vehicles, reminders, notificationsEnabled]);
 
   // Tasto/gesto "indietro" hardware di Android: chiude il modulo o la
   // schermata aperta più di recente (vedi backButtonStack.ts), invece di

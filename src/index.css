@@ -4664,3 +4664,8 @@ textarea {
 .auto-backup-alert { position: fixed; left: 1rem; right: 1rem; bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)); z-index: 1900; max-width: 32rem; margin: 0 auto; padding: 0.9rem 1rem; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--danger) 45%, transparent); background: var(--card); color: var(--text); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); animation: contentFadeIn 0.15s ease; }
 .auto-backup-alert p { margin: 0 0 0.7rem; font-size: 0.88rem; line-height: 1.4; }
 .auto-backup-alert div { display: flex; justify-content: flex-end; gap: 0.5rem; }
+
+/* Stato delle notifiche automatiche (app Android) nella pagina Scadenze */
+.notif-status { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem 0.6rem; margin: 0 0 0.9rem; font-size: 0.85rem; line-height: 1.4; color: var(--text-muted); }
+.notif-status.is-on { color: var(--text); }
+.notif-status__toggle { margin-inline-start: auto; padding: 0.2rem 0; border: none; background: none; color: var(--amber); font: inherit; font-weight: 700; cursor: pointer; }

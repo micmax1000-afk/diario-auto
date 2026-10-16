@@ -1,4 +1,4 @@
-import { useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
@@ -18,6 +18,7 @@ import {
   disableNotifications,
   enableNotifications,
   isNotificationSupported,
+  onNotificationsChange,
 } from "../utils/notifications";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import FuelForm from "./FuelForm";
@@ -200,6 +201,8 @@ export default function VehicleDetail({
   }
   useBackButtonClose(showPassportPremium, () => setShowPassportPremium(false));
   const [notificationsOn, setNotificationsOn] = useState(() => areNotificationsEnabled());
+  // Si aggiorna anche quando le notifiche si attivano da sole (prima scadenza salvata).
+  useEffect(() => onNotificationsChange(() => setNotificationsOn(areNotificationsEnabled())), []);
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
 
   async function handleToggleNotifications() {
@@ -508,16 +511,25 @@ export default function VehicleDetail({
               </button>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap", margin: "0 0 0.75rem" }}>
-              <button type="button" className="btn btn--ghost btn--small" onClick={handleToggleNotifications}>
-                {notificationsOn ? t("detail.notificationsOn") : t("detail.notificationsOff")}
-              </button>
-              <p className="empty-state__body" style={{ margin: 0 }}>
-                {notificationsOn
-                  ? t(Capacitor.isNativePlatform() ? "detail.notificationsOnHintNative" : "detail.notificationsOnHint")
-                  : t("detail.notificationsOffHint")}
+            {Capacitor.isNativePlatform() ? (
+              // App Android: notifiche automatiche, qui solo lo stato e un modo discreto per spegnerle.
+              <p className={`notif-status${notificationsOn ? " is-on" : ""}`}>
+                <span aria-hidden="true">{notificationsOn ? "🔔" : "🔕"}</span>
+                <span>{t(notificationsOn ? "detail.notifAutoOn" : "detail.notifAutoOff")}</span>
+                <button type="button" className="notif-status__toggle" onClick={handleToggleNotifications}>
+                  {t(notificationsOn ? "detail.notifDisable" : "detail.notifEnable")}
+                </button>
               </p>
-            </div>
+            ) : (
+              <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexWrap: "wrap", margin: "0 0 0.75rem" }}>
+                <button type="button" className="btn btn--ghost btn--small" onClick={handleToggleNotifications}>
+                  {notificationsOn ? t("detail.notificationsOn") : t("detail.notificationsOff")}
+                </button>
+                <p className="empty-state__body" style={{ margin: 0 }}>
+                  {notificationsOn ? t("detail.notificationsOnHint") : t("detail.notificationsOffHint")}
+                </p>
+              </div>
+            )}
             {notificationMsg && <p className="form-error" style={{ margin: "0 0 0.75rem" }}>{notificationMsg}</p>}
 
             <ReminderList

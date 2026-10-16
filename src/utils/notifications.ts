@@ -46,6 +46,43 @@ export function areNotificationsEnabled(): boolean {
   }
 }
 
+/** true se l'utente non ha mai scelto (né concesso né negato né disattivato). */
+function neverDecided(): boolean {
+  try {
+    return localStorage.getItem(NOTIFICATIONS_ENABLED_KEY) === null;
+  } catch {
+    return false;
+  }
+}
+
+// Avvisa i componenti quando le notifiche vengono attivate o disattivate
+// (anche in automatico, da un'altra parte dell'app).
+const changeEvents = new EventTarget();
+
+export function onNotificationsChange(listener: () => void): () => void {
+  changeEvents.addEventListener("change", listener);
+  return () => changeEvents.removeEventListener("change", listener);
+}
+
+function emitChange(): void {
+  changeEvents.dispatchEvent(new Event("change"));
+}
+
+/**
+ * Notifiche automatiche sull'app Android: la prima volta che ci sono
+ * scadenze, chiede il permesso da sola (su Android 13+ compare la finestra
+ * di sistema) invece di aspettare che l'utente trovi il pulsante. Se l'utente
+ * ha già risposto o le ha disattivate, non chiede più nulla.
+ */
+export async function autoEnableNotifications(): Promise<boolean> {
+  if (!isNative() || !neverDecided()) return areNotificationsEnabled();
+  try {
+    return await enableNotifications();
+  } catch {
+    return false;
+  }
+}
+
 export function isNotificationSupported(): boolean {
   // Sull'app nativa il plugin è sempre disponibile (è compilato dentro
   // l'APK); nel browser dipende dal supporto della Web Notification API.
@@ -70,6 +107,7 @@ export async function enableNotifications(): Promise<boolean> {
   } catch {
     // ignorato
   }
+  emitChange();
   return granted;
 }
 
@@ -79,6 +117,7 @@ export function disableNotifications(): void {
   } catch {
     // ignorato
   }
+  emitChange();
   if (isNative()) {
     // Ripulisce anche le notifiche già programmate in anticipo, altrimenti
     // arriverebbero comunque più avanti nonostante l'utente le abbia disattivate.
@@ -176,9 +215,35 @@ export interface SchedulableReminder {
  * programmato e lo ricrea da zero dallo stato attuale, così scadenze
  * modificate o rimosse non lasciano notifiche "fantasma".
  */
+/** Giorni prima della scadenza in cui arriva un avviso (0 = il giorno stesso). */
+export const REMINDER_ADVANCE_DAYS = [30, 7, 0] as const;
+
+/**
+ * Notifiche da programmare per una scadenza con data: 30 e 7 giorni prima e il
+ * giorno stesso, alle 9 del mattino, solo quelle ancora nel futuro.
+ */
+export function plannedReminderNotifications(dueDate: string, now = Date.now()): { daysBefore: number; at: Date }[] {
+  return REMINDER_ADVANCE_DAYS.map((daysBefore) => {
+    const at = new Date(dueDate);
+    at.setDate(at.getDate() - daysBefore);
+    // Le 9 del mattino, non mezzanotte: un avviso a mezzanotte non è utile a nessuno.
+    at.setHours(9, 0, 0, 0);
+    return { daysBefore, at };
+  }).filter((n) => n.at.getTime() > now);
+}
+
+/**
+ * Programma in anticipo, sul sistema operativo, le notifiche per i
+ * promemoria con data futura — il vantaggio vero dell'app nativa rispetto
+ * al browser: arrivano anche se l'app resta chiusa fino a quel giorno.
+ * Da richiamare ogni volta che i promemoria cambiano (aggiunta, modifica,
+ * completamento, cancellazione): ad ogni chiamata ripulisce tutto il
+ * programmato e lo ricrea da zero dallo stato attuale, così scadenze
+ * modificate o rimosse non lasciano notifiche "fantasma".
+ */
 export async function scheduleUpcomingReminders(
   items: SchedulableReminder[],
-  labels: { dueOnPrefix: string },
+  labels: { dueOnPrefix: string; inDays: (days: number) => string },
   locale: string,
 ): Promise<void> {
   if (!isNative() || !areNotificationsEnabled()) return;
@@ -189,21 +254,15 @@ export async function scheduleUpcomingReminders(
       await LocalNotifications.cancel({ notifications: pending.map((n) => ({ id: n.id })) });
     }
 
-    const now = Date.now();
-    const toSchedule = items
-      .filter((item) => new Date(item.dueDate).getTime() > now)
-      .map((item) => {
-        const due = new Date(item.dueDate);
-        // Le 9 del mattino del giorno di scadenza, non mezzanotte:
-        // un avviso a mezzanotte non è utile a nessuno.
-        due.setHours(9, 0, 0, 0);
-        return {
-          id: hashToInt32(item.id),
-          title: item.label,
-          body: `${item.vehicleName} · ${labels.dueOnPrefix} ${due.toLocaleDateString(locale)}`,
-          schedule: { at: due },
-        };
-      });
+    const toSchedule = items.flatMap((item) => {
+      const dateLabel = new Date(item.dueDate).toLocaleDateString(locale);
+      return plannedReminderNotifications(item.dueDate).map(({ daysBefore, at }) => ({
+        id: hashToInt32(daysBefore === 0 ? item.id : `${item.id}:${daysBefore}`),
+        title: daysBefore === 0 ? item.label : `${item.label} · ${labels.inDays(daysBefore)}`,
+        body: `${item.vehicleName} · ${labels.dueOnPrefix} ${dateLabel}`,
+        schedule: { at, allowWhileIdle: true },
+      }));
+    });
 
     if (toSchedule.length > 0) {
       await LocalNotifications.schedule({ notifications: toSchedule });
