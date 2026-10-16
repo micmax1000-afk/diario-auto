@@ -4753,3 +4753,4 @@ textarea {
 .commute-preview__label { width: 100%; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
 :root:not([data-theme="light"]) .commute-total--dark { border-color: var(--amber); }
 .commute-form__delete { align-self: flex-start; }
+.commute-toggle button:disabled { opacity: 0.45; cursor: default; }

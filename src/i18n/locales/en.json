@@ -682,7 +682,9 @@
     "perMonthValue": "{{value}} a month",
     "extraTime": "+{{minutes}} min per trip (about {{hours}} hours a year)",
     "paybackNever": "With this price difference you won't recover the cost in a reasonable time.",
-    "removeConfirm": "Delete the “{{name}}” scenario?"
+    "removeConfirm": "Delete the “{{name}}” scenario?",
+    "tripOnlyNoteAverage": "All included adds the yearly average of the car costs you logged (there are none in the last 12 months): {{total}} a year in total, or {{perKm}} per km.",
+    "allIncludedNoteAverage": "Includes the yearly average of logged maintenance and expenses (fines excluded; none in the last 12 months): {{perKm}} for every commute km."
   },
   "commuteFuelType": {
     "benzina": "Gasoline",

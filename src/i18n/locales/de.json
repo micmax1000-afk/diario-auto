@@ -682,7 +682,9 @@
     "perMonthValue": "{{value}} pro Monat",
     "extraTime": "+{{minutes}} Min. pro Fahrt (etwa {{hours}} Stunden im Jahr)",
     "paybackNever": "Bei diesem Preisunterschied rechnet sich die Ausgabe nicht in absehbarer Zeit.",
-    "removeConfirm": "Szenario „{{name}}“ löschen?"
+    "removeConfirm": "Szenario „{{name}}“ löschen?",
+    "tripOnlyNoteAverage": "Alles inklusive rechnet den Jahresdurchschnitt der erfassten Autokosten hinzu (in den letzten 12 Monaten gibt es keine): insgesamt {{total}} im Jahr, also {{perKm}} pro km.",
+    "allIncludedNoteAverage": "Enthält den Jahresdurchschnitt der erfassten Wartung und Ausgaben (ohne Bußgelder; keine in den letzten 12 Monaten): {{perKm}} pro km Arbeitsweg."
   },
   "commuteFuelType": {
     "benzina": "Benzin",

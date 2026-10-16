@@ -682,7 +682,9 @@
     "perMonthValue": "{{value}} par mois",
     "extraTime": "+{{minutes}} min par trajet (environ {{hours}} heures par an)",
     "paybackNever": "Avec cette différence de prix, vous ne récupérez pas la dépense dans un délai raisonnable.",
-    "removeConfirm": "Supprimer le scénario « {{name}} » ?"
+    "removeConfirm": "Supprimer le scénario « {{name}} » ?",
+    "tripOnlyNoteAverage": "Tout compris ajoute la moyenne annuelle des frais de la voiture enregistrés (aucun sur les 12 derniers mois) : {{total}} par an au total, soit {{perKm}} par km.",
+    "allIncludedNoteAverage": "Comprend la moyenne annuelle de l'entretien et des dépenses enregistrés (amendes exclues ; aucun sur les 12 derniers mois) : {{perKm}} par km de trajet."
   },
   "commuteFuelType": {
     "benzina": "Essence",

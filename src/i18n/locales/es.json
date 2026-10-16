@@ -682,7 +682,9 @@
     "perMonthValue": "{{value}} al mes",
     "extraTime": "+{{minutes}} min por trayecto (unas {{hours}} horas al año)",
     "paybackNever": "Con esta diferencia de precio no recuperas el gasto en un tiempo razonable.",
-    "removeConfirm": "¿Eliminar el escenario «{{name}}»?"
+    "removeConfirm": "¿Eliminar el escenario «{{name}}»?",
+    "tripOnlyNoteAverage": "Con Todo incluido se suma la media anual de los gastos del coche registrados (en los últimos 12 meses no hay): {{total}} al año en total, es decir {{perKm}} por km.",
+    "allIncludedNoteAverage": "Incluye la media anual de mantenimientos y gastos registrados (sin multas; en los últimos 12 meses no hay): {{perKm}} por cada km del trayecto."
   },
   "commuteFuelType": {
     "benzina": "Gasolina",

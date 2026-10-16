@@ -8,7 +8,7 @@ import {
   extraHoursPerYear,
   latestFuelPrice,
   latestChargingPrice,
-  fixedCostsLastYear,
+  fixedCostsPerYear,
 } from "../commute";
 
 // Esempio dell'anteprima: 35 km a tratta, 2 tratte, 5 giorni, 46 settimane, 4,9 l/100 km a 1,779 €/l.
@@ -118,16 +118,27 @@ describe("prezzi automatici", () => {
   });
 });
 
-describe("fixedCostsLastYear", () => {
+describe("fixedCostsPerYear", () => {
+  const now = new Date("2026-10-16").getTime();
+  const m = (date: string, cost: number) => ({ date, cost }) as MaintenanceEntry;
+  const e = (date: string, amount: number, category: ExpenseEntry["category"]) => ({ date, amount, category }) as ExpenseEntry;
+
   it("somma manutenzioni e spese degli ultimi 12 mesi, senza multe", () => {
-    const now = new Date("2026-10-16").getTime();
-    const m = (date: string, cost: number) => ({ date, cost }) as MaintenanceEntry;
-    const e = (date: string, amount: number, category: ExpenseEntry["category"]) => ({ date, amount, category }) as ExpenseEntry;
-    const total = fixedCostsLastYear(
+    const r = fixedCostsPerYear(
       [m("2026-05-01", 300), m("2025-01-01", 999)],
       [e("2026-03-01", 600, "assicurazione"), e("2026-04-01", 200, "bollo"), e("2026-06-01", 80, "multa")],
       now,
     );
-    expect(total).toBe(1100);
+    expect(r).toEqual({ perYear: 1100, basis: "lastYear" });
+  });
+
+  it("senza spese recenti usa la media annua di quelle più vecchie", () => {
+    const r = fixedCostsPerYear([m("2023-10-16", 400)], [e("2024-10-16", 800, "assicurazione")], now);
+    expect(r.basis).toBe("average");
+    expect(r.perYear).toBeCloseTo(1200 / 3, 0);
+  });
+
+  it("niente spese, o solo multe: nessun costo", () => {
+    expect(fixedCostsPerYear([], [e("2026-06-01", 80, "multa")], now)).toEqual({ perYear: 0, basis: "none" });
   });
 });

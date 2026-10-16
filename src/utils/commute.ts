@@ -144,24 +144,34 @@ export function latestChargingPrice(entries: ChargingEntry[], count = 5): AutoPr
   return { price: cost / kWh, date: recent[0].date };
 }
 
+export interface FixedCosts {
+  perYear: number;
+  /** lastYear = spese degli ultimi 12 mesi; average = media annua di tutte le spese (nessuna negli ultimi 12 mesi). */
+  basis: "lastYear" | "average" | "none";
+}
+
 /**
- * Spese dell'auto negli ultimi 12 mesi che non dipendono dal tragitto:
- * manutenzioni, assicurazione, bollo, documenti... (le multe no).
+ * Spese dell'auto all'anno che non dipendono dal tragitto: manutenzioni,
+ * assicurazione, bollo, documenti... (le multe no). Si usano quelle degli
+ * ultimi 12 mesi; se non ce ne sono, la media annua di quelle registrate prima.
  */
-export function fixedCostsLastYear(
+export function fixedCostsPerYear(
   maintenance: MaintenanceEntry[],
   expenses: ExpenseEntry[],
   now = Date.now(),
-): number {
-  const from = now - 365 * 24 * 60 * 60 * 1000;
-  const inYear = (date: string) => {
-    const t = new Date(date).getTime();
-    return t >= from && t <= now;
-  };
-  return (
-    maintenance.filter((e) => inYear(e.date)).reduce((sum, e) => sum + (e.cost || 0), 0) +
-    expenses.filter((e) => e.category !== "multa" && inYear(e.date)).reduce((sum, e) => sum + (e.amount || 0), 0)
-  );
+): FixedCosts {
+  const year = 365 * 24 * 60 * 60 * 1000;
+  const items = [
+    ...maintenance.map((e) => ({ t: new Date(e.date).getTime(), amount: e.cost || 0 })),
+    ...expenses.filter((e) => e.category !== "multa").map((e) => ({ t: new Date(e.date).getTime(), amount: e.amount || 0 })),
+  ].filter((i) => i.amount > 0 && !Number.isNaN(i.t) && i.t <= now);
+
+  const lastYear = items.filter((i) => i.t >= now - year).reduce((sum, i) => sum + i.amount, 0);
+  if (lastYear > 0) return { perYear: lastYear, basis: "lastYear" };
+  if (items.length === 0) return { perYear: 0, basis: "none" };
+  const first = Math.min(...items.map((i) => i.t));
+  const years = Math.max((now - first) / year, 1);
+  return { perYear: items.reduce((sum, i) => sum + i.amount, 0) / years, basis: "average" };
 }
 
 export const SCENARIO_UNITS: Record<CommuteCarFuelType, CommuteScenario["unit"]> = {
