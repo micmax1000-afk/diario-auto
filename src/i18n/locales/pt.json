@@ -947,7 +947,12 @@
     "backupNotConfigured": "Não configurado",
     "infoSupport": "Informações e apoio",
     "version": "Versão",
-    "privacy": "Política de privacidade"
+    "privacy": "Política de privacidade",
+    "notifications": "Notificações dos prazos",
+    "notificationsOn": "Ativas",
+    "notificationsOff": "Desativadas",
+    "notificationsHintNative": "Aviso 30 e 7 dias antes e no dia do prazo, às 9h, mesmo com a app fechada. Os prazos por quilometragem são verificados ao abrir a app.",
+    "notificationsHintWeb": "Receba um aviso quando um prazo estiver próximo ou ultrapassado (só com a app aberta no navegador)."
   },
   "passport": {
     "generate": "Passaporte de revisões",

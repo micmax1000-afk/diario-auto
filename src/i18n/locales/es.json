@@ -947,7 +947,12 @@
     "backupNotConfigured": "No configurado",
     "infoSupport": "Información y asistencia",
     "version": "Versión",
-    "privacy": "Política de privacidad"
+    "privacy": "Política de privacidad",
+    "notifications": "Notificaciones de vencimientos",
+    "notificationsOn": "Activadas",
+    "notificationsOff": "Desactivadas",
+    "notificationsHintNative": "Aviso 30 y 7 días antes y el día del vencimiento, a las 9, incluso con la app cerrada. Los vencimientos por kilometraje se comprueban al abrir la app.",
+    "notificationsHintWeb": "Recibe un aviso cuando un vencimiento esté cerca o vencido (solo con la app abierta en el navegador)."
   },
   "passport": {
     "generate": "Historial de mantenimiento (PDF)",
