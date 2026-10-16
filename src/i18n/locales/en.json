@@ -228,7 +228,8 @@
     "yearCost": "Spent this year",
     "activeReminders": "Active due dates",
     "last": "Last job",
-    "noHistory": "Log your first job to start tracking maintenance."
+    "noHistory": "Log your first job to start tracking maintenance.",
+    "urgentTitle": "Due dates to check"
   },
   "maintenanceForm": {
     "title": "New Maintenance",
@@ -952,7 +953,8 @@
     "notificationsOn": "On",
     "notificationsOff": "Off",
     "notificationsHintNative": "A reminder 30 and 7 days before and on the due date, at 9 am, even with the app closed. Mileage-based due dates are checked when you open the app.",
-    "notificationsHintWeb": "Get a reminder when a due date is close or overdue (only while the app is open in the browser)."
+    "notificationsHintWeb": "Get a reminder when a due date is close or overdue (only while the app is open in the browser).",
+    "openNotificationSettings": "Open notification settings"
   },
   "passport": {
     "generate": "Service history",

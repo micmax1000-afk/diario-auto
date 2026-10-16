@@ -228,7 +228,8 @@
     "yearCost": "Dieses Jahr ausgegeben",
     "activeReminders": "Aktive Fristen",
     "last": "Letzte Wartung",
-    "noHistory": "Erfasse die erste Wartung, um den Wartungsstatus im Blick zu behalten."
+    "noHistory": "Erfasse die erste Wartung, um den Wartungsstatus im Blick zu behalten.",
+    "urgentTitle": "Fristen prüfen"
   },
   "maintenanceForm": {
     "title": "Neue Wartung",
@@ -952,7 +953,8 @@
     "notificationsOn": "An",
     "notificationsOff": "Aus",
     "notificationsHintNative": "Erinnerung 30 und 7 Tage vorher und am Fälligkeitstag um 9 Uhr, auch bei geschlossener App. Kilometer-Fristen werden beim Öffnen der App geprüft.",
-    "notificationsHintWeb": "Erhalte eine Erinnerung, wenn eine Frist naht oder überschritten ist (nur bei geöffneter App im Browser)."
+    "notificationsHintWeb": "Erhalte eine Erinnerung, wenn eine Frist naht oder überschritten ist (nur bei geöffneter App im Browser).",
+    "openNotificationSettings": "Benachrichtigungseinstellungen öffnen"
   },
   "passport": {
     "generate": "Wartungspass",

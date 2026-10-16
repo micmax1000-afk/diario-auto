@@ -10,6 +10,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(PlayBillingPlugin.class);
         registerPlugin(GoogleDriveAuthPlugin.class);
         registerPlugin(WidgetRefreshPlugin.class);
+        registerPlugin(NotificationSettingsPlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

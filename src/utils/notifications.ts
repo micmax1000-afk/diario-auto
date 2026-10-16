@@ -17,7 +17,7 @@
 // quel chilometraggio — quindi restano controllate solo all'apertura
 // dell'app, in entrambe le modalità.
 
-import { Capacitor } from "@capacitor/core";
+import { Capacitor, registerPlugin } from "@capacitor/core";
 import { LocalNotifications } from "@capacitor/local-notifications";
 import { localDateString } from "./dates";
 
@@ -98,16 +98,25 @@ export function isNotificationSupported(): boolean {
   return typeof window !== "undefined" && "Notification" in window;
 }
 
+/**
+ * Attiva le notifiche chiedendo il permesso se serve. Non lancia mai errori:
+ * se il plugin non risponde o il permesso è bloccato restituisce false, così
+ * l'interfaccia può mostrare cosa fare invece di non reagire.
+ */
 export async function enableNotifications(): Promise<boolean> {
   if (!isNotificationSupported()) return false;
 
-  let granted: boolean;
-  if (isNative()) {
-    const result = await LocalNotifications.requestPermissions();
-    granted = result.display === "granted";
-  } else {
-    const permission = await Notification.requestPermission();
-    granted = permission === "granted";
+  let granted = false;
+  try {
+    if (isNative()) {
+      // Se il permesso c'è già (es. riattivazione dopo averle spente), niente richiesta.
+      const current = await LocalNotifications.checkPermissions();
+      granted = current.display === "granted" || (await LocalNotifications.requestPermissions()).display === "granted";
+    } else {
+      granted = (await Notification.requestPermission()) === "granted";
+    }
+  } catch {
+    granted = false;
   }
 
   try {
@@ -117,6 +126,19 @@ export async function enableNotifications(): Promise<boolean> {
   }
   emitChange();
   return granted;
+}
+
+const NotificationSettings = registerPlugin<{ open(): Promise<void> }>("NotificationSettings");
+
+/** Apre la pagina di sistema delle notifiche dell'app (solo Android). */
+export async function openNotificationSettings(): Promise<boolean> {
+  if (!isNative()) return false;
+  try {
+    await NotificationSettings.open();
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function disableNotifications(): void {

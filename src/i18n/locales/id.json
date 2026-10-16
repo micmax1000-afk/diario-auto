@@ -228,7 +228,8 @@
     "yearCost": "Dikeluarkan tahun ini",
     "activeReminders": "Jatuh tempo aktif",
     "last": "Servis terakhir",
-    "noHistory": "Catat servis pertama untuk mulai memantau perawatan."
+    "noHistory": "Catat servis pertama untuk mulai memantau perawatan.",
+    "urgentTitle": "Jatuh tempo yang perlu dicek"
   },
   "maintenanceForm": {
     "title": "Perawatan baru",
@@ -949,7 +950,8 @@
     "notificationsOn": "Aktif",
     "notificationsOff": "Nonaktif",
     "notificationsHintNative": "Pengingat 30 dan 7 hari sebelumnya serta pada hari jatuh tempo, pukul 9, meski aplikasi tertutup. Jatuh tempo berdasarkan km diperiksa saat aplikasi dibuka.",
-    "notificationsHintWeb": "Dapatkan pengingat saat jatuh tempo sudah dekat atau terlewat (hanya saat aplikasi terbuka di browser)."
+    "notificationsHintWeb": "Dapatkan pengingat saat jatuh tempo sudah dekat atau terlewat (hanya saat aplikasi terbuka di browser).",
+    "openNotificationSettings": "Buka pengaturan notifikasi"
   },
   "passport": {
     "generate": "Paspor servis",

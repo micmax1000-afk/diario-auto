@@ -18,6 +18,7 @@ import {
   enableNotifications,
   isNotificationSupported,
   onNotificationsChange,
+  openNotificationSettings,
   notificationsShownAsOn,
 } from "../utils/notifications";
 import { useBackButtonClose } from "../utils/backButtonStack";
@@ -27,6 +28,7 @@ import ChargingForm from "./ChargingForm";
 import MaintenanceForm from "./MaintenanceForm";
 import MaintenanceList from "./MaintenanceList";
 import MaintenanceOverview from "./MaintenanceOverview";
+import UpcomingReminders from "./UpcomingReminders";
 import PremiumScreen from "./PremiumScreen";
 import VehicleSwitcher from "./VehicleSwitcher";
 import CategoryIcon from "./CategoryIcon";
@@ -80,6 +82,8 @@ interface Props {
   onSwitchVehicle?: (vehicleId: string) => void;
   /** Solo nella scheda Statistiche: apre il confronto "Tutti i veicoli". */
   onOpenFleet?: () => void;
+  /** Apre la pagina Scadenze di questo veicolo (usato quando la scheda mostra una sola sezione). */
+  onOpenRemindersTab?: () => void;
 }
 
 const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "riepilogo"];
@@ -141,6 +145,7 @@ export default function VehicleDetail({
   urgentCounts,
   onSwitchVehicle,
   onOpenFleet,
+  onOpenRemindersTab,
   onOdometerKm,
 }: Props) {
   const { t, i18n } = useTranslation();
@@ -155,6 +160,8 @@ export default function VehicleDetail({
   // In modalità "vista singola" (raggiunta dalla barra inferiore o dal
   // click sul veicolo) il tab resta bloccato: nessuna navigazione interna
   // può cambiarlo, anche se qualche azione prova a farlo.
+  const openRemindersTab = restrictToTab ? onOpenRemindersTab : () => changeTab("scadenze");
+
   function changeTab(next: DetailTab) {
     if (restrictToTab) return;
     setTab(next);
@@ -463,7 +470,15 @@ export default function VehicleDetail({
               entries={maintenanceEntries}
               reminders={reminders}
               currentKm={vehicle.currentKm}
-              onOpenReminders={restrictToTab ? undefined : () => changeTab("scadenze")}
+              onOpenReminders={openRemindersTab}
+            />
+            {/* Quali scadenze fanno scattare l'avviso "Scadute"/"In arrivo", toccabili per aprirle. */}
+            <UpcomingReminders
+              vehicles={[vehicle]}
+              reminders={reminders}
+              distanceUnit={distanceUnit}
+              onOpenReminder={() => openRemindersTab?.()}
+              title={t("maintenance.urgentTitle")}
             />
             {restrictToTab === "manutenzioni" && (
               <div className="maintenance-category-filter">
@@ -522,6 +537,11 @@ export default function VehicleDetail({
               </p>
             )}
             {notificationMsg && <p className="form-error" style={{ margin: "0 0 0.75rem" }}>{notificationMsg}</p>}
+            {notificationMsg && Capacitor.isNativePlatform() && (
+              <button type="button" className="btn btn--ghost btn--small" style={{ margin: "0 0 0.75rem" }} onClick={() => void openNotificationSettings()}>
+                {t("settingsScreen.openNotificationSettings")}
+              </button>
+            )}
 
             <ReminderList
               reminders={reminders}
