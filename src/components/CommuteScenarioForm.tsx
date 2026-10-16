@@ -291,7 +291,9 @@ export default function CommuteScenarioForm({
 
           <div className="modal__actions">
             {initial && onDelete ? (
-              <button type="button" className="btn btn--ghost btn--danger" onClick={() => onDelete(initial.id)}>
+              <button type="button" className="btn btn--ghost btn--danger" onClick={() => {
+                  if (window.confirm(t("commute.removeConfirm", { name: t(`commuteFuelType.${initial.fuelType}`) }))) onDelete(initial.id);
+                }}>
                 {t("commute.remove")}
               </button>
             ) : (

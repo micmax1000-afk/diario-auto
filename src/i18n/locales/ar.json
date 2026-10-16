@@ -685,8 +685,8 @@
     "carpoolingNote": "تكلفة الرحلة مقسومة على كل من في السيارة.",
     "perMonthValue": "{{value}} شهريًا",
     "extraTime": "+{{minutes}} دقيقة للرحلة (نحو {{hours}} ساعة سنويًا)",
-    "tapToEdit": "اضغط للتعديل",
-    "paybackNever": "مع هذا الفرق في السعر لن تسترد التكلفة في وقت معقول."
+    "paybackNever": "مع هذا الفرق في السعر لن تسترد التكلفة في وقت معقول.",
+    "removeConfirm": "هل تريد حذف سيناريو «{{name}}»؟"
   },
   "commuteFuelType": {
     "benzina": "بنزين",
