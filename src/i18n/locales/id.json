@@ -740,7 +740,10 @@
     "estimatePlaceholder": "mis. 6,5",
     "estimatePlaceholderElectric": "mis. 16",
     "errorWeeks": "Masukkan minggu kerja per tahun (1-53).",
-    "errorExtra": "Tol, parkir, dan lainnya harus berupa angka positif."
+    "errorExtra": "Tol, parkir, dan lainnya harus berupa angka positif.",
+    "autoPriceHintElectric": "Diperbarui otomatis setiap kali mengisi daya.",
+    "delete": "Hapus perjalanan kerja",
+    "deleteConfirm": "Hapus perjalanan kerja kendaraan ini? Skenario perbandingan juga akan dihapus."
   },
   "commuteScenarioForm": {
     "title": "Skenario baru",

@@ -741,7 +741,10 @@
     "estimatePlaceholder": "es. 6,5",
     "estimatePlaceholderElectric": "es. 16",
     "errorWeeks": "Inserisci le settimane lavorative l'anno (1-53).",
-    "errorExtra": "Pedaggio, parcheggio e altro devono essere numeri positivi."
+    "errorExtra": "Pedaggio, parcheggio e altro devono essere numeri positivi.",
+    "autoPriceHintElectric": "Si aggiorna da solo a ogni ricarica.",
+    "delete": "Elimina tragitto",
+    "deleteConfirm": "Eliminare il tragitto di questo veicolo? Verranno rimossi anche gli scenari di confronto."
   },
   "commuteScenarioForm": {
     "title": "Nuovo scenario",

@@ -741,7 +741,10 @@
     "estimatePlaceholder": "ex. 6,5",
     "estimatePlaceholderElectric": "ex. 16",
     "errorWeeks": "Saisissez les semaines travaillées par an (1-53).",
-    "errorExtra": "Péage, stationnement et autres doivent être des nombres positifs."
+    "errorExtra": "Péage, stationnement et autres doivent être des nombres positifs.",
+    "autoPriceHintElectric": "Se met à jour automatiquement à chaque recharge.",
+    "delete": "Supprimer le trajet",
+    "deleteConfirm": "Supprimer le trajet de ce véhicule ? Les scénarios de comparaison seront aussi supprimés."
   },
   "commuteScenarioForm": {
     "title": "Nouveau scénario",

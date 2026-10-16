@@ -741,7 +741,10 @@
     "estimatePlaceholder": "z. B. 6,5",
     "estimatePlaceholderElectric": "z. B. 16",
     "errorWeeks": "Gib die Arbeitswochen pro Jahr ein (1-53).",
-    "errorExtra": "Maut, Parken und Sonstiges müssen positive Zahlen sein."
+    "errorExtra": "Maut, Parken und Sonstiges müssen positive Zahlen sein.",
+    "autoPriceHintElectric": "Aktualisiert sich bei jedem Ladevorgang automatisch.",
+    "delete": "Arbeitsweg löschen",
+    "deleteConfirm": "Den Arbeitsweg dieses Fahrzeugs löschen? Die Vergleichsszenarien werden ebenfalls entfernt."
   },
   "commuteScenarioForm": {
     "title": "Neues Szenario",

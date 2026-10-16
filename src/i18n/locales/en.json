@@ -741,7 +741,10 @@
     "estimatePlaceholder": "e.g. 6.5",
     "estimatePlaceholderElectric": "e.g. 16",
     "errorWeeks": "Enter the working weeks per year (1-53).",
-    "errorExtra": "Tolls, parking and other must be positive numbers."
+    "errorExtra": "Tolls, parking and other must be positive numbers.",
+    "autoPriceHintElectric": "Updates automatically with every charge.",
+    "delete": "Delete commute",
+    "deleteConfirm": "Delete this vehicle's commute? Its comparison scenarios will be removed too."
   },
   "commuteScenarioForm": {
     "title": "New scenario",

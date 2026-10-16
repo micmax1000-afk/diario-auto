@@ -38,6 +38,7 @@ import {
   getCommuteScenarios,
   addCommuteScenario,
   deleteCommuteScenario,
+  deleteCommute,
 } from "../utils/storage";
 import CommuteSettingsForm from "./CommuteSettingsForm";
 import CommuteScenarioForm from "./CommuteScenarioForm";
@@ -125,6 +126,14 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
   async function handleSaveSettings(patch: Partial<CommuteSettings>) {
     const updated = await upsertCommuteSettings(vehicle.id, patch);
     setSettings(updated);
+    setShowSettingsForm(false);
+  }
+
+  async function handleDeleteCommute() {
+    await deleteCommute(vehicle.id);
+    setSettings(DEFAULT_SETTINGS(vehicle.id));
+    setScenarios([]);
+    setAllIncluded(false);
     setShowSettingsForm(false);
   }
 
@@ -432,6 +441,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
           realConsumption={realConsumption}
           onSave={handleSaveSettings}
           onClose={() => setShowSettingsForm(false)}
+          onDelete={settings.kmPerTrip > 0 ? handleDeleteCommute : undefined}
         />
       )}
 
