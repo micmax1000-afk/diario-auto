@@ -14,6 +14,7 @@ import {
   isNotificationSupported,
   notificationsShownAsOn,
   onNotificationsChange,
+  openNotificationSettings,
 } from "../utils/notifications";
 
 interface Props {
@@ -58,6 +59,7 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
   const [openRow, setOpenRow] = useState<RowId>(null);
   const [notificationsOn, setNotificationsOn] = useState(() => notificationsShownAsOn());
   const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
+  const [notificationBusy, setNotificationBusy] = useState(false);
   useEffect(() => onNotificationsChange(() => setNotificationsOn(notificationsShownAsOn())), []);
 
   async function setNotifications(on: boolean) {
@@ -70,7 +72,9 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
       setNotificationMsg(t("detail.notificationsNotSupported"));
       return;
     }
+    setNotificationBusy(true);
     const granted = await enableNotifications();
+    setNotificationBusy(false);
     if (!granted) {
       setNotificationMsg(t(Capacitor.isNativePlatform() ? "detail.notificationsDeniedNative" : "detail.notificationsDenied"));
     }
@@ -180,7 +184,7 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
         {openRow === "notifications" && (
           <div className="settings-row__panel settings-row__panel--stacked">
             <div className="settings-chip-row">
-              <button type="button" className={`settings-chip ${notificationsOn ? "is-active" : ""}`} onClick={() => !notificationsOn && setNotifications(true)}>
+              <button type="button" className={`settings-chip ${notificationsOn ? "is-active" : ""}`} disabled={notificationBusy} onClick={() => !notificationsOn && setNotifications(true)}>
                 {t("settingsScreen.notificationsOn")}
               </button>
               <button type="button" className={`settings-chip ${!notificationsOn ? "is-active" : ""}`} onClick={() => notificationsOn && setNotifications(false)}>
@@ -191,6 +195,11 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
               {t(Capacitor.isNativePlatform() ? "settingsScreen.notificationsHintNative" : "settingsScreen.notificationsHintWeb")}
             </p>
             {notificationMsg && <p className="form-error" style={{ margin: 0 }}>{notificationMsg}</p>}
+            {notificationMsg && Capacitor.isNativePlatform() && (
+              <button type="button" className="btn btn--ghost btn--small" style={{ alignSelf: "flex-start" }} onClick={() => void openNotificationSettings()}>
+                {t("settingsScreen.openNotificationSettings")}
+              </button>
+            )}
           </div>
         )}
 

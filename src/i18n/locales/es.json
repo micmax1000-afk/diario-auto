@@ -228,7 +228,8 @@
     "yearCost": "Gastado este año",
     "activeReminders": "Vencimientos activos",
     "last": "Último trabajo",
-    "noHistory": "Registra el primer trabajo para empezar a controlar el mantenimiento."
+    "noHistory": "Registra el primer trabajo para empezar a controlar el mantenimiento.",
+    "urgentTitle": "Vencimientos por revisar"
   },
   "maintenanceForm": {
     "title": "Nuevo mantenimiento",
@@ -952,7 +953,8 @@
     "notificationsOn": "Activadas",
     "notificationsOff": "Desactivadas",
     "notificationsHintNative": "Aviso 30 y 7 días antes y el día del vencimiento, a las 9, incluso con la app cerrada. Los vencimientos por kilometraje se comprueban al abrir la app.",
-    "notificationsHintWeb": "Recibe un aviso cuando un vencimiento esté cerca o vencido (solo con la app abierta en el navegador)."
+    "notificationsHintWeb": "Recibe un aviso cuando un vencimiento esté cerca o vencido (solo con la app abierta en el navegador).",
+    "openNotificationSettings": "Abrir ajustes de notificaciones"
   },
   "passport": {
     "generate": "Historial de mantenimiento (PDF)",

@@ -228,7 +228,8 @@
     "yearCost": "Speso quest'anno",
     "activeReminders": "Scadenze attive",
     "last": "Ultimo intervento",
-    "noHistory": "Registra il primo intervento per iniziare a monitorare la manutenzione."
+    "noHistory": "Registra il primo intervento per iniziare a monitorare la manutenzione.",
+    "urgentTitle": "Scadenze da controllare"
   },
   "maintenanceForm": {
     "title": "Nuova manutenzione",
@@ -952,7 +953,8 @@
     "notificationsOn": "Attive",
     "notificationsOff": "Disattivate",
     "notificationsHintNative": "Avviso 30 e 7 giorni prima e il giorno della scadenza, alle 9, anche ad app chiusa. Le scadenze a chilometri vengono controllate quando apri l'app.",
-    "notificationsHintWeb": "Ricevi un avviso quando una scadenza è vicina o scaduta (solo con l'app aperta nel browser)."
+    "notificationsHintWeb": "Ricevi un avviso quando una scadenza è vicina o scaduta (solo con l'app aperta nel browser).",
+    "openNotificationSettings": "Apri impostazioni notifiche"
   },
   "passport": {
     "generate": "Passaporto tagliandi",

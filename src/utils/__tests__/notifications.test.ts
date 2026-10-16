@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("@capacitor/core", () => ({ Capacitor: { isNativePlatform: () => false } }));
+vi.mock("@capacitor/core", () => ({ Capacitor: { isNativePlatform: () => false }, registerPlugin: () => ({}) }));
 vi.mock("@capacitor/local-notifications", () => ({ LocalNotifications: {} }));
 
 const { plannedReminderNotifications } = await import("../notifications");

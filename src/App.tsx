@@ -959,6 +959,7 @@ export default function App() {
               urgentCounts={urgentByVehicle}
               onSwitchVehicle={(id) => setOpenVehicleId(id)}
               onOpenFleet={() => (isPro ? setShowFleet(true) : setShowPremium(true))}
+              onOpenRemindersTab={() => completeVehicleAction(openVehicle.id, { kind: "navigate", tab: "scadenze" })}
             />
           </Suspense>
         )}
