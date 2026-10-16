@@ -4670,3 +4670,23 @@ textarea {
 .notif-status.is-on { color: var(--text); }
 .notif-status__toggle { margin-inline-start: auto; padding: 0.2rem 0; border: none; background: none; color: var(--amber); font: inherit; font-weight: 700; cursor: pointer; }
 .settings-row__hint { margin: 0; font-size: 0.8rem; line-height: 1.4; color: var(--text-muted); }
+
+/* Dati live OBD con il tema chiaro: il pannello prima restava sempre scuro. */
+:root[data-theme="light"] .live-dash { background: var(--surface-alt); color: var(--text); }
+:root[data-theme="light"] .live-dash .obd-hint,
+:root[data-theme="light"] .live-group-title,
+:root[data-theme="light"] .live-card__label,
+:root[data-theme="light"] .live-card__unit,
+:root[data-theme="light"] .live-unavailable { color: var(--text-muted); }
+:root[data-theme="light"] .live-card { background: var(--card); border: 1px solid var(--border); }
+:root[data-theme="light"] .live-card__value { color: var(--text); }
+:root[data-theme="light"] .live-card--cold .live-card__value { color: #1f7fd6; }
+:root[data-theme="light"] .live-card--hot .live-card__value { color: #c9372b; }
+:root[data-theme="light"] .live-card--warn .live-card__value { color: var(--amber-dark); }
+:root[data-theme="light"] .live-card__bar { background: #e4dfd3; }
+:root[data-theme="light"] .arc-gauge__track { stroke: #ddd7ca; }
+:root[data-theme="light"] .live-unavailable { border-color: #d6cfc0; }
+:root[data-theme="light"] .arc-gauge__value { fill: var(--text); }
+:root[data-theme="light"] .arc-gauge__unit { fill: var(--text-muted); }
+:root[data-theme="light"] .arc-gauge__tick { stroke: #9a9488; }
+:root[data-theme="light"] .arc-gauge__label { color: var(--amber-dark); }

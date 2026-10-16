@@ -1,4 +1,4 @@
-const CACHE_NAME = "diario-auto-v33";
+const CACHE_NAME = "diario-auto-v34";
 const BASE = "/";
 
 const CORE_ASSETS = [BASE, BASE + "manifest.json"];
