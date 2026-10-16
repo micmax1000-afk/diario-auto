@@ -680,8 +680,8 @@
     "carpoolingNote": "Biaya perjalanan dibagi untuk semua orang di mobil.",
     "perMonthValue": "{{value}} per bulan",
     "extraTime": "+{{minutes}} menit per perjalanan (sekitar {{hours}} jam per tahun)",
-    "tapToEdit": "Ketuk untuk mengubah",
-    "paybackNever": "Dengan selisih harga ini, biayanya tidak kembali dalam waktu yang wajar."
+    "paybackNever": "Dengan selisih harga ini, biayanya tidak kembali dalam waktu yang wajar.",
+    "removeConfirm": "Hapus skenario “{{name}}”?"
   },
   "commuteFuelType": {
     "benzina": "Bensin",

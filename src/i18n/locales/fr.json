@@ -681,8 +681,8 @@
     "carpoolingNote": "Le coût du trajet partagé entre les personnes à bord.",
     "perMonthValue": "{{value}} par mois",
     "extraTime": "+{{minutes}} min par trajet (environ {{hours}} heures par an)",
-    "tapToEdit": "Touchez pour modifier",
-    "paybackNever": "Avec cette différence de prix, vous ne récupérez pas la dépense dans un délai raisonnable."
+    "paybackNever": "Avec cette différence de prix, vous ne récupérez pas la dépense dans un délai raisonnable.",
+    "removeConfirm": "Supprimer le scénario « {{name}} » ?"
   },
   "commuteFuelType": {
     "benzina": "Essence",

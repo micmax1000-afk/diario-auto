@@ -681,8 +681,8 @@
     "carpoolingNote": "The trip cost split among everyone in the car.",
     "perMonthValue": "{{value}} a month",
     "extraTime": "+{{minutes}} min per trip (about {{hours}} hours a year)",
-    "tapToEdit": "Tap to edit",
-    "paybackNever": "With this price difference you won't recover the cost in a reasonable time."
+    "paybackNever": "With this price difference you won't recover the cost in a reasonable time.",
+    "removeConfirm": "Delete the “{{name}}” scenario?"
   },
   "commuteFuelType": {
     "benzina": "Gasoline",

@@ -681,8 +681,8 @@
     "carpoolingNote": "Die Fahrtkosten geteilt durch alle im Auto.",
     "perMonthValue": "{{value}} pro Monat",
     "extraTime": "+{{minutes}} Min. pro Fahrt (etwa {{hours}} Stunden im Jahr)",
-    "tapToEdit": "Zum Bearbeiten tippen",
-    "paybackNever": "Bei diesem Preisunterschied rechnet sich die Ausgabe nicht in absehbarer Zeit."
+    "paybackNever": "Bei diesem Preisunterschied rechnet sich die Ausgabe nicht in absehbarer Zeit.",
+    "removeConfirm": "Szenario „{{name}}“ löschen?"
   },
   "commuteFuelType": {
     "benzina": "Benzin",

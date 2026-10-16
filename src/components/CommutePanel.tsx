@@ -359,51 +359,65 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
               const hours = extraHoursPerYear(s.extraMinutesPerTrip, settings);
               const sUnit = s.unit === "litro" ? "l" : s.unit;
               return (
-                <button
-                  key={s.id}
-                  type="button"
-                  className="record-card commute-scenario"
-                  onClick={() => setScenarioForm({ mode: "edit", scenario: s })}
-                >
-                  <span className="record-card__header">
-                    <span className="record-card__title">
-                      <span aria-hidden="true">{SCENARIO_ICONS[s.fuelType]}</span> {scenarioName(s)}
-                    </span>
-                    {s.note && <span className="commute-scenario__note">{s.note}</span>}
-                  </span>
-                  {saving !== null && (
-                    <span className={`commute-scenario__result${saving < 0 ? " is-extra" : ""}`}>
-                      <span>
-                        {Math.round(saving) === 0
-                          ? t("commute.sameCost")
-                          : t(saving > 0 ? "commute.wouldSave" : "commute.wouldSpend", { value: money0(Math.abs(saving)) })}
-                        {payback !== null && ` ${payback > 30 ? t("commute.paybackNever") : t("commute.payback", { years: formatNumber(payback, 1, locale) })}`}
+                <div key={s.id} className="record-card">
+                  <button
+                    type="button"
+                    className="commute-scenario"
+                    onClick={() => setScenarioForm({ mode: "edit", scenario: s })}
+                  >
+                    <span className="record-card__header">
+                      <span className="record-card__title">
+                        <span aria-hidden="true">{SCENARIO_ICONS[s.fuelType]}</span> {scenarioName(s)}
                       </span>
-                      {s.fuelType === "mezzi" && <span className="commute-scenario__sub">{t("commute.transitCarStays")}</span>}
-                      {s.fuelType === "carpooling" && <span className="commute-scenario__sub">{t("commute.carpoolingNote")}</span>}
+                      {s.note && <span className="commute-scenario__note">{s.note}</span>}
                     </span>
-                  )}
-                  <span className="commute-scenario__facts">
-                    {isCarScenario(s.fuelType) && (
-                      <>
-                        <span>{`${formatNumber(100 / s.kmPerUnit, 1, locale)} ${sUnit}/100 km`}</span>
-                        <span>{`${formatMoney(s.pricePerUnit, 3)}/${sUnit}`}</span>
-                      </>
-                    )}
-                    {(s.fuelType === "mezzi" || s.fuelType === "bici") && (
-                      <span>{t("commute.perMonthValue", { value: formatMoney(s.monthlyCost ?? 0, 0) })}</span>
-                    )}
-                    {hours > 0 && (
-                      <span>
-                        {t("commute.extraTime", {
-                          minutes: s.extraMinutesPerTrip,
-                          hours: formatNumber(hours, 0, locale),
-                        })}
+                    {saving !== null && (
+                      <span className={`commute-scenario__result${saving < 0 ? " is-extra" : ""}`}>
+                        <span>
+                          {Math.round(saving) === 0
+                            ? t("commute.sameCost")
+                            : t(saving > 0 ? "commute.wouldSave" : "commute.wouldSpend", { value: money0(Math.abs(saving)) })}
+                          {payback !== null && ` ${payback > 30 ? t("commute.paybackNever") : t("commute.payback", { years: formatNumber(payback, 1, locale) })}`}
+                        </span>
+                        {s.fuelType === "mezzi" && <span className="commute-scenario__sub">{t("commute.transitCarStays")}</span>}
+                        {s.fuelType === "carpooling" && <span className="commute-scenario__sub">{t("commute.carpoolingNote")}</span>}
                       </span>
                     )}
-                    <span className="commute-scenario__edit">{t("commute.tapToEdit")}</span>
-                  </span>
-                </button>
+                    <span className="commute-scenario__facts">
+                      {isCarScenario(s.fuelType) && (
+                        <>
+                          <span>{`${formatNumber(100 / s.kmPerUnit, 1, locale)} ${sUnit}/100 km`}</span>
+                          <span>{`${formatMoney(s.pricePerUnit, 3)}/${sUnit}`}</span>
+                        </>
+                      )}
+                      {(s.fuelType === "mezzi" || s.fuelType === "bici") && (
+                        <span>{t("commute.perMonthValue", { value: formatMoney(s.monthlyCost ?? 0, 0) })}</span>
+                      )}
+                      {hours > 0 && (
+                        <span>
+                          {t("commute.extraTime", {
+                            minutes: s.extraMinutesPerTrip,
+                            hours: formatNumber(hours, 0, locale),
+                          })}
+                        </span>
+                      )}
+                    </span>
+                  </button>
+                  <div className="record-card__actions">
+                    <button type="button" className="btn btn--ghost btn--small" onClick={() => setScenarioForm({ mode: "edit", scenario: s })}>
+                      {t("commute.editSettings")}
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn--ghost btn--danger btn--small"
+                      onClick={() => {
+                        if (window.confirm(t("commute.removeConfirm", { name: scenarioName(s) }))) handleDeleteScenario(s.id);
+                      }}
+                    >
+                      {t("commute.remove")}
+                    </button>
+                  </div>
+                </div>
               );
             })}
           </div>

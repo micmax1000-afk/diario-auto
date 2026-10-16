@@ -681,8 +681,8 @@
     "carpoolingNote": "O custo da viagem dividido por quem vai no carro.",
     "perMonthValue": "{{value}} por mês",
     "extraTime": "+{{minutes}} min por trajeto (cerca de {{hours}} horas por ano)",
-    "tapToEdit": "Toque para editar",
-    "paybackNever": "Com esta diferença de preço não recupera a despesa num prazo razoável."
+    "paybackNever": "Com esta diferença de preço não recupera a despesa num prazo razoável.",
+    "removeConfirm": "Eliminar o cenário «{{name}}»?"
   },
   "commuteFuelType": {
     "benzina": "Gasolina",
