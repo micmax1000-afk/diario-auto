@@ -667,6 +667,8 @@ export default function App() {
     setShowFleet(false);
     setShowBackup(false);
     setShowManageVehicles(false);
+    // La schermata Utilità sta sopra a tutto: senza chiuderla, cambiare scheda non si vedeva.
+    setShowUtilities(false);
     if (tab === "garage") {
       setMainTab("garage");
       setOpenVehicleId(null);
