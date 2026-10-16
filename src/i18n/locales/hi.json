@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "अनुमति अस्वीकार कर दी गई। Android सेटिंग्स → ऐप्स → Diario Auto → सूचनाएं पर जाएं, उन्हें सक्षम करें, फिर यहां फिर से प्रयास करें।",
     "fuelSubtitleBoth": "ईंधन और इलेक्ट्रिक चार्जिंग",
     "fuelSubtitleFuel": "ईंधन भराई और खपत",
-    "expensesSubtitle": "रोड टैक्स, बीमा, जुर्माने और कार के अन्य खर्च।"
+    "expensesSubtitle": "रोड टैक्स, बीमा, जुर्माने और कार के अन्य खर्च।",
+    "notifAutoOn": "अपने-आप सूचनाएँ चालू: देय तिथि से 30 और 7 दिन पहले और उसी दिन याद दिलाया जाएगा, ऐप बंद होने पर भी।",
+    "notifAutoOff": "देय तिथि की सूचनाएँ बंद हैं।",
+    "notifDisable": "बंद करें",
+    "notifEnable": "चालू करें"
   },
   "fuel": {
     "title": "ईंधन भराई",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "तिथि बीत गई",
     "soon": "जल्द देय",
-    "dueOnPrefix": "देय तिथि"
+    "dueOnPrefix": "देय तिथि",
+    "inDays_one": "{{count}} दिन में",
+    "inDays_other": "{{count}} दिनों में"
   },
   "commute": {
     "title": "आने-जाने की असली लागत",

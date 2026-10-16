@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Berechtigung verweigert. Gehe zu „Android-Einstellungen“ → „Apps“ → „Diario Auto“ → „Benachrichtigungen“, aktiviere sie und versuche es dann hier erneut.",
     "fuelSubtitleBoth": "Tanken und Laden",
     "fuelSubtitleFuel": "Tankvorgänge und Verbrauch",
-    "expensesSubtitle": "Kfz-Steuer, Versicherung, Bußgelder und andere Autokosten."
+    "expensesSubtitle": "Kfz-Steuer, Versicherung, Bußgelder und andere Autokosten.",
+    "notifAutoOn": "Automatische Benachrichtigungen an: Erinnerung 30 und 7 Tage vorher und am Fälligkeitstag, auch bei geschlossener App.",
+    "notifAutoOff": "Benachrichtigungen zu Fristen sind aus.",
+    "notifDisable": "Ausschalten",
+    "notifEnable": "Einschalten"
   },
   "fuel": {
     "title": "Tankvorgänge",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "Überfällig",
     "soon": "Demnächst",
-    "dueOnPrefix": "fällig"
+    "dueOnPrefix": "fällig",
+    "inDays_one": "in {{count}} Tag",
+    "inDays_other": "in {{count}} Tagen"
   },
   "commute": {
     "title": "Echte Kosten des Arbeitswegs",

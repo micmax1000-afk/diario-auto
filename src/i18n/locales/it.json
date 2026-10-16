@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Permesso negato. Vai in Impostazioni Android → App → Diario Auto → Notifiche, attivale, poi riprova qui.",
     "fuelSubtitleBoth": "Carburante e ricarica elettrica",
     "fuelSubtitleFuel": "Rifornimenti di carburante e consumi",
-    "expensesSubtitle": "Bollo, assicurazione, multe e altre spese dell'auto."
+    "expensesSubtitle": "Bollo, assicurazione, multe e altre spese dell'auto.",
+    "notifAutoOn": "Notifiche automatiche attive: ti avviso 30 e 7 giorni prima e il giorno della scadenza, anche ad app chiusa.",
+    "notifAutoOff": "Notifiche delle scadenze disattivate.",
+    "notifDisable": "Disattiva",
+    "notifEnable": "Attiva"
   },
   "fuel": {
     "title": "Rifornimenti",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "Scaduta",
     "soon": "In arrivo",
-    "dueOnPrefix": "scadenza"
+    "dueOnPrefix": "scadenza",
+    "inDays_one": "tra {{count}} giorno",
+    "inDays_other": "tra {{count}} giorni"
   },
   "commute": {
     "title": "Costo reale del tragitto",

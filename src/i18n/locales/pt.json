@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Permissão negada. Vá a Definições do Android → Aplicações → Diario Auto → Notificações, ative-as e tente novamente aqui.",
     "fuelSubtitleBoth": "Combustível e carregamento elétrico",
     "fuelSubtitleFuel": "Abastecimentos e consumo",
-    "expensesSubtitle": "Imposto de circulação, seguro, multas e outras despesas do carro."
+    "expensesSubtitle": "Imposto de circulação, seguro, multas e outras despesas do carro.",
+    "notifAutoOn": "Notificações automáticas ativas: avisamos 30 e 7 dias antes e no dia do prazo, mesmo com a app fechada.",
+    "notifAutoOff": "Notificações dos prazos desativadas.",
+    "notifDisable": "Desativar",
+    "notifEnable": "Ativar"
   },
   "fuel": {
     "title": "Abastecimentos",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "Expirado",
     "soon": "Em breve",
-    "dueOnPrefix": "prazo"
+    "dueOnPrefix": "prazo",
+    "inDays_one": "daqui a {{count}} dia",
+    "inDays_other": "daqui a {{count}} dias"
   },
   "commute": {
     "title": "Custo real do trajeto",

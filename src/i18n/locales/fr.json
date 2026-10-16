@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Autorisation refusée. Rendez-vous dans Paramètres Android → Applications → Diario Auto → Notifications, activez-les, puis réessayez ici.",
     "fuelSubtitleBoth": "Carburant et recharge électrique",
     "fuelSubtitleFuel": "Pleins et consommation",
-    "expensesSubtitle": "Taxe auto, assurance, amendes et autres frais du véhicule."
+    "expensesSubtitle": "Taxe auto, assurance, amendes et autres frais du véhicule.",
+    "notifAutoOn": "Notifications automatiques activées : un rappel 30 et 7 jours avant et le jour de l'échéance, même app fermée.",
+    "notifAutoOff": "Notifications des échéances désactivées.",
+    "notifDisable": "Désactiver",
+    "notifEnable": "Activer"
   },
   "fuel": {
     "title": "Pleins",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "Dépassée",
     "soon": "À venir",
-    "dueOnPrefix": "échéance"
+    "dueOnPrefix": "échéance",
+    "inDays_one": "dans {{count}} jour",
+    "inDays_other": "dans {{count}} jours"
   },
   "commute": {
     "title": "Coût réel du trajet",

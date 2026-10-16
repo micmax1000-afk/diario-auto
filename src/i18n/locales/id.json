@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Izin ditolak. Buka Pengaturan Android → Aplikasi → Diario Auto → Pemberitahuan, aktifkan, lalu coba lagi di sini.",
     "fuelSubtitleBoth": "Bahan bakar dan pengisian listrik",
     "fuelSubtitleFuel": "Pengisian bahan bakar dan konsumsi",
-    "expensesSubtitle": "Pajak kendaraan, asuransi, denda, dan biaya mobil lainnya."
+    "expensesSubtitle": "Pajak kendaraan, asuransi, denda, dan biaya mobil lainnya.",
+    "notifAutoOn": "Notifikasi otomatis aktif: pengingat 30 dan 7 hari sebelumnya serta pada hari jatuh tempo, meski aplikasi tertutup.",
+    "notifAutoOff": "Notifikasi jatuh tempo nonaktif.",
+    "notifDisable": "Nonaktifkan",
+    "notifEnable": "Aktifkan"
   },
   "fuel": {
     "title": "Pengisian BBM",
@@ -620,7 +624,8 @@
   "notif": {
     "overdue": "Lewat jatuh tempo",
     "soon": "Segera",
-    "dueOnPrefix": "jatuh tempo"
+    "dueOnPrefix": "jatuh tempo",
+    "inDays_other": "dalam {{count}} hari"
   },
   "commute": {
     "title": "Biaya nyata perjalanan kerja",

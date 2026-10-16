@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "تم رفض الإذن. انتقل إلى «إعدادات Android» → «التطبيقات» → «Diario Auto» → «الإشعارات»، وقم بتفعيلها، ثم حاول مرة أخرى هنا.",
     "fuelSubtitleBoth": "الوقود والشحن الكهربائي",
     "fuelSubtitleFuel": "التزود بالوقود والاستهلاك",
-    "expensesSubtitle": "ضريبة السير والتأمين والمخالفات ومصاريف السيارة الأخرى."
+    "expensesSubtitle": "ضريبة السير والتأمين والمخالفات ومصاريف السيارة الأخرى.",
+    "notifAutoOn": "الإشعارات التلقائية مفعّلة: تذكير قبل 30 و7 أيام وفي يوم الاستحقاق، حتى والتطبيق مغلق.",
+    "notifAutoOff": "إشعارات المواعيد المستحقة متوقفة.",
+    "notifDisable": "إيقاف",
+    "notifEnable": "تفعيل"
   },
   "fuel": {
     "title": "التزود بالوقود",
@@ -620,7 +624,13 @@
   "notif": {
     "overdue": "متأخر",
     "soon": "قريبًا",
-    "dueOnPrefix": "الاستحقاق"
+    "dueOnPrefix": "الاستحقاق",
+    "inDays_zero": "خلال {{count}} يوم",
+    "inDays_one": "خلال يوم واحد",
+    "inDays_two": "خلال يومين",
+    "inDays_few": "خلال {{count}} أيام",
+    "inDays_many": "خلال {{count}} يومًا",
+    "inDays_other": "خلال {{count}} يوم"
   },
   "commute": {
     "title": "التكلفة الفعلية للتنقل اليومي",

@@ -109,7 +109,11 @@
     "notificationsDeniedNative": "Permission denied. Go to Android Settings → Apps → Diario Auto → Notifications, turn them on, then try again here.",
     "fuelSubtitleBoth": "Fuel and electric charging",
     "fuelSubtitleFuel": "Refuels and fuel consumption",
-    "expensesSubtitle": "Road tax, insurance, fines and other car expenses."
+    "expensesSubtitle": "Road tax, insurance, fines and other car expenses.",
+    "notifAutoOn": "Automatic notifications on: you'll be reminded 30 and 7 days before and on the due date, even with the app closed.",
+    "notifAutoOff": "Due date notifications are off.",
+    "notifDisable": "Turn off",
+    "notifEnable": "Turn on"
   },
   "fuel": {
     "title": "Refuels",
@@ -620,7 +624,9 @@
   "notif": {
     "overdue": "Overdue",
     "soon": "Coming Soon",
-    "dueOnPrefix": "due"
+    "dueOnPrefix": "due",
+    "inDays_one": "in {{count}} day",
+    "inDays_other": "in {{count}} days"
   },
   "commute": {
     "title": "Real commute cost",
