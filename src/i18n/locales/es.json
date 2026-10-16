@@ -113,7 +113,8 @@
     "notifAutoOn": "Notificaciones automáticas activadas: te avisamos 30 y 7 días antes y el día del vencimiento, incluso con la app cerrada.",
     "notifAutoOff": "Notificaciones de vencimientos desactivadas.",
     "notifDisable": "Desactivar",
-    "notifEnable": "Activar"
+    "notifEnable": "Activar",
+    "notificationsError": "No se pudieron activar las notificaciones en este teléfono. Inténtalo de nuevo; si sigue pasando, avísanos."
   },
   "fuel": {
     "title": "Repostajes",

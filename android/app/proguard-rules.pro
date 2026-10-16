@@ -9,10 +9,18 @@
 # Capacitor li trova per nome e chiama i metodi @PluginMethod via riflessione.
 -keep class com.micmax.diarioauto.** { *; }
 
-# Tutti i plugin Capacitor, con le loro annotazioni lette a runtime.
+# Capacitor e i suoi plugin ufficiali lavorano quasi tutto per riflessione:
+# trovano i plugin per nome e leggono a runtime le annotazioni @CapacitorPlugin,
+# @Permission, @PermissionCallback... Con R8 in modalità completa (default da AGP 8)
+# le annotazioni e le loro classi venivano tolte: il plugin delle notifiche falliva
+# il controllo dei permessi anche con il permesso concesso. Si tengono interi.
+-keep class com.getcapacitor.** { *; }
+-keep interface com.getcapacitor.** { *; }
+-keep @interface com.getcapacitor.** { *; }
+-keep class com.capacitorjs.plugins.** { *; }
 -keep @com.getcapacitor.annotation.CapacitorPlugin public class * { *; }
 -keep public class * extends com.getcapacitor.Plugin { *; }
--keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
+-keepattributes *Annotation*, RuntimeVisibleAnnotations, RuntimeVisibleParameterAnnotations, AnnotationDefault, Signature, InnerClasses, EnclosingMethod
 
 # Ponte JavaScript ↔ Android della WebView.
 -keepclassmembers class * {

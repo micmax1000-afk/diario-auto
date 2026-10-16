@@ -10,7 +10,7 @@ import { isGoogleDriveConfigured } from "../services/googleDrive/config";
 import QuickEntryHeader from "./QuickEntryHeader";
 import {
   disableNotifications,
-  enableNotifications,
+  enableNotificationsDetailed,
   isNotificationSupported,
   notificationsShownAsOn,
   onNotificationsChange,
@@ -73,9 +73,10 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
       return;
     }
     setNotificationBusy(true);
-    const granted = await enableNotifications();
+    const result = await enableNotificationsDetailed();
     setNotificationBusy(false);
-    if (!granted) {
+    if (result === "error") setNotificationMsg(t("detail.notificationsError"));
+    else if (result !== "granted") {
       setNotificationMsg(t(Capacitor.isNativePlatform() ? "detail.notificationsDeniedNative" : "detail.notificationsDenied"));
     }
   }

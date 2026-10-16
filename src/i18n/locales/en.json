@@ -113,7 +113,8 @@
     "notifAutoOn": "Automatic notifications on: you'll be reminded 30 and 7 days before and on the due date, even with the app closed.",
     "notifAutoOff": "Due date notifications are off.",
     "notifDisable": "Turn off",
-    "notifEnable": "Turn on"
+    "notifEnable": "Turn on",
+    "notificationsError": "Couldn't turn on notifications on this phone. Try again; if it keeps happening, please let us know."
   },
   "fuel": {
     "title": "Refuels",

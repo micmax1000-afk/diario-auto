@@ -104,20 +104,28 @@ export function isNotificationSupported(): boolean {
  * l'interfaccia può mostrare cosa fare invece di non reagire.
  */
 export async function enableNotifications(): Promise<boolean> {
-  if (!isNotificationSupported()) return false;
+  return (await enableNotificationsDetailed()) === "granted";
+}
 
-  let granted = false;
+/** Come enableNotifications, ma distingue il permesso negato da un errore del sistema. */
+export async function enableNotificationsDetailed(): Promise<"granted" | "denied" | "error" | "unsupported"> {
+  if (!isNotificationSupported()) return "unsupported";
+
+  let result: "granted" | "denied" | "error";
   try {
     if (isNative()) {
       // Se il permesso c'è già (es. riattivazione dopo averle spente), niente richiesta.
       const current = await LocalNotifications.checkPermissions();
-      granted = current.display === "granted" || (await LocalNotifications.requestPermissions()).display === "granted";
+      const granted = current.display === "granted" || (await LocalNotifications.requestPermissions()).display === "granted";
+      result = granted ? "granted" : "denied";
     } else {
-      granted = (await Notification.requestPermission()) === "granted";
+      result = (await Notification.requestPermission()) === "granted" ? "granted" : "denied";
     }
-  } catch {
-    granted = false;
+  } catch (err) {
+    console.warn("Notifiche: errore del plugin", err);
+    result = "error";
   }
+  const granted = result === "granted";
 
   try {
     localStorage.setItem(NOTIFICATIONS_ENABLED_KEY, String(granted));
@@ -125,7 +133,7 @@ export async function enableNotifications(): Promise<boolean> {
     // ignorato
   }
   emitChange();
-  return granted;
+  return result;
 }
 
 const NotificationSettings = registerPlugin<{ open(): Promise<void> }>("NotificationSettings");

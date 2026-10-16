@@ -113,7 +113,8 @@
     "notifAutoOn": "Notifiche automatiche attive: ti avviso 30 e 7 giorni prima e il giorno della scadenza, anche ad app chiusa.",
     "notifAutoOff": "Notifiche delle scadenze disattivate.",
     "notifDisable": "Disattiva",
-    "notifEnable": "Attiva"
+    "notifEnable": "Attiva",
+    "notificationsError": "Non riesco ad attivare le notifiche su questo telefono. Riprova; se il problema resta, segnalacelo."
   },
   "fuel": {
     "title": "Rifornimenti",

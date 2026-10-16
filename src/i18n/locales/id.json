@@ -113,7 +113,8 @@
     "notifAutoOn": "Notifikasi otomatis aktif: pengingat 30 dan 7 hari sebelumnya serta pada hari jatuh tempo, meski aplikasi tertutup.",
     "notifAutoOff": "Notifikasi jatuh tempo nonaktif.",
     "notifDisable": "Nonaktifkan",
-    "notifEnable": "Aktifkan"
+    "notifEnable": "Aktifkan",
+    "notificationsError": "Tidak dapat mengaktifkan notifikasi di ponsel ini. Coba lagi; jika masih terjadi, beri tahu kami."
   },
   "fuel": {
     "title": "Pengisian BBM",
