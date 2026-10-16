@@ -15,7 +15,7 @@ import { getObdProfile } from "../utils/storage";
 import { useProStatus } from "../services/billing/useProStatus";
 import {
   disableNotifications,
-  enableNotifications,
+  enableNotificationsDetailed,
   isNotificationSupported,
   onNotificationsChange,
   openNotificationSettings,
@@ -223,10 +223,14 @@ export default function VehicleDetail({
       setNotificationMsg(t("detail.notificationsNotSupported"));
       return;
     }
-    const granted = await enableNotifications();
-    setNotificationsOn(granted);
+    const result = await enableNotificationsDetailed();
+    setNotificationsOn(result === "granted");
     setNotificationMsg(
-      granted ? null : t(Capacitor.isNativePlatform() ? "detail.notificationsDeniedNative" : "detail.notificationsDenied"),
+      result === "granted"
+        ? null
+        : result === "error"
+          ? t("detail.notificationsError")
+          : t(Capacitor.isNativePlatform() ? "detail.notificationsDeniedNative" : "detail.notificationsDenied"),
     );
   }
 

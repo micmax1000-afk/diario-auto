@@ -113,7 +113,8 @@
     "notifAutoOn": "Notificações automáticas ativas: avisamos 30 e 7 dias antes e no dia do prazo, mesmo com a app fechada.",
     "notifAutoOff": "Notificações dos prazos desativadas.",
     "notifDisable": "Desativar",
-    "notifEnable": "Ativar"
+    "notifEnable": "Ativar",
+    "notificationsError": "Não foi possível ativar as notificações neste telemóvel. Tente novamente; se continuar, avise-nos."
   },
   "fuel": {
     "title": "Abastecimentos",

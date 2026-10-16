@@ -113,7 +113,8 @@
     "notifAutoOn": "Automatische Benachrichtigungen an: Erinnerung 30 und 7 Tage vorher und am Fälligkeitstag, auch bei geschlossener App.",
     "notifAutoOff": "Benachrichtigungen zu Fristen sind aus.",
     "notifDisable": "Ausschalten",
-    "notifEnable": "Einschalten"
+    "notifEnable": "Einschalten",
+    "notificationsError": "Benachrichtigungen konnten auf diesem Handy nicht aktiviert werden. Versuch es noch einmal; wenn es weiter passiert, sag uns Bescheid."
   },
   "fuel": {
     "title": "Tankvorgänge",
