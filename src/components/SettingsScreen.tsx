@@ -8,6 +8,13 @@ import type { Theme } from "../utils/theme";
 import { SUPPORTED_LANGUAGES, changeLanguage } from "../i18n";
 import { isGoogleDriveConfigured } from "../services/googleDrive/config";
 import QuickEntryHeader from "./QuickEntryHeader";
+import {
+  disableNotifications,
+  enableNotifications,
+  isNotificationSupported,
+  notificationsShownAsOn,
+  onNotificationsChange,
+} from "../utils/notifications";
 
 interface Props {
   onClose: () => void;
@@ -16,7 +23,7 @@ interface Props {
   onToggleTheme: () => void;
 }
 
-type RowId = "language" | "units" | "theme" | null;
+type RowId = "language" | "units" | "theme" | "notifications" | null;
 
 const PRIVACY_URL = "https://micmax-apps.netlify.app/privacy-diario-auto.html";
 
@@ -24,6 +31,7 @@ const ROW_ICONS: Record<string, string> = {
   language: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 0c2.5 2.7 4 6.2 4 10s-1.5 7.3-4 10m0-20c-2.5 2.7-4 6.2-4 10s1.5 7.3 4 10M2.5 9h19M2.5 15h19",
   units: "M4 7h16M4 12h16M4 17h10",
   theme: "M12 3a9 9 0 1 0 9 9c0-.5-.05-1-.14-1.45A5.5 5.5 0 0 1 12 3z",
+  bell: "M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9zM13.73 21a2 2 0 0 1-3.46 0",
   tire: "M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 3.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm5.5 5.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm-8-1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm2.5 4.5a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM12 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4z",
   calendar: "M7 3v3M17 3v3M4 8h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z",
   route: "M4 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm16-16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6 18C6 12 10 12 12 9s4-3 4-3M8 20h8a2 2 0 0 0 2-2v-1",
@@ -48,6 +56,25 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
   const { t, i18n } = useTranslation();
   const { currency, setCurrency, distanceUnit, setDistanceUnit, temperatureUnit, setTemperatureUnit } = useAppSettings();
   const [openRow, setOpenRow] = useState<RowId>(null);
+  const [notificationsOn, setNotificationsOn] = useState(() => notificationsShownAsOn());
+  const [notificationMsg, setNotificationMsg] = useState<string | null>(null);
+  useEffect(() => onNotificationsChange(() => setNotificationsOn(notificationsShownAsOn())), []);
+
+  async function setNotifications(on: boolean) {
+    setNotificationMsg(null);
+    if (!on) {
+      disableNotifications();
+      return;
+    }
+    if (!isNotificationSupported()) {
+      setNotificationMsg(t("detail.notificationsNotSupported"));
+      return;
+    }
+    const granted = await enableNotifications();
+    if (!granted) {
+      setNotificationMsg(t(Capacitor.isNativePlatform() ? "detail.notificationsDeniedNative" : "detail.notificationsDenied"));
+    }
+  }
 
   const currentLang = SUPPORTED_LANGUAGES.find((l) => l.code === i18n.language.split("-")[0]);
   const backupActive = isGoogleDriveConfigured();
@@ -136,6 +163,34 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
           <div className="settings-row__panel">
             <button type="button" className={`settings-chip ${theme === "dark" ? "is-active" : ""}`} onClick={() => theme !== "dark" && onToggleTheme()}>{t("settingsScreen.themeDark")}</button>
             <button type="button" className={`settings-chip ${theme === "light" ? "is-active" : ""}`} onClick={() => theme !== "light" && onToggleTheme()}>{t("settingsScreen.themeLight")}</button>
+          </div>
+        )}
+
+        {/* Notifiche delle scadenze: attive per default, qui si possono spegnere */}
+        <div className="settings-row" onClick={() => toggleRow("notifications")} role="button" tabIndex={0}>
+          <span className="settings-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={ROW_ICONS.bell} /></svg></span>
+          <span className="settings-row__text">
+            <span className="settings-row__label">{t("settingsScreen.notifications")}</span>
+            <span className={`settings-row__value ${notificationsOn ? "is-positive" : ""}`}>
+              {notificationsOn ? t("settingsScreen.notificationsOn") : t("settingsScreen.notificationsOff")}
+            </span>
+          </span>
+          <span className={`settings-row__chevron ${openRow === "notifications" ? "is-open" : ""}`}>›</span>
+        </div>
+        {openRow === "notifications" && (
+          <div className="settings-row__panel settings-row__panel--stacked">
+            <div className="settings-chip-row">
+              <button type="button" className={`settings-chip ${notificationsOn ? "is-active" : ""}`} onClick={() => !notificationsOn && setNotifications(true)}>
+                {t("settingsScreen.notificationsOn")}
+              </button>
+              <button type="button" className={`settings-chip ${!notificationsOn ? "is-active" : ""}`} onClick={() => notificationsOn && setNotifications(false)}>
+                {t("settingsScreen.notificationsOff")}
+              </button>
+            </div>
+            <p className="settings-row__hint">
+              {t(Capacitor.isNativePlatform() ? "settingsScreen.notificationsHintNative" : "settingsScreen.notificationsHintWeb")}
+            </p>
+            {notificationMsg && <p className="form-error" style={{ margin: 0 }}>{notificationMsg}</p>}
           </div>
         )}
 

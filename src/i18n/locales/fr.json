@@ -947,7 +947,12 @@
     "backupNotConfigured": "Non configuré",
     "infoSupport": "Informations et assistance",
     "version": "Version",
-    "privacy": "Politique de confidentialité"
+    "privacy": "Politique de confidentialité",
+    "notifications": "Notifications des échéances",
+    "notificationsOn": "Activées",
+    "notificationsOff": "Désactivées",
+    "notificationsHintNative": "Un rappel 30 et 7 jours avant et le jour de l'échéance, à 9 h, même app fermée. Les échéances au kilométrage sont vérifiées à l'ouverture de l'app.",
+    "notificationsHintWeb": "Recevez un rappel quand une échéance approche ou est dépassée (uniquement avec l'app ouverte dans le navigateur)."
   },
   "passport": {
     "generate": "Carnet d'entretien",

@@ -947,7 +947,12 @@
     "backupNotConfigured": "Nicht konfiguriert",
     "infoSupport": "Infos und Support",
     "version": "Version",
-    "privacy": "Datenschutzerklärung"
+    "privacy": "Datenschutzerklärung",
+    "notifications": "Benachrichtigungen zu Fristen",
+    "notificationsOn": "An",
+    "notificationsOff": "Aus",
+    "notificationsHintNative": "Erinnerung 30 und 7 Tage vorher und am Fälligkeitstag um 9 Uhr, auch bei geschlossener App. Kilometer-Fristen werden beim Öffnen der App geprüft.",
+    "notificationsHintWeb": "Erhalte eine Erinnerung, wenn eine Frist naht oder überschritten ist (nur bei geöffneter App im Browser)."
   },
   "passport": {
     "generate": "Wartungspass",

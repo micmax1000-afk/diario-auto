@@ -46,6 +46,14 @@ export function areNotificationsEnabled(): boolean {
   }
 }
 
+/**
+ * Stato da mostrare all'utente: sull'app Android le notifiche sono attive per
+ * default, anche prima che il permesso venga chiesto (succede alla prima scadenza).
+ */
+export function notificationsShownAsOn(): boolean {
+  return areNotificationsEnabled() || (isNative() && neverDecided());
+}
+
 /** true se l'utente non ha mai scelto (né concesso né negato né disattivato). */
 function neverDecided(): boolean {
   try {
