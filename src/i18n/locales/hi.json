@@ -741,7 +741,10 @@
     "estimatePlaceholder": "जैसे 6.5",
     "estimatePlaceholderElectric": "जैसे 16",
     "errorWeeks": "साल में काम के हफ़्ते डालें (1-53)।",
-    "errorExtra": "टोल, पार्किंग और अन्य धनात्मक संख्याएँ होनी चाहिए।"
+    "errorExtra": "टोल, पार्किंग और अन्य धनात्मक संख्याएँ होनी चाहिए।",
+    "autoPriceHintElectric": "हर चार्जिंग पर अपने आप अपडेट होती है।",
+    "delete": "आना-जाना हटाएँ",
+    "deleteConfirm": "इस वाहन का आना-जाना हटाएँ? तुलना के परिदृश्य भी हट जाएँगे।"
   },
   "commuteScenarioForm": {
     "title": "नया परिदृश्य",

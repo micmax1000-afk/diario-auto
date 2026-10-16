@@ -745,7 +745,10 @@
     "estimatePlaceholder": "مثلًا 6.5",
     "estimatePlaceholderElectric": "مثلًا 16",
     "errorWeeks": "أدخل أسابيع العمل في السنة (1-53).",
-    "errorExtra": "يجب أن تكون الرسوم والمواقف والأخرى أرقامًا موجبة."
+    "errorExtra": "يجب أن تكون الرسوم والمواقف والأخرى أرقامًا موجبة.",
+    "autoPriceHintElectric": "يتحدث تلقائيًا مع كل عملية شحن.",
+    "delete": "حذف التنقل اليومي",
+    "deleteConfirm": "هل تريد حذف التنقل اليومي لهذه المركبة؟ ستُحذف سيناريوهات المقارنة أيضًا."
   },
   "commuteScenarioForm": {
     "title": "سيناريو جديد",

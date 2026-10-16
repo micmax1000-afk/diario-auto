@@ -741,7 +741,10 @@
     "estimatePlaceholder": "p. ej. 6,5",
     "estimatePlaceholderElectric": "p. ej. 16",
     "errorWeeks": "Introduce las semanas laborables al año (1-53).",
-    "errorExtra": "Peaje, aparcamiento y otros deben ser números positivos."
+    "errorExtra": "Peaje, aparcamiento y otros deben ser números positivos.",
+    "autoPriceHintElectric": "Se actualiza solo con cada recarga.",
+    "delete": "Eliminar trayecto",
+    "deleteConfirm": "¿Eliminar el trayecto de este vehículo? También se eliminarán los escenarios de comparación."
   },
   "commuteScenarioForm": {
     "title": "Nuevo escenario",

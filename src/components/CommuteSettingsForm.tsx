@@ -18,6 +18,8 @@ interface Props {
   realConsumption: { kmPerUnit: number; count: number } | null;
   onSave: (patch: Partial<CommuteSettings>) => void;
   onClose: () => void;
+  /** Elimina il tragitto (solo se già impostato). */
+  onDelete?: () => void;
 }
 
 function optionalNumber(value: string): number | undefined | null {
@@ -26,7 +28,7 @@ function optionalNumber(value: string): number | undefined | null {
   return Number.isNaN(n) || n < 0 ? null : n;
 }
 
-export default function CommuteSettingsForm({ initial, unit, autoPrice, realConsumption, onSave, onClose }: Props) {
+export default function CommuteSettingsForm({ initial, unit, autoPrice, realConsumption, onSave, onClose, onDelete }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
@@ -266,7 +268,7 @@ export default function CommuteSettingsForm({ initial, unit, autoPrice, realCons
               )}
             </div>
           )}
-          {autoPrice && !manualPrice && <p className="commute-form__hint">{t("commuteSettingsForm.autoPriceHint")}</p>}
+          {autoPrice && !manualPrice && <p className="commute-form__hint">{t(electric ? "commuteSettingsForm.autoPriceHintElectric" : "commuteSettingsForm.autoPriceHint")}</p>}
 
           {realConsumption ? (
             <div className="commute-auto">
@@ -299,6 +301,18 @@ export default function CommuteSettingsForm({ initial, unit, autoPrice, realCons
           )}
 
           {error && <p className="form-error">{error}</p>}
+
+          {onDelete && (
+            <button
+              type="button"
+              className="btn btn--ghost btn--danger btn--small commute-form__delete"
+              onClick={() => {
+                if (window.confirm(t("commuteSettingsForm.deleteConfirm"))) onDelete();
+              }}
+            >
+              {t("commuteSettingsForm.delete")}
+            </button>
+          )}
 
           <div className="modal__actions">
             <button type="button" className="btn btn--ghost" onClick={onClose}>

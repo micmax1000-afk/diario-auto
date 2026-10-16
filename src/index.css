@@ -4752,3 +4752,4 @@ textarea {
 .commute-preview { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem; padding: 0.7rem 0.8rem; border-radius: 10px; background: var(--surface-alt); font-size: 0.88rem; }
 .commute-preview__label { width: 100%; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
 :root:not([data-theme="light"]) .commute-total--dark { border-color: var(--amber); }
+.commute-form__delete { align-self: flex-start; }

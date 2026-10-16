@@ -741,7 +741,10 @@
     "estimatePlaceholder": "ex. 6,5",
     "estimatePlaceholderElectric": "ex. 16",
     "errorWeeks": "Introduza as semanas de trabalho por ano (1-53).",
-    "errorExtra": "Portagem, estacionamento e outros devem ser números positivos."
+    "errorExtra": "Portagem, estacionamento e outros devem ser números positivos.",
+    "autoPriceHintElectric": "Atualiza-se sozinho a cada carregamento.",
+    "delete": "Eliminar trajeto",
+    "deleteConfirm": "Eliminar o trajeto deste veículo? Os cenários de comparação também serão removidos."
   },
   "commuteScenarioForm": {
     "title": "Novo cenário",

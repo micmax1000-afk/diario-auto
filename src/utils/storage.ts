@@ -19,6 +19,7 @@ import {
   softDeleteOne,
   getByVehicleKey,
   putByVehicleKey,
+  deleteByVehicleKey,
   replaceAllByVehicleKey,
   getAllValues,
   getMeta,
@@ -208,6 +209,11 @@ export async function upsertCommuteSettings(vehicleId: string, patch: Partial<Co
   return merged;
 }
 
+/** Elimina il tragitto di un veicolo insieme ai suoi scenari di confronto. */
+export async function deleteCommute(vehicleId: string): Promise<void> {
+  await deleteByVehicleKey("commuteSettings", vehicleId);
+  for (const s of await getCommuteScenarios(vehicleId)) await softDeleteOne("commuteScenarios", s.id);
+}
 export async function loadCommuteScenarios(): Promise<CommuteScenario[]> {
   return getAll<CommuteScenario>("commuteScenarios");
 }

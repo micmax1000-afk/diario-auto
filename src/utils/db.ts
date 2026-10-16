@@ -143,6 +143,14 @@ export async function putByVehicleKey<T>(
   await db.put(storeName, stampUpdatedAt(value) as never);
 }
 
+export async function deleteByVehicleKey(
+  storeName: "obdProfiles" | "commuteSettings" | "homeChargingDefaults",
+  vehicleId: string,
+): Promise<void> {
+  const db = await getDb();
+  await db.delete(storeName, vehicleId);
+}
+
 export async function getAllValues<T>(
   storeName: "obdProfiles" | "commuteSettings" | "homeChargingDefaults",
 ): Promise<T[]> {
