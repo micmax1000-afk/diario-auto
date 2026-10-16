@@ -4690,3 +4690,66 @@ textarea {
 :root[data-theme="light"] .arc-gauge__unit { fill: var(--text-muted); }
 :root[data-theme="light"] .arc-gauge__tick { stroke: #9a9488; }
 :root[data-theme="light"] .arc-gauge__label { color: var(--amber-dark); }
+
+/* Tragitto: costo annuo, scomposizione dei costi e confronto */
+.commute__summary { margin: 0 0 0.75rem; font-size: 0.88rem; line-height: 1.45; color: var(--text-muted); }
+.commute-toggle { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 0.75rem; border-radius: 999px; background: var(--surface-alt); }
+.commute-toggle button { padding: 0.5rem 0.4rem; border: none; border-radius: 999px; background: transparent; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; }
+.commute-toggle button.is-active { background: var(--card); color: var(--text); font-weight: 700; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18); }
+.commute-totals { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 0.75rem; }
+.commute-total { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.8rem 0.9rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card); min-width: 0; }
+.commute-total--dark { background: var(--asphalt); border-color: var(--asphalt); color: var(--paper); }
+.commute-total__label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; }
+.commute-total__value { font-family: var(--font-display); font-size: 2rem; line-height: 1; overflow-wrap: anywhere; }
+.commute-card { padding: 0.9rem; margin-bottom: 0.75rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card); }
+.commute-card__note { margin: 0.6rem 0 0; font-size: 0.8rem; line-height: 1.45; color: var(--text-muted); }
+.commute-bar { display: flex; gap: 2px; height: 12px; margin-bottom: 0.7rem; border-radius: 999px; overflow: hidden; }
+.commute-bar__seg { min-width: 4px; flex-basis: 0; }
+.commute-bar__seg--fuel { background: #7a828c; }
+.commute-bar__seg--toll { background: var(--amber); }
+.commute-bar__seg--parking { background: #4a8fe0; }
+.commute-bar__seg--other { background: #a07cd0; }
+.commute-bar__seg--fixed { background: var(--ok); }
+.commute-legend { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.4rem; }
+.commute-legend li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+.commute-legend__dot { flex: none; width: 10px; height: 10px; border-radius: 3px; }
+.commute-legend__muted .commute-legend__dot { background: var(--border); }
+.commute-legend__label { flex: 1; min-width: 0; }
+.commute-legend__value { font-family: var(--font-mono); font-size: 0.85rem; white-space: nowrap; }
+.commute-legend__muted { margin-top: 0.2rem; padding-top: 0.5rem; border-top: 1px dashed var(--border); color: var(--text-muted); }
+.commute-periods { margin-bottom: 0.6rem; }
+.commute__source { margin: 0; font-size: 0.8rem; line-height: 1.45; color: var(--text-muted); }
+.commute-compare { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.commute-compare__head { display: flex; justify-content: space-between; align-items: baseline; gap: 0.6rem; margin-bottom: 0.3rem; }
+.commute-compare__name { min-width: 0; font-size: 0.92rem; }
+.commute-compare__tag { color: var(--text-muted); font-size: 0.82rem; }
+.commute-compare__value { font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+.commute-compare__delta { margin-inline-start: 0.4rem; font-size: 0.75rem; font-weight: 600; }
+.commute-compare__delta.is-saving { color: var(--ok); }
+.commute-compare__delta.is-extra { color: var(--danger); }
+.commute-compare__track { display: block; height: 10px; border-radius: 999px; background: var(--surface-alt); overflow: hidden; }
+.commute-compare__fill { display: block; height: 100%; border-radius: 999px; background: #7a828c; }
+.commute-compare__fill.is-saving { background: var(--ok); }
+.commute-compare__fill.is-extra { background: var(--danger); }
+.commute-scenario { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; text-align: start; font: inherit; color: inherit; cursor: pointer; }
+.commute-scenario__note { font-size: 0.8rem; color: var(--text-muted); }
+.commute-scenario__result { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.6rem 0.75rem; border-radius: 10px; background: rgba(63, 187, 114, 0.14); font-size: 0.9rem; line-height: 1.4; }
+.commute-scenario__result.is-extra { background: rgba(224, 86, 63, 0.12); }
+.commute-scenario__sub { font-size: 0.8rem; color: var(--text-muted); }
+.commute-scenario__facts { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted); }
+.commute-scenario__edit { margin-inline-start: auto; color: var(--amber); }
+.commute-form__section { margin: 0.6rem 0 -0.2rem; font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); }
+.commute-form__hint { margin: -0.35rem 0 0; font-size: 0.78rem; line-height: 1.4; color: var(--text-muted); }
+.field .commute-form__hint { margin: 0.25rem 0 0; }
+.commute-form__map { align-self: flex-start; margin-top: -0.4rem; }
+.commute-auto { display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 0.8rem; border-radius: 10px; background: rgba(63, 187, 114, 0.14); font-size: 0.88rem; line-height: 1.35; }
+.commute-auto__check { color: var(--ok); font-weight: 700; }
+.commute-auto__text { flex: 1; min-width: 0; }
+.commute-auto__change { flex: none; padding: 0.2rem 0; border: none; background: none; color: var(--amber); font: inherit; font-weight: 700; cursor: pointer; }
+.commute-auto__change--inline { align-self: flex-start; margin-top: 0.25rem; font-size: 0.82rem; }
+.commute-presets { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.commute-preset { padding: 0.45rem 0.75rem; border: 1px solid var(--border); border-radius: 999px; background: var(--card); color: var(--text); font: inherit; font-size: 0.85rem; cursor: pointer; }
+.commute-preset.is-active { background: var(--amber); border-color: var(--amber); color: var(--asphalt); font-weight: 700; }
+.commute-preview { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem; padding: 0.7rem 0.8rem; border-radius: 10px; background: var(--surface-alt); font-size: 0.88rem; }
+.commute-preview__label { width: 100%; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+:root:not([data-theme="light"]) .commute-total--dark { border-color: var(--amber); }

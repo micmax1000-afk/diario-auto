@@ -200,7 +200,7 @@ export async function upsertCommuteSettings(vehicleId: string, patch: Partial<Co
     vehicleId,
     kmPerTrip: 0,
     tripsPerDay: 2,
-    workDaysPerWeek: 6,
+    workDaysPerWeek: 5,
     fuelPricePerLiter: 0,
   };
   const merged: CommuteSettings = { ...defaults, ...(existing ?? {}), ...patch };
