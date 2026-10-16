@@ -168,19 +168,30 @@ export interface CommuteSettings extends SyncFields {
   kmPerTrip: number; // km di una singola tratta (es. andata casa-lavoro)
   tripsPerDay: number; // es. 2 = andata + ritorno
   workDaysPerWeek: number; // giorni lavorativi a settimana
-  fuelPricePerLiter: number; // prezzo attuale al litro (o per kWh se elettrico), aggiornabile manualmente
+  weeksPerYear?: number; // settimane lavorative l'anno (52 meno ferie e festività); se manca vale 46
+  fuelPricePerLiter: number; // prezzo inserito a mano al litro (o per kWh se elettrico)
+  manualPrice?: boolean; // true = usa fuelPricePerLiter; altrimenti il prezzo viene dagli ultimi rifornimenti/ricariche
   estimatedKmPerLiter?: number; // consumo stimato, usato finché non ci sono abbastanza rifornimenti per calcolare quello reale
+  tollPerDay?: number; // pedaggi al giorno (andata e ritorno)
+  parkingPerDay?: number; // parcheggio al giorno di lavoro
+  otherPerMonth?: number; // altri costi al mese (ZTL, lavaggi...)
 }
 
-// Scenario ipotetico per confrontare veicoli/alimentazioni alternative (es. GPL, elettrico)
-export type CommuteFuelType = "benzina" | "diesel" | "gpl" | "elettrico" | "ibrido" | "ibrido_plugin";
+// Scenario ipotetico per confrontare alternative: un'altra auto (per alimentazione),
+// il car pooling con la propria auto, i mezzi pubblici, la bici o il monopattino.
+export type CommuteCarFuelType = "benzina" | "diesel" | "gpl" | "metano" | "elettrico" | "ibrido" | "ibrido_plugin";
+export type CommuteFuelType = CommuteCarFuelType | "carpooling" | "mezzi" | "bici";
 
 export interface CommuteScenario extends SyncFields {
   id: string;
   vehicleId: string; // veicolo "di riferimento" a cui è associato il confronto (per km/giorni tratta)
   fuelType: CommuteFuelType;
   note?: string; // nota personale opzionale (es. "usata, 3 anni")
-  kmPerUnit: number; // km percorribili con 1 litro (o 1 kWh)
-  pricePerUnit: number; // prezzo di 1 litro (o 1 kWh)
-  unit: "litro" | "kWh";
+  kmPerUnit: number; // km percorribili con 1 litro (o 1 kWh, 1 kg); 0 per gli scenari senza auto
+  pricePerUnit: number; // prezzo di 1 litro (o 1 kWh, 1 kg)
+  unit: "litro" | "kWh" | "kg";
+  priceDifference?: number; // differenza di prezzo dell'auto, per calcolare in quanti anni si rientra
+  people?: number; // car pooling: persone in auto, compreso chi guida
+  monthlyCost?: number; // mezzi pubblici (abbonamento) o bici/monopattino (noleggio, manutenzione)
+  extraMinutesPerTrip?: number; // tempo in più a tratta rispetto all'auto
 }
