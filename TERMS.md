@@ -6,7 +6,7 @@ In breve: Diario Auto ti aiuta a tenere in ordine i dati della tua auto. **Non u
 
 ## 1. Chi fornisce l'app
 
-Diario Auto ("l'app") è sviluppata e pubblicata da \[NOME E COGNOME DELLO SVILUPPATORE\], \[INDIRIZZO\], contatto: <mic.max.1000@gmail.com> ("lo sviluppatore"). L'app è distribuita tramite Google Play.
+Diario Auto ("l'app") è sviluppata e pubblicata dallo sviluppatore indicato nella scheda dell'app su Google Play ("lo sviluppatore"), dove trovi anche i suoi dati di contatto. Per qualsiasi richiesta puoi scrivere a <mic.max.1000@gmail.com>.
 
 ## 2. Accettazione
 
@@ -85,7 +85,7 @@ In short: Diario Auto helps you keep your car's records in order. **Do not use i
 
 ## 1. Who provides the app
 
-Diario Auto ("the app") is developed and published by \[DEVELOPER'S FULL NAME\], \[ADDRESS\], contact: <mic.max.1000@gmail.com> ("the developer"). The app is distributed through Google Play.
+Diario Auto ("the app") is developed and published by the developer shown on the app's Google Play page ("the developer"), where you can also find their contact details. For any request you can write to <mic.max.1000@gmail.com>.
 
 ## 2. Acceptance
 

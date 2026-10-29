@@ -1023,7 +1023,8 @@
     "notificationsOff": "Aus",
     "notificationsHintNative": "Erinnerung 30 und 7 Tage vorher und am Fälligkeitstag um 9 Uhr, auch bei geschlossener App. Kilometer-Fristen werden beim Öffnen der App geprüft.",
     "notificationsHintWeb": "Erhalte eine Erinnerung, wenn eine Frist naht oder überschritten ist (nur bei geöffneter App im Browser).",
-    "openNotificationSettings": "Benachrichtigungseinstellungen öffnen"
+    "openNotificationSettings": "Benachrichtigungseinstellungen öffnen",
+    "terms": "Nutzungsbedingungen"
   },
   "passport": {
     "generate": "Wartungspass",
@@ -1084,10 +1085,11 @@
       "Fristen, Erinnerungen und Kosten sind nur eine Hilfe: Die Verantwortung für HU, Inspektion, Versicherung und Kfz-Steuer bleibt bei dir.",
       "Die App wird „wie besehen“ ohne Gewähr bereitgestellt. Soweit gesetzlich zulässig, haftet der Autor nicht für Schäden am Fahrzeug, am Handy oder sonstige Schäden aus der Nutzung. Deine gesetzlichen Verbraucherrechte bleiben unberührt."
     ],
-    "check": "Ich habe die Hinweise gelesen und akzeptiere sie",
+    "check": "Ich habe die Hinweise und die Nutzungsbedingungen gelesen und akzeptiere sie",
     "accept": "Akzeptieren und fortfahren",
     "decline": "Ablehnen und beenden",
-    "declineNote": "Du musst die Hinweise akzeptieren, um die App zu nutzen."
+    "declineNote": "Du musst die Hinweise akzeptieren, um die App zu nutzen.",
+    "readAlso": "Lies auch:"
   },
   "utilities": {
     "title": "Werkzeuge"

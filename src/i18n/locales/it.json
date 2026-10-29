@@ -1023,7 +1023,8 @@
     "notificationsOff": "Disattivate",
     "notificationsHintNative": "Avviso 30 e 7 giorni prima e il giorno della scadenza, alle 9, anche ad app chiusa. Le scadenze a chilometri vengono controllate quando apri l'app.",
     "notificationsHintWeb": "Ricevi un avviso quando una scadenza è vicina o scaduta (solo con l'app aperta nel browser).",
-    "openNotificationSettings": "Apri impostazioni notifiche"
+    "openNotificationSettings": "Apri impostazioni notifiche",
+    "terms": "Termini d'uso"
   },
   "passport": {
     "generate": "Passaporto tagliandi",
@@ -1084,10 +1085,11 @@
       "Scadenze, promemoria e costi sono solo un aiuto: la responsabilità di revisione, tagliandi, assicurazione e bollo resta tua.",
       "L'app è fornita \"così com'è\", senza garanzie. Nei limiti consentiti dalla legge l'autore non risponde di danni al veicolo, al telefono o di altro tipo derivanti dall'uso. Restano salvi i diritti che la legge ti riconosce come consumatore."
     ],
-    "check": "Ho letto e accetto le avvertenze",
+    "check": "Ho letto e accetto le avvertenze e i termini d'uso",
     "accept": "Accetto e continuo",
     "decline": "Non accetto, esci",
-    "declineNote": "Per usare l'app devi accettare le avvertenze."
+    "declineNote": "Per usare l'app devi accettare le avvertenze.",
+    "readAlso": "Leggi anche:"
   },
   "utilities": {
     "title": "Utilità"

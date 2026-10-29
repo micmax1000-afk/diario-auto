@@ -4755,3 +4755,5 @@ textarea {
 .commute-form__delete { align-self: flex-start; }
 .commute-toggle button:disabled { opacity: 0.45; cursor: default; }
 .chart-legend__swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.disclaimer__docs { margin: 0 0 1rem; font-size: 0.9rem; }
+.disclaimer__docs a { color: var(--amber); font-weight: 600; }

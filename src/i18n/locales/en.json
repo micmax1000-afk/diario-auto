@@ -1023,7 +1023,8 @@
     "notificationsOff": "Off",
     "notificationsHintNative": "A reminder 30 and 7 days before and on the due date, at 9 am, even with the app closed. Mileage-based due dates are checked when you open the app.",
     "notificationsHintWeb": "Get a reminder when a due date is close or overdue (only while the app is open in the browser).",
-    "openNotificationSettings": "Open notification settings"
+    "openNotificationSettings": "Open notification settings",
+    "terms": "Terms of use"
   },
   "passport": {
     "generate": "Service history",
@@ -1084,10 +1085,11 @@
       "Deadlines, reminders and costs are only an aid: responsibility for inspections, servicing, insurance and road tax remains yours.",
       "The app is provided \"as is\", without warranties. To the extent permitted by law, the author is not liable for damage to the vehicle, the phone or any other damage arising from its use. Your statutory consumer rights are not affected."
     ],
-    "check": "I have read and accept the notices",
+    "check": "I have read and accept the warnings and the terms of use",
     "accept": "Accept and continue",
     "decline": "Decline and exit",
-    "declineNote": "You must accept the notices to use the app."
+    "declineNote": "You must accept the notices to use the app.",
+    "readAlso": "Also read:"
   },
   "utilities": {
     "title": "Utilities"

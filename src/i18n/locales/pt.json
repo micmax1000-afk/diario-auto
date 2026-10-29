@@ -1023,7 +1023,8 @@
     "notificationsOff": "Desativadas",
     "notificationsHintNative": "Aviso 30 e 7 dias antes e no dia do prazo, às 9h, mesmo com a app fechada. Os prazos por quilometragem são verificados ao abrir a app.",
     "notificationsHintWeb": "Receba um aviso quando um prazo estiver próximo ou ultrapassado (só com a app aberta no navegador).",
-    "openNotificationSettings": "Abrir definições de notificações"
+    "openNotificationSettings": "Abrir definições de notificações",
+    "terms": "Termos de utilização"
   },
   "passport": {
     "generate": "Passaporte de revisões",
@@ -1084,10 +1085,11 @@
       "Prazos, lembretes e custos são apenas uma ajuda: a responsabilidade pela inspeção, revisões, seguro e imposto de circulação continua a ser sua.",
       "A app é fornecida \"como está\", sem garantias. Na medida permitida por lei, o autor não responde por danos ao veículo, ao telemóvel ou outros decorrentes do uso. Os seus direitos legais como consumidor não são afetados."
     ],
-    "check": "Li e aceito os avisos",
+    "check": "Li e aceito os avisos e os termos de utilização",
     "accept": "Aceitar e continuar",
     "decline": "Não aceito, sair",
-    "declineNote": "Tem de aceitar os avisos para usar a app."
+    "declineNote": "Tem de aceitar os avisos para usar a app.",
+    "readAlso": "Leia também:"
   },
   "utilities": {
     "title": "Utilitários"

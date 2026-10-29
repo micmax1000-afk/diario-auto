@@ -1023,7 +1023,8 @@
     "notificationsOff": "Desactivadas",
     "notificationsHintNative": "Aviso 30 y 7 días antes y el día del vencimiento, a las 9, incluso con la app cerrada. Los vencimientos por kilometraje se comprueban al abrir la app.",
     "notificationsHintWeb": "Recibe un aviso cuando un vencimiento esté cerca o vencido (solo con la app abierta en el navegador).",
-    "openNotificationSettings": "Abrir ajustes de notificaciones"
+    "openNotificationSettings": "Abrir ajustes de notificaciones",
+    "terms": "Términos de uso"
   },
   "passport": {
     "generate": "Historial de mantenimiento (PDF)",
@@ -1084,10 +1085,11 @@
       "Vencimientos, recordatorios y costes son solo una ayuda: la responsabilidad de la ITV, las revisiones, el seguro y los impuestos es tuya.",
       "La app se ofrece \"tal cual\", sin garantías. En la medida permitida por la ley, el autor no responde de daños al vehículo, al teléfono o de otro tipo derivados del uso. No se afectan tus derechos legales como consumidor."
     ],
-    "check": "He leído y acepto los avisos",
+    "check": "He leído y acepto las advertencias y los términos de uso",
     "accept": "Aceptar y continuar",
     "decline": "No acepto, salir",
-    "declineNote": "Debes aceptar los avisos para usar la app."
+    "declineNote": "Debes aceptar los avisos para usar la app.",
+    "readAlso": "Lee también:"
   },
   "utilities": {
     "title": "Utilidades"
