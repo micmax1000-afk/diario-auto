@@ -99,7 +99,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
   } else {
     const source = mainFuelSource(vehicle.fuelType);
     const points = calculateConsumption(fuelEntries).filter((p) => !source || p.source === source);
-    const kmPerLiter = averageConsumption(points);
+    const kmPerLiter = averageConsumption(points); // già filtrati per alimentazione
     if (kmPerLiter && kmPerLiter > 0) realConsumption = { kmPerUnit: kmPerLiter, count: points.length };
   }
   const usingEstimate = !realConsumption && !!settings.estimatedKmPerLiter;
@@ -327,7 +327,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
         </button>
       </div>
 
-      {!year && <p className="empty-state__body">{t("commute.setupFirst")}</p>}
+      {!isConfigured && <p className="empty-state__body">{t("commute.setupFirst")}</p>}
 
       {year && scenarios.length === 0 && (
         <p className="empty-state__body">{t("commute.noScenarios", { name: vehicle.name })}</p>

@@ -44,7 +44,10 @@ export default function CommuteSettingsForm({ initial, unit, autoPrice, realCons
   // Prezzo a mano solo se l'utente l'ha scelto, o se non ci sono rifornimenti da cui prenderlo.
   const [manualPrice, setManualPrice] = useState(!autoPrice || !!initial.manualPrice);
   const [fuelPrice, setFuelPrice] = useState(
-    String(initial.fuelPricePerLiter || (autoPrice ? Math.round(autoPrice.price * 1000) / 1000 : "")),
+    // "Cambia" parte dal prezzo che si vede: quello automatico, se è quello in uso.
+    String(
+      (initial.manualPrice || !autoPrice ? initial.fuelPricePerLiter : Math.round(autoPrice.price * 1000) / 1000) || "",
+    ),
   );
   // Consumo stimato: salvato in km per unità, chiesto in unità ogni 100 km.
   const [estimate, setEstimate] = useState(
@@ -75,7 +78,8 @@ export default function CommuteSettingsForm({ initial, unit, autoPrice, realCons
     const otherN = optionalNumber(other);
     if (tollN === null || parkingN === null || otherN === null) return setError(t("commuteSettingsForm.errorExtra"));
 
-    let price = initial.fuelPricePerLiter;
+    // Con il prezzo automatico si salva comunque l'ultimo valore: serve se poi i rifornimenti vengono eliminati.
+    let price = autoPrice ? autoPrice.price : initial.fuelPricePerLiter;
     if (manualPrice) {
       price = Number(fuelPrice.replace(",", "."));
       if (Number.isNaN(price) || price <= 0) {
