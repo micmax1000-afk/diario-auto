@@ -935,7 +935,19 @@
     "alreadyUnlockedBody": "You have already purchased the unlock for this Google Play account. Thank you for your support!",
     "topbarCta": "Upgrade to Pro",
     "unavailableTitleNative": "Google Play is currently unavailable",
-    "unavailableBodyNative": "Make sure you're connected to the internet and signed in with a Google account in the Play Store, then try again. If the app hasn't been published yet (not even in internal testing), in-app purchases won't work until it is."
+    "unavailableBodyNative": "Make sure you're connected to the internet and signed in with a Google account in the Play Store, then try again. If the app hasn't been published yet (not even in internal testing), in-app purchases won't work until it is.",
+    "benefits": {
+      "vehiclesTitle": "Unlimited vehicles",
+      "vehiclesBody": "The free version lets you keep 2 active vehicles.",
+      "fleetTitle": "All vehicles together",
+      "fleetBody": "Compare spending, cost per km and consumption across the family.",
+      "passportTitle": "Service passport",
+      "passportBody": "A PDF with the maintenance history, handy when you sell the car.",
+      "csvTitle": "CSV export",
+      "csvBody": "Refuels, maintenance and expenses in a spreadsheet.",
+      "driveTitle": "Google Drive backup",
+      "driveBody": "Save your data to your Drive, automatically too."
+    }
   },
   "bodyType": {
     "citycar": "City car",
@@ -1124,7 +1136,8 @@
     "last12": "Last 12 months",
     "costPerKm": "Cost/km",
     "urgent": "Urgent",
-    "hint": "Tap a vehicle to open it."
+    "hint": "Tap a vehicle to open it.",
+    "allVehicles": "All vehicles"
   },
   "photoCrop": {
     "title": "Frame the photo",

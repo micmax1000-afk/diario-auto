@@ -932,7 +932,19 @@
     "alreadyUnlockedBody": "Anda sudah membeli Pro di akun Google Play ini. Terima kasih atas dukungannya!",
     "topbarCta": "Upgrade ke Pro",
     "unavailableTitleNative": "Google Play sedang tidak dapat diakses saat ini",
-    "unavailableBodyNative": "Pastikan Anda terhubung ke internet dan telah masuk menggunakan akun Google di Play Store, lalu coba lagi. Jika aplikasi tersebut belum dirilis (bahkan dalam tahap pengujian internal), fitur pembelian tidak akan berfungsi sampai aplikasi tersebut dirilis."
+    "unavailableBodyNative": "Pastikan Anda terhubung ke internet dan telah masuk menggunakan akun Google di Play Store, lalu coba lagi. Jika aplikasi tersebut belum dirilis (bahkan dalam tahap pengujian internal), fitur pembelian tidak akan berfungsi sampai aplikasi tersebut dirilis.",
+    "benefits": {
+      "vehiclesTitle": "Kendaraan tanpa batas",
+      "vehiclesBody": "Versi gratis memungkinkan 2 kendaraan aktif.",
+      "fleetTitle": "Semua kendaraan sekaligus",
+      "fleetBody": "Bandingkan biaya, biaya per km, dan konsumsi seluruh keluarga.",
+      "passportTitle": "Paspor servis",
+      "passportBody": "PDF riwayat perawatan, berguna saat menjual mobil.",
+      "csvTitle": "Ekspor CSV",
+      "csvBody": "Pengisian, perawatan, dan biaya dalam spreadsheet.",
+      "driveTitle": "Cadangan Google Drive",
+      "driveBody": "Simpan data ke Drive Anda, juga otomatis."
+    }
   },
   "bodyType": {
     "citycar": "Mobil kota",
@@ -1121,7 +1133,8 @@
     "last12": "12 bulan terakhir",
     "costPerKm": "Biaya/km",
     "urgent": "Mendesak",
-    "hint": "Ketuk kendaraan untuk membukanya."
+    "hint": "Ketuk kendaraan untuk membukanya.",
+    "allVehicles": "Semua kendaraan"
   },
   "photoCrop": {
     "title": "Atur bingkai foto",

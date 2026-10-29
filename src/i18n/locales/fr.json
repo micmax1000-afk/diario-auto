@@ -935,7 +935,19 @@
     "alreadyUnlockedBody": "Vous avez déjà acheté le déblocage sur ce compte Google Play. Merci pour votre soutien !",
     "topbarCta": "Passer à Pro",
     "unavailableTitleNative": "Google Play est actuellement indisponible",
-    "unavailableBodyNative": "Vérifiez que vous êtes connecté à Internet et à un compte Google dans le Play Store, puis réessayez. Si l'application n'est pas encore publiée (même en test interne), les achats ne fonctionneront pas tant qu'elle ne le sera pas."
+    "unavailableBodyNative": "Vérifiez que vous êtes connecté à Internet et à un compte Google dans le Play Store, puis réessayez. Si l'application n'est pas encore publiée (même en test interne), les achats ne fonctionneront pas tant qu'elle ne le sera pas.",
+    "benefits": {
+      "vehiclesTitle": "Véhicules illimités",
+      "vehiclesBody": "La version gratuite permet 2 véhicules actifs.",
+      "fleetTitle": "Tous les véhicules ensemble",
+      "fleetBody": "Comparez dépenses, coût au km et consommation de toute la famille.",
+      "passportTitle": "Carnet d'entretien",
+      "passportBody": "Un PDF avec l'historique d'entretien, utile pour vendre la voiture.",
+      "csvTitle": "Export CSV",
+      "csvBody": "Pleins, entretiens et dépenses dans un tableur.",
+      "driveTitle": "Sauvegarde Google Drive",
+      "driveBody": "Enregistrez vos données sur votre Drive, aussi automatiquement."
+    }
   },
   "bodyType": {
     "citycar": "Citadine",
@@ -1124,7 +1136,8 @@
     "last12": "12 derniers mois",
     "costPerKm": "Coût/km",
     "urgent": "Urgents",
-    "hint": "Touchez un véhicule pour l'ouvrir."
+    "hint": "Touchez un véhicule pour l'ouvrir.",
+    "allVehicles": "Tous les véhicules"
   },
   "photoCrop": {
     "title": "Cadrer la photo",

@@ -1420,3 +1420,150 @@ body {
 .reminder-item--completed { flex-wrap: wrap; }
 .reminder-completed { font-family: var(--font-body); }
 .notif-status { border-radius: 14px; }
+
+/* =====================================================================
+   Tappa 4: prima apertura, Pro, Tutti i veicoli, riquadri vuoti
+   ===================================================================== */
+/* Scelta lingua */
+.language-picker { background: var(--bg); color: var(--text); }
+.language-picker__header { padding-inline: 1.15rem; }
+.language-picker__header h1 {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  color: var(--text);
+}
+.language-picker__list {
+  margin: 0 1rem;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.language-picker__row { color: var(--text); font-weight: 600; border-bottom-color: var(--border); }
+.language-picker__list li:last-child .language-picker__row { border-bottom: none; }
+.language-picker__row svg { color: var(--amber); }
+.language-picker__footer { background: var(--bg); border-top: none; }
+.language-picker__currency { color: var(--text-muted); font-family: var(--font-body); text-transform: none; letter-spacing: 0; }
+.language-picker__currency select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-height: 46px;
+}
+.language-picker__ok,
+.disclaimer__accept,
+.welcome-guide__next { border-radius: 16px; padding: 0.95rem; font-size: 1rem; }
+
+/* Avvertenze */
+.disclaimer { background: var(--bg); color: var(--text); }
+.disclaimer__body h1 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em; text-transform: none; }
+.disclaimer__list {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 1rem 1rem 1rem 2.2rem;
+}
+[dir="rtl"] .disclaimer__list { padding: 1rem 2.2rem 1rem 1rem; }
+.disclaimer__list li::marker { color: var(--amber); font-weight: 800; }
+.disclaimer__check {
+  align-items: center;
+  padding: 0.8rem 0.9rem;
+  border-radius: 14px;
+  background: var(--amber-soft);
+  cursor: pointer;
+}
+.disclaimer__check input { margin-top: 0; width: 1.3rem; height: 1.3rem; accent-color: var(--amber); }
+.disclaimer__footer { border-top: 1px solid var(--border); background: var(--bg); }
+
+/* Guida iniziale */
+.welcome-guide__cars { display: flex; align-items: flex-end; justify-content: center; gap: 0; margin-bottom: 1.2rem; }
+.welcome-guide__cars svg { width: 104px; height: auto; }
+.welcome-guide__cars svg:nth-child(2) { width: 132px; margin: 0 -10px; position: relative; z-index: 1; }
+.welcome-guide__icon { border-radius: 24px; }
+.welcome-guide__body h1 { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.03em; text-transform: none; }
+.welcome-guide__skip { font-family: var(--font-body); font-weight: 650; text-transform: none; letter-spacing: 0; }
+
+/* Riquadri vuoti: scheda morbida al posto del bordo tratteggiato */
+.empty-state {
+  margin: 1rem auto;
+  padding: 1.8rem 1.3rem;
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+}
+.empty-state__title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; text-transform: none; }
+.modal .empty-state { box-shadow: none; background: var(--surface-alt); margin: 0.5rem 0; }
+
+/* Tragitto: titoli delle sezioni del modulo */
+.commute-form__section {
+  margin: 0.8rem 0 -0.1rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text);
+}
+
+/* Pro */
+.premium-benefits {
+  list-style: none;
+  margin: 0.2rem 0 1rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-card);
+  background: var(--amber-soft);
+}
+.premium-benefits li { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.55rem 0; }
+.premium-benefits li + li { border-top: 1px solid color-mix(in srgb, var(--amber) 20%, transparent); }
+.premium-benefits__check {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--amber);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.premium-benefits b { display: block; font-size: 0.92rem; }
+.premium-benefits small { display: block; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
+
+/* Tutti i veicoli */
+.fleet-stats { max-width: 560px; margin: 0 auto; }
+.fleet-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.8rem; }
+.fleet-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-card);
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  padding: 0.75rem 0.9rem 0.85rem;
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.fleet-card__top { display: flex; align-items: center; gap: 0.7rem; }
+.fleet-card__thumb { width: 64px; height: 40px; flex: none; border-radius: 12px; background: var(--surface-alt); display: grid; place-items: center; overflow: hidden; padding: 2px 3px; }
+.fleet-card__thumb svg { width: 100%; height: 100%; }
+.fleet-card__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.fleet-card__name { flex: 1; min-width: 0; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fleet-card__total { flex: none; font-size: 1.05rem; font-weight: 800; }
+.fleet-card__bar { height: 6px; border-radius: 3px; background: var(--surface-alt); overflow: hidden; }
+.fleet-card__bar i { display: block; height: 100%; border-radius: 3px; }
+.fleet-card__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; font-size: 0.72rem; color: var(--text-muted); }
+.fleet-card__grid span { display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.fleet-card__grid b { font-size: 0.95rem; font-weight: 800; color: var(--text); }
+.fleet-card__grid b.is-urgent { color: var(--danger); }
+.fleet-card__grid b.is-ok { color: var(--green-ink); }
+.fleet-stats__hint { text-align: center; font-size: 0.8rem; color: var(--text-muted); }

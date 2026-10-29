@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isRtlLanguage } from "../i18n";
 import ActionGridIcon from "./ActionGridIcon";
+import CartoonCar from "./CartoonCar";
 import { useBackButtonClose } from "../utils/backButtonStack";
 
 interface Props {
@@ -41,6 +42,13 @@ export default function WelcomeGuide({ onDone }: Props) {
         )}
       </div>
       <div className="welcome-guide__body" key={current.key}>
+        {step === 0 && (
+          <span className="welcome-guide__cars" aria-hidden="true">
+            <CartoonCar bodyType="citycar" color="#3fb36b" />
+            <CartoonCar bodyType="suv" color="#3b7ddd" />
+            <CartoonCar bodyType="hatchback" color="#f5901f" />
+          </span>
+        )}
         <span className="welcome-guide__icon">
           <ActionGridIcon name={current.icon} />
         </span>
