@@ -119,7 +119,10 @@
     "chargesSubtitle": "Charging and energy use",
     "newFuel": "New refuel",
     "newCharge": "New charge",
-    "fuelTitle": "Refuels"
+    "fuelTitle": "Refuels",
+    "expensesTitle": "Expenses",
+    "newExpense": "New expense",
+    "newReminder": "New deadline"
   },
   "fuel": {
     "title": "Refuels",

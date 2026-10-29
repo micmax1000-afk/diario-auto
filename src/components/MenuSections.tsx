@@ -91,7 +91,7 @@ export default function MenuSections({
           <h2 className="menu-sect">{t("utilities.title")}</h2>
           <div className="menu-list">
             {row("route", t("detail.tabs.commute"), t("menu.commuteSub"), onOpenCommute)}
-            {row("wallet", t("expenses.title"), t("menu.expensesSub"), onOpenExpenses)}
+            {row("wallet", t("detail.expensesTitle"), t("menu.expensesSub"), onOpenExpenses)}
             {row("chart", t("kmHistory.title"), t("menu.kmSub"), onOpenKmHistory)}
             {row("calendar", t("dashboardGarage.deadlines"), t("menu.remindersSub"), onOpenReminders)}
           </div>

@@ -61,9 +61,14 @@ export default function ReminderList({ reminders, currentKm, onToggleComplete, o
               }
             }}
           >
-            <div className="reminder-item__badge">{STATUS_LABELS[status]}</div>
+            <span className={`reminder-item__dot reminder-item__dot--${status}`} aria-hidden="true">
+              {status === "ok" ? "✓" : "!"}
+            </span>
             <div className="reminder-item__body">
-              <span className="reminder-item__label">{reminder.label}</span>
+              <span className="reminder-item__label">
+                {reminder.label}
+                <span className={`reminder-item__badge reminder-item__badge--${status}`}>{STATUS_LABELS[status]}</span>
+              </span>
               <span className="reminder-item__due">
                 {reminder.dueDate
                   ? new Date(reminder.dueDate).toLocaleDateString(getNumberLocale(i18n.language))

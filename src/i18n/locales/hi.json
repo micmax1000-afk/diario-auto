@@ -119,7 +119,10 @@
     "chargesSubtitle": "चार्जिंग और ऊर्जा खपत",
     "newFuel": "नया ईंधन",
     "newCharge": "नई चार्जिंग",
-    "fuelTitle": "ईंधन भराई"
+    "fuelTitle": "ईंधन भराई",
+    "expensesTitle": "खर्च",
+    "newExpense": "नया खर्च",
+    "newReminder": "नई समय-सीमा"
   },
   "fuel": {
     "title": "ईंधन भराई",

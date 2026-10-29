@@ -1123,3 +1123,300 @@ body {
 .skgrid__icon svg { width: 18px; height: 18px; }
 .chart-wrap { border: none; border-radius: var(--radius-card); box-shadow: var(--shadow-card); margin-top: 0.8rem; }
 .summary-insight { margin: 0.8rem 0 1rem; border: none; border-radius: 14px; background: var(--green-soft); }
+
+/* =====================================================================
+   Tappa 3: moduli come fogli dal basso
+   ===================================================================== */
+.modal-overlay {
+  align-items: flex-end;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.45);
+  animation: sheet-fade 0.18s ease;
+}
+.modal {
+  position: relative;
+  max-width: 560px;
+  max-height: 92vh;
+  border-radius: 26px 26px 0 0;
+  padding-bottom: env(safe-area-inset-bottom);
+  animation: modal-up 0.22s ease;
+}
+.modal::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--border);
+  margin: 0.6rem auto 0;
+}
+@keyframes modal-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .modal, .modal-overlay { animation: none; } }
+.modal__header { padding: 0.6rem 1.15rem 0.4rem; gap: 0.75rem; }
+.modal__header h2 { font-size: 1.3rem; letter-spacing: -0.02em; }
+.modal__close {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  padding: 0;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
+}
+.modal .vehicle-form,
+.modal form { padding-inline: 1.15rem; }
+.vehicle-form { gap: 0.85rem; }
+
+/* Campi */
+.field { gap: 0.35rem; }
+.field label {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-muted);
+}
+.field input,
+.field select,
+.field textarea {
+  min-height: 46px;
+  padding: 0.65rem 0.8rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+.field textarea { min-height: 0; }
+.field input:disabled,
+.field input[readonly] {
+  background: var(--surface-alt);
+  border-color: transparent;
+  color: var(--text);
+  font-weight: 700;
+  opacity: 1;
+}
+.field-row,
+.modal .field-row { flex-direction: row; flex-wrap: wrap; gap: 0.65rem; }
+.field-row > .field { flex: 1 1 130px; min-width: 0; }
+
+/* Caselle sì/no come interruttori */
+.field--checkbox label {
+  justify-content: space-between;
+  flex-direction: row-reverse;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.55rem 0.9rem;
+  border-radius: 14px;
+  background: var(--surface-alt);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+}
+.field--checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 48px;
+  height: 28px;
+  margin: 0;
+  min-height: 0;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--text) 22%, transparent);
+  position: relative;
+  cursor: pointer;
+  transition: background 0.18s ease;
+}
+.field--checkbox input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease;
+}
+.field--checkbox input[type="checkbox"]:checked { background: var(--green); }
+.field--checkbox input[type="checkbox"]:checked::after { transform: translateX(20px); }
+[dir="rtl"] .field--checkbox input[type="checkbox"]:checked::after { transform: translateX(-20px); }
+.field--checkbox input[type="checkbox"]:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+/* Pulsanti sempre visibili in fondo al foglio */
+.modal .vehicle-form { padding-bottom: 0; }
+.modal form .modal__actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: 0.4rem -1.15rem 0;
+  padding: 0.75rem 1.15rem calc(0.9rem + env(safe-area-inset-bottom));
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  flex-wrap: nowrap;
+}
+.modal form .modal__actions .btn { flex: 1; justify-content: center; }
+.modal form .modal__actions .btn--primary { flex: 2; }
+.modal form .modal__actions .modal__delete { flex: 0 0 auto; margin-inline-end: auto; }
+.form-error { border-radius: 12px; }
+
+.modal > .modal__actions,
+.catalog-picker .modal__actions { flex-wrap: nowrap; padding: 0.4rem 1.15rem 1.1rem !important; }
+.modal > .modal__actions .btn,
+.catalog-picker .modal__actions .btn { flex: 1; justify-content: center; }
+.field input[type="file"] { padding: 0.5rem; font-size: 0.85rem; }
+.field input[type="file"]::file-selector-button {
+  margin-inline-end: 0.7rem;
+  padding: 0.45rem 0.8rem;
+  border: none;
+  border-radius: 10px;
+  background: var(--surface-alt);
+  color: var(--text);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+/* ---------- Intestazione delle pagine secondarie (Menu, Backup, rapido, km) ---------- */
+.quick-entry-page__header {
+  background: var(--bg);
+  border-bottom: none;
+  padding: 0.7rem 1rem 0.5rem;
+  gap: 0.7rem;
+}
+.quick-entry-page__header h1,
+.quick-entry-page__header--blue h1 {
+  text-align: start;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+}
+.quick-entry-page__back,
+.quick-entry-page__header--blue .quick-entry-page__back {
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.quick-entry-page__header-spacer { display: none; }
+.settings-embedded .menu-sect:first-of-type { margin-top: 0.6rem; }
+
+/* Pagine rapide */
+.quick-entry-card,
+.quick-entry-calc,
+.quick-entry-input {
+  border: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.quick-entry-page__section-label { text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-weight: 600; }
+.quick-entry-calc__title { text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-weight: 700; color: var(--text); }
+.quick-entry-page__save { border-radius: 16px; font-family: var(--font-body); text-transform: none; letter-spacing: 0; font-weight: 700; }
+.quick-entry-field.field--checkbox label { background: var(--card); box-shadow: var(--shadow-card); }
+
+/* Cronologia km */
+.km-history-list {
+  gap: 0;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.km-history-row { border: none; border-radius: 0; box-shadow: none; padding: 0.75rem 1rem; }
+.km-history-row + .km-history-row { border-top: 1px solid var(--border); }
+.km-history-row strong { font-family: var(--font-body); font-weight: 750; }
+.km-history-chart { border: none; box-shadow: var(--shadow-card); }
+.km-history-add {
+  border: none;
+  border-radius: 16px;
+  background: var(--amber);
+  color: #fff;
+  padding: 0.9rem;
+  font: inherit;
+  font-weight: 700;
+}
+
+/* Backup */
+.backup-panel {
+  border: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 1.1rem;
+}
+.backup-panel__status { font-family: var(--font-body); }
+.backup-panel__hint { border-top: 1px solid var(--border); }
+.backup-panel__message { border-radius: 12px; }
+.content > section > .quick-entry-page__header { margin: -0.5rem -0.25rem 0.6rem; padding-inline: 0; position: static; }
+
+/* Spese e Scadenze */
+.big-btn--purple { background: var(--purple); }
+.mlist--spaced { margin-top: 0.8rem; }
+.sbreak--flat { margin-top: 0.75rem; padding: 0.7rem 0 0; background: none; box-shadow: none; border-radius: 0; border-top: 1px solid var(--border); }
+
+.reminder-list { gap: 0.55rem; }
+.reminder-item,
+.reminder-item--ok,
+.reminder-item--soon,
+.reminder-item--overdue {
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0.75rem;
+  border: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 0.75rem 0.9rem;
+}
+.reminder-item__dot {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  background: var(--green-soft);
+  color: var(--green-ink);
+}
+.reminder-item__dot--soon { background: var(--amber-soft); color: var(--amber-ink); }
+.reminder-item__dot--overdue { background: var(--red-soft); color: var(--danger); }
+.reminder-item__body { min-width: 0; }
+.reminder-item__label { display: flex; align-items: center; flex-wrap: wrap; gap: 0.4rem; font-weight: 700; }
+.reminder-item__badge,
+.reminder-item--overdue .reminder-item__badge,
+.reminder-item--soon .reminder-item__badge,
+.reminder-item--ok .reminder-item__badge {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green-ink);
+}
+.reminder-item--soon .reminder-item__badge { background: var(--amber-soft); color: var(--amber-ink); }
+.reminder-item--overdue .reminder-item__badge { background: var(--red-soft); color: var(--danger); }
+.reminder-item__due { font-family: var(--font-body); }
+.reminder-item__actions,
+.reminder-completed .reminder-item__actions { width: auto; flex: none; }
+.reminder-item--completed { flex-wrap: wrap; }
+.reminder-completed { font-family: var(--font-body); }
+.notif-status { border-radius: 14px; }

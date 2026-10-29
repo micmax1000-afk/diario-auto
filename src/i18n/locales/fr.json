@@ -119,7 +119,10 @@
     "chargesSubtitle": "Recharges et consommation d'énergie",
     "newFuel": "Nouveau plein",
     "newCharge": "Nouvelle recharge",
-    "fuelTitle": "Pleins"
+    "fuelTitle": "Pleins",
+    "expensesTitle": "Dépenses",
+    "newExpense": "Nouvelle dépense",
+    "newReminder": "Nouvelle échéance"
   },
   "fuel": {
     "title": "Pleins",

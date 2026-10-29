@@ -119,7 +119,10 @@
     "chargesSubtitle": "Зарядки и расход энергии",
     "newFuel": "Новая заправка",
     "newCharge": "Новая зарядка",
-    "fuelTitle": "Заправки"
+    "fuelTitle": "Заправки",
+    "expensesTitle": "Расходы",
+    "newExpense": "Новый расход",
+    "newReminder": "Новый срок"
   },
   "fuel": {
     "title": "Заправки",
