@@ -108,7 +108,9 @@ export default function Dashboard({
     const card = el?.firstElementChild as HTMLElement | null;
     if (!el || !card) return;
     const step = card.offsetWidth + 12;
-    if (Math.abs(el.scrollLeft - currentIndex * step) > 4) el.scrollLeft = currentIndex * step;
+    // In arabo (da destra a sinistra) scrollLeft va verso i negativi.
+    const target = (getComputedStyle(el).direction === "rtl" ? -1 : 1) * currentIndex * step;
+    if (Math.abs(el.scrollLeft - target) > 4) el.scrollLeft = target;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentIndex, activeVehicles.length]);
   const scrollTimer = useRef<number | undefined>(undefined);
@@ -118,7 +120,7 @@ export default function Dashboard({
       const el = carouselRef.current;
       const card = el?.firstElementChild as HTMLElement | null;
       if (!el || !card) return;
-      const i = Math.round(el.scrollLeft / (card.offsetWidth + 12));
+      const i = Math.round(Math.abs(el.scrollLeft) / (card.offsetWidth + 12));
       const v = activeVehicles[i];
       if (v && v.id !== current?.id) onSelectVehicle(v.id);
     }, 120);

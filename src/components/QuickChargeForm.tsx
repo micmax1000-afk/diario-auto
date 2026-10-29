@@ -8,7 +8,7 @@ import { useAppSettings } from "../contexts/AppSettingsContext";
 import { formatCurrency, getCurrencySymbol } from "../utils/settings";
 import QuickEntryHeader from "./QuickEntryHeader";
 import ActionGridIcon from "./ActionGridIcon";
-import VehicleSwitcher from "./VehicleSwitcher";
+import VehicleHeader from "./VehicleHeader";
 import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 interface Props {
@@ -100,16 +100,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
 
       <form onSubmit={handleSubmit} className="quick-entry-page__body">
         {vehicles && vehicles.length > 1 && colors && onChangeVehicle && (
-          <div>
-            <p className="quick-entry-page__section-label">{t("quickEntry.vehicleLabel", "Veicolo")}</p>
-            <VehicleSwitcher
-              vehicles={vehicles}
-              currentId={vehicle.id}
-              colors={colors}
-              urgentCounts={urgentCounts}
-              onSelect={onChangeVehicle}
-            />
-          </div>
+          <VehicleHeader vehicle={vehicle} vehicles={vehicles} colors={colors} urgentCounts={urgentCounts} onSelect={onChangeVehicle} />
         )}
         <div className="quick-entry-card">
           <div className="quick-entry-card__title-row">

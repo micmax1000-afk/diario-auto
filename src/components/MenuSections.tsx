@@ -59,7 +59,7 @@ export default function MenuSections({
     <>
       <h2 className="menu-sect">
         {t("menu.garage")}
-        {!isPro && <span className="menu-sect__count"> {vehicles.length}/{FREE_VEHICLE_LIMIT}</span>}
+        {!isPro && vehicles.length <= FREE_VEHICLE_LIMIT && <span className="menu-sect__count"> {vehicles.length}/{FREE_VEHICLE_LIMIT}</span>}
       </h2>
       <div className="menu-garage">
         {vehicles.map((v) => (

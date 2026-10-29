@@ -13,7 +13,8 @@ interface Props {
   vehicles?: Vehicle[];
   colors?: Record<string, string>;
   urgentCounts?: Record<string, number>;
-  onBack: () => void;
+  /** Senza onBack mostra solo il veicolo (es. sotto il titolo delle pagine rapide). */
+  onBack?: () => void;
   onSelect?: (vehicleId: string) => void;
   /** Voce in cima all'elenco (es. "Tutti i veicoli" nelle statistiche). */
   leading?: { label: string; sub: string; onClick: () => void; badge?: string };
@@ -39,12 +40,14 @@ export default function VehicleHeader({ vehicle, vehicles = [], colors = {}, urg
 
   return (
     <>
-      <div className="vhead">
-        <button type="button" className="vhead__back" onClick={onBack} aria-label={t("detail.back")} title={t("detail.back")}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d={isRtlLanguage(i18n.language) ? "m9 18 6-6-6-6" : "m15 18-6-6 6-6"} />
-          </svg>
-        </button>
+      <div className={`vhead${onBack ? "" : " vhead--inline"}`}>
+        {onBack && (
+          <button type="button" className="vhead__back" onClick={onBack} aria-label={t("detail.back")} title={t("detail.back")}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d={isRtlLanguage(i18n.language) ? "m9 18 6-6-6-6" : "m15 18-6-6 6-6"} />
+            </svg>
+          </button>
+        )}
         <button
           type="button"
           className="vhead__chip"
@@ -57,7 +60,7 @@ export default function VehicleHeader({ vehicle, vehicles = [], colors = {}, urg
             <Thumb vehicle={vehicle} color={colors[vehicle.id] ?? "#4f9dff"} />
           </span>
           <span className="vhead__text">
-            <h1 className="vhead__name">{vehicle.name}</h1>
+            {onBack ? <h1 className="vhead__name">{vehicle.name}</h1> : <span className="vhead__name">{vehicle.name}</span>}
             <span className="vhead__sub">{sub(vehicle)}</span>
           </span>
           {urgent > 0 && <span className="vhead__badge">{urgent > 9 ? "9+" : urgent}</span>}

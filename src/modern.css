@@ -59,31 +59,24 @@ body {
 }
 
 /* ---------- Titoli: niente più maiuscolo da insegna ---------- */
-.topbar__title,
 .section-head h1,
 .empty-state__title,
 .vehicle-card__name,
 .modal__header h2,
-.month-group__label,
 .archived-section__title,
-.dash-vehicles__head h2,
-.dash-featured-vehicle__name,
 .upcoming-reminders__head h2,
-.detail-header__name,
 .commute-total__value {
   text-transform: none;
   letter-spacing: -0.02em;
   font-weight: 800;
 }
 .arc-gauge__value,
-.live-card__value,
-.gauge-cluster__value {
+.live-card__value {
   letter-spacing: -0.02em;
   font-weight: 800;
 }
 .section-head h1 { font-size: 1.7rem; }
 .modal__header h2 { font-size: 1.35rem; }
-.month-group__label { font-size: 0.95rem; color: var(--text); }
 
 /* ---------- Pulsanti ---------- */
 .btn {
@@ -115,24 +108,14 @@ body {
 .chart-wrap,
 .backup-panel,
 .obd-status-bar,
-.dtc-panel,
 .obd-block,
 .obd-vin,
 .archived-item,
-.dash-card,
-.dash-featured-vehicle,
-.dash-gauge-card,
 .upcoming-reminders,
 .quick-entry-card,
-.fc-list__summary-item,
-.fc-item,
 .settings-row,
 .km-history-chart,
 .km-history-row,
-.dash-quick__item,
-.dash-month__grid,
-.dash-ccard,
-.fleet-stats__card,
 .commute-total,
 .commute-card,
 .catalog-list__item,
@@ -149,7 +132,6 @@ body {
 .field textarea,
 .quick-entry-input,
 .settings-subfield select,
-.fc-list__period select,
 .maintenance-category-filter select {
   border-radius: 12px;
   border: 1px solid var(--border);
@@ -164,7 +146,6 @@ body {
 
 /* Etichette piccole maiuscole: più leggere */
 .stat-chip__label,
-.record-card__row-label,
 .field label {
   letter-spacing: 0.04em;
 }
@@ -1567,3 +1548,79 @@ body {
 .fleet-card__grid b.is-urgent { color: var(--danger); }
 .fleet-card__grid b.is-ok { color: var(--green-ink); }
 .fleet-stats__hint { text-align: center; font-size: 0.8rem; color: var(--text-muted); }
+
+/* =====================================================================
+   Rifiniture: veicolo nelle pagine rapide, cruscotto OBD, grafici
+   ===================================================================== */
+.vhead--inline { position: static; padding: 0; background: none; }
+
+/* Cruscotto OBD con i colori del tema */
+.live-dash { background: none; padding: 0; color: var(--text); }
+.live-dash .obd-hint { color: var(--text-muted); }
+.live-hero {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 0.8rem 0.6rem 0.6rem;
+}
+.arc-gauge__track { stroke: var(--surface-alt); }
+.arc-gauge__tick { stroke: var(--text-muted); opacity: 0.6; }
+.arc-gauge__value { font-family: var(--font-body); font-weight: 800; fill: var(--text); }
+.arc-gauge__unit { font-family: var(--font-body); fill: var(--text-muted); }
+.arc-gauge__label { font-family: var(--font-body); font-size: 0.78rem; font-weight: 650; letter-spacing: 0; text-transform: none; color: var(--text-muted); }
+.live-group-title { font-family: var(--font-body); font-size: 0.95rem; font-weight: 800; letter-spacing: -0.01em; text-transform: none; color: var(--text); }
+.live-card { background: var(--card); box-shadow: var(--shadow-card); border-radius: 16px; }
+.live-card__label { font-family: var(--font-body); font-size: 0.74rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text-muted); }
+.live-card__value { font-family: var(--font-body); font-weight: 800; font-size: 1.6rem; letter-spacing: -0.02em; color: var(--text); }
+.live-card__unit { font-family: var(--font-body); color: var(--text-muted); }
+.live-card__tag { font-family: var(--font-body); font-weight: 700; letter-spacing: 0; text-transform: none; }
+
+/* Grafici */
+.chart-legend { gap: 0.4rem 1rem; }
+.chart-legend__item { font-family: var(--font-body); font-size: 0.76rem; font-weight: 600; color: var(--text-muted); }
+.chart-legend__swatch { border-radius: 3px; }
+.cost-detail {
+  border: none;
+  border-radius: 14px;
+  background: var(--surface-alt);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+}
+.cost-detail > strong { font-size: 0.9rem; }
+.cost-detail i { border-radius: 3px; }
+.price-chart__head span { font-family: var(--font-body); }
+.price-chart__head strong { font-weight: 800; }
+:root[data-theme="light"] .live-dash { background: none; }
+
+/* Tragitto */
+.commute-toggle { border-radius: 13px; padding: 3px; }
+.commute-toggle button { border-radius: 10px; font-family: var(--font-body); font-size: 0.84rem; font-weight: 650; letter-spacing: 0; text-transform: none; }
+.commute-toggle button.is-active { box-shadow: var(--shadow-card); }
+.commute-total { border: none; border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.commute-total--dark { background: var(--amber); color: #fff; }
+.commute-total__label { font-family: var(--font-body); font-size: 0.76rem; font-weight: 600; letter-spacing: 0; text-transform: none; opacity: 0.85; }
+.commute-total__value { font-family: var(--font-body); font-weight: 800; font-size: 1.8rem; letter-spacing: -0.03em; }
+.commute-card { border: none; border-radius: var(--radius-card); box-shadow: var(--shadow-card); }
+.commute-bar__seg--fuel { background: var(--amber); }
+.commute-bar__seg--toll { background: #e5b92e; }
+.commute-legend__value,
+.commute-compare__value,
+.commute-scenario__facts { font-family: var(--font-body); }
+.commute-legend__muted { border-top-style: solid; }
+.commute-scenario__result { border-radius: 14px; }
+.commute-periods .stat-chip__label,
+.commute-periods .stat-chip { font-family: var(--font-body); }
+.screen-head--row .screen-title { flex: 1; min-width: 0; font-size: 1.5rem; overflow-wrap: anywhere; }
+.sbreak__value,
+.sbreak__value small,
+.fc-row__sub,
+.mrow__sub { unicode-bidi: isolate; }
+.sbreak__value small { display: inline-block; }
+
+/* Bordi del telefono: env() più la variabile che Capacitor 8 imposta su Android */
+:root { --sab: max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px)); }
+.bottom-tabbar { bottom: calc(10px + var(--sab)); }
+.sheet { padding-bottom: calc(1.2rem + var(--sab)); max-height: 88dvh; }
+.modal { padding-bottom: var(--sab); max-height: 92dvh; }
+.modal form .modal__actions { padding-bottom: 0.9rem; }
+.content { padding-bottom: calc(7rem + var(--sab)); }
