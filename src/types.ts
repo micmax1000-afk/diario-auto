@@ -11,7 +11,7 @@ export interface SyncFields {
   deletedAt?: string; // ISO date, soft-delete: se presente il record è "cancellato" ma non rimosso fisicamente
 }
 
-export type BodyType = "citycar" | "hatchback" | "sedan" | "suv" | "pickup" | "van" | "coupe" | "wagon";
+export type BodyType = "citycar" | "hatchback" | "sedan" | "suv" | "pickup" | "van" | "coupe" | "wagon" | "convertible";
 
 export interface Vehicle extends SyncFields {
   id: string;

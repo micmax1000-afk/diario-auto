@@ -25,7 +25,11 @@
     "deleteForeverConfirm": "Supprimer définitivement {{name}} et toutes ses données ?",
     "soldOn": "vendu le {{date}}",
     "urgentReminderTitle": "Échéance proche ou dépassée",
-    "archiveConfirm": "Marquer {{name}} comme vendu ? Il restera dans les archives, vous pourrez le restaurer à tout moment depuis « Gérer les véhicules »."
+    "archiveConfirm": "Marquer {{name}} comme vendu ? Il restera dans les archives, vous pourrez le restaurer à tout moment depuis « Gérer les véhicules ».",
+    "soldSub": "Quitte le garage, l'historique reste dans les archives",
+    "soldTitle": "Marquer {{name}} comme vendu ?",
+    "soldBody": "Il quitte le garage et reste dans les archives avec tout son historique. Vous pouvez le restaurer à tout moment depuis « Gérer les véhicules ».",
+    "soldYes": "Oui, vendu"
   },
   "vehicleForm": {
     "titleNew": "Nouveau véhicule",
@@ -60,12 +64,24 @@
     "errorNameGeneric": "Indiquez le nom du véhicule.",
     "bodyType": "Catégorie (facultatif)",
     "photo": "Photo de la voiture (facultatif)",
-    "photoHint": "Après l'avoir choisie, vous pouvez la faire glisser et l'agrandir pour choisir le cadrage. Elle s'affiche sur la fiche du véhicule, n'est enregistrée que sur cet appareil et est incluse dans la sauvegarde.",
+    "photoHint": "Remplace la voiture dessinée. Reste uniquement sur ce téléphone et figure dans la sauvegarde.",
     "photoPreviewAlt": "Aperçu de la photo de la voiture",
     "photoCompressing": "Compression de l'image…",
     "photoError": "Impossible de charger la photo.",
     "color": "Couleur d'identification",
-    "colorHint": "Si vous ne choisissez pas, une couleur est attribuée automatiquement."
+    "colorHint": "Si vous ne choisissez pas, une couleur est attribuée automatiquement.",
+    "newVehicle": "Nouveau véhicule",
+    "brandOptional": "Marque (facultative)",
+    "choose": "Choisir…",
+    "nameAuto": "Formé à partir de la marque et du modèle, modifiable",
+    "kmShort": "Km actuels *",
+    "colorTitle": "Couleur",
+    "bodyTypeTitle": "Carrosserie",
+    "chooseBrandTitle": "Choisir la marque",
+    "chooseModelTitle": "Modèle {{brand}}",
+    "searchBrand": "Chercher la marque",
+    "searchModel": "Chercher le modèle",
+    "modelsCount": "{{count}} modèles"
   },
   "fuelType": {
     "benzina": "Essence",
@@ -957,7 +973,8 @@
     "pickup": "Pick-up",
     "van": "Fourgon",
     "coupe": "Coupé",
-    "wagon": "Break"
+    "wagon": "Break",
+    "convertible": "Cabriolet"
   },
   "vehiclePicker": {
     "title": "Sur quel véhicule ?"

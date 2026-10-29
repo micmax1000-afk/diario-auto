@@ -52,7 +52,7 @@ import LanguagePicker from "./components/LanguagePicker";
 import DisclaimerGate from "./components/DisclaimerGate";
 import WelcomeGuide from "./components/WelcomeGuide";
 import { getMeta, setMeta } from "./utils/db";
-import { resolveVehicleColors } from "./utils/vehicleColor";
+import { resolveVehicleColors, VEHICLE_COLORS } from "./utils/vehicleColor";
 import QuickFuelForm from "./components/QuickFuelForm";
 import QuickChargeForm from "./components/QuickChargeForm";
 import UndoToast from "./components/UndoToast";
@@ -1050,12 +1050,17 @@ export default function App() {
       )}
 
       {showNewVehicleForm && (
-        <VehicleForm onSave={handleSaveVehicle} onClose={() => setShowNewVehicleForm(false)} />
+        <VehicleForm
+          autoColor={VEHICLE_COLORS.find((c) => !Object.values(vehicleColors).some((u) => u.toLowerCase() === c.toLowerCase()))}
+          onSave={handleSaveVehicle}
+          onClose={() => setShowNewVehicleForm(false)}
+        />
       )}
 
       {editingVehicle && (
         <VehicleForm
           initialVehicle={editingVehicle}
+          autoColor={vehicleColors[editingVehicle.id]}
           onSave={handleSaveVehicle}
           onClose={() => setEditingVehicle(null)}
           onArchive={(id) => {

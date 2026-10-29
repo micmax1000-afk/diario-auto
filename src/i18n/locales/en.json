@@ -25,7 +25,11 @@
     "deleteForeverConfirm": "Do you want to permanently delete {{name}} and all its data?",
     "soldOn": "sold on {{date}}",
     "urgentReminderTitle": "Due date upcoming or overdue",
-    "archiveConfirm": "Mark {{name}} as sold? It will remain in the archive, and you can restore it at any time from \"Manage Vehicles.\""
+    "archiveConfirm": "Mark {{name}} as sold? It will remain in the archive, and you can restore it at any time from \"Manage Vehicles.\"",
+    "soldSub": "Leaves the garage, history stays in the archive",
+    "soldTitle": "Mark {{name}} as sold?",
+    "soldBody": "It leaves the garage and stays in the archive with all its history. You can restore it anytime from \"Manage vehicles\".",
+    "soldYes": "Yes, sold"
   },
   "vehicleForm": {
     "titleNew": "New Vehicle",
@@ -60,12 +64,24 @@
     "errorNameGeneric": "Enter the vehicle's name.",
     "bodyType": "Category (optional)",
     "photo": "Photo of the car (optional)",
-    "photoHint": "After choosing it you can drag and zoom it to pick the framing. It is shown on the vehicle card, saved only on this device and included in the backup.",
+    "photoHint": "Replaces the drawn car. Stays only on this phone and is included in the backup.",
     "photoPreviewAlt": "Photo preview of the car",
     "photoCompressing": "Compressing image…",
     "photoError": "Couldn't load the photo.",
     "color": "Identifying color",
-    "colorHint": "If you don't choose, one is assigned automatically."
+    "colorHint": "If you don't choose, one is assigned automatically.",
+    "newVehicle": "New vehicle",
+    "brandOptional": "Brand (optional)",
+    "choose": "Choose…",
+    "nameAuto": "Made from brand and model, you can change it",
+    "kmShort": "Current km *",
+    "colorTitle": "Colour",
+    "bodyTypeTitle": "Body type",
+    "chooseBrandTitle": "Choose the brand",
+    "chooseModelTitle": "{{brand}} model",
+    "searchBrand": "Search brand",
+    "searchModel": "Search model",
+    "modelsCount": "{{count}} models"
   },
   "fuelType": {
     "benzina": "Gasoline",
@@ -957,7 +973,8 @@
     "pickup": "Pickup",
     "van": "Van",
     "coupe": "Coupe",
-    "wagon": "Station wagon"
+    "wagon": "Station wagon",
+    "convertible": "Convertible"
   },
   "vehiclePicker": {
     "title": "On which vehicle?"

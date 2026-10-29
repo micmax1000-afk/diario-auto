@@ -25,7 +25,11 @@
     "deleteForeverConfirm": "Hapus {{name}} dan semua datanya secara permanen?",
     "soldOn": "dijual pada tanggal {{date}}",
     "urgentReminderTitle": "Jatuh tempo segera tiba atau sudah lewat",
-    "archiveConfirm": "Tandai {{name}} sebagai terjual? Kendaraan tetap tersimpan di arsip dan dapat Anda pulihkan kapan saja dari \"Kelola kendaraan\"."
+    "archiveConfirm": "Tandai {{name}} sebagai terjual? Kendaraan tetap tersimpan di arsip dan dapat Anda pulihkan kapan saja dari \"Kelola kendaraan\".",
+    "soldSub": "Keluar dari garasi, riwayat tetap di arsip",
+    "soldTitle": "Tandai {{name}} sebagai terjual?",
+    "soldBody": "Kendaraan keluar dari garasi dan tetap di arsip dengan seluruh riwayatnya. Bisa dipulihkan kapan saja dari \"Kelola kendaraan\".",
+    "soldYes": "Ya, terjual"
   },
   "vehicleForm": {
     "titleNew": "Kendaraan baru",
@@ -60,12 +64,24 @@
     "errorNameGeneric": "Masukkan nama kendaraan.",
     "bodyType": "Kategori (opsional)",
     "photo": "Foto mobil (opsional)",
-    "photoHint": "Setelah memilihnya, Anda dapat menggeser dan memperbesarnya untuk menentukan bingkai. Foto ditampilkan di kartu kendaraan, hanya disimpan di perangkat ini, dan disertakan dalam cadangan.",
+    "photoHint": "Menggantikan gambar mobil. Hanya disimpan di ponsel ini dan ikut dicadangkan.",
     "photoPreviewAlt": "Pratinjau foto mobil",
     "photoCompressing": "Mengompres gambar…",
     "photoError": "Gagal memuat foto.",
     "color": "Warna penanda",
-    "colorHint": "Jika tidak dipilih, diberikan otomatis."
+    "colorHint": "Jika tidak dipilih, diberikan otomatis.",
+    "newVehicle": "Kendaraan baru",
+    "brandOptional": "Merek (opsional)",
+    "choose": "Pilih…",
+    "nameAuto": "Dibuat dari merek dan model, bisa diubah",
+    "kmShort": "Km saat ini *",
+    "colorTitle": "Warna",
+    "bodyTypeTitle": "Bodi",
+    "chooseBrandTitle": "Pilih merek",
+    "chooseModelTitle": "Model {{brand}}",
+    "searchBrand": "Cari merek",
+    "searchModel": "Cari model",
+    "modelsCount": "{{count}} model"
   },
   "fuelType": {
     "benzina": "Bensin",
@@ -954,7 +970,8 @@
     "pickup": "Pick-up",
     "van": "Van",
     "coupe": "Coupé",
-    "wagon": "Station wagon"
+    "wagon": "Station wagon",
+    "convertible": "Kabriolet"
   },
   "vehiclePicker": {
     "title": "Kendaraan apa?"
