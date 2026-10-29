@@ -119,10 +119,10 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
   const hasMaintenance = data.some((d) => d.manutenzione > 0);
   const hasExpenses = data.some((d) => d.spese > 0);
   const series = [
-    { key: "carburante", name: t("summary.chartFuel"), color: "#f5901f", show: hasFuel },
-    { key: "ricarica", name: t("summary.charging"), color: "#22b8cf", show: hasCharging },
-    { key: "manutenzione", name: t("summary.chartMaintenance"), color: "#3fbb72", show: hasMaintenance },
-    { key: "spese", name: t("summary.chartExpenses"), color: "#a58fd1", show: hasExpenses },
+    { key: "carburante", name: t("summary.fuel"), color: "#f5901f", show: hasFuel },
+    { key: "ricarica", name: t("summary.charging"), color: "#3b82f6", show: hasCharging },
+    { key: "manutenzione", name: t("summary.maintenance"), color: "#22a45d", show: hasMaintenance },
+    { key: "spese", name: t("detail.expensesTitle"), color: "#8b6cf0", show: hasExpenses },
   ].filter((serie) => serie.show) as { key: "carburante" | "ricarica" | "manutenzione" | "spese"; name: string; color: string; show: boolean }[];
 
   const selected = selectedIndex !== null && selectedIndex < data.length ? selectedIndex : data.length - 1;
