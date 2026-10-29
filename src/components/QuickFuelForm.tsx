@@ -20,6 +20,8 @@ interface Props {
   urgentCounts?: Record<string, number>;
   onChangeVehicle?: (vehicleId: string) => void;
   existingEntries?: FuelEntry[];
+  /** "Come l'ultimo": prezzo e importo già compilati, si scrivono solo i km. */
+  prefill?: { pricePerUnit: number; totalCost: number };
   onSave: (entry: FuelEntry) => void;
   onClose: () => void;
 }
@@ -38,14 +40,14 @@ function formatPrice(value: number, locale: string, currency: string) {
   return formatCurrency(value, currency, 3, locale);
 }
 
-export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
+export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], prefill, onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const cur = useCurrencySymbol();
   const locale = getNumberLocale(i18n.language);
   const { currency, formatMoney } = useAppSettings();
   const source = defaultSource(vehicle);
-  const [pricePerUnit, setPricePerUnit] = useState("");
-  const [totalCost, setTotalCost] = useState("");
+  const [pricePerUnit, setPricePerUnit] = useState(prefill ? String(Math.round(prefill.pricePerUnit * 1000) / 1000) : "");
+  const [totalCost, setTotalCost] = useState(prefill ? String(Math.round(prefill.totalCost * 100) / 100) : "");
   const [fullTank, setFullTank] = useState(true);
   const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(vehicle.currentKm))));
   const [error, setError] = useState("");

@@ -146,9 +146,9 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
           }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-          <XAxis dataKey="monthLabel" interval="preserveStartEnd" minTickGap={12} tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }} stroke="var(--border)" />
+          <XAxis dataKey="monthLabel" interval="preserveStartEnd" minTickGap={12} tick={{ fontFamily: "Inter", fontSize: 11, fill: "var(--text-muted)" }} stroke="var(--border)" />
           <YAxis
-            tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }}
+            tick={{ fontFamily: "Inter", fontSize: 11, fill: "var(--text-muted)" }}
             stroke="var(--border)"
             width={56}
             allowDecimals={false}

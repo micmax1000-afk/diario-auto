@@ -836,7 +836,9 @@
     "dataQualityTitle": "Calidad de los datos",
     "dataQualityConsumption": "Consumo calculado sobre la base de {{count}} intervalos entre repostajes.",
     "dataQualityHint": "Registra al menos dos repostajes marcados como «lleno» para obtener un consumo medio fiable.",
-    "movements": "Repostaje"
+    "movements": "Repostaje",
+    "home": "Inicio",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "Tu garaje,",
@@ -1165,5 +1167,60 @@
     "deadlinesBody": "ITV, impuesto de circulación, seguro, revisión: un aviso antes de cada vencimiento y el historial completo de trabajos.",
     "dataTitle": "Tus datos son tuyos",
     "dataBody": "Todo se guarda solo en este teléfono, sin cuenta. Haz una copia de seguridad de vez en cuando, también en Google Drive, para no perder nada si cambias de teléfono."
+  },
+  "home": {
+    "greetingMorning": "Buenos días",
+    "greetingAfternoon": "Buenas tardes",
+    "greetingEvening": "Buenas noches",
+    "title": "Tus coches",
+    "menu": "Menú y ajustes",
+    "welcomeTitle": "Bienvenido a Diario Auto",
+    "welcomeBody": "Añade tu primer vehículo para controlar repostajes, mantenimientos y vencimientos.",
+    "welcomeCta": "Añadir vehículo",
+    "odometer": "Cuentakilómetros",
+    "overdue": "vencido",
+    "soon": "por vencer",
+    "renew": "Renovar",
+    "view": "Ver",
+    "allClear": "Todo en orden",
+    "addVehicle": "Añadir vehículo",
+    "thisMonth": "Este mes",
+    "statsLink": "Estadísticas",
+    "consumption": "Consumo",
+    "costPerKm": "Coste por km",
+    "upcoming": "Próximos vencimientos",
+    "all": "Todos",
+    "noUpcoming": "Ningún vencimiento cercano.",
+    "recent": "Actividad reciente",
+    "recentEmpty": "Aún no hay registros. Toca + para empezar.",
+    "fullTank": "Depósito lleno",
+    "partialFill": "Repostaje parcial",
+    "charge": "Recarga"
+  },
+  "addSheet": {
+    "open": "Registrar",
+    "title": "¿Qué quieres registrar?",
+    "for": "Para",
+    "change": "cambiar",
+    "repeatTitle": "¿Igual que el último?",
+    "repeatBody": "{{cost}} · {{price}}/l — solo revisa los km",
+    "yes": "Sí",
+    "fuel": "Repostaje",
+    "charge": "Recarga",
+    "maintenance": "Mantenimiento",
+    "km": "Km actuales",
+    "expense": "Gasto",
+    "reminder": "Vencimiento",
+    "hint": "Cuentakilómetros actual: {{km}} km"
+  },
+  "menu": {
+    "title": "Menú",
+    "garage": "Garaje",
+    "addVehicle": "Añadir vehículo",
+    "manageVehicles": "Gestionar vehículos",
+    "commuteSub": "Calcula el coste de un trayecto",
+    "expensesSub": "Seguro, impuestos, peajes y más",
+    "kmSub": "Evolución de los kilómetros",
+    "remindersSub": "Todos los vencimientos"
   }
 }

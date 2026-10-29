@@ -836,7 +836,9 @@
     "dataQualityTitle": "Qualità dei dati",
     "dataQualityConsumption": "Consumo calcolato su {{count}} intervalli tra pieni.",
     "dataQualityHint": "Registra almeno due rifornimenti segnati come pieno per ottenere un consumo medio affidabile.",
-    "movements": "Rifornimento"
+    "movements": "Rifornimento",
+    "home": "Home",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "Il tuo garage,",
@@ -1165,5 +1167,60 @@
     "deadlinesBody": "Revisione, bollo, assicurazione, tagliando: un avviso prima di ogni scadenza e lo storico completo degli interventi.",
     "dataTitle": "I tuoi dati restano tuoi",
     "dataBody": "Tutto è salvato solo su questo telefono, senza account. Fai un backup ogni tanto, anche su Google Drive, per non perdere nulla se cambi telefono."
+  },
+  "home": {
+    "greetingMorning": "Buongiorno",
+    "greetingAfternoon": "Buon pomeriggio",
+    "greetingEvening": "Buonasera",
+    "title": "Le tue auto",
+    "menu": "Menu e impostazioni",
+    "welcomeTitle": "Benvenuto in Diario Auto",
+    "welcomeBody": "Aggiungi il tuo primo veicolo per tenere traccia di rifornimenti, manutenzioni e scadenze.",
+    "welcomeCta": "Aggiungi veicolo",
+    "odometer": "Contachilometri",
+    "overdue": "scaduta",
+    "soon": "in scadenza",
+    "renew": "Rinnova",
+    "view": "Vedi",
+    "allClear": "Tutto in regola",
+    "addVehicle": "Aggiungi veicolo",
+    "thisMonth": "Questo mese",
+    "statsLink": "Statistiche",
+    "consumption": "Consumo",
+    "costPerKm": "Costo al km",
+    "upcoming": "Prossime scadenze",
+    "all": "Tutte",
+    "noUpcoming": "Nessuna scadenza vicina.",
+    "recent": "Attività recente",
+    "recentEmpty": "Ancora nessuna registrazione. Tocca + per iniziare.",
+    "fullTank": "Pieno",
+    "partialFill": "Rifornimento parziale",
+    "charge": "Ricarica"
+  },
+  "addSheet": {
+    "open": "Registra",
+    "title": "Cosa vuoi registrare?",
+    "for": "Per",
+    "change": "cambia",
+    "repeatTitle": "Pieno come l'ultimo?",
+    "repeatBody": "{{cost}} · {{price}}/l — controlli solo i km",
+    "yes": "Sì",
+    "fuel": "Rifornimento",
+    "charge": "Ricarica",
+    "maintenance": "Manutenzione",
+    "km": "Km attuali",
+    "expense": "Spesa",
+    "reminder": "Scadenza",
+    "hint": "Contachilometri attuale: {{km}} km"
+  },
+  "menu": {
+    "title": "Menu",
+    "garage": "Garage",
+    "addVehicle": "Aggiungi veicolo",
+    "manageVehicles": "Gestisci veicoli",
+    "commuteSub": "Calcola il costo di un tragitto",
+    "expensesSub": "Assicurazione, bollo, pedaggi e altro",
+    "kmSub": "Andamento dei chilometri",
+    "remindersSub": "Tutte le scadenze dei veicoli"
   }
 }

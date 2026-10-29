@@ -1,0 +1,735 @@
+/* =====================================================================
+   Stile moderno (nuova grafica, prima tappa).
+   Si appoggia sopra index.css: cambia carattere, colori di fondo, schede,
+   pulsanti e barra in basso senza toccare le singole schermate.
+   ===================================================================== */
+
+:root {
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* tema scuro (predefinito) */
+  --asphalt: #121315;
+  --asphalt-light: #1d1f22;
+  --chrome-border: #2a2d31;
+  --chrome-text-muted: #8d9096;
+  --bg: #121315;
+  --card: #1d1f22;
+  --surface-alt: #26292d;
+  --border: #2c2f34;
+  --text: #f1f1ef;
+  --text-muted: #9a9ca1;
+  --amber-soft: #3a2a17;
+  --amber-ink: #ffb25e;
+  --green-soft: #173323;
+  --green-ink: #5fd393;
+  --red-soft: #3a1d1a;
+  --blue: #3b82f6;
+  --blue-soft: #1b2a44;
+  --radius-card: 18px;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --tabbar-bg: rgba(29, 31, 34, 0.96);
+}
+
+:root[data-theme="light"] {
+  --bg: #f5f4f1;
+  --card: #ffffff;
+  --surface-alt: #efede8;
+  --border: #e9e7e1;
+  --text: #17181a;
+  --text-muted: #6f7176;
+  --chrome-bg: #ffffff;
+  --chrome-text: #17181a;
+  --chrome-text-muted: #8d8f94;
+  --amber-soft: #fff1e2;
+  --amber-ink: #b45f0b;
+  --green-soft: #e4f5ea;
+  --green-ink: #17803f;
+  --red-soft: #fdeceb;
+  --blue-soft: #e8f0fe;
+  --shadow-card: 0 1px 2px rgba(20, 20, 20, 0.04), 0 6px 20px rgba(20, 20, 20, 0.05);
+  --tabbar-bg: rgba(255, 255, 255, 0.95);
+}
+
+body {
+  font-size: 15px;
+  font-feature-settings: "tnum" 1;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- Titoli: niente più maiuscolo da insegna ---------- */
+.topbar__title,
+.section-head h1,
+.empty-state__title,
+.vehicle-card__name,
+.modal__header h2,
+.month-group__label,
+.archived-section__title,
+.dash-vehicles__head h2,
+.dash-featured-vehicle__name,
+.upcoming-reminders__head h2,
+.detail-header__name,
+.commute-total__value {
+  text-transform: none;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+.arc-gauge__value,
+.live-card__value,
+.gauge-cluster__value {
+  letter-spacing: -0.02em;
+  font-weight: 800;
+}
+.section-head h1 { font-size: 1.7rem; }
+.modal__header h2 { font-size: 1.35rem; }
+.month-group__label { font-size: 0.95rem; color: var(--text); }
+
+/* ---------- Pulsanti ---------- */
+.btn {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.95rem;
+  font-weight: 650;
+  border-radius: 14px;
+  padding: 0.75rem 1.15rem;
+}
+.btn--primary { color: #fff; }
+.btn--ghost {
+  background: var(--surface-alt);
+  border-color: transparent;
+}
+.btn--ghost:hover { border-color: transparent; filter: brightness(1.04); }
+.btn--danger { background: var(--red-soft); border-color: transparent; }
+.btn--small {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+  border-radius: 11px;
+}
+
+/* ---------- Schede: bianche (o grigio scuro), angoli tondi, ombra morbida ---------- */
+.vehicle-card,
+.stat-chip,
+.record-card,
+.reminder-item,
+.chart-wrap,
+.backup-panel,
+.obd-status-bar,
+.dtc-panel,
+.obd-block,
+.obd-vin,
+.archived-item,
+.dash-card,
+.dash-featured-vehicle,
+.dash-gauge-card,
+.upcoming-reminders,
+.quick-entry-card,
+.fc-list__summary-item,
+.fc-item,
+.settings-row,
+.km-history-chart,
+.km-history-row,
+.dash-quick__item,
+.dash-month__grid,
+.dash-ccard,
+.fleet-stats__card,
+.commute-total,
+.commute-card,
+.catalog-list__item,
+.device-picker-item,
+.vehicle-picker__item {
+  border-color: transparent;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Campi dei moduli */
+.field input,
+.field select,
+.field textarea,
+.quick-entry-input,
+.settings-subfield select,
+.fc-list__period select,
+.maintenance-category-filter select {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* Fogli e finestre: angoli tondi, senza la riga arancione */
+.modal {
+  border-radius: 24px;
+  border-top: none;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Etichette piccole maiuscole: più leggere */
+.stat-chip__label,
+.record-card__row-label,
+.field label {
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Barra in basso: galleggiante, con il tasto + al centro ---------- */
+.bottom-tabbar {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  width: min(440px, calc(100% - 24px));
+  padding: 0 10px;
+  height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--tabbar-bg);
+  border: none;
+  border-radius: 22px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(10px);
+}
+.bottom-tabbar__item {
+  flex: none;
+  width: 54px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  border-radius: 14px;
+}
+.bottom-tabbar__item.is-active {
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+.bottom-tabbar__item svg { width: 23px; height: 23px; }
+.bottom-tabbar__fab {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid var(--bg);
+  background: var(--amber);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  margin-top: -30px;
+  box-shadow: 0 8px 20px rgba(245, 144, 31, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.bottom-tabbar__fab svg { width: 26px; height: 26px; }
+.bottom-tabbar__fab.is-open { transform: rotate(45deg); }
+.content { padding-bottom: calc(7rem + env(safe-area-inset-bottom)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .bottom-tabbar__fab { transition: none; }
+}
+
+/* =====================================================================
+   Home
+   ===================================================================== */
+.home {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 1rem 1rem 0;
+}
+.home-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.4rem 0 1rem;
+}
+.home-head__hello {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+.home-head__hello::first-letter { text-transform: uppercase; }
+.home-head__title {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+.home-round {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  border: none;
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.home-round svg { width: 21px; height: 21px; }
+
+.home-welcome {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 2rem 1.4rem;
+  text-align: center;
+}
+.home-welcome h2 { margin: 0.8rem 0 0.4rem; font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+.home-welcome p { margin: 0 0 1.2rem; color: var(--text-muted); line-height: 1.45; }
+.home-welcome__plus {
+  display: inline-grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--amber-soft);
+  color: var(--amber);
+  font-size: 2.2rem;
+  font-weight: 300;
+}
+
+/* Carosello dei veicoli */
+.home-carousel {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  margin: 0 -1rem;
+  padding: 0 1rem 18px;
+  scroll-padding: 0 1rem;
+}
+.home-carousel::-webkit-scrollbar { display: none; }
+.home-hero {
+  flex: 0 0 calc(100% - 2rem);
+  max-width: 520px;
+  scroll-snap-align: start;
+  border-radius: 24px;
+  padding: 1.1rem 1.15rem 1rem;
+  color: #fff;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  min-height: 210px;
+  position: relative;
+  overflow: hidden;
+}
+.home-hero--photo { text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); }
+.home-hero__top { display: flex; align-items: center; gap: 0.75rem; }
+.home-hero__badge {
+  width: 78px;
+  height: 52px;
+  flex: none;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.92);
+  display: grid;
+  place-items: center;
+  padding: 3px 4px;
+}
+.home-hero__badge svg { width: 100%; height: 100%; }
+.home-hero__id { min-width: 0; }
+.home-hero__name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+.home-hero__plate {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.home-hero__label {
+  margin: auto 0 0;
+  padding-top: 1rem;
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+.home-hero__km {
+  margin: 0.05rem 0 0.75rem;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.home-hero__alert {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 0.55rem 0.7rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #17181a;
+  font: inherit;
+  font-size: 0.84rem;
+  text-align: start;
+  text-shadow: none;
+  cursor: pointer;
+}
+.home-hero__alert.is-ok { background: rgba(255, 255, 255, 0.18); color: #fff; cursor: default; }
+.home-hero__alert-dot {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fff;
+  background: #f5901f;
+}
+.home-hero__alert.is-overdue .home-hero__alert-dot { background: #e5484d; }
+.home-hero__alert.is-ok .home-hero__alert-dot { background: rgba(255, 255, 255, 0.3); }
+.home-hero__alert-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.home-hero__alert-go { flex: none; font-weight: 700; color: #b45f0b; }
+.home-hero__alert.is-overdue .home-hero__alert-go { color: #c2362f; }
+.home-hero--add {
+  flex-basis: 140px;
+  min-height: 210px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px dashed var(--border);
+  box-shadow: none;
+  color: var(--text-muted);
+  font: inherit;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.home-hero__plus {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--amber-soft);
+  color: var(--amber);
+  font-size: 1.7rem;
+  font-weight: 300;
+}
+.home-dots { display: flex; justify-content: center; gap: 6px; margin: -0.3rem 0 0; }
+.home-dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s; }
+.home-dots i.is-on { width: 18px; background: var(--amber); }
+
+.home .dash-backup-nag { margin-top: 1rem; }
+
+/* Sezioni */
+.home-sect {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 1.5rem 0 0.6rem;
+}
+.home-sect h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.home-sect button {
+  border: none;
+  background: none;
+  padding: 0.25rem 0;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: var(--amber);
+  cursor: pointer;
+}
+.home-kpis {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: 100%;
+  border: none;
+  padding: 0;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  font: inherit;
+  color: var(--text);
+  text-align: start;
+  cursor: pointer;
+}
+.home-kpi { padding: 0.85rem 0.9rem; min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+.home-kpi + .home-kpi { border-inline-start: 1px solid var(--border); }
+.home-kpi__label { font-size: 0.74rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-kpi b { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; white-space: nowrap; }
+.home-kpi small { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); }
+.home .upcoming-reminders { margin: 0; }
+.home-empty {
+  margin: 0;
+  padding: 0.95rem 1rem;
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+.home-list {
+  background: var(--card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.home-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  border: none;
+  background: none;
+  padding: 0.75rem 0.9rem;
+  font: inherit;
+  color: var(--text);
+  text-align: start;
+  cursor: pointer;
+}
+.home-item + .home-item { border-top: 1px solid var(--border); }
+.home-item__mid { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.home-item__title { font-weight: 650; font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-item__sub { font-size: 0.76rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.home-item__amt { flex: none; font-weight: 750; font-size: 0.92rem; }
+
+/* =====================================================================
+   Foglio dal basso (tasto +)
+   ===================================================================== */
+.sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  background: rgba(0, 0, 0, 0.45);
+  animation: sheet-fade 0.18s ease;
+}
+.sheet {
+  position: fixed;
+  z-index: 141;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: min(560px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: var(--card);
+  color: var(--text);
+  border-radius: 26px 26px 0 0;
+  padding: 0.6rem 1.1rem calc(1.2rem + env(safe-area-inset-bottom));
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+  animation: sheet-up 0.22s ease;
+}
+.sheet__grab { display: block; width: 40px; height: 5px; border-radius: 3px; background: var(--border); margin: 0 auto 0.9rem; }
+.sheet__title { margin: 0; font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; }
+.sheet__sub { margin: 0.25rem 0 1rem; font-size: 0.88rem; color: var(--text-muted); }
+.sheet__sub b { color: var(--text); }
+.sheet__link { border: none; background: none; padding: 0; font: inherit; font-weight: 650; color: var(--amber); cursor: pointer; }
+.sheet__hint { margin: 1rem 0 0; font-size: 0.78rem; color: var(--text-muted); text-align: center; }
+@keyframes sheet-up { from { transform: translate(-50%, 100%); } to { transform: translate(-50%, 0); } }
+@keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .sheet, .sheet-scrim { animation: none; }
+}
+
+.add-sheet__repeat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 0.8rem 0.9rem;
+  margin-bottom: 0.9rem;
+  background: var(--amber-soft);
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.add-sheet__repeat-text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.add-sheet__repeat-text b { font-size: 0.92rem; }
+.add-sheet__repeat-text span { font-size: 0.78rem; color: var(--text-muted); }
+.add-sheet__go {
+  flex: none;
+  padding: 0.45rem 0.85rem;
+  border-radius: 11px;
+  background: var(--amber);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.84rem;
+}
+.add-sheet__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+.add-sheet__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  border-radius: 16px;
+  padding: 0.9rem 0.4rem 0.8rem;
+  background: var(--surface-alt);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 650;
+  text-align: center;
+  cursor: pointer;
+}
+.add-sheet__icon {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+}
+.add-sheet__icon svg { width: 24px; height: 24px; }
+.add-sheet__icon--green { background: var(--green-soft); color: var(--green-ink); }
+.add-sheet__icon--blue { background: var(--blue-soft); color: var(--blue); }
+.add-sheet__icon--amber { background: var(--amber-soft); color: var(--amber-ink); }
+.add-sheet__icon--red { background: var(--red-soft); color: var(--danger); }
+.add-sheet__icon--solid { background: var(--amber); color: #fff; }
+.add-sheet__vehicles { display: flex; flex-direction: column; gap: 0.5rem; }
+.add-sheet__vehicle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 0.5rem 0.8rem;
+  background: var(--surface-alt);
+  color: var(--text);
+  font: inherit;
+  font-weight: 650;
+  text-align: start;
+  cursor: pointer;
+}
+.add-sheet__vehicle.is-on { border-color: var(--amber); }
+.add-sheet__thumb { width: 64px; height: 34px; flex: none; }
+.add-sheet__thumb svg { width: 100%; height: 100%; }
+
+/* =====================================================================
+   Menu (ingranaggio): Garage e Utilità sopra le impostazioni
+   ===================================================================== */
+.menu-sect {
+  max-width: 560px;
+  width: 100%;
+  margin: 1.3rem auto 0;
+  padding: 0 1.1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.menu-list .settings-row { width: 100%; text-align: start; font: inherit; color: var(--text); }
+.menu-sect + .settings-list { padding-top: 0.6rem; }
+.menu-sect__count { font-weight: 600; letter-spacing: 0; }
+.menu-garage,
+.menu-list {
+  max-width: 560px;
+  width: 100%;
+  margin: 0.6rem auto 0;
+  padding: 0 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.menu-garage__item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border: none;
+  border-radius: var(--radius-card);
+  padding: 0.6rem 1rem 0.6rem 0.7rem;
+  background: var(--card);
+  box-shadow: var(--shadow-card);
+  color: var(--text);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+.menu-garage__thumb {
+  width: 66px;
+  height: 44px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--surface-alt);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 2px 3px;
+}
+.menu-garage__thumb svg { width: 100%; height: 100%; }
+.menu-garage__thumb img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+.menu-garage__text { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.1rem; }
+.menu-garage__name { font-weight: 700; font-size: 0.95rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.menu-garage__sub { font-size: 0.76rem; color: var(--text-muted); }
+.menu-garage__actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.menu-garage__actions .btn { flex: 1; }
+
+/* =====================================================================
+   Scelta carrozzeria nel modulo veicolo
+   ===================================================================== */
+.body-picker {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+}
+.body-picker__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  border: 2px solid transparent;
+  border-radius: 14px;
+  padding: 0.4rem 0.2rem 0.45rem;
+  background: var(--surface-alt);
+  color: var(--text-muted);
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 650;
+  cursor: pointer;
+}
+.body-picker__item svg { width: 100%; height: 34px; }
+.body-picker__item.is-on { border-color: var(--amber); background: var(--amber-soft); color: var(--text); }
+
+/* Riordino veicoli nella gestione */
+.vehicle-grid__item { position: relative; }
+.vehicle-grid__move {
+  position: absolute;
+  top: -10px;
+  right: 1rem;
+  z-index: 1;
+  display: flex;
+  gap: 4px;
+}
+.vehicle-grid__move button {
+  width: 30px;
+  height: 26px;
+  border: none;
+  border-radius: 9px;
+  background: var(--surface-alt);
+  color: var(--text);
+  font-size: 0.7rem;
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+}
+.vehicle-grid__move button:disabled { opacity: 0.35; cursor: default; }

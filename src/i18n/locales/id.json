@@ -835,7 +835,9 @@
     "dataQualityTitle": "Kualitas data",
     "dataQualityConsumption": "Konsumsi dihitung berdasarkan {{count}} interval antara pengisian bahan bakar.",
     "dataQualityHint": "Catat setidaknya dua kali pengisian bahan bakar yang ditandai sebagai \"penuh\" untuk mendapatkan angka konsumsi rata-rata yang akurat.",
-    "movements": "Isi BBM"
+    "movements": "Isi BBM",
+    "home": "Beranda",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "Garasi Anda,",
@@ -1162,5 +1164,60 @@
     "deadlinesBody": "Uji kelayakan, pajak kendaraan, asuransi, servis: pengingat sebelum setiap jatuh tempo dan riwayat lengkap pekerjaan servis.",
     "dataTitle": "Data Anda tetap milik Anda",
     "dataBody": "Semua data hanya disimpan di ponsel ini, tanpa akun. Buat cadangan sesekali, juga ke Google Drive, agar tidak ada yang hilang saat ganti ponsel."
+  },
+  "home": {
+    "greetingMorning": "Selamat pagi",
+    "greetingAfternoon": "Selamat siang",
+    "greetingEvening": "Selamat malam",
+    "title": "Mobil Anda",
+    "menu": "Menu dan pengaturan",
+    "welcomeTitle": "Selamat datang di Diario Auto",
+    "welcomeBody": "Tambahkan kendaraan pertama Anda untuk mencatat pengisian, perawatan, dan tenggat.",
+    "welcomeCta": "Tambah kendaraan",
+    "odometer": "Odometer",
+    "overdue": "terlambat",
+    "soon": "segera jatuh tempo",
+    "renew": "Perbarui",
+    "view": "Lihat",
+    "allClear": "Semua beres",
+    "addVehicle": "Tambah kendaraan",
+    "thisMonth": "Bulan ini",
+    "statsLink": "Statistik",
+    "consumption": "Konsumsi",
+    "costPerKm": "Biaya per km",
+    "upcoming": "Tenggat berikutnya",
+    "all": "Semua",
+    "noUpcoming": "Tidak ada tenggat dekat.",
+    "recent": "Aktivitas terbaru",
+    "recentEmpty": "Belum ada catatan. Ketuk + untuk mulai.",
+    "fullTank": "Tangki penuh",
+    "partialFill": "Pengisian sebagian",
+    "charge": "Pengisian daya"
+  },
+  "addSheet": {
+    "open": "Catat",
+    "title": "Apa yang ingin Anda catat?",
+    "for": "Untuk",
+    "change": "ganti",
+    "repeatTitle": "Sama seperti terakhir?",
+    "repeatBody": "{{cost}} · {{price}}/l — cukup periksa km",
+    "yes": "Ya",
+    "fuel": "Isi BBM",
+    "charge": "Isi daya",
+    "maintenance": "Perawatan",
+    "km": "Km saat ini",
+    "expense": "Biaya",
+    "reminder": "Tenggat",
+    "hint": "Odometer saat ini: {{km}} km"
+  },
+  "menu": {
+    "title": "Menu",
+    "garage": "Garasi",
+    "addVehicle": "Tambah kendaraan",
+    "manageVehicles": "Kelola kendaraan",
+    "commuteSub": "Hitung biaya perjalanan",
+    "expensesSub": "Asuransi, pajak, tol, dan lainnya",
+    "kmSub": "Riwayat kilometer",
+    "remindersSub": "Semua tenggat kendaraan"
   }
 }

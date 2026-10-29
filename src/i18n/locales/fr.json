@@ -836,7 +836,9 @@
     "dataQualityTitle": "Qualité des données",
     "dataQualityConsumption": "Consommation calculée sur {{count}} intervalles entre pleins.",
     "dataQualityHint": "Enregistrez au moins deux pleins pour obtenir une consommation moyenne fiable.",
-    "movements": "Plein"
+    "movements": "Plein",
+    "home": "Accueil",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "Votre garage,",
@@ -1165,5 +1167,60 @@
     "deadlinesBody": "Contrôle technique, taxe, assurance, révision : un rappel avant chaque échéance et l'historique complet des travaux.",
     "dataTitle": "Vos données restent à vous",
     "dataBody": "Tout est enregistré uniquement sur ce téléphone, sans compte. Faites une sauvegarde de temps en temps, aussi sur Google Drive, pour ne rien perdre en changeant de téléphone."
+  },
+  "home": {
+    "greetingMorning": "Bonjour",
+    "greetingAfternoon": "Bon après-midi",
+    "greetingEvening": "Bonsoir",
+    "title": "Vos voitures",
+    "menu": "Menu et réglages",
+    "welcomeTitle": "Bienvenue dans Diario Auto",
+    "welcomeBody": "Ajoutez votre premier véhicule pour suivre pleins, entretiens et échéances.",
+    "welcomeCta": "Ajouter un véhicule",
+    "odometer": "Compteur",
+    "overdue": "expirée",
+    "soon": "bientôt",
+    "renew": "Renouveler",
+    "view": "Voir",
+    "allClear": "Tout est en ordre",
+    "addVehicle": "Ajouter un véhicule",
+    "thisMonth": "Ce mois-ci",
+    "statsLink": "Statistiques",
+    "consumption": "Consommation",
+    "costPerKm": "Coût au km",
+    "upcoming": "Prochaines échéances",
+    "all": "Toutes",
+    "noUpcoming": "Aucune échéance proche.",
+    "recent": "Activité récente",
+    "recentEmpty": "Aucun enregistrement. Touchez + pour commencer.",
+    "fullTank": "Plein",
+    "partialFill": "Plein partiel",
+    "charge": "Recharge"
+  },
+  "addSheet": {
+    "open": "Enregistrer",
+    "title": "Que voulez-vous enregistrer ?",
+    "for": "Pour",
+    "change": "changer",
+    "repeatTitle": "Comme le dernier plein ?",
+    "repeatBody": "{{cost}} · {{price}}/l — vérifiez juste les km",
+    "yes": "Oui",
+    "fuel": "Plein",
+    "charge": "Recharge",
+    "maintenance": "Entretien",
+    "km": "Km actuels",
+    "expense": "Dépense",
+    "reminder": "Échéance",
+    "hint": "Compteur actuel : {{km}} km"
+  },
+  "menu": {
+    "title": "Menu",
+    "garage": "Garage",
+    "addVehicle": "Ajouter un véhicule",
+    "manageVehicles": "Gérer les véhicules",
+    "commuteSub": "Calculez le coût d'un trajet",
+    "expensesSub": "Assurance, taxes, péages et plus",
+    "kmSub": "Évolution du kilométrage",
+    "remindersSub": "Toutes les échéances"
   }
 }

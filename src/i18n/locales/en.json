@@ -836,7 +836,9 @@
     "dataQualityTitle": "Data Quality",
     "dataQualityConsumption": "Consumption calculated over {{count}} full-to-full intervals.",
     "dataQualityHint": "Log at least two refuels marked as full tank to get a reliable average consumption.",
-    "movements": "Refuel"
+    "movements": "Refuel",
+    "home": "Home",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "Your garage,",
@@ -1165,5 +1167,60 @@
     "deadlinesBody": "Inspection, road tax, insurance, service: a reminder before every due date and a full history of the work done.",
     "dataTitle": "Your data stays yours",
     "dataBody": "Everything is stored only on this phone, no account needed. Make a backup now and then, also to Google Drive, so you lose nothing if you change phone."
+  },
+  "home": {
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "title": "Your cars",
+    "menu": "Menu and settings",
+    "welcomeTitle": "Welcome to Diario Auto",
+    "welcomeBody": "Add your first vehicle to keep track of refuels, maintenance and deadlines.",
+    "welcomeCta": "Add vehicle",
+    "odometer": "Odometer",
+    "overdue": "overdue",
+    "soon": "due soon",
+    "renew": "Renew",
+    "view": "View",
+    "allClear": "All good",
+    "addVehicle": "Add vehicle",
+    "thisMonth": "This month",
+    "statsLink": "Statistics",
+    "consumption": "Consumption",
+    "costPerKm": "Cost per km",
+    "upcoming": "Upcoming deadlines",
+    "all": "All",
+    "noUpcoming": "No deadlines coming up.",
+    "recent": "Recent activity",
+    "recentEmpty": "Nothing recorded yet. Tap + to start.",
+    "fullTank": "Full tank",
+    "partialFill": "Partial refuel",
+    "charge": "Charge"
+  },
+  "addSheet": {
+    "open": "Add record",
+    "title": "What do you want to record?",
+    "for": "For",
+    "change": "change",
+    "repeatTitle": "Same as last refuel?",
+    "repeatBody": "{{cost}} · {{price}}/l — just check the km",
+    "yes": "Yes",
+    "fuel": "Refuel",
+    "charge": "Charge",
+    "maintenance": "Maintenance",
+    "km": "Current km",
+    "expense": "Expense",
+    "reminder": "Deadline",
+    "hint": "Current odometer: {{km}} km"
+  },
+  "menu": {
+    "title": "Menu",
+    "garage": "Garage",
+    "addVehicle": "Add vehicle",
+    "manageVehicles": "Manage vehicles",
+    "commuteSub": "Work out the cost of a trip",
+    "expensesSub": "Insurance, road tax, tolls and more",
+    "kmSub": "Mileage over time",
+    "remindersSub": "All vehicle deadlines"
   }
 }
