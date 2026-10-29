@@ -665,8 +665,11 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
       <div className="obd-status-bar">
         <span className={`obd-status-dot obd-status-dot--${status}`} />
         <span className="obd-status-text">
-          {t(`live.status.${status}`)}
-          {connRef.current?.lastDeviceName ? ` · ${connRef.current.lastDeviceName}` : ""}
+          <b>
+            {t(`live.status.${status}`)}
+            {status === "connected" && connRef.current?.isDemo ? ` · ${t("live.demo.start").toLowerCase()}` : ""}
+          </b>
+          <small>{connRef.current?.isDemo ? t("live.adapterName") : connRef.current?.lastDeviceName ?? t("live.adapterName")}</small>
         </span>
         {status === "disconnected" || status === "error" ? (
           <>
@@ -738,7 +741,50 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
             ))}
           </div>
 
-          {liveTab === "live" && renderLiveDashboard()}
+          {liveTab === "live" && (
+            <>
+              {renderLiveDashboard()}
+          {/* Soglie di allarme */}
+          <div className="obd-block">
+            <div className="section-head section-head--tight">
+              <h2>{t("live.alarms.title")}</h2>
+            </div>
+            <div className="field-row">
+              <div className="field">
+                <label htmlFor="alarm-rpm">{t("live.alarms.maxRpm")}</label>
+                <input
+                  id="alarm-rpm"
+                  type="number"
+                  placeholder="4500"
+                  value={alarms.maxRpm ?? ""}
+                  onChange={(e) =>
+                    setAlarms((prev) => ({ ...prev, maxRpm: e.target.value ? Number(e.target.value) : undefined }))
+                  }
+                />
+              </div>
+              <div className="field">
+                <label htmlFor="alarm-temp">{t("live.alarms.maxTemp", { unit: temperatureUnit })}</label>
+                <input
+                  id="alarm-temp"
+                  type="number"
+                  placeholder={String(Math.round(celsiusToDisplayTemp(105, temperatureUnit)))}
+                  value={alarms.maxCoolantTempC !== undefined ? Math.round(celsiusToDisplayTemp(alarms.maxCoolantTempC, temperatureUnit)) : ""}
+                  onChange={(e) => {
+                    const typed = e.target.value ? Number(e.target.value) : undefined;
+                    setAlarms((prev) => ({
+                      ...prev,
+                      maxCoolantTempC: typed !== undefined ? displayTempToCelsius(typed, temperatureUnit) : undefined,
+                    }));
+                  }}
+                />
+              </div>
+            </div>
+            <button type="button" className="btn btn--ghost btn--small" onClick={handleSaveAlarms}>
+              {t("live.alarms.save")}
+            </button>
+          </div>
+            </>
+          )}
 
           {liveTab === "tools" && (
             <>
@@ -811,134 +857,40 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
             )}
 
             {sessions.length > 0 && (
-              <table className="data-table" style={{ marginTop: "1rem" }}>
-                <thead>
-                  <tr>
-                    <th>{t("live.recording.columns.date")}</th>
-                    <th>{t("live.recording.columns.duration")}</th>
-                    <th>{t("live.recording.columns.maxRpm")}</th>
-                    <th>{t("live.recording.columns.maxSpeed")}</th>
-                    <th>{t("live.recording.columns.maxTemp", { unit: temperatureUnit })}</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {sessions
-                    .slice()
-                    .reverse()
-                    .map((s) => (
-                      <tr key={s.id}>
-                        <td>{new Date(s.startedAt).toLocaleString(getNumberLocale(i18n.language))}</td>
-                        <td className="mono">{Math.round(s.durationMs / 1000)}s</td>
-                        <td className="mono">{Math.round(s.maxRpm ?? 0)}</td>
-                        <td className="mono">{Math.round(s.maxSpeedKmh ?? 0)}</td>
-                        <td className="mono">{Math.round(celsiusToDisplayTemp(s.maxCoolantTempC ?? 0, temperatureUnit))}°{temperatureUnit}</td>
-                        <td style={{ display: "flex", gap: "0.4rem" }}>
+              <ul className="obd-sessions">
+                {sessions
+                  .slice()
+                  .reverse()
+                  .map((s) => (
+                    <li key={s.id} className="obd-sessions__item">
+                      <div className="obd-sessions__top">
+                        <b>{new Date(s.startedAt).toLocaleString(getNumberLocale(i18n.language), { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" })}</b>
+                        <span className="obd-sessions__actions">
                           <button type="button" className="btn btn--ghost btn--small" onClick={() => handleExportSession(s)}>
                             {t("live.recording.csv")}
                           </button>
-                          <button
-                            type="button"
-                            className="btn btn--ghost btn--danger btn--small"
-                            onClick={() => handleDeleteSession(s.id)}
-                          >
+                          <button type="button" className="btn btn--ghost btn--danger btn--small" onClick={() => handleDeleteSession(s.id)}>
                             {t("live.recording.delete")}
                           </button>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
+                        </span>
+                      </div>
+                      <div className="obd-sessions__stats">
+                        <span>{t("live.recording.columns.duration")} <b>{Math.round(s.durationMs / 1000)}s</b></span>
+                        <span>{t("live.recording.columns.maxRpm")} <b>{Math.round(s.maxRpm ?? 0)}</b></span>
+                        <span>{t("live.recording.columns.maxSpeed")} <b>{Math.round(s.maxSpeedKmh ?? 0)}</b></span>
+                        <span>{t("live.recording.columns.maxTemp", { unit: temperatureUnit })} <b>{Math.round(celsiusToDisplayTemp(s.maxCoolantTempC ?? 0, temperatureUnit))}</b></span>
+                      </div>
+                    </li>
+                  ))}
+              </ul>
             )}
           </div>
 
-          {/* Soglie di allarme */}
-          <div className="obd-block">
-            <div className="section-head section-head--tight">
-              <h2>{t("live.alarms.title")}</h2>
-            </div>
-            <div className="field-row">
-              <div className="field">
-                <label htmlFor="alarm-rpm">{t("live.alarms.maxRpm")}</label>
-                <input
-                  id="alarm-rpm"
-                  type="number"
-                  placeholder="4500"
-                  value={alarms.maxRpm ?? ""}
-                  onChange={(e) =>
-                    setAlarms((prev) => ({ ...prev, maxRpm: e.target.value ? Number(e.target.value) : undefined }))
-                  }
-                />
-              </div>
-              <div className="field">
-                <label htmlFor="alarm-temp">{t("live.alarms.maxTemp", { unit: temperatureUnit })}</label>
-                <input
-                  id="alarm-temp"
-                  type="number"
-                  placeholder={String(Math.round(celsiusToDisplayTemp(105, temperatureUnit)))}
-                  value={alarms.maxCoolantTempC !== undefined ? Math.round(celsiusToDisplayTemp(alarms.maxCoolantTempC, temperatureUnit)) : ""}
-                  onChange={(e) => {
-                    const typed = e.target.value ? Number(e.target.value) : undefined;
-                    setAlarms((prev) => ({
-                      ...prev,
-                      maxCoolantTempC: typed !== undefined ? displayTempToCelsius(typed, temperatureUnit) : undefined,
-                    }));
-                  }}
-                />
-              </div>
-            </div>
-            <button type="button" className="btn btn--ghost btn--small" onClick={handleSaveAlarms}>
-              {t("live.alarms.save")}
-            </button>
-          </div>
             </>
           )}
 
           {liveTab === "diagnosis" && (
             <>
-          {/* VIN e info centralina */}
-          <div className="obd-block">
-            <div className="section-head section-head--tight">
-              <h2>{t("live.vehicleId.title")}</h2>
-              <div className="backup-panel__actions">
-                <button type="button" className="btn btn--ghost btn--small" onClick={handleReadVin} disabled={loadingVin}>
-                  {loadingVin ? t("live.vehicleId.reading") : t("live.vehicleId.readVin")}
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--small"
-                  onClick={handleReadEcuInfo}
-                  disabled={loadingEcuInfo}
-                >
-                  {loadingEcuInfo ? t("live.vehicleId.reading") : t("live.vehicleId.ecuInfo")}
-                </button>
-              </div>
-            </div>
-            {vin && <p className="obd-vin">{vin}</p>}
-            {(ecuName || calibrationId || protocol) && (
-              <dl className="ecu-info">
-                {protocol && (
-                  <div className="ecu-info__row">
-                    <dt>{t("live.vehicleId.protocol")}</dt>
-                    <dd>{localizeObdText(PROTOCOL_DESCRIPTIONS[protocol] ?? protocol, t)}</dd>
-                  </div>
-                )}
-                {ecuName && (
-                  <div className="ecu-info__row">
-                    <dt>{t("live.vehicleId.ecu")}</dt>
-                    <dd>{ecuName}</dd>
-                  </div>
-                )}
-                {calibrationId && (
-                  <div className="ecu-info__row">
-                    <dt>{t("live.vehicleId.calibrationId")}</dt>
-                    <dd>{calibrationId}</dd>
-                  </div>
-                )}
-              </dl>
-            )}
-          </div>
-
           {/* DTC */}
           <div className="obd-block">
             <div className="section-head section-head--tight">
@@ -1090,6 +1042,49 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
               </div>
             )}
           </div>
+          {/* VIN e info centralina */}
+          <div className="obd-block">
+            <div className="section-head section-head--tight">
+              <h2>{t("live.vehicleId.title")}</h2>
+              <div className="backup-panel__actions">
+                <button type="button" className="btn btn--ghost btn--small" onClick={handleReadVin} disabled={loadingVin}>
+                  {loadingVin ? t("live.vehicleId.reading") : t("live.vehicleId.readVin")}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--small"
+                  onClick={handleReadEcuInfo}
+                  disabled={loadingEcuInfo}
+                >
+                  {loadingEcuInfo ? t("live.vehicleId.reading") : t("live.vehicleId.ecuInfo")}
+                </button>
+              </div>
+            </div>
+            {vin && <p className="obd-vin">{vin}</p>}
+            {(ecuName || calibrationId || protocol) && (
+              <dl className="ecu-info">
+                {protocol && (
+                  <div className="ecu-info__row">
+                    <dt>{t("live.vehicleId.protocol")}</dt>
+                    <dd>{localizeObdText(PROTOCOL_DESCRIPTIONS[protocol] ?? protocol, t)}</dd>
+                  </div>
+                )}
+                {ecuName && (
+                  <div className="ecu-info__row">
+                    <dt>{t("live.vehicleId.ecu")}</dt>
+                    <dd>{ecuName}</dd>
+                  </div>
+                )}
+                {calibrationId && (
+                  <div className="ecu-info__row">
+                    <dt>{t("live.vehicleId.calibrationId")}</dt>
+                    <dd>{calibrationId}</dd>
+                  </div>
+                )}
+              </dl>
+            )}
+          </div>
+
             </>
           )}
         </>

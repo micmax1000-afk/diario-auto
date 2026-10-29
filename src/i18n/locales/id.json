@@ -114,7 +114,12 @@
     "notifAutoOff": "Notifikasi jatuh tempo nonaktif.",
     "notifDisable": "Nonaktifkan",
     "notifEnable": "Aktifkan",
-    "notificationsError": "Tidak dapat mengaktifkan notifikasi di ponsel ini. Coba lagi; jika masih terjadi, beri tahu kami."
+    "notificationsError": "Tidak dapat mengaktifkan notifikasi di ponsel ini. Coba lagi; jika masih terjadi, beri tahu kami.",
+    "chargesTitle": "Pengisian daya",
+    "chargesSubtitle": "Pengisian daya dan konsumsi energi",
+    "newFuel": "Isi BBM baru",
+    "newCharge": "Pengisian daya baru",
+    "fuelTitle": "Pengisian BBM"
   },
   "fuel": {
     "title": "Pengisian BBM",
@@ -143,7 +148,10 @@
     "periodLast12": "12 bulan terakhir",
     "periodAll": "Semua waktu",
     "fillupsCount": "{{count}} pengisian BBM",
-    "pricePerUnitLabel": "{{cur}}/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}",
+    "summaryAvgPrice": "Harga rata-rata",
+    "period": "Periode",
+    "partialShort": "Sebagian"
   },
   "fuelForm": {
     "title": "Pengisian BBM baru",
@@ -230,7 +238,16 @@
     "activeReminders": "Jatuh tempo aktif",
     "last": "Servis terakhir",
     "noHistory": "Catat servis pertama untuk mulai memantau perawatan.",
-    "urgentTitle": "Jatuh tempo yang perlu dicek"
+    "urgentTitle": "Jatuh tempo yang perlu dicek",
+    "statusOverdueSoon": "Terlambat: {{overdue}} · segera: {{soon}}",
+    "statusOverdue": "Terlambat: {{count}}",
+    "statusSoon": "Segera: {{count}}",
+    "statusOk": "Semua beres",
+    "statusHint": "Ketuk tenggat untuk memperbarui atau menandainya selesai",
+    "thisYear": "Tahun ini",
+    "history": "Riwayat perawatan",
+    "newIntervention": "Perawatan baru",
+    "lastShort": "Terakhir"
   },
   "maintenanceForm": {
     "title": "Perawatan baru",
@@ -368,7 +385,8 @@
     "monthKm": "Jarak tempuh: {{km}}",
     "monthCostPerKm": "{{cost}}/{{unit}}",
     "dataQualityElectric": "Pengisian daya yang dipakai untuk konsumsi: {{count}}.",
-    "dataQualityHintElectric": "Catat setidaknya dua pengisian daya dengan km untuk mendapatkan konsumsi dalam kWh/100 km."
+    "dataQualityHintElectric": "Catat setidaknya dua pengisian daya dengan km untuk mendapatkan konsumsi dalam kWh/100 km.",
+    "expensesLong": "Asuransi, pajak, dan biaya lain"
   },
   "backupPanel": {
     "noBackupYet": "Anda belum membuat cadangan",
@@ -548,7 +566,7 @@
     "tabs": {
       "live": "Langsung",
       "diagnosis": "Diagnosis",
-      "tools": "Alat"
+      "tools": "Rekaman"
     },
     "groups": {
       "engine": "Mesin",
@@ -581,7 +599,8 @@
       "cleared": "Tidak ada kode (pada pembacaan sebelumnya masih ada).",
       "delete": "Hapus",
       "seenBefore": "Pernah terlihat: {{n}}× · pertama pada {{date}} di {{km}}"
-    }
+    },
+    "adapterName": "Adaptor OBD2 Bluetooth"
   },
   "chargingCategory": {
     "ricarica": "Pengisian daya"
@@ -1048,7 +1067,8 @@
     "dtcTitle": "Diagnostik OBD: riwayat kode kesalahan",
     "dtcCleared": "Tidak ada kode: sudah teratasi sejak pembacaan sebelumnya.",
     "dtcUnknown": "Kode khusus pabrikan.",
-    "dtcUnknownGeneric": "Kode umum, deskripsi tidak tersedia."
+    "dtcUnknownGeneric": "Kode umum, deskripsi tidak tersedia.",
+    "short": "Paspor"
   },
   "obdNotice": {
     "title": "Sebelum terhubung",
@@ -1219,5 +1239,11 @@
     "expensesSub": "Asuransi, pajak, tol, dan lainnya",
     "kmSub": "Riwayat kilometer",
     "remindersSub": "Semua tenggat kendaraan"
+  },
+  "vehicleHeader": {
+    "change": "ganti kendaraan",
+    "choose": "Pilih kendaraan",
+    "toDo": "perlu dikerjakan: {{count}}",
+    "fleetSub": "Biaya semua kendaraan sekaligus"
   }
 }

@@ -114,7 +114,12 @@
     "notifAutoOff": "إشعارات المواعيد المستحقة متوقفة.",
     "notifDisable": "إيقاف",
     "notifEnable": "تفعيل",
-    "notificationsError": "تعذّر تفعيل الإشعارات على هذا الهاتف. حاول مرة أخرى، وإذا تكرر الأمر فأخبرنا."
+    "notificationsError": "تعذّر تفعيل الإشعارات على هذا الهاتف. حاول مرة أخرى، وإذا تكرر الأمر فأخبرنا.",
+    "chargesTitle": "الشحن",
+    "chargesSubtitle": "الشحن واستهلاك الطاقة",
+    "newFuel": "تزود جديد",
+    "newCharge": "شحن جديد",
+    "fuelTitle": "التزود بالوقود"
   },
   "fuel": {
     "title": "التزود بالوقود",
@@ -143,7 +148,10 @@
     "periodLast12": "الـ 12 شهراً الماضية",
     "periodAll": "كل الفترات",
     "fillupsCount": "{{count}} عملية تزويد",
-    "pricePerUnitLabel": "{{cur}}/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}",
+    "summaryAvgPrice": "متوسط السعر",
+    "period": "الفترة",
+    "partialShort": "جزئي"
   },
   "fuelForm": {
     "title": "تزود جديد بالوقود",
@@ -230,7 +238,16 @@
     "activeReminders": "المواعيد النشطة",
     "last": "آخر صيانة",
     "noHistory": "سجّل أول صيانة لبدء متابعة الصيانة.",
-    "urgentTitle": "مواعيد تحتاج إلى متابعة"
+    "urgentTitle": "مواعيد تحتاج إلى متابعة",
+    "statusOverdueSoon": "متأخرة: {{overdue}} · قريبة: {{soon}}",
+    "statusOverdue": "متأخرة: {{count}}",
+    "statusSoon": "قريبة: {{count}}",
+    "statusOk": "كل شيء على ما يرام",
+    "statusHint": "اضغط على موعد لتجديده أو تعليمه كمنجز",
+    "thisYear": "هذا العام",
+    "history": "الأعمال المنجزة",
+    "newIntervention": "صيانة جديدة",
+    "lastShort": "الأخير"
   },
   "maintenanceForm": {
     "title": "صيانة جديدة",
@@ -368,7 +385,8 @@
     "monthKm": "المسافة المقطوعة: {{km}}",
     "monthCostPerKm": "{{cost}}/{{unit}}",
     "dataQualityElectric": "عمليات الشحن المستخدمة لحساب الاستهلاك: {{count}}.",
-    "dataQualityHintElectric": "سجّل عمليتي شحن على الأقل مع الكيلومترات للحصول على الاستهلاك بوحدة kWh/100 كم."
+    "dataQualityHintElectric": "سجّل عمليتي شحن على الأقل مع الكيلومترات للحصول على الاستهلاك بوحدة kWh/100 كم.",
+    "expensesLong": "التأمين والضرائب ومصاريف أخرى"
   },
   "backupPanel": {
     "noBackupYet": "لم تقم بعمل نسخة احتياطية بعد",
@@ -548,7 +566,7 @@
     "tabs": {
       "live": "مباشر",
       "diagnosis": "التشخيص",
-      "tools": "الأدوات"
+      "tools": "التسجيلات"
     },
     "groups": {
       "engine": "المحرك",
@@ -581,7 +599,8 @@
       "cleared": "لا توجد رموز: كانت موجودة في القراءة السابقة.",
       "delete": "حذف",
       "seenBefore": "ظهر سابقًا: {{n}} مرة · أول مرة في {{date}} عند {{km}}"
-    }
+    },
+    "adapterName": "محول OBD2 بلوتوث"
   },
   "chargingCategory": {
     "ricarica": "الشحن"
@@ -1063,7 +1082,8 @@
     "dtcTitle": "تشخيص OBD: سجل رموز الأعطال",
     "dtcCleared": "لا توجد رموز: تم حلها منذ القراءة السابقة.",
     "dtcUnknown": "رمز خاص بالشركة المصنعة.",
-    "dtcUnknownGeneric": "رمز عام، الوصف غير متاح."
+    "dtcUnknownGeneric": "رمز عام، الوصف غير متاح.",
+    "short": "الجواز"
   },
   "obdNotice": {
     "title": "قبل الاتصال",
@@ -1234,5 +1254,11 @@
     "expensesSub": "التأمين والضرائب والرسوم وغيرها",
     "kmSub": "تطور الكيلومترات",
     "remindersSub": "جميع مواعيد المركبات"
+  },
+  "vehicleHeader": {
+    "change": "تغيير المركبة",
+    "choose": "اختر المركبة",
+    "toDo": "مطلوب: {{count}}",
+    "fleetSub": "تكاليف جميع المركبات معًا"
   }
 }

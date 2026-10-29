@@ -114,7 +114,12 @@
     "notifAutoOff": "Benachrichtigungen zu Fristen sind aus.",
     "notifDisable": "Ausschalten",
     "notifEnable": "Einschalten",
-    "notificationsError": "Benachrichtigungen konnten auf diesem Handy nicht aktiviert werden. Versuch es noch einmal; wenn es weiter passiert, sag uns Bescheid."
+    "notificationsError": "Benachrichtigungen konnten auf diesem Handy nicht aktiviert werden. Versuch es noch einmal; wenn es weiter passiert, sag uns Bescheid.",
+    "chargesTitle": "Ladevorgänge",
+    "chargesSubtitle": "Laden und Energieverbrauch",
+    "newFuel": "Neue Tankung",
+    "newCharge": "Neuer Ladevorgang",
+    "fuelTitle": "Tankvorgänge"
   },
   "fuel": {
     "title": "Tankvorgänge",
@@ -143,7 +148,10 @@
     "periodLast12": "Letzte 12 Monate",
     "periodAll": "Gesamt",
     "fillupsCount": "{{count}} Tankvorgänge",
-    "pricePerUnitLabel": "{{cur}}/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}",
+    "summaryAvgPrice": "Durchschnittspreis",
+    "period": "Zeitraum",
+    "partialShort": "Teilweise"
   },
   "fuelForm": {
     "title": "Neuer Tankvorgang",
@@ -230,7 +238,16 @@
     "activeReminders": "Aktive Fristen",
     "last": "Letzte Wartung",
     "noHistory": "Erfasse die erste Wartung, um den Wartungsstatus im Blick zu behalten.",
-    "urgentTitle": "Fristen prüfen"
+    "urgentTitle": "Fristen prüfen",
+    "statusOverdueSoon": "Überfällig: {{overdue}} · demnächst: {{soon}}",
+    "statusOverdue": "Überfällig: {{count}}",
+    "statusSoon": "Demnächst: {{count}}",
+    "statusOk": "Alles in Ordnung",
+    "statusHint": "Tippe auf eine Frist, um sie zu erneuern oder als erledigt zu markieren",
+    "thisYear": "Dieses Jahr",
+    "history": "Arbeiten",
+    "newIntervention": "Neue Wartung",
+    "lastShort": "Zuletzt"
   },
   "maintenanceForm": {
     "title": "Neue Wartung",
@@ -368,7 +385,8 @@
     "monthKm": "Gefahrene Strecke: {{km}}",
     "monthCostPerKm": "{{cost}}/{{unit}}",
     "dataQualityElectric": "Für den Verbrauch genutzte Ladevorgänge: {{count}}.",
-    "dataQualityHintElectric": "Erfasse mindestens zwei Ladevorgänge mit Kilometerstand, um den Verbrauch in kWh/100 km zu erhalten."
+    "dataQualityHintElectric": "Erfasse mindestens zwei Ladevorgänge mit Kilometerstand, um den Verbrauch in kWh/100 km zu erhalten.",
+    "expensesLong": "Versicherung, Steuer und sonstige Ausgaben"
   },
   "backupPanel": {
     "noBackupYet": "Du hast noch kein Backup erstellt",
@@ -548,7 +566,7 @@
     "tabs": {
       "live": "Live",
       "diagnosis": "Diagnose",
-      "tools": "Werkzeuge"
+      "tools": "Aufzeichnungen"
     },
     "groups": {
       "engine": "Motor",
@@ -581,7 +599,8 @@
       "cleared": "Keine Codes: Bei der vorherigen Auslesung waren welche vorhanden.",
       "delete": "Löschen",
       "seenBefore": "Schon gesehen: {{n}}× · zuerst am {{date}} bei {{km}}"
-    }
+    },
+    "adapterName": "Bluetooth-OBD2-Adapter"
   },
   "chargingCategory": {
     "ricarica": "Ladevorgang"
@@ -1051,7 +1070,8 @@
     "dtcTitle": "OBD-Diagnose: Fehlercode-Verlauf",
     "dtcCleared": "Keine Codes: seit der vorherigen Auslesung behoben.",
     "dtcUnknown": "Herstellerspezifischer Code.",
-    "dtcUnknownGeneric": "Generischer Code, keine Beschreibung verfügbar."
+    "dtcUnknownGeneric": "Generischer Code, keine Beschreibung verfügbar.",
+    "short": "Pass"
   },
   "obdNotice": {
     "title": "Bevor du dich verbindest",
@@ -1222,5 +1242,11 @@
     "expensesSub": "Versicherung, Steuer, Maut und mehr",
     "kmSub": "Kilometerverlauf",
     "remindersSub": "Alle Fahrzeugfristen"
+  },
+  "vehicleHeader": {
+    "change": "Fahrzeug wechseln",
+    "choose": "Fahrzeug wählen",
+    "toDo": "zu erledigen: {{count}}",
+    "fleetSub": "Kosten aller Fahrzeuge zusammen"
   }
 }

@@ -6,7 +6,6 @@ import { calculateVehicleCosts, calculateConsumption, averageConsumption as aver
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { isRtlLanguage } from "../i18n";
 import { generateMaintenancePassportPdf } from "../utils/vehiclePassport";
 import { describeDtc } from "../utils/dtcCodes";
 import { isManufacturerSpecificDtc } from "../utils/obdDtc";
@@ -28,10 +27,8 @@ import ChargingForm from "./ChargingForm";
 import MaintenanceForm from "./MaintenanceForm";
 import MaintenanceList from "./MaintenanceList";
 import MaintenanceOverview from "./MaintenanceOverview";
-import UpcomingReminders from "./UpcomingReminders";
 import PremiumScreen from "./PremiumScreen";
-import VehicleSwitcher from "./VehicleSwitcher";
-import CategoryIcon from "./CategoryIcon";
+import VehicleHeader from "./VehicleHeader";
 import ActionGridIcon from "./ActionGridIcon";
 import ExpenseForm from "./ExpenseForm";
 import ExpenseList from "./ExpenseList";
@@ -364,32 +361,19 @@ export default function VehicleDetail({
       className={`vehicle-detail-page${vehicleColor ? " vehicle-detail-page--colored" : ""}`}
       style={vehicleColor ? ({ ["--c" as string]: vehicleColor } as CSSProperties) : undefined}
     >
-      {/* Intestazione compatta: indietro, nome e km su una riga, così i dati iniziano più in alto */}
-      <div className="detail-header">
-        <button type="button" className="detail-header__back" onClick={onBack} aria-label={t("detail.back")} title={t("detail.back")}>
-          {isRtlLanguage(i18n.language) ? "→" : "←"}
-        </button>
-        <h1 className="detail-header__name">
-          {vehicleColor && allVehicles && allVehicles.length > 1 && <span className="vdot" aria-hidden="true" />}
-          {vehicle.name}
-        </h1>
-        <span className="detail-km">{formatDistance(vehicle.currentKm, distanceUnit, getNumberLocale(i18n.language))}</span>
-      </div>
-
-      {allVehicles && allVehicles.length > 1 && onSwitchVehicle && colors && (
-        <VehicleSwitcher
-          vehicles={allVehicles}
-          currentId={vehicle.id}
-          colors={colors}
-          urgentCounts={urgentCounts}
-          onSelect={onSwitchVehicle}
-          leading={
-            restrictToTab === "riepilogo" && onOpenFleet
-              ? { label: t("fleet.all", "Tutti"), active: false, onClick: onOpenFleet, badge: isPro ? undefined : "PRO" }
-              : undefined
-          }
-        />
-      )}
+      <VehicleHeader
+        vehicle={vehicle}
+        vehicles={allVehicles}
+        colors={colors}
+        urgentCounts={urgentCounts}
+        onBack={onBack}
+        onSelect={onSwitchVehicle}
+        leading={
+          restrictToTab === "riepilogo" && onOpenFleet
+            ? { label: t("fleet.all", "Tutti"), sub: t("vehicleHeader.fleetSub"), onClick: onOpenFleet, badge: isPro ? undefined : "PRO" }
+            : undefined
+        }
+      />
 
       {!restrictToTab && (
         <nav className="subtabbar">
@@ -412,8 +396,8 @@ export default function VehicleDetail({
       <div className="detail-content" key={tab}>
         {tab === "live" && (
           <>
-            <div className="section-head section-head--tight">
-              <h2>{t("detail.liveData")}</h2>
+            <div className="screen-head">
+              <h2 className="screen-title">{t("bottomNav.obd")}</h2>
             </div>
             <LiveDataPanel vehicle={vehicle} onOdometerKm={onOdometerKm} />
           </>
@@ -421,25 +405,9 @@ export default function VehicleDetail({
 
         {tab === "rifornimenti" && (
           <>
-            <div className="section-head section-head--tight">
-              <div>
-                <h2>{t("dashboardGarage.fuel")}</h2>
-                <p className="section-subtitle">{t(canCharge ? "detail.fuelSubtitleBoth" : "detail.fuelSubtitleFuel")}</p>
-              </div>
-            </div>
-            <div className={`fuel-actions${canCharge && showFuelButton ? " fuel-actions--2" : ""}`}>
-              {showFuelButton && (
-                <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowFuelForm(true)}>
-                  <ActionGridIcon name="fuel" className="dash-quick__icon" />
-                  <span>{t("dashboardGarage.fuel")}</span>
-                </button>
-              )}
-              {canCharge && (
-                <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={() => setShowChargingForm(true)}>
-                  <ActionGridIcon name="bolt" className="dash-quick__icon" />
-                  <span>{t("dashboardGarage.charge")}</span>
-                </button>
-              )}
+            <div className="screen-head">
+              <h2 className="screen-title">{t(isElectric ? "detail.chargesTitle" : "detail.fuelTitle")}</h2>
+              <p className="screen-sub">{t(isElectric ? "detail.chargesSubtitle" : canCharge ? "detail.fuelSubtitleBoth" : "detail.fuelSubtitleFuel")}</p>
             </div>
             <FuelChargeList
               fuelEntries={fuelEntries}
@@ -448,53 +416,67 @@ export default function VehicleDetail({
               showSourceFilters={canCharge && showFuelButton}
               onEditFuel={setEditingFuel}
               onEditCharging={setEditingCharging}
+              actions={
+                <div className="screen-actions">
+                  {showFuelButton && (
+                    <button type="button" className="big-btn big-btn--green" onClick={() => setShowFuelForm(true)}>
+                      <ActionGridIcon name="fuel" />
+                      {t("detail.newFuel")}
+                    </button>
+                  )}
+                  {canCharge && (
+                    <button type="button" className="big-btn big-btn--blue" onClick={() => setShowChargingForm(true)}>
+                      <ActionGridIcon name="bolt" />
+                      {t("detail.newCharge")}
+                    </button>
+                  )}
+                </div>
+              }
             />
           </>
         )}
 
         {tab === "manutenzioni" && (
           <>
-            <div className="section-head section-head--tight">
-              <h2>{t("maintenance.title")}</h2>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--small btn--icon"
-                  onClick={handleGeneratePassport}
-                  disabled={generatingPassport}
-                >
-                  {generatingPassport ? (
-                    t("passport.generating")
-                  ) : (
-                    <>
-                      <ActionGridIcon name="folder" /> {t("passport.generate")}
-                    </>
-                  )}
-                  {!isPro && " 🔒"}
-                </button>
-                <button type="button" className="btn btn--primary" onClick={() => setShowMaintenanceForm(true)}>
-                  {t("maintenance.add")}
-                </button>
-              </div>
+            <div className="screen-head screen-head--row">
+              <h2 className="screen-title">{t("maintenance.title")}</h2>
+              <button
+                type="button"
+                className="btn btn--ghost btn--small btn--icon"
+                onClick={handleGeneratePassport}
+                disabled={generatingPassport}
+              >
+                {generatingPassport ? (
+                  t("passport.generating")
+                ) : (
+                  <>
+                    <ActionGridIcon name="folder" /> {t("passport.short")}
+                  </>
+                )}
+                {!isPro && " 🔒"}
+              </button>
             </div>
             {passportError && <p className="form-error">{passportError}</p>}
+            <div className="screen-sect">
+              <h3>{t("reminders.title")}</h3>
+              {openRemindersTab && (
+                <button type="button" onClick={openRemindersTab}>
+                  {t("home.all")} ›
+                </button>
+              )}
+            </div>
             <MaintenanceOverview
+              vehicle={vehicle}
               entries={maintenanceEntries}
               reminders={reminders}
-              currentKm={vehicle.currentKm}
               onOpenReminders={openRemindersTab}
             />
-            {/* Quali scadenze fanno scattare l'avviso "Scadute"/"In arrivo", toccabili per aprirle. */}
-            <UpcomingReminders
-              vehicles={[vehicle]}
-              reminders={reminders}
-              distanceUnit={distanceUnit}
-              onOpenReminder={() => openRemindersTab?.()}
-              title={t("maintenance.urgentTitle")}
-            />
-            {restrictToTab === "manutenzioni" && (
+            <div className="screen-sect">
+              <h3>{t("maintenance.history")}</h3>
+            </div>
+            {restrictToTab === "manutenzioni" && maintenanceEntries.length > 0 && (
               <div className="maintenance-category-filter">
-                <label htmlFor="maintenance-category-select">{t("maintenance.filterByCategory", "Filtra per categoria")}</label>
+                <label htmlFor="maintenance-category-select" className="visually-hidden">{t("maintenance.filterByCategory", "Filtra per categoria")}</label>
                 <select
                   id="maintenance-category-select"
                   value={maintenanceCategoryFilter}
@@ -515,6 +497,11 @@ export default function VehicleDetail({
               }
               onEdit={setEditingMaintenance}
             />
+            <div className="screen-actions">
+              <button type="button" className="big-btn" onClick={() => setShowMaintenanceForm(true)}>
+                + {t("maintenance.newIntervention")}
+              </button>
+            </div>
           </>
         )}
 
@@ -569,8 +556,8 @@ export default function VehicleDetail({
 
         {tab === "riepilogo" && (
           <>
-            <div className="section-head section-head--tight">
-              <h2>{t("summary.title")}</h2>
+            <div className="screen-head">
+              <h2 className="screen-title">{t("bottomNav.stats")}</h2>
             </div>
 
             <div className="period-filter">
@@ -609,136 +596,81 @@ export default function VehicleDetail({
                 ))}
             </div>
 
-            <div className="stat-row stat-row--grid">
-              {(vehicle.fuelType !== "elettrico" || costs.fuelCost > 0) && (
-                <div className="stat-chip stat-chip--icon">
-                  <CategoryIcon kind="fuel" category="benzina" size="small" />
-                  <div>
-                    <span className="stat-chip__label">{t("summary.fuel")}</span>
-                    <span className="stat-chip__value">{formatMoney(costs.fuelCost)}</span>
-                  </div>
-                </div>
-              )}
-              {costs.chargingCost > 0 && (
-                <div className="stat-chip stat-chip--icon">
-                  <CategoryIcon kind="charging" category="" size="small" />
-                  <div>
-                    <span className="stat-chip__label">{t("summary.charging")}</span>
-                    <span className="stat-chip__value">{formatMoney(costs.chargingCost)}</span>
-                  </div>
-                </div>
-              )}
-              <div className="stat-chip stat-chip--icon">
-                <CategoryIcon kind="maintenance" category="tagliando" size="small" />
+            <section className="stotal">
+              <span className="stotal__label">{t("summary.total")}</span>
+              <div className="stotal__value">{formatMoney(costs.totalCost)}</div>
+              <div className="stotal__kpis">
                 <div>
-                  <span className="stat-chip__label">{t("summary.maintenance")}</span>
-                  <span className="stat-chip__value">{formatMoney(costs.maintenanceCost)}</span>
-                </div>
-              </div>
-              <div className="stat-chip stat-chip--icon">
-                <CategoryIcon kind="expense" category="altro" size="small" />
-                <div>
-                  <span className="stat-chip__label">{t("summary.expenses")}</span>
-                  <span className="stat-chip__value">{formatMoney(costs.expensesCost)}</span>
-                </div>
-              </div>
-              <div className="stat-chip stat-chip--icon">
-                <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <rect x="3" y="6" width="18" height="13" rx="2" />
-                    <path d="M3 10h18M7 14h3" />
-                  </svg>
+                  <span>{t("summary.distance")}</span>
+                  <b>{totalRecordedKm > 0 ? formatDistance(totalRecordedKm, distanceUnit, getNumberLocale(i18n.language)) : "—"}</b>
                 </div>
                 <div>
-                  <span className="stat-chip__label">{t("summary.total")}</span>
-                  <span className="stat-chip__value">{formatMoney(costs.totalCost)}</span>
-                </div>
-              </div>
-              <div className="stat-chip stat-chip--icon">
-                <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <path d="M3 17 9 8l4 5 8-11" />
-                    <path d="M15 2h6v6" />
-                  </svg>
+                  <span>{t("summary.costPerKm")}</span>
+                  <b>{costs.costPerKm !== null ? formatMoney(costs.costPerKm, 3) : "—"}</b>
                 </div>
                 <div>
-                  <span className="stat-chip__label">{t("summary.costPerKm")}</span>
-                  <span className="stat-chip__value">
-                    {costs.costPerKm !== null ? formatMoney(costs.costPerKm, 3) : "—"}
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="stat-row stat-row--grid stat-row--secondary">
-              <div className="stat-chip stat-chip--icon">
-                <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                    <rect x="2" y="9" width="20" height="6" rx="1" transform="rotate(-45 12 12)" />
-                    <path d="M8 12l1.5 1.5M11 9l1.5 1.5M14 6l1.5 1.5" />
-                  </svg>
-                </div>
-                <div>
-                  <span className="stat-chip__label">{t("summary.distance")}</span>
-                  <span className="stat-chip__value">
-                    {totalRecordedKm > 0 ? formatDistance(totalRecordedKm, distanceUnit, getNumberLocale(i18n.language)) : "—"}
-                  </span>
-                </div>
-              </div>
-              <div className="stat-chip stat-chip--icon">
-                <div className={`record-card__icon record-card__icon--${isElectric ? "cyan" : "amber"} record-card__icon--sm`}>
-                  <ActionGridIcon name={isElectric ? "bolt" : "fuel"} />
-                </div>
-                <div>
-                  <span className="stat-chip__label">{t("summary.consumption")}</span>
-                  <span className="stat-chip__value">
+                  <span>{t("home.consumption")}</span>
+                  <b>
                     {isElectric
                       ? averageElectric !== null
-                        ? `${formatNumber(averageElectric, 1, getNumberLocale(i18n.language))} kWh/100 km`
+                        ? <>{formatNumber(averageElectric, 1, getNumberLocale(i18n.language))} <small>kWh/100</small></>
                         : "—"
                       : averageConsumption !== null
-                        ? `${formatNumber(averageConsumption, 1, getNumberLocale(i18n.language))} L/100 km`
+                        ? <>{formatNumber(averageConsumption, 1, getNumberLocale(i18n.language))} <small>l/100</small></>
                         : "—"}
-                  </span>
+                  </b>
                 </div>
               </div>
-              {canCharge && (
-                <>
-                  <div className="stat-chip stat-chip--icon">
-                    <div className="record-card__icon record-card__icon--cyan record-card__icon--sm">
-                      <ActionGridIcon name="bolt" />
-                    </div>
-                    <div>
-                      <span className="stat-chip__label">{t("summary.energy")}</span>
-                      <span className="stat-chip__value">
-                        {totalChargingKwh > 0 ? `${formatNumber(totalChargingKwh, 1, getNumberLocale(i18n.language))} kWh` : "—"}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="stat-chip stat-chip--icon">
-                    <div className="record-card__icon record-card__icon--amber record-card__icon--sm">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                        <path d="M17 8a5 5 0 1 0 0 8M6 10h6M6 14h5" />
-                      </svg>
-                    </div>
-                    <div>
-                      <span className="stat-chip__label">{t("summary.averageEnergyPrice")}</span>
-                      <span className="stat-chip__value">
-                        {averageChargingPrice !== null ? formatMoney(averageChargingPrice, 3) + "/kWh" : "—"}
-                      </span>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
+            </section>
 
-            <div className="summary-insight">
-              <strong>{t("summary.dataQualityTitle")}</strong>
-              <span>{
-                consumptionSamples > 0
-                  ? t(isElectric ? "summary.dataQualityElectric" : "summary.dataQualityConsumption", { count: consumptionSamples })
-                  : t(isElectric ? "summary.dataQualityHintElectric" : "summary.dataQualityHint")
-              }</span>
-            </div>
+            <section className="sbreak">
+              {[
+                { key: "fuel", label: t("summary.fuel"), value: costs.fuelCost, color: "var(--amber)", show: vehicle.fuelType !== "elettrico" || costs.fuelCost > 0 },
+                { key: "charging", label: t("summary.charging"), value: costs.chargingCost, color: "var(--blue)", show: costs.chargingCost > 0 },
+                { key: "maintenance", label: t("summary.maintenance"), value: costs.maintenanceCost, color: "var(--green)", show: true },
+                { key: "expenses", label: t("summary.expensesLong"), value: costs.expensesCost, color: "var(--purple)", show: true },
+              ]
+                .filter((c) => c.show)
+                .map((c) => {
+                  const pct = costs.totalCost > 0 ? (c.value / costs.totalCost) * 100 : 0;
+                  return (
+                    <div key={c.key} className="sbreak__row">
+                      <span className="sbreak__name">
+                        <i style={{ background: c.color }} aria-hidden="true" />
+                        {c.label}
+                      </span>
+                      <span className="sbreak__value">
+                        {formatMoney(c.value, 0)}
+                        <small>{Math.round(pct)}%</small>
+                      </span>
+                      <span className="sbreak__bar" aria-hidden="true">
+                        <i style={{ width: `${pct}%`, background: c.color }} />
+                      </span>
+                    </div>
+                  );
+                })}
+            </section>
+
+            {canCharge && (
+              <div className="skgrid">
+                <div className="skgrid__item">
+                  <span className="skgrid__icon skgrid__icon--blue"><ActionGridIcon name="bolt" /></span>
+                  <div>
+                    <span>{t("summary.energy")}</span>
+                    <b>{totalChargingKwh > 0 ? `${formatNumber(totalChargingKwh, 1, getNumberLocale(i18n.language))} kWh` : "—"}</b>
+                  </div>
+                </div>
+                <div className="skgrid__item">
+                  <span className="skgrid__icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8"><path d="M17 8a5 5 0 1 0 0 8M6 10h6M6 14h5" /></svg>
+                  </span>
+                  <div>
+                    <span>{t("summary.averageEnergyPrice")}</span>
+                    <b>{averageChargingPrice !== null ? formatMoney(averageChargingPrice, 3) + "/kWh" : "—"}</b>
+                  </div>
+                </div>
+              </div>
+            )}
 
             <CostChart
               fuelEntries={filteredFuel}
@@ -748,6 +680,14 @@ export default function VehicleDetail({
               kmReadings={[...fuelEntries, ...chargingEntries, ...maintenanceEntries]}
             />
             <FuelPriceChart fuelEntries={filteredFuel} />
+            <div className="summary-insight">
+              <strong>{t("summary.dataQualityTitle")}</strong>
+              <span>{
+                consumptionSamples > 0
+                  ? t(isElectric ? "summary.dataQualityElectric" : "summary.dataQualityConsumption", { count: consumptionSamples })
+                  : t(isElectric ? "summary.dataQualityHintElectric" : "summary.dataQualityHint")
+              }</span>
+            </div>
           </>
         )}
       </div>

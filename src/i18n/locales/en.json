@@ -114,7 +114,12 @@
     "notifAutoOff": "Due date notifications are off.",
     "notifDisable": "Turn off",
     "notifEnable": "Turn on",
-    "notificationsError": "Couldn't turn on notifications on this phone. Try again; if it keeps happening, please let us know."
+    "notificationsError": "Couldn't turn on notifications on this phone. Try again; if it keeps happening, please let us know.",
+    "chargesTitle": "Charges",
+    "chargesSubtitle": "Charging and energy use",
+    "newFuel": "New refuel",
+    "newCharge": "New charge",
+    "fuelTitle": "Refuels"
   },
   "fuel": {
     "title": "Refuels",
@@ -143,7 +148,10 @@
     "periodLast12": "Last 12 months",
     "periodAll": "All time",
     "fillupsCount": "{{count}} refuels",
-    "pricePerUnitLabel": "{{cur}}/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}",
+    "summaryAvgPrice": "Average price",
+    "period": "Period",
+    "partialShort": "Partial"
   },
   "fuelForm": {
     "title": "New refuel",
@@ -230,7 +238,16 @@
     "activeReminders": "Active due dates",
     "last": "Last job",
     "noHistory": "Log your first job to start tracking maintenance.",
-    "urgentTitle": "Due dates to check"
+    "urgentTitle": "Due dates to check",
+    "statusOverdueSoon": "Overdue: {{overdue}} · coming up: {{soon}}",
+    "statusOverdue": "Overdue: {{count}}",
+    "statusSoon": "Coming up: {{count}}",
+    "statusOk": "All good",
+    "statusHint": "Tap a deadline to renew it or mark it done",
+    "thisYear": "This year",
+    "history": "Work done",
+    "newIntervention": "New service",
+    "lastShort": "Last"
   },
   "maintenanceForm": {
     "title": "New Maintenance",
@@ -368,7 +385,8 @@
     "monthKm": "Distance driven: {{km}}",
     "monthCostPerKm": "{{cost}}/{{unit}}",
     "dataQualityElectric": "Charging sessions used for consumption: {{count}}.",
-    "dataQualityHintElectric": "Log at least two charging sessions with mileage to get consumption in kWh/100 km."
+    "dataQualityHintElectric": "Log at least two charging sessions with mileage to get consumption in kWh/100 km.",
+    "expensesLong": "Insurance, road tax and other expenses"
   },
   "backupPanel": {
     "noBackupYet": "You haven't made a backup yet",
@@ -548,7 +566,7 @@
     "tabs": {
       "live": "Live",
       "diagnosis": "Diagnosis",
-      "tools": "Tools"
+      "tools": "Recordings"
     },
     "groups": {
       "engine": "Engine",
@@ -581,7 +599,8 @@
       "cleared": "No codes: they were present in the previous reading.",
       "delete": "Delete",
       "seenBefore": "Seen before: {{n}}× · first on {{date}} at {{km}}"
-    }
+    },
+    "adapterName": "Bluetooth OBD2 adapter"
   },
   "chargingCategory": {
     "ricarica": "Charging"
@@ -1051,7 +1070,8 @@
     "dtcTitle": "OBD diagnostics: fault code history",
     "dtcCleared": "No codes: cleared since the previous reading.",
     "dtcUnknown": "Manufacturer-specific code.",
-    "dtcUnknownGeneric": "Generic code, description not available."
+    "dtcUnknownGeneric": "Generic code, description not available.",
+    "short": "Passport"
   },
   "obdNotice": {
     "title": "Before you connect",
@@ -1222,5 +1242,11 @@
     "expensesSub": "Insurance, road tax, tolls and more",
     "kmSub": "Mileage over time",
     "remindersSub": "All vehicle deadlines"
+  },
+  "vehicleHeader": {
+    "change": "change vehicle",
+    "choose": "Choose vehicle",
+    "toDo": "to do: {{count}}",
+    "fleetSub": "Costs of all vehicles together"
   }
 }

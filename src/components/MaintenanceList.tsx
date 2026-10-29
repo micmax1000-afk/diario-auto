@@ -26,83 +26,48 @@ export default function MaintenanceList({ entries, onEdit }: Props) {
     );
   }
 
-  const totalCost = entries.reduce((sum, e) => sum + e.cost, 0);
+  const locale = getNumberLocale(i18n.language);
 
   return (
     <div>
-      <div className="stat-row">
-        <div className="stat-chip">
-          <span className="stat-chip__label">{t("maintenance.totalSpent")}</span>
-          <span className="stat-chip__value">{formatMoney(totalCost)}</span>
-        </div>
-        <div className="stat-chip">
-          <span className="stat-chip__label">{t("maintenance.interventions")}</span>
-          <span className="stat-chip__value">{entries.length}</span>
-        </div>
-      </div>
-
-      <div className="record-list">
-        {sorted.map((entry) => (
-          <div
-            key={entry.id}
-            className="record-card record-card--tappable"
-            aria-label={t("common.edit")}
-            role="button"
-            tabIndex={0}
-            onClick={() => onEdit(entry)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onEdit(entry);
-              }
-            }}
-          >
-            <div className="record-card__header">
+      <div className="mlist">
+        {sorted.map((entry) => {
+          const title = t(`maintenanceCategory.${entry.category}`);
+          const sub = [
+            entry.description,
+            `${kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} ${distanceUnit}`,
+            entry.workshop,
+          ].filter(Boolean).join(" · ");
+          return (
+            <div
+              key={entry.id}
+              className="mrow"
+              aria-label={`${t("common.edit")} · ${title}`}
+              role="button"
+              tabIndex={0}
+              onClick={() => onEdit(entry)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onEdit(entry);
+                }
+              }}
+            >
               <CategoryIcon kind="maintenance" category={entry.category} />
-              <div className="record-card__title-group">
-                <span className="record-card__title">{t(`maintenanceCategory.${entry.category}`)}</span>
-                <span className="record-card__meta">
-                  {new Date(entry.date).toLocaleDateString(getNumberLocale(i18n.language))}
-                </span>
-              </div>
-              <div className="record-card__check">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 12l6 6L20 6" />
-                </svg>
-              </div>
-            </div>
-            <div className="record-card__rows">
-              <div className="record-card__row">
-                <span className="record-card__row-label">{distanceUnit.toUpperCase()}</span>
-                <span className="record-card__row-value mono">
-                  {kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(getNumberLocale(i18n.language), { maximumFractionDigits: 0 })}
-                </span>
-              </div>
-              <div className="record-card__row">
-                <span className="record-card__row-label">{t("maintenance.columns.cost")}</span>
-                <span className="record-card__row-value mono">
-                  {formatMoney(entry.cost)}
-                  {entry.partsCost !== undefined && entry.laborCost !== undefined && (
-                    <span className="cost-breakdown">
-                      {" "}
-                      ({t("maintenance.partsLabor", { parts: formatMoney(entry.partsCost), labor: formatMoney(entry.laborCost) })})
-                    </span>
-                  )}
-                </span>
-              </div>
-              {entry.workshop && (
-                <div className="record-card__row">
-                  <span className="record-card__row-label">{t("maintenanceForm.workshop")}</span>
-                  <span className="record-card__row-value">{entry.workshop}</span>
-                </div>
-              )}
-            </div>
-            <p className="record-card__note">{entry.description}</p>
-            <div className="record-card__actions">
+              <span className="mrow__mid">
+                <span className="mrow__title">{title}</span>
+                <span className="mrow__sub">{sub}</span>
+                {entry.partsCost !== undefined && entry.laborCost !== undefined && (
+                  <span className="mrow__sub">
+                    {t("maintenance.partsLabor", { parts: formatMoney(entry.partsCost), labor: formatMoney(entry.laborCost) })}
+                  </span>
+                )}
+              </span>
               {entry.photo && (
                 <button
                   type="button"
-                  className="thumb-btn"
+                  className="mrow__photo"
+                  aria-label={t("vehicleForm.photo")}
                   onClick={(e) => {
                     e.stopPropagation();
                     setZoomPhoto(entry.photo!);
@@ -111,10 +76,15 @@ export default function MaintenanceList({ entries, onEdit }: Props) {
                   <img src={entry.photo} alt="" />
                 </button>
               )}
-              <span className="record-card__edit-hint">{t("common.tapToEdit")}</span>
+              <span className="mrow__end">
+                <span className="mrow__amt">{formatMoney(entry.cost)}</span>
+                <span className="mrow__date">
+                  {new Date(entry.date).toLocaleDateString(locale, { day: "numeric", month: "short", year: "2-digit" })}
+                </span>
+              </span>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {zoomPhoto && (
