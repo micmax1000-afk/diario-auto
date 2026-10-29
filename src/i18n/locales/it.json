@@ -505,7 +505,7 @@
     },
     "dtcModes": {
       "stored": "Memorizzati",
-      "pending": "Pending",
+      "pending": "In attesa",
       "permanent": "Permanenti"
     },
     "notSupportedTitle": "Bluetooth non disponibile",
