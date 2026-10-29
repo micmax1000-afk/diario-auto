@@ -507,9 +507,14 @@ export default function VehicleDetail({
 
         {tab === "spese" && (
           <>
-            <div className="section-head section-head--tight">
-              <div><h2>{t("expenses.title")}</h2><p className="section-subtitle">{t("detail.expensesSubtitle")}</p></div>
-              <button type="button" className="btn btn--primary" onClick={() => setShowExpenseForm(true)}>{t("expenses.add")}</button>
+            <div className="screen-head">
+              <h2 className="screen-title">{t("detail.expensesTitle")}</h2>
+              <p className="screen-sub">{t("detail.expensesSubtitle")}</p>
+            </div>
+            <div className="screen-actions">
+              <button type="button" className="big-btn big-btn--purple" onClick={() => setShowExpenseForm(true)}>
+                + {t("detail.newExpense")}
+              </button>
             </div>
             <ExpenseList entries={expenseEntries} onEdit={setEditingExpense} />
           </>
@@ -518,10 +523,12 @@ export default function VehicleDetail({
 
         {tab === "scadenze" && (
           <>
-            <div className="section-head section-head--tight">
-              <h2>{t("reminders.title")}</h2>
-              <button type="button" className="btn btn--primary" onClick={() => setShowReminderForm(true)}>
-                {t("reminders.add")}
+            <div className="screen-head">
+              <h2 className="screen-title">{t("reminders.title")}</h2>
+            </div>
+            <div className="screen-actions">
+              <button type="button" className="big-btn" onClick={() => setShowReminderForm(true)}>
+                + {t("detail.newReminder")}
               </button>
             </div>
 

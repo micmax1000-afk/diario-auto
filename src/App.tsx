@@ -43,6 +43,7 @@ import { updateWidgetData } from "./utils/widgetData";
 import VehicleCard from "./components/VehicleCard";
 import VehicleForm from "./components/VehicleForm";
 import Dashboard, { type ActivityKind } from "./components/Dashboard";
+import QuickEntryHeader from "./components/QuickEntryHeader";
 import AddSheet, { type AddAction } from "./components/AddSheet";
 import MenuSections from "./components/MenuSections";
 import BottomTabBar, { type TabId } from "./components/BottomTabBar";
@@ -794,13 +795,7 @@ export default function App() {
       >
         {showBackup && (
           <section style={{ paddingBottom: "3rem" }}>
-            <div className="section-head">
-              <h1>{t("backup.title")}</h1>
-              <button type="button" className="btn btn--ghost" onClick={() => { setShowBackup(false); setMainTab("impostazioni"); }}>
-                {isRtlLanguage(i18n.language) ? "→ " : "← "}
-                {t("settingsScreen.title")}
-              </button>
-            </div>
+            <QuickEntryHeader title={t("backup.title")} onBack={() => { setShowBackup(false); setMainTab("impostazioni"); }} />
             <Suspense fallback={<LazyFallback />}>
               <BackupPanel
                 vehicles={vehicles}

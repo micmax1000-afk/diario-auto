@@ -119,7 +119,10 @@
     "chargesSubtitle": "Carregamentos e consumo de energia",
     "newFuel": "Novo abastecimento",
     "newCharge": "Novo carregamento",
-    "fuelTitle": "Abastecimentos"
+    "fuelTitle": "Abastecimentos",
+    "expensesTitle": "Despesas",
+    "newExpense": "Nova despesa",
+    "newReminder": "Novo prazo"
   },
   "fuel": {
     "title": "Abastecimentos",

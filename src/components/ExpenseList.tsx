@@ -26,68 +26,66 @@ export default function ExpenseList({ entries, onEdit }: Props) {
   }
 
   const totalAmount = entries.reduce((sum, e) => sum + e.amount, 0);
-  const byCategory = entries.reduce<Record<string, number>>((acc, e) => {
-    acc[e.category] = (acc[e.category] ?? 0) + e.amount;
-    return acc;
-  }, {});
+  const byCategory = Object.entries(
+    entries.reduce<Record<string, number>>((acc, e) => {
+      acc[e.category] = (acc[e.category] ?? 0) + e.amount;
+      return acc;
+    }, {}),
+  ).sort((a, b) => b[1] - a[1]);
+  const locale = getNumberLocale(i18n.language);
 
   return (
     <div>
-      <div className="stat-row">
-        <div className="stat-chip">
-          <span className="stat-chip__label">{t("expenses.total")}</span>
-          <span className="stat-chip__value">{formatMoney(totalAmount)}</span>
-        </div>
-        {Object.entries(byCategory).map(([cat, amount]) => (
-          <div className="stat-chip" key={cat}>
-            <span className="stat-chip__label">{t(`expenseCategory.${cat}`)}</span>
-            <span className="stat-chip__value">{formatMoney(amount)}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="record-list">
-        {sorted.map((entry) => (
-          <div
-            key={entry.id}
-            className="record-card record-card--tappable"
-            aria-label={t("common.edit")}
-            role="button"
-            tabIndex={0}
-            onClick={() => onEdit(entry)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onEdit(entry);
-              }
-            }}
-          >
-            <div className="record-card__header">
-              <CategoryIcon kind="expense" category={entry.category} />
-              <div className="record-card__title-group">
-                <span className="record-card__title">{t(`expenseCategory.${entry.category}`)}</span>
-                <span className="record-card__meta">
-                  {new Date(entry.date).toLocaleDateString(getNumberLocale(i18n.language))}
+      <section className="stotal">
+        <span className="stotal__label">{t("expenses.total")}</span>
+        <div className="stotal__value">{formatMoney(totalAmount)}</div>
+        <div className="sbreak sbreak--flat">
+          {byCategory.map(([cat, amount]) => {
+            const pct = totalAmount > 0 ? (amount / totalAmount) * 100 : 0;
+            return (
+              <div key={cat} className="sbreak__row">
+                <span className="sbreak__name">{t(`expenseCategory.${cat}`)}</span>
+                <span className="sbreak__value">
+                  {formatMoney(amount, 0)}
+                  <small>{Math.round(pct)}%</small>
+                </span>
+                <span className="sbreak__bar" aria-hidden="true">
+                  <i style={{ width: `${pct}%`, background: "var(--purple)" }} />
                 </span>
               </div>
-              <div className="record-card__check">
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 12l6 6L20 6" />
-                </svg>
-              </div>
-            </div>
-            <div className="record-card__rows">
-              <div className="record-card__row">
-                <span className="record-card__row-label">{t("expenses.columns.amount")}</span>
-                <span className="record-card__row-value mono">{formatMoney(entry.amount)}</span>
-              </div>
-            </div>
-            <p className="record-card__note">{entry.description}</p>
-            <div className="record-card__actions">
+            );
+          })}
+        </div>
+      </section>
+
+      <div className="mlist mlist--spaced">
+        {sorted.map((entry) => {
+          const title = t(`expenseCategory.${entry.category}`);
+          return (
+            <div
+              key={entry.id}
+              className="mrow"
+              aria-label={`${t("common.edit")} · ${title}`}
+              role="button"
+              tabIndex={0}
+              onClick={() => onEdit(entry)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onEdit(entry);
+                }
+              }}
+            >
+              <CategoryIcon kind="expense" category={entry.category} />
+              <span className="mrow__mid">
+                <span className="mrow__title">{title}</span>
+                {entry.description && <span className="mrow__sub">{entry.description}</span>}
+              </span>
               {entry.photo && (
                 <button
                   type="button"
-                  className="thumb-btn"
+                  className="mrow__photo"
+                  aria-label={t("vehicleForm.photo")}
                   onClick={(e) => {
                     e.stopPropagation();
                     setZoomPhoto(entry.photo!);
@@ -96,10 +94,15 @@ export default function ExpenseList({ entries, onEdit }: Props) {
                   <img src={entry.photo} alt="" />
                 </button>
               )}
-              <span className="record-card__edit-hint">{t("common.tapToEdit")}</span>
+              <span className="mrow__end">
+                <span className="mrow__amt">{formatMoney(entry.amount)}</span>
+                <span className="mrow__date">
+                  {new Date(entry.date).toLocaleDateString(locale, { day: "numeric", month: "short", year: "2-digit" })}
+                </span>
+              </span>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {zoomPhoto && (

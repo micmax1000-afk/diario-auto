@@ -119,7 +119,10 @@
     "chargesSubtitle": "الشحن واستهلاك الطاقة",
     "newFuel": "تزود جديد",
     "newCharge": "شحن جديد",
-    "fuelTitle": "التزود بالوقود"
+    "fuelTitle": "التزود بالوقود",
+    "expensesTitle": "المصاريف",
+    "newExpense": "مصروف جديد",
+    "newReminder": "موعد جديد"
   },
   "fuel": {
     "title": "التزود بالوقود",

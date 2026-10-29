@@ -119,7 +119,10 @@
     "chargesSubtitle": "Pengisian daya dan konsumsi energi",
     "newFuel": "Isi BBM baru",
     "newCharge": "Pengisian daya baru",
-    "fuelTitle": "Pengisian BBM"
+    "fuelTitle": "Pengisian BBM",
+    "expensesTitle": "Biaya",
+    "newExpense": "Biaya baru",
+    "newReminder": "Tenggat baru"
   },
   "fuel": {
     "title": "Pengisian BBM",

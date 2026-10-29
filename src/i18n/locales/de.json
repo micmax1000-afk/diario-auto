@@ -119,7 +119,10 @@
     "chargesSubtitle": "Laden und Energieverbrauch",
     "newFuel": "Neue Tankung",
     "newCharge": "Neuer Ladevorgang",
-    "fuelTitle": "Tankvorgänge"
+    "fuelTitle": "Tankvorgänge",
+    "expensesTitle": "Ausgaben",
+    "newExpense": "Neue Ausgabe",
+    "newReminder": "Neue Frist"
   },
   "fuel": {
     "title": "Tankvorgänge",

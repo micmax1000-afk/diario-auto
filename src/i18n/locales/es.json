@@ -119,7 +119,10 @@
     "chargesSubtitle": "Recargas y consumo de energía",
     "newFuel": "Nuevo repostaje",
     "newCharge": "Nueva recarga",
-    "fuelTitle": "Repostajes"
+    "fuelTitle": "Repostajes",
+    "expensesTitle": "Gastos",
+    "newExpense": "Nuevo gasto",
+    "newReminder": "Nuevo vencimiento"
   },
   "fuel": {
     "title": "Repostajes",
