@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, ChargingEntry, FuelType } from "../types";
 import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth, mainFuelSource } from "../utils/calculations";
@@ -23,6 +23,8 @@ interface Props {
   showSourceFilters?: boolean;
   onEditFuel: (entry: FuelEntry) => void;
   onEditCharging: (entry: ChargingEntry) => void;
+  /** Pulsanti per aggiungere, mostrati tra il riepilogo e l'elenco. */
+  actions?: ReactNode;
 }
 
 export default function FuelChargeList({
@@ -32,6 +34,7 @@ export default function FuelChargeList({
   showSourceFilters = true,
   onEditFuel,
   onEditCharging,
+  actions,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney, currency, distanceUnit } = useAppSettings();
@@ -46,10 +49,13 @@ export default function FuelChargeList({
 
   if (rows.length === 0) {
     return (
-      <div className="empty-state">
-        <p className="empty-state__title">{t("fuel.emptyTitle")}</p>
-        <p className="empty-state__body">{t("fuel.emptyBody")}</p>
-      </div>
+      <>
+        {actions}
+        <div className="empty-state">
+          <p className="empty-state__title">{t("fuel.emptyTitle")}</p>
+          <p className="empty-state__body">{t("fuel.emptyBody")}</p>
+        </div>
+      </>
     );
   }
 
@@ -73,6 +79,13 @@ export default function FuelChargeList({
   // Solo ricariche nel periodo (auto elettrica): consumo in kWh/100 km.
   const periodCharging = periodFilteredRows.filter((r) => r.kind === "charge").map((r) => r.entry as ChargingEntry);
   const avgElectric = periodFuel.length === 0 ? averageElectricConsumption(calculateElectricConsumption(periodCharging)) : null;
+  // Prezzo medio al litro (o al kWh se ci sono solo ricariche).
+  const fuelQty = periodFuel.reduce((sum, e) => sum + e.liters, 0);
+  const chargeQty = periodCharging.reduce((sum, e) => sum + e.kWh, 0);
+  const avgPrice =
+    periodFuel.length > 0
+      ? fuelQty > 0 ? `${formatMoney(periodFuel.reduce((sum, e) => sum + e.totalCost, 0) / fuelQty, 3)}/l` : null
+      : chargeQty > 0 ? `${formatMoney(periodCharging.reduce((sum, e) => sum + e.totalCost, 0) / chargeQty, 2)}/kWh` : null;
   const allKm = periodFilteredRows.map((r) => r.entry.km);
   const totalDistance = allKm.length > 1 ? Math.max(...allKm) - Math.min(...allKm) : 0;
 
@@ -86,6 +99,49 @@ export default function FuelChargeList({
 
   return (
     <div className="fc-list">
+      <section className="fc-sum">
+        <div className="fc-sum__top">
+          <span className="fc-sum__label">{t("fuel.summaryTotalCost", "Spesa totale")}</span>
+          <select className="fc-sum__period" value={period} onChange={(e) => setPeriod(e.target.value as Period)} aria-label={t("fuel.period")}>
+            <option value="3m">{t("fuel.periodLast3", "Ultimi 3 mesi")}</option>
+            <option value="6m">{t("fuel.periodLast6", "Ultimi 6 mesi")}</option>
+            <option value="12m">{t("fuel.periodLast12", "Ultimi 12 mesi")}</option>
+            <option value="all">{t("fuel.periodAll", "Sempre")}</option>
+          </select>
+        </div>
+        <div className="fc-sum__total">{formatMoney(totalCost)}</div>
+        <div className="fc-sum__kpis">
+          <div className="fc-sum__kpi">
+            <span>{t("fuel.summaryAvgConsumption", "Consumo medio")}</span>
+            <b>
+              {avgConsumption !== null && avgConsumption > 0 ? (
+                <>
+                  {(100 / avgConsumption).toLocaleString(locale, { maximumFractionDigits: 1 })} <small>l/100 km</small>
+                </>
+              ) : avgElectric !== null ? (
+                <>
+                  {avgElectric.toLocaleString(locale, { maximumFractionDigits: 1 })} <small>kWh/100</small>
+                </>
+              ) : (
+                "—"
+              )}
+            </b>
+          </div>
+          <div className="fc-sum__kpi">
+            <span>{t("fuel.summaryTotalDistance", "Distanza totale")}</span>
+            <b>
+              {kmToDisplayDistance(totalDistance, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} <small>{distanceUnit}</small>
+            </b>
+          </div>
+          <div className="fc-sum__kpi">
+            <span>{t("fuel.summaryAvgPrice")}</span>
+            <b>{avgPrice ?? "—"}</b>
+          </div>
+        </div>
+      </section>
+
+      {actions}
+
       {showSourceFilters && (
         <div className="fc-list__filters">
           {(["all", "fuel", "electric"] as Filter[]).map((f) => (
@@ -101,97 +157,57 @@ export default function FuelChargeList({
         </div>
       )}
 
-      <div className="fc-list__period">
-        <select value={period} onChange={(e) => setPeriod(e.target.value as Period)}>
-          <option value="3m">{t("fuel.periodLast3", "Ultimi 3 mesi")}</option>
-          <option value="6m">{t("fuel.periodLast6", "Ultimi 6 mesi")}</option>
-          <option value="12m">{t("fuel.periodLast12", "Ultimi 12 mesi")}</option>
-          <option value="all">{t("fuel.periodAll", "Sempre")}</option>
-        </select>
-      </div>
-
-      <div className="fc-list__summary">
-        <div className="fc-list__summary-item">
-          <span>{t("fuel.summaryTotalCost", "Spesa totale")}</span>
-          <strong>{formatMoney(totalCost)}</strong>
-        </div>
-        <div className="fc-list__summary-item">
-          <span>{t("fuel.summaryAvgConsumption", "Consumo medio")}</span>
-          <strong>{avgConsumption !== null && avgConsumption > 0
-              ? `${(100 / avgConsumption).toLocaleString(locale, { maximumFractionDigits: 1 })} l/100km`
-              : avgElectric !== null
-                ? `${avgElectric.toLocaleString(locale, { maximumFractionDigits: 1 })} kWh/100km`
-                : "—"}</strong>
-        </div>
-        <div className="fc-list__summary-item">
-          <span>{t("fuel.summaryTotalDistance", "Distanza totale")}</span>
-          <strong>{kmToDisplayDistance(totalDistance, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} {distanceUnit}</strong>
-        </div>
-      </div>
-
       <div className="fc-list__items">
         {groupByMonth(periodFilteredRows, (r) => r.entry.date, locale).map((group) => (
           <section key={group.key} className="fc-month">
             <div className="fc-month__head">
               <span className="fc-month__label">{group.label}</span>
               <span className="fc-month__total">
-                {group.entries.length}× · {formatMoney(group.entries.reduce((sum, r) => sum + r.entry.totalCost, 0))}
+                {group.entries.length}× · <b>{formatMoney(group.entries.reduce((sum, r) => sum + r.entry.totalCost, 0))}</b>
               </span>
             </div>
-            {group.entries.map((row) => {
-              const { entry } = row;
-              const isFuel = row.kind === "fuel";
-              const unit = isFuel ? "L" : "kWh";
-              const quantity = isFuel ? (entry as FuelEntry).liters : (entry as ChargingEntry).kWh;
-              const pricePerUnit = quantity > 0 ? entry.totalCost / quantity : null;
-              const delta = deltaByEntryId.get(entry.id);
-              const date = new Date(entry.date);
+            <div className="fc-month__list">
+              {group.entries.map((row) => {
+                const { entry } = row;
+                const isFuel = row.kind === "fuel";
+                const unit = isFuel ? "l" : "kWh";
+                const quantity = isFuel ? (entry as FuelEntry).liters : (entry as ChargingEntry).kWh;
+                const pricePerUnit = quantity > 0 ? entry.totalCost / quantity : null;
+                const delta = deltaByEntryId.get(entry.id);
+                const date = new Date(entry.date);
+                const title = isFuel ? t((entry as FuelEntry).fullTank ? "home.fullTank" : "fuel.partialShort") : t("home.charge");
+                const sub = [
+                  date.toLocaleDateString(locale, {
+                    day: "numeric",
+                    month: "short",
+                    ...(date.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}),
+                  }),
+                  pricePerUnit !== null ? `${getCurrencySymbol(currency)} ${formatNumber(pricePerUnit, 3, locale)}/${unit}` : null,
+                  `${kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} ${distanceUnit}`,
+                ].filter(Boolean).join(" · ");
+                const edit = () => (isFuel ? onEditFuel(entry as FuelEntry) : onEditCharging(entry as ChargingEntry));
 
-              return (
-                <div
-                  key={entry.id}
-                  className="fc-item fc-item--tappable"
-                  role="button"
-                  tabIndex={0}
-                  aria-label={t("fuel.edit")}
-                  onClick={() => (isFuel ? onEditFuel(entry as FuelEntry) : onEditCharging(entry as ChargingEntry))}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      if (isFuel) onEditFuel(entry as FuelEntry);
-                      else onEditCharging(entry as ChargingEntry);
-                    }
-                  }}
-                >
-                  <div className={`fc-item__icon fc-item__icon--${isFuel ? "fuel" : "charge"}`}>
-                    <ActionGridIcon name={isFuel ? "fuel" : "bolt"} />
-                  </div>
-                  <div className="fc-item__body">
-                    <div className="fc-item__top">
-                      <span className="fc-item__date">
-                        {date.toLocaleDateString(locale, {
-                          day: "2-digit",
-                          month: "short",
-                          ...(date.getFullYear() !== new Date().getFullYear() ? { year: "numeric" } : {}),
-                        })}
+                return (
+                  <button key={entry.id} type="button" className="fc-row" aria-label={`${t("fuel.edit")} · ${title}`} onClick={edit}>
+                    <span className={`fc-row__icon fc-row__icon--${isFuel ? "fuel" : "charge"}`}>
+                      <ActionGridIcon name={isFuel ? "fuel" : "bolt"} />
+                    </span>
+                    <span className="fc-row__mid">
+                      <span className="fc-row__title">
+                        {title} · {formatNumber(quantity, quantity % 1 === 0 ? 0 : 1, locale)} {unit}
                       </span>
-                      <span className={`fc-item__badge fc-item__badge--${isFuel ? "fuel" : "charge"}`}>
-                        {isFuel ? t("fuel.filterFuel", "Carburante") : t("fuel.filterElectric", "Elettrico")}
-                      </span>
-                    </div>
-                    <div className="fc-item__mid">
-                      <span>{formatMoney(entry.totalCost)}</span>
-                      {pricePerUnit !== null && <span>{getCurrencySymbol(currency)} {formatNumber(pricePerUnit, 3, locale)}/{unit}</span>}
-                      <span>{formatNumber(quantity, 2, locale)} {unit}</span>
-                    </div>
-                  </div>
-                  <div className="fc-item__right">
-                    {delta != null && delta > 0 && <span className="fc-item__delta">+{Math.round(kmToDisplayDistance(delta, distanceUnit)).toLocaleString(locale)} {distanceUnit}</span>}
-                    <span className="fc-item__km">{kmToDisplayDistance(entry.km, distanceUnit).toLocaleString(locale, { maximumFractionDigits: 0 })} {distanceUnit}</span>
-                  </div>
-                </div>
-              );
-            })}
+                      <span className="fc-row__sub">{sub}</span>
+                    </span>
+                    <span className="fc-row__end">
+                      <span className="fc-row__amt">{formatMoney(entry.totalCost)}</span>
+                      {delta != null && delta > 0 && (
+                        <span className="fc-row__delta">+{Math.round(kmToDisplayDistance(delta, distanceUnit)).toLocaleString(locale)} {distanceUnit}</span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           </section>
         ))}
       </div>

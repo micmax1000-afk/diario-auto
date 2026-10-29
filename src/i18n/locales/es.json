@@ -114,7 +114,12 @@
     "notifAutoOff": "Notificaciones de vencimientos desactivadas.",
     "notifDisable": "Desactivar",
     "notifEnable": "Activar",
-    "notificationsError": "No se pudieron activar las notificaciones en este teléfono. Inténtalo de nuevo; si sigue pasando, avísanos."
+    "notificationsError": "No se pudieron activar las notificaciones en este teléfono. Inténtalo de nuevo; si sigue pasando, avísanos.",
+    "chargesTitle": "Recargas",
+    "chargesSubtitle": "Recargas y consumo de energía",
+    "newFuel": "Nuevo repostaje",
+    "newCharge": "Nueva recarga",
+    "fuelTitle": "Repostajes"
   },
   "fuel": {
     "title": "Repostajes",
@@ -143,7 +148,10 @@
     "periodLast12": "Últimos 12 meses",
     "periodAll": "Siempre",
     "fillupsCount": "{{count}} repostajes",
-    "pricePerUnitLabel": "{{cur}}/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}",
+    "summaryAvgPrice": "Precio medio",
+    "period": "Periodo",
+    "partialShort": "Parcial"
   },
   "fuelForm": {
     "title": "Nuevo repostaje",
@@ -230,7 +238,16 @@
     "activeReminders": "Vencimientos activos",
     "last": "Último trabajo",
     "noHistory": "Registra el primer trabajo para empezar a controlar el mantenimiento.",
-    "urgentTitle": "Vencimientos por revisar"
+    "urgentTitle": "Vencimientos por revisar",
+    "statusOverdueSoon": "Vencidos: {{overdue}} · próximos: {{soon}}",
+    "statusOverdue": "Vencidos: {{count}}",
+    "statusSoon": "Próximos: {{count}}",
+    "statusOk": "Todo en orden",
+    "statusHint": "Toca un vencimiento para renovarlo o marcarlo como hecho",
+    "thisYear": "Este año",
+    "history": "Intervenciones",
+    "newIntervention": "Nueva intervención",
+    "lastShort": "Último"
   },
   "maintenanceForm": {
     "title": "Nuevo mantenimiento",
@@ -368,7 +385,8 @@
     "monthKm": "Km recorridos: {{km}}",
     "monthCostPerKm": "{{cost}}/{{unit}}",
     "dataQualityElectric": "Recargas usadas para el consumo: {{count}}.",
-    "dataQualityHintElectric": "Registra al menos dos recargas con los km para obtener el consumo en kWh/100 km."
+    "dataQualityHintElectric": "Registra al menos dos recargas con los km para obtener el consumo en kWh/100 km.",
+    "expensesLong": "Seguro, impuestos y otros gastos"
   },
   "backupPanel": {
     "noBackupYet": "Aún no has hecho una copia de seguridad",
@@ -548,7 +566,7 @@
     "tabs": {
       "live": "En directo",
       "diagnosis": "Diagnóstico",
-      "tools": "Herramientas"
+      "tools": "Grabaciones"
     },
     "groups": {
       "engine": "Motor",
@@ -581,7 +599,8 @@
       "cleared": "Sin códigos: estaban presentes en la lectura anterior.",
       "delete": "Eliminar",
       "seenBefore": "Ya visto antes: {{n}}× · la primera vez el {{date}} a {{km}}"
-    }
+    },
+    "adapterName": "Adaptador OBD2 Bluetooth"
   },
   "chargingCategory": {
     "ricarica": "Recarga"
@@ -1051,7 +1070,8 @@
     "dtcTitle": "Diagnóstico OBD: historial de códigos de error",
     "dtcCleared": "Sin códigos: resueltos respecto a la lectura anterior.",
     "dtcUnknown": "Código específico del fabricante.",
-    "dtcUnknownGeneric": "Código genérico, descripción no disponible."
+    "dtcUnknownGeneric": "Código genérico, descripción no disponible.",
+    "short": "Pasaporte"
   },
   "obdNotice": {
     "title": "Antes de conectarte",
@@ -1222,5 +1242,11 @@
     "expensesSub": "Seguro, impuestos, peajes y más",
     "kmSub": "Evolución de los kilómetros",
     "remindersSub": "Todos los vencimientos"
+  },
+  "vehicleHeader": {
+    "change": "cambiar vehículo",
+    "choose": "Elige el vehículo",
+    "toDo": "pendientes: {{count}}",
+    "fleetSub": "Costes de todos los vehículos juntos"
   }
 }

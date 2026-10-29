@@ -114,7 +114,12 @@
     "notifAutoOff": "देय तिथि की सूचनाएँ बंद हैं।",
     "notifDisable": "बंद करें",
     "notifEnable": "चालू करें",
-    "notificationsError": "इस फ़ोन पर सूचनाएँ चालू नहीं हो सकीं। फिर से कोशिश करें; अगर समस्या बनी रहे, तो हमें बताएँ।"
+    "notificationsError": "इस फ़ोन पर सूचनाएँ चालू नहीं हो सकीं। फिर से कोशिश करें; अगर समस्या बनी रहे, तो हमें बताएँ।",
+    "chargesTitle": "चार्जिंग",
+    "chargesSubtitle": "चार्जिंग और ऊर्जा खपत",
+    "newFuel": "नया ईंधन",
+    "newCharge": "नई चार्जिंग",
+    "fuelTitle": "ईंधन भराई"
   },
   "fuel": {
     "title": "ईंधन भराई",
@@ -143,7 +148,10 @@
     "periodLast12": "पिछले 12 महीने",
     "periodAll": "सभी समय",
     "fillupsCount": "{{count}} ईंधन भराई",
-    "pricePerUnitLabel": "{{cur}}/{{unit}}"
+    "pricePerUnitLabel": "{{cur}}/{{unit}}",
+    "summaryAvgPrice": "औसत कीमत",
+    "period": "अवधि",
+    "partialShort": "आंशिक"
   },
   "fuelForm": {
     "title": "नई ईंधन भराई",
@@ -230,7 +238,16 @@
     "activeReminders": "सक्रिय देय तिथियाँ",
     "last": "पिछला काम",
     "noHistory": "रखरखाव ट्रैक करना शुरू करने के लिए पहला काम दर्ज करें।",
-    "urgentTitle": "जाँचने वाली देय तिथियाँ"
+    "urgentTitle": "जाँचने वाली देय तिथियाँ",
+    "statusOverdueSoon": "समय निकला: {{overdue}} · जल्द: {{soon}}",
+    "statusOverdue": "समय निकला: {{count}}",
+    "statusSoon": "जल्द: {{count}}",
+    "statusOk": "सब ठीक है",
+    "statusHint": "नवीनीकरण या पूरा चिह्नित करने के लिए समय-सीमा पर टैप करें",
+    "thisYear": "इस साल",
+    "history": "किए गए काम",
+    "newIntervention": "नया रखरखाव",
+    "lastShort": "पिछला"
   },
   "maintenanceForm": {
     "title": "नया रखरखाव",
@@ -368,7 +385,8 @@
     "monthKm": "तय दूरी: {{km}}",
     "monthCostPerKm": "{{cost}}/{{unit}}",
     "dataQualityElectric": "खपत के लिए उपयोग की गई चार्जिंग: {{count}}।",
-    "dataQualityHintElectric": "kWh/100 किमी में खपत पाने के लिए किमी सहित कम से कम दो चार्जिंग दर्ज करें।"
+    "dataQualityHintElectric": "kWh/100 किमी में खपत पाने के लिए किमी सहित कम से कम दो चार्जिंग दर्ज करें।",
+    "expensesLong": "बीमा, टैक्स और अन्य खर्च"
   },
   "backupPanel": {
     "noBackupYet": "आपने अभी तक बैकअप नहीं लिया है",
@@ -548,7 +566,7 @@
     "tabs": {
       "live": "लाइव",
       "diagnosis": "निदान",
-      "tools": "उपकरण"
+      "tools": "रिकॉर्डिंग"
     },
     "groups": {
       "engine": "इंजन",
@@ -581,7 +599,8 @@
       "cleared": "कोई कोड नहीं: पिछली रीडिंग में कोड मौजूद थे।",
       "delete": "हटाएँ",
       "seenBefore": "पहले देखा गया: {{n}}× · पहली बार {{date}} को {{km}} पर"
-    }
+    },
+    "adapterName": "ब्लूटूथ OBD2 अडैप्टर"
   },
   "chargingCategory": {
     "ricarica": "चार्जिंग"
@@ -1051,7 +1070,8 @@
     "dtcTitle": "OBD निदान: त्रुटि कोड इतिहास",
     "dtcCleared": "कोई कोड नहीं: पिछली रीडिंग के बाद ठीक हो गए।",
     "dtcUnknown": "निर्माता-विशिष्ट कोड।",
-    "dtcUnknownGeneric": "सामान्य कोड, विवरण उपलब्ध नहीं।"
+    "dtcUnknownGeneric": "सामान्य कोड, विवरण उपलब्ध नहीं।",
+    "short": "पासपोर्ट"
   },
   "obdNotice": {
     "title": "कनेक्ट करने से पहले",
@@ -1222,5 +1242,11 @@
     "expensesSub": "बीमा, टैक्स, टोल और अन्य",
     "kmSub": "किलोमीटर का रुझान",
     "remindersSub": "वाहनों की सभी समय-सीमाएँ"
+  },
+  "vehicleHeader": {
+    "change": "वाहन बदलें",
+    "choose": "वाहन चुनें",
+    "toDo": "करने को: {{count}}",
+    "fleetSub": "सभी वाहनों की लागत एक साथ"
   }
 }
