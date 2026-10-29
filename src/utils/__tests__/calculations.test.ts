@@ -1,6 +1,6 @@
 import { describe, expect, it, vi, afterEach } from "vitest";
 import type { FuelEntry } from "../../types";
-import { averageConsumption, averageElectricConsumption, calculateCommuteCost, calculateConsumption, calculateElectricConsumption, calculateVehicleCosts, isReminderDue, mainFuelSource } from "../calculations";
+import { averageConsumption, averageElectricConsumption, calculateConsumption, calculateElectricConsumption, calculateVehicleCosts, isReminderDue, mainFuelSource } from "../calculations";
 
 let n = 0;
 function fuel(km: number, liters: number, fullTank: boolean, totalCost = liters * 2, source: FuelEntry["source"] = "benzina"): FuelEntry {
@@ -80,21 +80,6 @@ describe("calculateVehicleCosts", () => {
 
   it("senza km percorsi il costo al km è null", () => {
     expect(calculateVehicleCosts([], [], 5000).costPerKm).toBeNull();
-  });
-});
-
-describe("calculateCommuteCost", () => {
-  it("calcola il costo per tratta e al mese", () => {
-    const res = calculateCommuteCost(20, 2, 5, 15, 1.8)!;
-    expect(res.costPerTrip).toBeCloseTo(2.4);
-    expect(res.costPerDay).toBeCloseTo(4.8);
-    expect(res.costPerWeek).toBeCloseTo(24);
-    expect(res.costPerMonth).toBeCloseTo(24 * (52 / 12));
-  });
-
-  it("rifiuta valori non validi", () => {
-    expect(calculateCommuteCost(0, 2, 5, 15, 1.8)).toBeNull();
-    expect(calculateCommuteCost(20, 2, 5, 0, 1.8)).toBeNull();
   });
 });
 

@@ -154,35 +154,6 @@ export function calculateVehicleCosts(
   };
 }
 
-export interface CommuteCostResult {
-  costPerTrip: number;
-  costPerDay: number;
-  costPerWeek: number;
-  costPerMonth: number;
-}
-
-/**
- * Calcola il costo del tragitto casa-lavoro dato il consumo (km percorribili
- * con 1 litro/kWh) e il prezzo per litro/kWh. Usato sia per il costo reale
- * (consumo medio calcolato dai rifornimenti) sia per gli scenari ipotetici
- * (consumo dichiarato per un veicolo alternativo).
- */
-export function calculateCommuteCost(
-  kmPerTrip: number,
-  tripsPerDay: number,
-  workDaysPerWeek: number,
-  kmPerUnit: number,
-  pricePerUnit: number,
-): CommuteCostResult | null {
-  if (kmPerTrip <= 0 || kmPerUnit <= 0 || pricePerUnit < 0) return null;
-  const costPerKm = pricePerUnit / kmPerUnit;
-  const costPerTrip = kmPerTrip * costPerKm;
-  const costPerDay = costPerTrip * tripsPerDay;
-  const costPerWeek = costPerDay * workDaysPerWeek;
-  const costPerMonth = costPerWeek * (52 / 12); // media settimane/mese
-  return { costPerTrip, costPerDay, costPerWeek, costPerMonth };
-}
-
 export function isReminderDue(dueDate?: string, dueKm?: number, currentKm?: number, warningDays = 30, warningKm = 1000): "overdue" | "soon" | "ok" {
   let status: "overdue" | "soon" | "ok" = "ok";
 

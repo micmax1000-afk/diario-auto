@@ -78,6 +78,7 @@ export default function CommuteScenarioForm({
   const unitShort = unit === "litro" ? "l" : unit;
 
   function pickType(type: CommuteFuelType) {
+    if (type === fuelType) return; // ritoccare il tipo già scelto non cancella i valori inseriti
     setFuelType(type);
     setError("");
     // Valori tipici già inseriti: si possono modificare.
@@ -292,7 +293,12 @@ export default function CommuteScenarioForm({
           <div className="modal__actions">
             {initial && onDelete ? (
               <button type="button" className="btn btn--ghost btn--danger" onClick={() => {
-                  if (window.confirm(t("commute.removeConfirm", { name: t(`commuteFuelType.${initial.fuelType}`) }))) onDelete(initial.id);
+                  if (window.confirm(t("commute.removeConfirm", {
+                      name:
+                        initial.fuelType === "carpooling"
+                          ? t("commute.carpoolingName", { people: initial.people ?? 2 })
+                          : t(`commuteFuelType.${initial.fuelType}`),
+                    }))) onDelete(initial.id);
                 }}>
                 {t("commute.remove")}
               </button>
