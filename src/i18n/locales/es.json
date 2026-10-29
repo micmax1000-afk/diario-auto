@@ -25,7 +25,11 @@
     "deleteForeverConfirm": "¿Deseas eliminar definitivamente {{name}} y todos sus datos?",
     "soldOn": "vendido el {{date}}",
     "urgentReminderTitle": "Vencimiento próximo o vencido",
-    "archiveConfirm": "¿Quieres marcar {{name}} como vendido? Se mantendrá en el archivo y podrás recuperarlo en cualquier momento desde «Gestionar vehículos»."
+    "archiveConfirm": "¿Quieres marcar {{name}} como vendido? Se mantendrá en el archivo y podrás recuperarlo en cualquier momento desde «Gestionar vehículos».",
+    "soldSub": "Sale del garaje, el historial queda en el archivo",
+    "soldTitle": "¿Marcar {{name}} como vendido?",
+    "soldBody": "Sale del garaje y queda en el archivo con todo su historial. Puedes restaurarlo cuando quieras desde «Gestionar vehículos».",
+    "soldYes": "Sí, vendido"
   },
   "vehicleForm": {
     "titleNew": "Vehículo nuevo",
@@ -60,12 +64,24 @@
     "errorNameGeneric": "Introduce el nombre del vehículo.",
     "bodyType": "Categoría (opcional)",
     "photo": "Foto del coche (opcional)",
-    "photoHint": "Después de elegirla puedes arrastrarla y ampliarla para decidir el encuadre. Se muestra en la ficha del vehículo, solo se guarda en este dispositivo y se incluye en la copia de seguridad.",
+    "photoHint": "Sustituye al coche dibujado. Se queda solo en este teléfono y entra en la copia.",
     "photoPreviewAlt": "Vista previa de la foto del coche",
     "photoCompressing": "Comprimiendo la imagen…",
     "photoError": "No se ha podido cargar la foto.",
     "color": "Color identificativo",
-    "colorHint": "Si no eliges, se asigna automáticamente."
+    "colorHint": "Si no eliges, se asigna automáticamente.",
+    "newVehicle": "Nuevo vehículo",
+    "brandOptional": "Marca (opcional)",
+    "choose": "Elegir…",
+    "nameAuto": "Formado con marca y modelo, puedes cambiarlo",
+    "kmShort": "Km actuales *",
+    "colorTitle": "Color",
+    "bodyTypeTitle": "Carrocería",
+    "chooseBrandTitle": "Elige la marca",
+    "chooseModelTitle": "Modelo {{brand}}",
+    "searchBrand": "Buscar marca",
+    "searchModel": "Buscar modelo",
+    "modelsCount": "{{count}} modelos"
   },
   "fuelType": {
     "benzina": "Gasolina",
@@ -957,7 +973,8 @@
     "pickup": "Pick-up",
     "van": "Furgoneta",
     "coupe": "Coupé",
-    "wagon": "Familiar"
+    "wagon": "Familiar",
+    "convertible": "Descapotable"
   },
   "vehiclePicker": {
     "title": "¿En qué vehículo?"

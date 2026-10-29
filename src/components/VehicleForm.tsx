@@ -1,31 +1,49 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { VEHICLE_COLORS } from "../utils/vehicleColor";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelType, BodyType } from "../types";
 import { generateId } from "../utils/storage";
 import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL } from "../utils/carCatalog";
+import { getNumberLocale } from "../utils/locale";
+import { useBackButtonClose } from "../utils/backButtonStack";
 import PhotoPicker from "./PhotoPicker";
 import CartoonCar from "./CartoonCar";
-import { BODY_TYPES } from "../utils/bodyTypes";
+import { BODY_TYPES, shade } from "../utils/bodyTypes";
 
 const FUEL_TYPES: FuelType[] = ["benzina", "diesel", "gpl", "metano", "elettrico", "ibrido"];
 
 interface Props {
   initialVehicle?: Vehicle;
+  /** Colore che l'app gli assegna in automatico se l'utente non ne sceglie uno. */
+  autoColor?: string;
   onSave: (vehicle: Vehicle) => void;
   onClose: () => void;
   onArchive?: (id: string) => void;
 }
 
-export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive }: Props) {
-  const { t } = useTranslation();
+/** Riconosce marca e modello dal nome già salvato (es. "Fiat 500L"), se sono nell'elenco. */
+function guessBrandModel(name: string): { brand: string; model: string } {
+  const lower = name.trim().toLowerCase();
+  const brand = [...CAR_CATALOG]
+    .sort((a, b) => b.brand.length - a.brand.length)
+    .find((b) => lower === b.brand.toLowerCase() || lower.startsWith(b.brand.toLowerCase() + " "));
+  if (!brand) return { brand: "", model: "" };
+  const rest = lower.slice(brand.brand.length).trim();
+  const model = brand.models.find((m) => m.toLowerCase() === rest);
+  return { brand: brand.brand, model: model ?? "" };
+}
+
+export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose, onArchive }: Props) {
+  const { t, i18n } = useTranslation();
   const isEditing = Boolean(initialVehicle);
-  const [brand, setBrand] = useState("");
+  const [initialGuess] = useState(() => guessBrandModel(initialVehicle?.name ?? ""));
+  const [brand, setBrand] = useState(initialGuess.brand);
   const [customBrand, setCustomBrand] = useState("");
-  const [model, setModel] = useState("");
+  const [model, setModel] = useState(initialGuess.model);
   const [customModel, setCustomModel] = useState("");
   const [name, setName] = useState(initialVehicle?.name ?? "");
+  const [nameAuto, setNameAuto] = useState(false);
   const [plate, setPlate] = useState(initialVehicle?.plate ?? "");
   const [fuelType, setFuelType] = useState<FuelType>(initialVehicle?.fuelType ?? "benzina");
   const [currentKm, setCurrentKm] = useState(initialVehicle ? String(initialVehicle.currentKm) : "");
@@ -35,25 +53,50 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
   const [color, setColor] = useState<string | undefined>(initialVehicle?.color);
   const [bodyType, setBodyType] = useState<BodyType>(initialVehicle?.bodyType ?? "hatchback");
   const [error, setError] = useState("");
+  const [picker, setPicker] = useState<"brand" | "model" | null>(null);
+  const [query, setQuery] = useState("");
+  const [confirmSold, setConfirmSold] = useState(false);
+  useBackButtonClose(picker !== null, () => setPicker(null));
+  useBackButtonClose(confirmSold, () => setConfirmSold(false));
 
-  const selectedBrandEntry = CAR_CATALOG.find((b) => b.brand === brand);
+  const locale = getNumberLocale(i18n.language);
+  const shownColor = color ?? autoColor ?? VEHICLE_COLORS[0];
+  const brandEntry = CAR_CATALOG.find((b) => b.brand === brand);
 
-  // Compila automaticamente "Nome veicolo" da Marca/Modello selezionati,
-  // ma solo se l'utente ha effettivamente usato i menu: se non li tocca
-  // (es. in modifica), il nome digitato a mano resta intatto.
-  useEffect(() => {
-    if (!brand) return;
-    const brandLabel = brand === OTHER_BRAND ? customBrand.trim() : brand;
-    const modelLabel = brand === OTHER_BRAND ? customModel.trim() : model === OTHER_MODEL ? customModel.trim() : model;
-    const combined = [brandLabel, modelLabel].filter(Boolean).join(" ");
-    if (combined) setName(combined);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brand, customBrand, model, customModel]);
+  const brandLabel = (b: string, cb: string) => (b === OTHER_BRAND ? cb.trim() : b);
+  const modelLabel = (b: string, m: string, cm: string) => (b === OTHER_BRAND || m === OTHER_MODEL ? cm.trim() : m);
+  const combo = (b: string, m: string, cb: string, cm: string) => [brandLabel(b, cb), modelLabel(b, m, cm)].filter(Boolean).join(" ");
 
-  function handleBrandChange(value: string) {
-    setBrand(value);
-    setModel("");
-    setCustomModel("");
+  /** Il nome segue marca e modello finché è vuoto o è proprio "marca modello". */
+  function updateSelection(next: { brand?: string; model?: string; customBrand?: string; customModel?: string }) {
+    const prev = combo(brand, model, customBrand, customModel);
+    const b = next.brand ?? brand, m = next.model ?? model;
+    const cb = next.customBrand ?? customBrand, cm = next.customModel ?? customModel;
+    setBrand(b);
+    setModel(m);
+    setCustomBrand(cb);
+    setCustomModel(cm);
+    const nextCombo = combo(b, m, cb, cm);
+    if ((!name.trim() || name.trim() === prev) && nextCombo) {
+      setName(nextCombo);
+      setNameAuto(true);
+    }
+  }
+
+  function pickBrand(value: string) {
+    setQuery("");
+    if (value === brand) {
+      setPicker(value === OTHER_BRAND ? null : "model");
+      return;
+    }
+    updateSelection({ brand: value, model: "", customModel: "" });
+    setPicker(value === OTHER_BRAND ? null : "model");
+  }
+
+  function pickModel(value: string) {
+    setQuery("");
+    setPicker(null);
+    updateSelection({ model: value });
   }
 
   function handleSubmit(e: FormEvent) {
@@ -86,6 +129,16 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
     onSave(vehicle);
   }
 
+  const q = query.trim().toLowerCase();
+  const brandOptions = CAR_CATALOG.filter((b) => !q || b.brand.toLowerCase().includes(q));
+  const modelOptions = (brandEntry?.models ?? []).filter((m) => !q || m.toLowerCase().includes(q));
+  const chevron = (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+  const kmNumber = Number(currentKm);
+
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="vehicle-form-title">
       <div className="modal">
@@ -97,34 +150,44 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
         </div>
 
         <form onSubmit={handleSubmit} className="vehicle-form">
+          <div
+            className="vform-hero"
+            style={photo ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.6)), url(${photo})` } : { backgroundImage: `linear-gradient(135deg, ${shade(shownColor, -0.12)}, ${shade(shownColor, -0.45)})` }}
+          >
+            {!photo && (
+              <span className="vform-hero__car">
+                <CartoonCar bodyType={bodyType} color={shownColor} />
+              </span>
+            )}
+            <span className="vform-hero__text">
+              <span className="vform-hero__name">{name.trim() || t("vehicleForm.newVehicle")}</span>
+              {plate.trim() && <span className="vform-hero__plate">{plate.trim()}</span>}
+              <span className="vform-hero__km">
+                {currentKm.trim() && !Number.isNaN(kmNumber) ? `${kmNumber.toLocaleString(locale)} km` : "— km"} · {t(`fuelType.${fuelType}`)}
+              </span>
+            </span>
+          </div>
+
           <div className="field-row">
             <div className="field">
-              <label htmlFor="brand">{t("vehicleForm.brand")}</label>
-              <select id="brand" value={brand} onChange={(e) => handleBrandChange(e.target.value)} autoFocus>
-                <option value="">{t("vehicleForm.chooseBrandOptional")}</option>
-                {CAR_CATALOG.map((b) => (
-                  <option key={b.brand} value={b.brand}>
-                    {b.brand}
-                  </option>
-                ))}
-                <option value={OTHER_BRAND}>{t("vehicleForm.otherBrand")}</option>
-              </select>
+              <span className="field__label">{t("vehicleForm.brandOptional")}</span>
+              <button type="button" className="vform-pick" onClick={() => { setQuery(""); setPicker("brand"); }}>
+                {brand ? <span>{brand === OTHER_BRAND ? t("vehicleForm.otherBrand") : brand}</span> : <span className="vform-pick__ph">{t("vehicleForm.choose")}</span>}
+                {chevron}
+              </button>
             </div>
-
-            {brand && brand !== OTHER_BRAND && (
-              <div className="field">
-                <label htmlFor="model">{t("vehicleForm.model")}</label>
-                <select id="model" value={model} onChange={(e) => setModel(e.target.value)}>
-                  <option value="">{t("vehicleForm.chooseModel")}</option>
-                  {selectedBrandEntry?.models.map((m) => (
-                    <option key={m} value={m}>
-                      {m}
-                    </option>
-                  ))}
-                  <option value={OTHER_MODEL}>{t("vehicleForm.otherModel")}</option>
-                </select>
-              </div>
-            )}
+            <div className="field">
+              <span className="field__label">{t("vehicleForm.model")}</span>
+              <button
+                type="button"
+                className="vform-pick"
+                disabled={!brand || brand === OTHER_BRAND}
+                onClick={() => { setQuery(""); setPicker("model"); }}
+              >
+                {model ? <span>{model === OTHER_MODEL ? t("vehicleForm.otherModel") : model}</span> : <span className="vform-pick__ph">{t("vehicleForm.choose")}</span>}
+                {chevron}
+              </button>
+            </div>
           </div>
 
           {brand === OTHER_BRAND && (
@@ -136,7 +199,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
                   type="text"
                   placeholder={t("vehicleForm.customBrandPlaceholder")}
                   value={customBrand}
-                  onChange={(e) => setCustomBrand(e.target.value)}
+                  onChange={(e) => updateSelection({ customBrand: e.target.value })}
                 />
               </div>
               <div className="field">
@@ -146,7 +209,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
                   type="text"
                   placeholder={t("vehicleForm.customModelPlaceholder")}
                   value={customModel}
-                  onChange={(e) => setCustomModel(e.target.value)}
+                  onChange={(e) => updateSelection({ customModel: e.target.value })}
                 />
               </div>
             </div>
@@ -160,7 +223,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
                 type="text"
                 placeholder={t("vehicleForm.customModelCustomPlaceholder")}
                 value={customModel}
-                onChange={(e) => setCustomModel(e.target.value)}
+                onChange={(e) => updateSelection({ customModel: e.target.value })}
               />
             </div>
           )}
@@ -172,8 +235,12 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
               type="text"
               placeholder={t("vehicleForm.namePlaceholderGeneric")}
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                setNameAuto(false);
+              }}
             />
+            {nameAuto && <small className="vform-auto">✓ {t("vehicleForm.nameAuto")}</small>}
           </div>
 
           <div className="field-row">
@@ -193,6 +260,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
               <input
                 id="year"
                 type="number"
+                inputMode="numeric"
                 placeholder={t("vehicleForm.yearPlaceholder")}
                 value={year}
                 onChange={(e) => setYear(e.target.value)}
@@ -202,7 +270,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
 
           <div className="field-row">
             <div className="field">
-              <label htmlFor="currentKm">{t("vehicleForm.currentKm")}</label>
+              <label htmlFor="currentKm">{t("vehicleForm.kmShort")}</label>
               <input
                 id="currentKm"
                 type="number"
@@ -226,24 +294,26 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
           </div>
 
           <div className="field">
-            <label>{t("vehicleForm.color", "Colore identificativo")}</label>
+            <span className="vform-title">{t("vehicleForm.colorTitle")}</span>
             <div className="vcolor">
               {VEHICLE_COLORS.map((c) => (
                 <button
                   key={c}
                   type="button"
                   aria-label={c}
+                  aria-pressed={color === c}
                   className={color === c ? "is-on" : ""}
                   style={{ ["--c" as string]: c }}
                   onClick={() => setColor(color === c ? undefined : c)}
                 />
               ))}
             </div>
-            <small>{t("vehicleForm.colorHint", "Se non scegli, viene assegnato in automatico.")}</small>
+            {!color && <small>{t("vehicleForm.colorHint", "Se non scegli, viene assegnato in automatico.")}</small>}
           </div>
+
           <div className="field">
-            <label>{t("vehicleForm.bodyType")}</label>
-            <div className="body-picker" role="radiogroup">
+            <span className="vform-title">{t("vehicleForm.bodyTypeTitle")}</span>
+            <div className="body-picker" role="radiogroup" aria-label={t("vehicleForm.bodyTypeTitle")}>
               {BODY_TYPES.map((b) => (
                 <button
                   key={b}
@@ -253,12 +323,13 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
                   className={`body-picker__item${bodyType === b ? " is-on" : ""}`}
                   onClick={() => setBodyType(b)}
                 >
-                  <CartoonCar bodyType={b} color={color ?? VEHICLE_COLORS[0]} />
+                  <CartoonCar bodyType={b} color={shownColor} />
                   <span>{t(`bodyType.${b}`)}</span>
                 </button>
               ))}
             </div>
           </div>
+
           <PhotoPicker id="vehicle-photo" value={photo} onChange={setPhoto} keyPrefix="vehicleForm" aspect={16 / 9} />
 
           <div className="field">
@@ -272,23 +343,22 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
             />
           </div>
 
+          {isEditing && onArchive && initialVehicle && (
+            <button type="button" className="vform-sold" onClick={() => setConfirmSold(true)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z" />
+                <circle cx="7.5" cy="7.5" r="1.5" />
+              </svg>
+              <span>
+                <b>{t("vehicles.markSold")}</b>
+                <small>{t("vehicles.soldSub")}</small>
+              </span>
+            </button>
+          )}
+
           {error && <p className="form-error">{error}</p>}
 
           <div className="modal__actions">
-            {isEditing && onArchive && initialVehicle && (
-              <button
-                type="button"
-                className="btn btn--ghost btn--danger"
-                style={{ marginRight: "auto" }}
-                onClick={() => {
-                  if (window.confirm(t("vehicles.archiveConfirm", { name: initialVehicle.name }))) {
-                    onArchive(initialVehicle.id);
-                  }
-                }}
-              >
-                {t("vehicles.markSold")}
-              </button>
-            )}
             <button type="button" className="btn btn--ghost" onClick={onClose}>
               {t("vehicleForm.cancel")}
             </button>
@@ -298,6 +368,72 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
           </div>
         </form>
       </div>
+
+      {picker && (
+        <div className="vform-over" onClick={(e) => e.target === e.currentTarget && setPicker(null)}>
+          <div className="vform-panel" role="dialog" aria-modal="true" aria-labelledby="vform-picker-title">
+            <span className="sheet__grab" aria-hidden="true" />
+            <h3 id="vform-picker-title">{picker === "brand" ? t("vehicleForm.chooseBrandTitle") : t("vehicleForm.chooseModelTitle", { brand })}</h3>
+            <div className="vform-search">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={picker === "brand" ? t("vehicleForm.searchBrand") : t("vehicleForm.searchModel")}
+                aria-label={picker === "brand" ? t("vehicleForm.searchBrand") : t("vehicleForm.searchModel")}
+              />
+            </div>
+            <div className="vform-list">
+              {picker === "brand"
+                ? brandOptions.map((b, i) => (
+                    <div key={b.brand}>
+                      {!q && (i === 0 || brandOptions[i - 1].brand[0].toUpperCase() !== b.brand[0].toUpperCase()) && (
+                        <div className="vform-letter">{b.brand[0].toUpperCase()}</div>
+                      )}
+                      <button type="button" className={`vform-opt${b.brand === brand ? " is-on" : ""}`} onClick={() => pickBrand(b.brand)}>
+                        <span>{b.brand}</span>
+                        <small>{t("vehicleForm.modelsCount", { count: b.models.length })}</small>
+                      </button>
+                    </div>
+                  ))
+                : modelOptions.map((m) => (
+                    <button key={m} type="button" className={`vform-opt${m === model ? " is-on" : ""}`} onClick={() => pickModel(m)}>
+                      <span>{m}</span>
+                    </button>
+                  ))}
+              <button
+                type="button"
+                className="vform-opt vform-opt--other"
+                onClick={() => (picker === "brand" ? pickBrand(OTHER_BRAND) : pickModel(OTHER_MODEL))}
+              >
+                {picker === "brand" ? t("vehicleForm.otherBrand") : t("vehicleForm.otherModel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {confirmSold && initialVehicle && onArchive && (
+        <div className="vform-over" onClick={(e) => e.target === e.currentTarget && setConfirmSold(false)}>
+          <div className="vform-panel" role="alertdialog" aria-modal="true" aria-labelledby="vform-sold-title">
+            <span className="sheet__grab" aria-hidden="true" />
+            <h3 id="vform-sold-title">{t("vehicles.soldTitle", { name: initialVehicle.name })}</h3>
+            <p className="vform-confirm">{t("vehicles.soldBody")}</p>
+            <div className="vform-confirm__actions">
+              <button type="button" className="btn btn--ghost" onClick={() => setConfirmSold(false)}>
+                {t("vehicleForm.cancel")}
+              </button>
+              <button type="button" className="btn btn--danger-solid" onClick={() => onArchive(initialVehicle.id)}>
+                {t("vehicles.soldYes")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

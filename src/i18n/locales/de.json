@@ -25,7 +25,11 @@
     "deleteForeverConfirm": "{{name}} und alle zugehörigen Daten endgültig löschen?",
     "soldOn": "verkauft am {{date}}",
     "urgentReminderTitle": "Frist steht bevor oder ist abgelaufen",
-    "archiveConfirm": "Soll {{name}} als verkauft markiert werden? Es bleibt im Archiv erhalten und du kannst es jederzeit unter „Fahrzeuge verwalten“ wiederherstellen."
+    "archiveConfirm": "Soll {{name}} als verkauft markiert werden? Es bleibt im Archiv erhalten und du kannst es jederzeit unter „Fahrzeuge verwalten“ wiederherstellen.",
+    "soldSub": "Verlässt die Garage, der Verlauf bleibt im Archiv",
+    "soldTitle": "{{name}} als verkauft markieren?",
+    "soldBody": "Es verlässt die Garage und bleibt mit dem ganzen Verlauf im Archiv. Du kannst es jederzeit unter „Fahrzeuge verwalten“ wiederherstellen.",
+    "soldYes": "Ja, verkauft"
   },
   "vehicleForm": {
     "titleNew": "Neues Fahrzeug",
@@ -60,12 +64,24 @@
     "errorNameGeneric": "Gib den Namen des Fahrzeugs ein.",
     "bodyType": "Kategorie (optional)",
     "photo": "Foto des Autos (optional)",
-    "photoHint": "Nach der Auswahl kannst du es verschieben und vergrößern, um den Ausschnitt festzulegen. Es wird auf der Fahrzeugkarte angezeigt, nur auf diesem Gerät gespeichert und ist im Backup enthalten.",
+    "photoHint": "Ersetzt das gezeichnete Auto. Bleibt nur auf diesem Handy und ist im Backup enthalten.",
     "photoPreviewAlt": "Vorschau des Autofotos",
     "photoCompressing": "Bild wird komprimiert…",
     "photoError": "Das Foto konnte nicht geladen werden.",
     "color": "Kennfarbe",
-    "colorHint": "Ohne Auswahl wird automatisch eine zugewiesen."
+    "colorHint": "Ohne Auswahl wird automatisch eine zugewiesen.",
+    "newVehicle": "Neues Fahrzeug",
+    "brandOptional": "Marke (optional)",
+    "choose": "Wählen…",
+    "nameAuto": "Aus Marke und Modell gebildet, änderbar",
+    "kmShort": "Aktuelle km *",
+    "colorTitle": "Farbe",
+    "bodyTypeTitle": "Karosserie",
+    "chooseBrandTitle": "Marke wählen",
+    "chooseModelTitle": "Modell {{brand}}",
+    "searchBrand": "Marke suchen",
+    "searchModel": "Modell suchen",
+    "modelsCount": "{{count}} Modelle"
   },
   "fuelType": {
     "benzina": "Benzin",
@@ -957,7 +973,8 @@
     "pickup": "Pick-up",
     "van": "Lieferwagen",
     "coupe": "Coupé",
-    "wagon": "Kombi"
+    "wagon": "Kombi",
+    "convertible": "Cabrio"
   },
   "vehiclePicker": {
     "title": "Für welches Fahrzeug?"
