@@ -772,13 +772,13 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                     <XAxis
                       dataKey="t"
                       tickFormatter={(v: number) => `${Math.round(v / 1000)}s`}
-                      tick={{ fontFamily: "JetBrains Mono", fontSize: 11 }}
+                      tick={{ fontFamily: "Inter", fontSize: 11 }}
                       stroke="var(--text-muted)"
                     />
-                    <YAxis tick={{ fontFamily: "JetBrains Mono", fontSize: 11 }} stroke="var(--text-muted)" />
+                    <YAxis tick={{ fontFamily: "Inter", fontSize: 11 }} stroke="var(--text-muted)" />
                     <Tooltip
                       contentStyle={{
-                        fontFamily: "JetBrains Mono",
+                        fontFamily: "Inter",
                         fontSize: 12,
                         background: "var(--card)",
                         border: "1px solid var(--border)",
@@ -787,7 +787,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
                       }}
                       labelFormatter={(v) => `${(Number(v) / 1000).toFixed(1)}s`}
                     />
-                    <Legend wrapperStyle={{ fontFamily: "JetBrains Mono", fontSize: 11 }} />
+                    <Legend wrapperStyle={{ fontFamily: "Inter", fontSize: 11 }} />
                     <Line type="monotone" dataKey="rpm" name={t("live.recording.chartRpm")} stroke="#e8a33d" dot={false} strokeWidth={2} />
                     <Line
                       type="monotone"

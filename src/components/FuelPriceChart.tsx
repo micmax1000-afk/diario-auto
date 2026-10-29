@@ -54,7 +54,7 @@ export default function FuelPriceChart({ fuelEntries }: Props) {
             scale="time"
             domain={["dataMin", "dataMax"]}
             minTickGap={16}
-            tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }}
+            tick={{ fontFamily: "Inter", fontSize: 11, fill: "var(--text-muted)" }}
             stroke="var(--border)"
             tickFormatter={(v: number) => new Date(v).toLocaleDateString(locale, { month: "short", year: "2-digit" })}
           />
@@ -62,7 +62,7 @@ export default function FuelPriceChart({ fuelEntries }: Props) {
             width={56}
             // Scala stretta intorno ai prezzi pagati: le differenze di pochi centesimi devono vedersi.
             domain={[(min: number) => Math.max(0, Math.floor(min * 10) / 10 - 0.1), (max: number) => Math.ceil(max * 10) / 10 + 0.1]}
-            tick={{ fontFamily: "JetBrains Mono", fontSize: 11, fill: "var(--text-muted)" }}
+            tick={{ fontFamily: "Inter", fontSize: 11, fill: "var(--text-muted)" }}
             stroke="var(--border)"
             tickFormatter={(v: number) => v.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           />

@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { VEHICLE_COLORS } from "../utils/vehicleColor";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Vehicle, FuelType } from "../types";
+import type { Vehicle, FuelType, BodyType } from "../types";
 import { generateId } from "../utils/storage";
 import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL } from "../utils/carCatalog";
 import PhotoPicker from "./PhotoPicker";
+import CartoonCar from "./CartoonCar";
+import { BODY_TYPES } from "../utils/bodyTypes";
 
 const FUEL_TYPES: FuelType[] = ["benzina", "diesel", "gpl", "metano", "elettrico", "ibrido"];
 
@@ -31,6 +33,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
   const [notes, setNotes] = useState(initialVehicle?.notes ?? "");
   const [photo, setPhoto] = useState<string | null>(initialVehicle?.photo ?? null);
   const [color, setColor] = useState<string | undefined>(initialVehicle?.color);
+  const [bodyType, setBodyType] = useState<BodyType>(initialVehicle?.bodyType ?? "hatchback");
   const [error, setError] = useState("");
 
   const selectedBrandEntry = CAR_CATALOG.find((b) => b.brand === brand);
@@ -76,6 +79,7 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
       notes: notes.trim() || undefined,
       photo: photo ?? undefined,
       color,
+      bodyType,
       createdAt: initialVehicle?.createdAt ?? new Date().toISOString(),
     };
 
@@ -236,6 +240,24 @@ export default function VehicleForm({ initialVehicle, onSave, onClose, onArchive
               ))}
             </div>
             <small>{t("vehicleForm.colorHint", "Se non scegli, viene assegnato in automatico.")}</small>
+          </div>
+          <div className="field">
+            <label>{t("vehicleForm.bodyType")}</label>
+            <div className="body-picker" role="radiogroup">
+              {BODY_TYPES.map((b) => (
+                <button
+                  key={b}
+                  type="button"
+                  role="radio"
+                  aria-checked={bodyType === b}
+                  className={`body-picker__item${bodyType === b ? " is-on" : ""}`}
+                  onClick={() => setBodyType(b)}
+                >
+                  <CartoonCar bodyType={b} color={color ?? VEHICLE_COLORS[0]} />
+                  <span>{t(`bodyType.${b}`)}</span>
+                </button>
+              ))}
+            </div>
           </div>
           <PhotoPicker id="vehicle-photo" value={photo} onChange={setPhoto} keyPrefix="vehicleForm" aspect={16 / 9} />
 

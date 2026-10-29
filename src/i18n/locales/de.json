@@ -836,7 +836,9 @@
     "dataQualityTitle": "Datenqualität",
     "dataQualityConsumption": "Verbrauch berechnet aus {{count}} Intervallen zwischen Volltankungen.",
     "dataQualityHint": "Erfasse mindestens zwei als „voll“ markierte Tankvorgänge, um einen zuverlässigen Durchschnittsverbrauch zu erhalten.",
-    "movements": "Tanken"
+    "movements": "Tanken",
+    "home": "Start",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "Deine Garage,",
@@ -1165,5 +1167,60 @@
     "deadlinesBody": "HU, Kfz-Steuer, Versicherung, Inspektion: eine Erinnerung vor jeder Frist und die komplette Historie der Arbeiten.",
     "dataTitle": "Deine Daten bleiben bei dir",
     "dataBody": "Alles wird nur auf diesem Handy gespeichert, ohne Konto. Mach ab und zu ein Backup, auch auf Google Drive, damit beim Handywechsel nichts verloren geht."
+  },
+  "home": {
+    "greetingMorning": "Guten Morgen",
+    "greetingAfternoon": "Guten Tag",
+    "greetingEvening": "Guten Abend",
+    "title": "Deine Autos",
+    "menu": "Menü und Einstellungen",
+    "welcomeTitle": "Willkommen bei Diario Auto",
+    "welcomeBody": "Füge dein erstes Fahrzeug hinzu, um Tankvorgänge, Wartungen und Fristen zu verfolgen.",
+    "welcomeCta": "Fahrzeug hinzufügen",
+    "odometer": "Kilometerstand",
+    "overdue": "überfällig",
+    "soon": "bald fällig",
+    "renew": "Erneuern",
+    "view": "Ansehen",
+    "allClear": "Alles in Ordnung",
+    "addVehicle": "Fahrzeug hinzufügen",
+    "thisMonth": "Dieser Monat",
+    "statsLink": "Statistiken",
+    "consumption": "Verbrauch",
+    "costPerKm": "Kosten pro km",
+    "upcoming": "Nächste Fristen",
+    "all": "Alle",
+    "noUpcoming": "Keine anstehenden Fristen.",
+    "recent": "Letzte Aktivität",
+    "recentEmpty": "Noch keine Einträge. Tippe auf +, um zu starten.",
+    "fullTank": "Volltanken",
+    "partialFill": "Teiltankung",
+    "charge": "Ladevorgang"
+  },
+  "addSheet": {
+    "open": "Erfassen",
+    "title": "Was möchtest du erfassen?",
+    "for": "Für",
+    "change": "ändern",
+    "repeatTitle": "Wie beim letzten Mal?",
+    "repeatBody": "{{cost}} · {{price}}/l — nur km prüfen",
+    "yes": "Ja",
+    "fuel": "Tanken",
+    "charge": "Laden",
+    "maintenance": "Wartung",
+    "km": "Aktuelle km",
+    "expense": "Ausgabe",
+    "reminder": "Frist",
+    "hint": "Aktueller Kilometerstand: {{km}} km"
+  },
+  "menu": {
+    "title": "Menü",
+    "garage": "Garage",
+    "addVehicle": "Fahrzeug hinzufügen",
+    "manageVehicles": "Fahrzeuge verwalten",
+    "commuteSub": "Kosten einer Strecke berechnen",
+    "expensesSub": "Versicherung, Steuer, Maut und mehr",
+    "kmSub": "Kilometerverlauf",
+    "remindersSub": "Alle Fahrzeugfristen"
   }
 }

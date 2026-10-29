@@ -1,16 +1,13 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-// Caratteri inclusi nell'app (niente richieste a Google Fonts): stessi pesi
-// che prima si scaricavano da fonts.googleapis.com, così funziona offline.
-import '@fontsource/bebas-neue/400.css'
-import '@fontsource/source-serif-4/400.css'
-import '@fontsource/source-serif-4/500.css'
-import '@fontsource/source-serif-4/600.css'
-import '@fontsource/source-serif-4/400-italic.css'
-import '@fontsource/jetbrains-mono/400.css'
-import '@fontsource/jetbrains-mono/500.css'
-import '@fontsource/jetbrains-mono/700.css'
+// Carattere incluso nell'app (niente richieste a Google Fonts), così funziona offline.
+import '@fontsource/inter/400.css'
+import '@fontsource/inter/500.css'
+import '@fontsource/inter/600.css'
+import '@fontsource/inter/700.css'
+import '@fontsource/inter/800.css'
 import './index.css'
+import './modern.css'
 import { applyTheme, getInitialTheme } from './utils/theme'
 import { AppSettingsProvider } from './contexts/AppSettingsContext'
 import { initI18n } from './i18n'

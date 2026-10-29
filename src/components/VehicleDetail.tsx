@@ -61,6 +61,8 @@ interface Props {
   expenseEntries: ExpenseEntry[];
   reminders: Reminder[];
   initialTab?: DetailTab;
+  /** Apre subito il modulo per aggiungere una voce (dal tasto + della barra in basso). */
+  autoOpenForm?: "maintenance" | "expense" | "reminder";
   onBack: () => void;
   onSaveFuel: (entry: FuelEntry) => void;
   onDeleteFuel: (id: string) => void;
@@ -127,6 +129,7 @@ export default function VehicleDetail({
   expenseEntries,
   reminders,
   initialTab,
+  autoOpenForm,
   onBack,
   onSaveFuel,
   onDeleteFuel,
@@ -176,6 +179,11 @@ export default function VehicleDetail({
   const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceEntry | null>(null);
   const [editingExpense, setEditingExpense] = useState<ExpenseEntry | null>(null);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  useEffect(() => {
+    if (autoOpenForm === "maintenance") setShowMaintenanceForm(true);
+    else if (autoOpenForm === "expense") setShowExpenseForm(true);
+    else if (autoOpenForm === "reminder") setShowReminderForm(true);
+  }, [autoOpenForm]);
   // Dopo "Fatto" su una scadenza del catalogo: modulo manutenzione o spesa già compilato.
   const [doneFollowUp, setDoneFollowUp] = useState<
     | { kind: "maintenance"; category: MaintenanceCategory; description: string }

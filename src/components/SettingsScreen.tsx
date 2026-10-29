@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { App as CapacitorApp } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
@@ -23,6 +23,9 @@ interface Props {
   onOpenBackup: () => void;
   theme: Theme;
   onToggleTheme: () => void;
+  /** Titolo della schermata (il Menu della Home) e sezioni da mostrare prima delle impostazioni. */
+  title?: string;
+  beforeList?: ReactNode;
 }
 
 type RowId = "language" | "units" | "theme" | "notifications" | null;
@@ -42,7 +45,7 @@ const ROW_ICONS: Record<string, string> = {
   info: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v.01M11 11h1.5v6H11",
 };
 
-export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleTheme }: Props) {
+export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleTheme, title, beforeList }: Props) {
   // Versione reale dell'app installata (versionName + versionCode di Android),
   // così si capisce subito se l'aggiornamento è arrivato.
   const [appVersion, setAppVersion] = useState("");
@@ -91,8 +94,10 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
 
   return (
     <div className="settings-embedded">
-      <QuickEntryHeader title={t("settingsScreen.title")} onBack={onClose} tone="blue" />
+      <QuickEntryHeader title={title ?? t("settingsScreen.title")} onBack={onClose} tone="blue" />
 
+      {beforeList}
+      {beforeList && <h2 className="menu-sect">{t("settingsScreen.title")}</h2>}
       <div className="settings-list">
         {/* Lingua */}
         <div className="settings-row" onClick={() => toggleRow("language")} role="button" tabIndex={0}>

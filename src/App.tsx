@@ -42,7 +42,9 @@ import { triggerTopBackHandler, useBackButtonClose } from "./utils/backButtonSta
 import { updateWidgetData } from "./utils/widgetData";
 import VehicleCard from "./components/VehicleCard";
 import VehicleForm from "./components/VehicleForm";
-import Dashboard from "./components/Dashboard";
+import Dashboard, { type ActivityKind } from "./components/Dashboard";
+import AddSheet, { type AddAction } from "./components/AddSheet";
+import MenuSections from "./components/MenuSections";
 import BottomTabBar, { type TabId } from "./components/BottomTabBar";
 import VehiclePickerModal from "./components/VehiclePickerModal";
 import LanguagePicker from "./components/LanguagePicker";
@@ -65,7 +67,6 @@ const QuickKmUpdate = lazy(() => import("./components/QuickKmUpdate"));
 const BackupPanel = lazy(() => import("./components/BackupPanel"));
 const FleetStats = lazy(() => import("./components/FleetStats"));
 const SettingsScreen = lazy(() => import("./components/SettingsScreen"));
-const UtilitiesScreen = lazy(() => import("./components/UtilitiesScreen"));
 const PremiumScreen = lazy(() => import("./components/PremiumScreen"));
 const KmHistory = lazy(() => import("./components/KmHistory"));
 
@@ -77,7 +78,8 @@ type PendingAction =
   | { kind: "quickFuel" }
   | { kind: "quickCharge" };
 
-const MAIN_TAB_TO_DETAIL_TAB: Record<"manutenzione" | "statistiche" | "movimenti", DetailTabTarget> = {
+const MAIN_TAB_TO_DETAIL_TAB: Record<"manutenzione" | "statistiche" | "movimenti" | "obd", DetailTabTarget> = {
+  obd: "live",
   manutenzione: "manutenzioni",
   statistiche: "riepilogo",
   movimenti: "rifornimenti",
@@ -114,7 +116,12 @@ export default function App() {
   const [quickFuelVehicleId, setQuickFuelVehicleId] = useState<string | null>(null);
   const [quickChargeVehicleId, setQuickChargeVehicleId] = useState<string | null>(null);
   const [showBackup, setShowBackup] = useState(false);
-  const [showUtilities, setShowUtilities] = useState(false);
+  // Veicolo in primo piano nella Home (si cambia scorrendo le schede): è anche
+  // quello usato dal tasto + e dalle schede della barra in basso.
+  const [homeVehicleId, setHomeVehicleId] = useState<string | null>(null);
+  const [showAddSheet, setShowAddSheet] = useState(false);
+  const [quickFuelPrefill, setQuickFuelPrefill] = useState<{ pricePerUnit: number; totalCost: number } | undefined>(undefined);
+  const [detailAutoOpen, setDetailAutoOpen] = useState<"maintenance" | "expense" | "reminder" | undefined>(undefined);
   const [showManageVehicles, setShowManageVehicles] = useState(false);
   const [openVehicleId, setOpenVehicleId] = useState<string | null>(null);
   const [detailInitialTab, setDetailInitialTab] = useState<DetailTabTarget>("live");
@@ -167,7 +174,6 @@ export default function App() {
   useBackButtonClose(editingVehicle !== null, () => setEditingVehicle(null));
   useBackButtonClose(showManageVehicles, () => setShowManageVehicles(false));
   useBackButtonClose(showBackup, () => { setShowBackup(false); setMainTab("impostazioni"); });
-  useBackButtonClose(showUtilities, () => setShowUtilities(false));
   useBackButtonClose(showPremium, () => setShowPremium(false));
   useBackButtonClose(showFleet, () => setShowFleet(false));
   useBackButtonClose(quickKmVehicle !== null, () => setQuickKmVehicle(null));
@@ -605,7 +611,9 @@ export default function App() {
     setPendingVehicleAction(action);
   }
 
-  function completeVehicleAction(vehicleId: string, action: PendingAction) {
+  function completeVehicleAction(vehicleId: string, action: PendingAction, autoOpen?: "maintenance" | "expense" | "reminder") {
+    setHomeVehicleId(vehicleId);
+    setDetailAutoOpen(autoOpen);
     if (action.kind === "navigate") {
       setDetailInitialTab(action.tab);
       setOpenVehicleId(vehicleId);
@@ -655,6 +663,46 @@ export default function App() {
     setPendingVehicleAction(null);
   }
 
+  const currentVehicle =
+    (openVehicleId ? vehicles.find((v) => v.id === openVehicleId && !v.archived) : undefined) ??
+    activeOrderedVehicles.find((v) => v.id === homeVehicleId) ??
+    activeOrderedVehicles[0];
+
+  function handleAddAction(action: AddAction) {
+    const v = currentVehicle;
+    setShowAddSheet(false);
+    if (!v) return;
+    if (action === "fuel" || action === "fuelRepeat") {
+      const last = [...fuelEntries].filter((e) => e.vehicleId === v.id).sort((a, b) => b.date.localeCompare(a.date))[0];
+      setQuickFuelPrefill(action === "fuelRepeat" && last && last.liters > 0 ? { pricePerUnit: last.totalCost / last.liters, totalCost: last.totalCost } : undefined);
+      setQuickFuelVehicleId(v.id);
+    } else if (action === "charge") {
+      setQuickChargeVehicleId(v.id);
+    } else if (action === "km") {
+      setQuickKmVehicle(v);
+    } else if (action === "maintenance") {
+      setMainTab("manutenzione");
+      completeVehicleAction(v.id, { kind: "navigate", tab: "manutenzioni" }, "maintenance");
+    } else if (action === "reminder") {
+      setMainTab("manutenzione");
+      completeVehicleAction(v.id, { kind: "navigate", tab: "scadenze" }, "reminder");
+    } else if (action === "expense") {
+      completeVehicleAction(v.id, { kind: "navigate", tab: "spese" }, "expense");
+    }
+  }
+
+  function handleOpenActivity(vehicleId: string, kind: ActivityKind) {
+    if (kind === "maintenance") {
+      setMainTab("manutenzione");
+      completeVehicleAction(vehicleId, { kind: "navigate", tab: "manutenzioni" });
+    } else if (kind === "expense") {
+      completeVehicleAction(vehicleId, { kind: "navigate", tab: "spese" });
+    } else {
+      setMainTab("movimenti");
+      completeVehicleAction(vehicleId, { kind: "navigate", tab: "rifornimenti" });
+    }
+  }
+
   const urgentTotalCount = reminders.filter((r) => {
     if (r.completed) return false;
     const vehicle = vehicles.find((v) => v.id === r.vehicleId);
@@ -667,19 +715,18 @@ export default function App() {
     setShowFleet(false);
     setShowBackup(false);
     setShowManageVehicles(false);
-    // La schermata Utilità sta sopra a tutto: senza chiuderla, cambiare scheda non si vedeva.
-    setShowUtilities(false);
+    setShowAddSheet(false);
     if (tab === "garage") {
       setMainTab("garage");
       setOpenVehicleId(null);
       return;
     }
-    if (tab === "movimenti" || tab === "manutenzione" || tab === "statistiche") {
+    if (tab === "movimenti" || tab === "manutenzione" || tab === "statistiche" || tab === "obd") {
       setMainTab(tab);
       const action: PendingAction = { kind: "navigate", tab: MAIN_TAB_TO_DETAIL_TAB[tab] };
-      // Con una scheda veicolo già aperta si resta su quel veicolo: niente
-      // domanda "su quale veicolo?" ad ogni cambio tra Rifornimento/Manutenzione/Statistiche.
-      const current = openVehicleId ? vehicles.find((v) => v.id === openVehicleId && !v.archived) : undefined;
+      // Si resta sul veicolo in uso (scheda aperta o quello in primo piano nella Home):
+      // niente domanda "su quale veicolo?" ad ogni cambio di scheda.
+      const current = currentVehicle;
       if (current) {
         completeVehicleAction(current.id, action);
       } else {
@@ -789,10 +836,15 @@ export default function App() {
               </div>
             ) : (
               <div className="vehicle-grid">
-                {vehicles
-                  .filter((v) => !v.archived)
-                  .map((v) => (
+                {activeOrderedVehicles
+                  .map((v, index) => (
                     <div key={v.id} className="vehicle-grid__item">
+                      {activeOrderedVehicles.length > 1 && (
+                        <span className="vehicle-grid__move">
+                          <button type="button" disabled={index === 0} onClick={() => moveVehicle(v.id, -1)} aria-label={t("dashboardGarage.moveUp", "Sposta su")}>▲</button>
+                          <button type="button" disabled={index === activeOrderedVehicles.length - 1} onClick={() => moveVehicle(v.id, 1)} aria-label={t("dashboardGarage.moveDown", "Sposta giù")}>▼</button>
+                        </span>
+                      )}
                       {hasUrgentReminder(v.id, v.currentKm) && (
                         <span className="vehicle-grid__alert" title={t("vehicles.urgentReminderTitle")}>
                           ⚠ {urgentRemindersCount(v.id, v.currentKm)}
@@ -858,34 +910,35 @@ export default function App() {
           </section>
         )}
 
-        {!showBackup && !showManageVehicles && !openVehicle && !showUtilities && mainTab === "impostazioni" && (
+        {!showBackup && !showManageVehicles && !openVehicle && mainTab === "impostazioni" && (
           <Suspense fallback={<LazyFallback />}>
             <SettingsScreen
               onClose={() => setMainTab("garage")}
               onOpenBackup={() => setShowBackup(true)}
               theme={theme}
               onToggleTheme={handleToggleTheme}
+              title={t("menu.title")}
+              beforeList={
+                <MenuSections
+                  vehicles={activeOrderedVehicles}
+                  colors={vehicleColors}
+                  isPro={isPro}
+                  onEditVehicle={(v) => setEditingVehicle(v)}
+                  onAddVehicle={handleRequestAddVehicle}
+                  onManageVehicles={() => setShowManageVehicles(true)}
+                  onOpenCommute={() => requestVehicleAction({ kind: "navigate", tab: "tragitto" })}
+                  onOpenExpenses={() => requestVehicleAction({ kind: "navigate", tab: "spese" })}
+                  onOpenReminders={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
+                  onOpenKmHistory={() => {
+                    if (currentVehicle) setKmHistoryVehicleId(currentVehicle.id);
+                  }}
+                />
+              }
             />
           </Suspense>
         )}
 
-        {!showBackup && !showManageVehicles && !openVehicle && showUtilities && (
-          <Suspense fallback={<LazyFallback />}>
-            <UtilitiesScreen
-              onClose={() => setShowUtilities(false)}
-              onOpenReminders={() => { setShowUtilities(false); requestVehicleAction({ kind: "navigate", tab: "scadenze" }); }}
-              onOpenExpenses={() => { setShowUtilities(false); requestVehicleAction({ kind: "navigate", tab: "spese" }); }}
-              onOpenCommute={() => { setShowUtilities(false); requestVehicleAction({ kind: "navigate", tab: "tragitto" }); }}
-              onOpenKmHistory={() => {
-                setShowUtilities(false);
-                const target = vehicles.find((v) => !v.archived);
-                if (target) setKmHistoryVehicleId(target.id);
-              }}
-            />
-          </Suspense>
-        )}
-
-        {!showBackup && !showManageVehicles && !openVehicle && !showUtilities && mainTab !== "impostazioni" && (
+        {!showBackup && !showManageVehicles && !openVehicle && mainTab !== "impostazioni" && (
           <Dashboard
             vehicles={orderedVehicles}
             reminders={reminders}
@@ -893,24 +946,22 @@ export default function App() {
             fuelEntries={fuelEntries}
             chargingEntries={chargingEntries}
             expenseEntries={expenseEntries}
-            isPro={isPro}
-            onOpenVehicle={(id) => {
-              setOpenVehicleId(id);
-              setDetailInitialTab("live");
-            }}
+            currentVehicleId={currentVehicle?.id ?? null}
+            onSelectVehicle={setHomeVehicleId}
             onAddVehicle={handleRequestAddVehicle}
-            onManageVehicles={() => setShowManageVehicles(true)}
-            onQuickFuel={() => requestVehicleAction({ kind: "quickFuel" })}
-            onQuickCharge={() => requestVehicleAction({ kind: "quickCharge" })}
-            onQuickFuelVehicle={(id) => completeVehicleAction(id, { kind: "quickFuel" })}
-            onQuickChargeVehicle={(id) => completeVehicleAction(id, { kind: "quickCharge" })}
-            onMoveVehicle={moveVehicle}
-            onQuickKm={(vehicle) => setQuickKmVehicle(vehicle)}
-            onOpenReminder={(vehicleId) => completeVehicleAction(vehicleId, { kind: "navigate", tab: "scadenze" })}
-            onOpenReminders={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
+            onOpenReminder={(vehicleId) => {
+              setMainTab("manutenzione");
+              completeVehicleAction(vehicleId, { kind: "navigate", tab: "scadenze" });
+            }}
+            onOpenReminders={() => {
+              if (!currentVehicle) return;
+              setMainTab("manutenzione");
+              completeVehicleAction(currentVehicle.id, { kind: "navigate", tab: "scadenze" });
+            }}
+            onOpenStats={() => handleMainTabChange("statistiche")}
+            onOpenActivity={handleOpenActivity}
+            onOpenSettings={() => handleMainTabChange("impostazioni")}
             onOpenBackup={() => { setMainTab("impostazioni"); setShowBackup(true); }}
-            onOpenUtilities={() => setShowUtilities(true)}
-            onOpenPremium={() => setShowPremium(true)}
           />
         )}
 
@@ -943,6 +994,7 @@ export default function App() {
               reminders={reminders.filter((r) => r.vehicleId === openVehicle.id)}
               initialTab={detailInitialTab}
               restrictToTab={detailInitialTab}
+              autoOpenForm={detailAutoOpen}
               onBack={handleBackFromDetail}
               onSaveFuel={handleSaveFuel}
               onDeleteFuel={handleDeleteFuel}
@@ -959,7 +1011,11 @@ export default function App() {
               allVehicles={activeOrderedVehicles}
               colors={vehicleColors}
               urgentCounts={urgentByVehicle}
-              onSwitchVehicle={(id) => setOpenVehicleId(id)}
+              onSwitchVehicle={(id) => {
+                setOpenVehicleId(id);
+                setHomeVehicleId(id);
+                setDetailAutoOpen(undefined);
+              }}
               onOpenFleet={() => (isPro ? setShowFleet(true) : setShowPremium(true))}
               onOpenRemindersTab={() => completeVehicleAction(openVehicle.id, { kind: "navigate", tab: "scadenze" })}
             />
@@ -968,7 +1024,34 @@ export default function App() {
       </main>
 
       {!showManageVehicles && (
-        <BottomTabBar active={mainTab} onChange={handleMainTabChange} urgentCount={urgentTotalCount} />
+        <BottomTabBar
+          active={mainTab}
+          onChange={handleMainTabChange}
+          urgentCount={urgentTotalCount}
+          addOpen={showAddSheet}
+          onAdd={() => {
+            if (!currentVehicle) {
+              handleRequestAddVehicle();
+              return;
+            }
+            setShowAddSheet((open) => !open);
+          }}
+        />
+      )}
+
+      {showAddSheet && currentVehicle && (
+        <AddSheet
+          vehicle={currentVehicle}
+          vehicles={activeOrderedVehicles}
+          colors={vehicleColors}
+          lastFuel={[...fuelEntries].filter((e) => e.vehicleId === currentVehicle.id).sort((a, b) => b.date.localeCompare(a.date))[0]}
+          onPick={handleAddAction}
+          onChangeVehicle={(id) => {
+            setHomeVehicleId(id);
+            if (openVehicleId) setOpenVehicleId(id);
+          }}
+          onClose={() => setShowAddSheet(false)}
+        />
       )}
 
       {showNewVehicleForm && (
@@ -1049,11 +1132,16 @@ export default function App() {
               urgentCounts={urgentByVehicle}
               onChangeVehicle={(id) => setQuickFuelVehicleId(id)}
               existingEntries={fuelEntries.filter((f) => f.vehicleId === v.id)}
+              prefill={quickFuelPrefill}
               onSave={(entry) => {
                 handleSaveFuel(entry);
                 setQuickFuelVehicleId(null);
+                setQuickFuelPrefill(undefined);
               }}
-              onClose={() => setQuickFuelVehicleId(null)}
+              onClose={() => {
+                setQuickFuelVehicleId(null);
+                setQuickFuelPrefill(undefined);
+              }}
             />
           );
         })()}

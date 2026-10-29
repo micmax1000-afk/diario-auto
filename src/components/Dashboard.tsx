@@ -1,19 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, Reminder, MaintenanceEntry, FuelEntry, ChargingEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { FREE_VEHICLE_LIMIT } from "../services/billing/useProStatus";
 import UpcomingReminders from "./UpcomingReminders";
-import ActionGridIcon from "./ActionGridIcon";
-import VehicleBodyIcon from "./VehicleBodyIcon";
+import CategoryIcon from "./CategoryIcon";
+import CartoonCar from "./CartoonCar";
+import { shade } from "../utils/bodyTypes";
 import { getMeta, setMeta } from "../utils/db";
 import { daysSince } from "../utils/storage";
 import { resolveVehicleColors } from "../utils/vehicleColor";
-import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
+import {
+  calculateConsumption,
+  averageConsumption,
+  calculateElectricConsumption,
+  averageElectricConsumption,
+  mainFuelSource,
+} from "../utils/calculations";
 import { isoToLocalDate, localMonthString } from "../utils/dates";
 import { reminderStatus } from "../utils/kmForecast";
+
+export type ActivityKind = "fuel" | "charging" | "maintenance" | "expense";
 
 interface Props {
   vehicles: Vehicle[];
@@ -22,29 +30,22 @@ interface Props {
   fuelEntries: FuelEntry[];
   chargingEntries: ChargingEntry[];
   expenseEntries: ExpenseEntry[];
-  isPro: boolean;
-  onOpenVehicle: (id: string) => void;
+  /** Veicolo mostrato nella scheda in primo piano (si cambia scorrendo). */
+  currentVehicleId: string | null;
+  onSelectVehicle: (id: string) => void;
   onAddVehicle: () => void;
-  onManageVehicles: () => void;
-  onQuickFuel: () => void;
-  onQuickFuelVehicle: (vehicleId: string) => void;
-  onMoveVehicle: (vehicleId: string, direction: -1 | 1) => void;
-  onQuickCharge: () => void;
-  onQuickChargeVehicle: (vehicleId: string) => void;
-  onQuickKm: (vehicle: Vehicle) => void;
   onOpenReminder: (vehicleId: string) => void;
   onOpenReminders: () => void;
+  onOpenStats: () => void;
+  onOpenActivity: (vehicleId: string, kind: ActivityKind) => void;
+  onOpenSettings: () => void;
   onOpenBackup: () => void;
-  onOpenUtilities: () => void;
-  onOpenPremium: () => void;
 }
 
-type HomeView = "detailed" | "compact";
-const HOME_VIEW_KEY = "home-view";
-const COMPACT_FROM_VEHICLES = 3;
 const BACKUP_STALE_DAYS = 30;
 const BACKUP_NAG_SNOOZE_DAYS = 7;
 const BACKUP_NAG_KEY = "backup-nag-snoozed";
+const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
 export default function Dashboard({
   vehicles,
@@ -53,73 +54,24 @@ export default function Dashboard({
   fuelEntries,
   chargingEntries,
   expenseEntries,
-  isPro,
-  onOpenVehicle,
+  currentVehicleId,
+  onSelectVehicle,
   onAddVehicle,
-  onManageVehicles,
-  onQuickFuel,
-  onQuickCharge,
-  onQuickChargeVehicle,
-  onQuickFuelVehicle,
-  onMoveVehicle,
-  onQuickKm,
   onOpenReminder,
   onOpenReminders,
+  onOpenStats,
+  onOpenActivity,
+  onOpenSettings,
   onOpenBackup,
-  onOpenUtilities,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit, formatMoney } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
   const activeVehicles = vehicles.filter((v) => !v.archived);
+  const current = activeVehicles.find((v) => v.id === currentVehicleId) ?? activeVehicles[0];
+  const colors = resolveVehicleColors(vehicles);
 
-  // Preferenza di vista scelta dall'utente (se assente: automatica in base
-  // al numero di veicoli — dettagliata con 1-2, compatta da 3 in su).
-  const [viewPref, setViewPref] = useState<HomeView | null>(null);
-  useEffect(() => {
-    getMeta(HOME_VIEW_KEY)
-      .then((v) => setViewPref(v === "compact" || v === "detailed" ? v : null))
-      .catch(() => undefined);
-  }, []);
-  const view: HomeView = viewPref ?? (activeVehicles.length >= COMPACT_FROM_VEHICLES ? "compact" : "detailed");
-  const canSwitchView = activeVehicles.length >= 2;
-
-  function chooseView(next: HomeView) {
-    setViewPref(next);
-    void setMeta(HOME_VIEW_KEY, next).catch(() => undefined);
-  }
-
-  const ym = localMonthString();
-  const inMonth = (d: string) => isoToLocalDate(d).slice(0, 7) === ym;
-
-  function monthStats(vehicleId: string) {
-    const fuelType = vehicles.find((v) => v.id === vehicleId)?.fuelType;
-    const electric = fuelType === "elettrico";
-    const fuel = fuelEntries.filter((e) => e.vehicleId === vehicleId);
-    const charging = chargingEntries.filter((e) => e.vehicleId === vehicleId);
-    const monthFuel = fuel.filter((e) => inMonth(e.date));
-    const spend =
-      monthFuel.reduce((a, e) => a + e.totalCost, 0) +
-      chargingEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.totalCost, 0) +
-      maintenanceEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.cost, 0) +
-      expenseEntries.filter((e) => e.vehicleId === vehicleId && inMonth(e.date)).reduce((a, e) => a + e.amount, 0);
-    // Consumo del mese: solo i tratti da pieno a pieno che si chiudono in questo mese.
-    const kmPerL = averageConsumption(calculateConsumption(fuel).filter((p) => inMonth(p.date)), mainFuelSource(fuelType));
-    if (electric) {
-      // Elettriche: kWh/100 km e numero di ricariche del mese.
-      const kWh100 = averageElectricConsumption(calculateElectricConsumption(charging).filter((p) => inMonth(p.date)));
-      return { spend, per100: kWh100, refuels: charging.filter((e) => inMonth(e.date)).length, electric };
-    }
-    return { spend, per100: kmPerL ? 100 / kmPerL : null, refuels: monthFuel.length, electric };
-  }
-
-  const stats = new Map(activeVehicles.map((v) => [v.id, monthStats(v.id)]));
-  const totalSpend = [...stats.values()].reduce((a, x) => a + x.spend, 0);
-  const totalRefuels = [...stats.values()].reduce((a, x) => a + x.refuels, 0);
-  // Media dei consumi in litri: le elettriche (kWh) non si mescolano.
-  const per100List = [...stats.values()].filter((x) => !x.electric).map((x) => x.per100).filter((x): x is number => x !== null);
-  const avgPer100 = per100List.length ? per100List.reduce((a, x) => a + x, 0) / per100List.length : null;
-
+  // ---- Avviso backup vecchio (come prima) ----
   const [backupStaleDays, setBackupStaleDays] = useState<number | null>(null);
   const oldestCreated = vehicles.map((v) => v.createdAt).filter(Boolean).sort()[0];
   const hasVehicles = vehicles.length > 0;
@@ -131,7 +83,6 @@ export default function Dashboard({
         const snoozed = await getMeta(BACKUP_NAG_KEY);
         if (snoozed && daysSince(snoozed) < BACKUP_NAG_SNOOZE_DAYS) return;
         const last = await getMeta("last-backup");
-        // mai fatto un backup: si conta da quando è stato aggiunto il primo veicolo
         const reference = last ?? oldestCreated;
         if (!reference) return;
         const days = daysSince(reference);
@@ -144,229 +95,176 @@ export default function Dashboard({
       cancelled = true;
     };
   }, [hasVehicles, oldestCreated]);
-
   function snoozeBackupNag() {
     setBackupStaleDays(null);
     void setMeta(BACKUP_NAG_KEY, new Date().toISOString());
   }
 
-  const colors = resolveVehicleColors(vehicles);
-  const canCharge = activeVehicles.some((v) => v.fuelType === "elettrico" || v.fuelType === "ibrido");
-  // Rifornimento e Ricarica compaiono in entrambe le viste, ma solo se servono a qualche veicolo.
-  const canFuel = activeVehicles.some((v) => v.fuelType !== "elettrico");
-  const quickCount = 2 + (canFuel ? 1 : 0) + (canCharge ? 1 : 0);
-  const multi = vehicles.filter((v) => !v.archived).length > 1;
-
-  const urgentFor = (vehicle: Vehicle) =>
-    reminders.filter((r) => r.vehicleId === vehicle.id && !r.completed && reminderStatus(r, vehicle.currentKm) !== "ok").length;
-  const urgentCount = activeVehicles.reduce((a, v) => a + urgentFor(v), 0);
-
-  const fmtMoney = (n: number) => formatMoney(n, 0);
-  const fmtCons = (n: number | null) => (n === null ? "–" : n.toLocaleString(locale, { maximumFractionDigits: 1 }));
-
-  function renderMoveButtons(vehicle: Vehicle, index: number) {
-    if (activeVehicles.length < 2) return null;
-    return (
-      <span className="dash-move" onClick={(e) => e.stopPropagation()}>
-        <button type="button" disabled={index === 0} onClick={() => onMoveVehicle(vehicle.id, -1)} aria-label={t("dashboardGarage.moveUp", "Sposta su")}>▲</button>
-        <button type="button" disabled={index === activeVehicles.length - 1} onClick={() => onMoveVehicle(vehicle.id, 1)} aria-label={t("dashboardGarage.moveDown", "Sposta giù")}>▼</button>
-      </span>
-    );
+  // ---- Carosello: scorrendo di lato cambia il veicolo in primo piano ----
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const currentIndex = current ? activeVehicles.findIndex((v) => v.id === current.id) : 0;
+  useLayoutEffect(() => {
+    const el = carouselRef.current;
+    const card = el?.firstElementChild as HTMLElement | null;
+    if (!el || !card) return;
+    const step = card.offsetWidth + 12;
+    if (Math.abs(el.scrollLeft - currentIndex * step) > 4) el.scrollLeft = currentIndex * step;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentIndex, activeVehicles.length]);
+  const scrollTimer = useRef<number | undefined>(undefined);
+  function handleScroll() {
+    window.clearTimeout(scrollTimer.current);
+    scrollTimer.current = window.setTimeout(() => {
+      const el = carouselRef.current;
+      const card = el?.firstElementChild as HTMLElement | null;
+      if (!el || !card) return;
+      const i = Math.round(el.scrollLeft / (card.offsetWidth + 12));
+      const v = activeVehicles[i];
+      if (v && v.id !== current?.id) onSelectVehicle(v.id);
+    }, 120);
   }
 
-  function renderPills(vehicle: Vehicle) {
-    return (
-      <span className="dash-pills" onClick={(e) => e.stopPropagation()}>
-        <button type="button" className="dash-pill" onClick={() => onQuickKm(vehicle)}>
-          <ActionGridIcon name="gauge" className="dash-pill__icon" />
-          {t("dashboardGarage.updateKm", "Aggiorna km")}
-        </button>
-        {vehicle.fuelType === "elettrico" ? (
-          <button type="button" className="dash-pill dash-pill--fuel" onClick={() => onQuickChargeVehicle(vehicle.id)}>
-            <ActionGridIcon name="bolt" className="dash-pill__icon" />
-            {t("dashboardGarage.charge", "Ricarica")}
-          </button>
-        ) : (
-          <button type="button" className="dash-pill dash-pill--fuel" onClick={() => onQuickFuelVehicle(vehicle.id)}>
-            <ActionGridIcon name="fuel" className="dash-pill__icon" />
-            {t("dashboardGarage.fuel", "Rifornimento")}
-          </button>
-        )}
-      </span>
-    );
-  }
+  const greeting = (() => {
+    const h = new Date().getHours();
+    return t(h < 12 ? "home.greetingMorning" : h < 18 ? "home.greetingAfternoon" : "home.greetingEvening");
+  })();
+  const today = new Date().toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" });
 
-  function renderDetailedCard(v: Vehicle, index: number) {
-    const st = stats.get(v.id);
+  const header = (
+    <div className="home-head">
+      <div>
+        <p className="home-head__hello">{greeting} · {today}</p>
+        <h1 className="home-head__title">{t("home.title")}</h1>
+      </div>
+      <button type="button" className="home-round" onClick={onOpenSettings} aria-label={t("home.menu")}>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      </button>
+    </div>
+  );
+
+  if (!current) {
     return (
-      <div key={v.id} className="dash-vcard">
-        <section
-          className={`dash-featured-vehicle${v.photo ? " dash-featured-vehicle--hero" : ""}`}
-          onClick={() => onOpenVehicle(v.id)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && onOpenVehicle(v.id)}
-        >
-          {v.photo && <img className="dash-featured-vehicle__photo" src={v.photo} alt={v.name} />}
-          <div className="dash-featured-vehicle__info">
-            <div>
-              {index === 0 && <span className="dash-featured-vehicle__badge">{t("dashboardGarage.primary", "PRINCIPALE")}</span>}
-              <h1 className="dash-featured-vehicle__name" style={{ ["--c" as string]: colors[v.id] } as React.CSSProperties}>{multi && <span className="vdot" aria-hidden="true" />}{v.name}</h1>
-              <p className="dash-featured-vehicle__km">
-                {formatDistance(v.currentKm, distanceUnit, locale)}
-              </p>
-              <div className="dash-featured-vehicle__meta">
-                <span>{t(`fuelType.${v.fuelType}`)}</span>
-                {v.year && <span>{v.year}</span>}
-                {v.plate && <span>{v.plate}</span>}
-              </div>
-              {renderPills(v)}
-              {v.notes && <p className="dash-featured-vehicle__notes">{v.notes}</p>}
-            </div>
-            <span className="dash-featured-vehicle__chevron">›</span>
-          </div>
+      <div className="home">
+        {header}
+        <section className="home-welcome">
+          <span className="home-welcome__plus" aria-hidden="true">+</span>
+          <h2>{t("home.welcomeTitle")}</h2>
+          <p>{t("home.welcomeBody")}</p>
+          <button type="button" className="btn btn--primary" onClick={onAddVehicle}>
+            {t("home.welcomeCta")}
+          </button>
         </section>
-        <UpcomingReminders
-          vehicles={[v]}
-          reminders={reminders}
-          distanceUnit={distanceUnit}
-          onOpenReminder={onOpenReminder}
-          limit={2}
-          variant="attached"
-        />
-        {st && (
-          <div className="dash-vmonth">
-            <span>{t("dashboardGarage.thisMonth", "Questo mese")}</span>
-            <span>
-              <b>{fmtMoney(st.spend)}</b> · {fmtCons(st.per100)} {st.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")} · {t(st.electric ? "dashboardGarage.chargeCount" : "dashboardGarage.refuelCount", { count: st.refuels })}
-            </span>
-          </div>
-        )}
       </div>
     );
   }
 
-  function renderCompactCard(v: Vehicle, index: number) {
-    const urgent = urgentFor(v);
-    return (
-      <div
-        key={v.id}
-        className="dash-ccard"
-        onClick={() => onOpenVehicle(v.id)}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => e.key === "Enter" && onOpenVehicle(v.id)}
-      >
-        <div className="dash-ccard__thumb" style={{ ...(v.photo ? { backgroundImage: `url(${v.photo})` } : {}), ["--c" as string]: colors[v.id] } as React.CSSProperties}>
-          {!v.photo && <VehicleBodyIcon bodyType={v.bodyType ?? "hatchback"} className="dash-ccard__icon" />}
-          {urgent > 0 && <span className="dash-ccard__badge">{urgent}</span>}
-        </div>
-        <div className="dash-ccard__body">
-          <h3 className="dash-ccard__name">{v.name}</h3>
-          <p className="dash-ccard__km">{formatDistance(v.currentKm, distanceUnit, locale)}</p>
-          {renderPills(v)}
-        </div>
-        {renderMoveButtons(v, index)}
-      </div>
-    );
-  }
+  // ---- Numeri del mese per il veicolo in primo piano ----
+  const ym = localMonthString();
+  const inMonth = (d: string) => isoToLocalDate(d).slice(0, 7) === ym;
+  const electric = current.fuelType === "elettrico";
+  const vFuel = fuelEntries.filter((e) => e.vehicleId === current.id);
+  const vCharge = chargingEntries.filter((e) => e.vehicleId === current.id);
+  const vMaint = maintenanceEntries.filter((e) => e.vehicleId === current.id);
+  const vExp = expenseEntries.filter((e) => e.vehicleId === current.id);
+  const sum = (list: { d: string; v: number }[], keep: (d: string) => boolean) => list.filter((x) => keep(x.d)).reduce((a, x) => a + x.v, 0);
+  const allCosts = [
+    ...vFuel.map((e) => ({ d: e.date, v: e.totalCost })),
+    ...vCharge.map((e) => ({ d: e.date, v: e.totalCost })),
+    ...vMaint.map((e) => ({ d: e.date, v: e.cost })),
+    ...vExp.map((e) => ({ d: e.date, v: e.amount })),
+  ];
+  const monthSpend = sum(allCosts, inMonth);
+  const per100 = electric
+    ? averageElectricConsumption(calculateElectricConsumption(vCharge))
+    : (() => {
+        const kmPerL = averageConsumption(calculateConsumption(vFuel), mainFuelSource(current.fuelType));
+        return kmPerL ? 100 / kmPerL : null;
+      })();
+  const yearAgo = Date.now() - YEAR_MS;
+  const inYear = (d: string) => new Date(d).getTime() >= yearAgo;
+  const yearKms = [...vFuel, ...vCharge].filter((e) => inYear(e.date)).map((e) => e.km);
+  const yearKm = yearKms.length > 1 ? Math.max(...yearKms) - Math.min(...yearKms) : 0;
+  const costPerKm = yearKm > 0 ? sum(allCosts, inYear) / yearKm : null;
+  const monthName = new Date().toLocaleDateString(locale, { month: "long" });
+
+  // ---- Attività recente ----
+  type Activity = { key: string; kind: ActivityKind; category: string; date: string; title: string; sub: string; amount: number };
+  const unit = electric ? "kWh" : "l";
+  const fmtDate = (d: string) => new Date(d).toLocaleDateString(locale, { day: "numeric", month: "short" });
+  const activities: Activity[] = [
+    ...vFuel.map((e) => ({ key: "f" + e.id, kind: "fuel" as const, category: e.source, date: e.date, title: t(e.fullTank ? "home.fullTank" : "home.partialFill"), sub: `${fmtDate(e.date)} · ${e.liters.toLocaleString(locale, { maximumFractionDigits: 1 })} ${e.source === "elettrico" ? "kWh" : unit} · ${formatDistance(e.km, distanceUnit, locale)}`, amount: e.totalCost })),
+    ...vCharge.map((e) => ({ key: "c" + e.id, kind: "charging" as const, category: "", date: e.date, title: t("home.charge"), sub: `${fmtDate(e.date)} · ${e.kWh.toLocaleString(locale, { maximumFractionDigits: 1 })} kWh · ${formatDistance(e.km, distanceUnit, locale)}`, amount: e.totalCost })),
+    ...vMaint.map((e) => ({ key: "m" + e.id, kind: "maintenance" as const, category: e.category, date: e.date, title: t(`maintenanceCategory.${e.category}`), sub: [fmtDate(e.date), e.description].filter(Boolean).join(" · "), amount: e.cost })),
+    ...vExp.map((e) => ({ key: "e" + e.id, kind: "expense" as const, category: e.category, date: e.date, title: t(`expenseCategory.${e.category}`), sub: [fmtDate(e.date), e.description].filter(Boolean).join(" · "), amount: e.amount })),
+  ]
+    .sort((a, b) => b.date.localeCompare(a.date))
+    .slice(0, 3);
 
   return (
-    <div className="dashboard">
-      {/* VEICOLI */}
-      <section className="dash-vehicles">
-        <div className="dash-vehicles__head">
-          <h2>
-            {t("dashboardGarage.yourVehicles")}
-            {!isPro && (
-              <span className="dash-vehicles__count">
-                {" "}
-                ({activeVehicles.length}/{FREE_VEHICLE_LIMIT})
-              </span>
-            )}
-          </h2>
-          <div style={{ display: "flex", gap: "0.9rem" }}>
-            <button type="button" className="dash-link" onClick={onManageVehicles}>
-              {t("dashboardGarage.manage")}
-            </button>
-            {activeVehicles.length > 0 && (
-              <button type="button" className="dash-link" onClick={onAddVehicle}>
-                + {t("dashboardGarage.add")}
-              </button>
-            )}
-          </div>
+    <div className="home">
+      {header}
+
+      <div className="home-carousel" ref={carouselRef} onScroll={handleScroll}>
+        {activeVehicles.map((v) => {
+          const color = colors[v.id] ?? "#4f9dff";
+          const open = reminders
+            .filter((r) => r.vehicleId === v.id && !r.completed)
+            .map((r) => ({ r, s: reminderStatus(r, v.currentKm) }))
+            .filter((x) => x.s !== "ok")
+            .sort((a, b) => (a.s === "overdue" ? -1 : 0) - (b.s === "overdue" ? -1 : 0));
+          const top = open[0];
+          const style = v.photo
+            ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.62)), url(${v.photo})` }
+            : { backgroundImage: `linear-gradient(135deg, ${shade(color, -0.12)}, ${shade(color, -0.45)})` };
+          return (
+            <section key={v.id} className={`home-hero${v.photo ? " home-hero--photo" : ""}`} style={style} aria-label={v.name}>
+              <div className="home-hero__top">
+                {!v.photo && (
+                  <span className="home-hero__badge">
+                    <CartoonCar bodyType={v.bodyType} color={color} />
+                  </span>
+                )}
+                <div className="home-hero__id">
+                  <h2 className="home-hero__name">{v.name}</h2>
+                  {v.plate && <span className="home-hero__plate">{v.plate}</span>}
+                </div>
+              </div>
+              <p className="home-hero__label">{t("home.odometer")}</p>
+              <p className="home-hero__km">{formatDistance(v.currentKm, distanceUnit, locale)}</p>
+              {top ? (
+                <button type="button" className={`home-hero__alert is-${top.s}`} onClick={() => onOpenReminder(v.id)}>
+                  <span className="home-hero__alert-dot" aria-hidden="true">!</span>
+                  <span className="home-hero__alert-text">
+                    {top.r.label} · {t(top.s === "overdue" ? "home.overdue" : "home.soon")}
+                  </span>
+                  <span className="home-hero__alert-go">{t(top.s === "overdue" ? "home.renew" : "home.view")} ›</span>
+                </button>
+              ) : (
+                <p className="home-hero__alert is-ok">
+                  <span className="home-hero__alert-dot" aria-hidden="true">✓</span>
+                  <span className="home-hero__alert-text">{t("home.allClear")}</span>
+                </p>
+              )}
+            </section>
+          );
+        })}
+        <button type="button" className="home-hero home-hero--add" onClick={onAddVehicle}>
+          <span className="home-hero__plus" aria-hidden="true">+</span>
+          {t("home.addVehicle")}
+        </button>
+      </div>
+      {activeVehicles.length > 1 && (
+        <div className="home-dots" aria-hidden="true">
+          {activeVehicles.map((v) => (
+            <i key={v.id} className={v.id === current.id ? "is-on" : ""} />
+          ))}
         </div>
-
-        {canSwitchView && (
-          <div className="dash-seg" role="group" aria-label={t("dashboardGarage.viewLabel", "Vista")}>
-            <button type="button" className={view === "compact" ? "is-on" : ""} onClick={() => chooseView("compact")}>
-              {t("dashboardGarage.viewCompact", "Compatta")}
-            </button>
-            <button type="button" className={view === "detailed" ? "is-on" : ""} onClick={() => chooseView("detailed")}>
-              {t("dashboardGarage.viewDetailed", "Dettagliata")}
-            </button>
-          </div>
-        )}
-
-        {activeVehicles.length === 0 ? (
-          <div className="dash-empty">
-            <p>{t("dashboardGarage.emptyTitle")}</p>
-            <button type="button" className="btn btn--primary" onClick={onAddVehicle}>
-              + {t("dashboardGarage.emptyAddFirst")}
-            </button>
-          </div>
-        ) : view === "detailed" ? (
-          <div className="dash-vehicle-list dash-vehicle-list--featured">
-            {activeVehicles.map((v, index) => renderDetailedCard(v, index))}
-          </div>
-        ) : (
-          <>
-            <UpcomingReminders
-              vehicles={activeVehicles}
-              reminders={reminders}
-              distanceUnit={distanceUnit}
-              onOpenReminder={onOpenReminder}
-              onViewAll={onOpenReminders}
-              title={t("dashboardGarage.fleetDeadlines", "Scadenze · tutti i veicoli")}
-              showVehicleName
-            />
-            <div className="dash-clist">{activeVehicles.map((v, index) => renderCompactCard(v, index))}</div>
-          </>
-        )}
-      </section>
-
-      {activeVehicles.length > 0 && (
-        <section className="dash-quick">
-          <h2 className="dash-section-title">{t("dashboardGarage.quickActions", "Azioni rapide")}</h2>
-          <div className={`dash-quick__row dash-quick__row--${quickCount}`}>
-            {canFuel && (
-              <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={onQuickFuel}>
-                <ActionGridIcon name="fuel" className="dash-quick__icon" />
-                <span>{t("dashboardGarage.fuel", "Rifornimento")}</span>
-              </button>
-            )}
-            {canCharge && (
-              <button type="button" className="dash-quick__item dash-quick__item--primary" onClick={onQuickCharge}>
-                <ActionGridIcon name="bolt" className="dash-quick__icon" />
-                <span>{t("dashboardGarage.charge", "Ricarica")}</span>
-              </button>
-            )}
-            <button type="button" className="dash-quick__item" onClick={onOpenReminders}>
-              <span className="dash-quick__badgewrap">
-                <ActionGridIcon name="bell" className="dash-quick__icon dash-quick__icon--red" />
-                {urgentCount > 0 && <span className="dash-quick__badge">{urgentCount}</span>}
-              </span>
-              <span>{t("dashboardGarage.reminders", "Promemoria")}</span>
-            </button>
-            <button type="button" className="dash-quick__item" onClick={onOpenUtilities}>
-              <ActionGridIcon name="folder" className="dash-quick__icon dash-quick__icon--yellow" />
-              <span>{t("utilities.title", "Utilità")}</span>
-            </button>
-          </div>
-        </section>
       )}
 
-      {backupStaleDays !== null && activeVehicles.length > 0 && (
+      {backupStaleDays !== null && (
         <section className="dash-backup-nag" role="status">
           <span>{t("dashboardGarage.backupNag", { days: backupStaleDays })}</span>
           <span className="dash-backup-nag__actions">
@@ -380,34 +278,55 @@ export default function Dashboard({
         </section>
       )}
 
-      {activeVehicles.length > 0 && urgentCount === 0 && (
-        <section className="dash-allclear">
-          <span className="dash-allclear__icon" aria-hidden="true">✓</span>
-          <div>
-            <strong>{t("dashboardGarage.allClearTitle", "Tutto in regola")}</strong>
-            <span>{t("dashboardGarage.allClearBody", "Nessuna scadenza imminente.")}</span>
-          </div>
-        </section>
+      <div className="home-sect">
+        <h2>{t("home.thisMonth")}</h2>
+        <button type="button" onClick={onOpenStats}>{t("home.statsLink")} ›</button>
+      </div>
+      <button type="button" className="home-kpis" onClick={onOpenStats}>
+        <span className="home-kpi">
+          <span className="home-kpi__label">{monthName.charAt(0).toUpperCase() + monthName.slice(1)}</span>
+          <b>{formatMoney(monthSpend, 0)}</b>
+        </span>
+        <span className="home-kpi">
+          <span className="home-kpi__label">{t("home.consumption")}</span>
+          <b>
+            {per100 !== null ? per100.toLocaleString(locale, { maximumFractionDigits: 1 }) : "–"} <small>{electric ? "kWh/100" : "l/100"}</small>
+          </b>
+        </span>
+        <span className="home-kpi">
+          <span className="home-kpi__label">{t("home.costPerKm")}</span>
+          <b>{costPerKm !== null ? formatMoney(costPerKm, 2) : "–"}</b>
+        </span>
+      </button>
+
+      <div className="home-sect">
+        <h2>{t("home.upcoming")}</h2>
+        <button type="button" onClick={onOpenReminders}>{t("home.all")}</button>
+      </div>
+      {reminders.some((r) => r.vehicleId === current.id && !r.completed && reminderStatus(r, current.currentKm) !== "ok") ? (
+        <UpcomingReminders vehicles={[current]} reminders={reminders} distanceUnit={distanceUnit} onOpenReminder={onOpenReminder} limit={3} />
+      ) : (
+        <p className="home-empty">{t("home.noUpcoming")}</p>
       )}
 
-      {activeVehicles.length > 0 && view === "compact" && (
-        <section className="dash-month">
-          <h2 className="dash-section-title">{t("dashboardGarage.monthAll", "Questo mese · tutti i veicoli")}</h2>
-          <div className="dash-month__grid">
-            <div className="dash-month__stat">
-              <span className="dash-month__value">{fmtMoney(totalSpend)}</span>
-              <span className="dash-month__label">{t("dashboardGarage.monthSpend", "Spesa totale")}</span>
-            </div>
-            <div className="dash-month__stat">
-              <span className="dash-month__value">{fmtCons(avgPer100)}</span>
-              <span className="dash-month__label">{t("dashboardGarage.avgConsumption", "L/100 km medi")}</span>
-            </div>
-            <div className="dash-month__stat">
-              <span className="dash-month__value">{totalRefuels}</span>
-              <span className="dash-month__label">{t("dashboardGarage.refuels", "Rifornimenti")}</span>
-            </div>
-          </div>
-        </section>
+      <div className="home-sect">
+        <h2>{t("home.recent")}</h2>
+      </div>
+      {activities.length === 0 ? (
+        <p className="home-empty">{t("home.recentEmpty")}</p>
+      ) : (
+        <div className="home-list">
+          {activities.map((a) => (
+            <button key={a.key} type="button" className="home-item" onClick={() => onOpenActivity(current.id, a.kind)}>
+              <CategoryIcon kind={a.kind} category={a.category} />
+              <span className="home-item__mid">
+                <span className="home-item__title">{a.title}</span>
+                <span className="home-item__sub">{a.sub}</span>
+              </span>
+              <span className="home-item__amt">{formatMoney(a.amount)}</span>
+            </button>
+          ))}
+        </div>
       )}
     </div>
   );

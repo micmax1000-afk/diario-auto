@@ -836,7 +836,9 @@
     "dataQualityTitle": "Qualidade dos dados",
     "dataQualityConsumption": "Consumo calculado com base em {{count}} intervalos entre depósitos cheios.",
     "dataQualityHint": "Registe pelo menos dois reabastecimentos marcados como «cheio» para obter um consumo médio fiável.",
-    "movements": "Abastecimento"
+    "movements": "Abastecimento",
+    "home": "Início",
+    "obd": "OBD"
   },
   "dashboardGarage": {
     "heroLabel": "A sua garagem,",
@@ -1165,5 +1167,60 @@
     "deadlinesBody": "Inspeção, imposto de circulação, seguro, revisão: um aviso antes de cada prazo e o histórico completo dos trabalhos.",
     "dataTitle": "Os seus dados são seus",
     "dataBody": "Tudo fica guardado apenas neste telemóvel, sem conta. Faça uma cópia de segurança de vez em quando, também no Google Drive, para não perder nada se mudar de telemóvel."
+  },
+  "home": {
+    "greetingMorning": "Bom dia",
+    "greetingAfternoon": "Boa tarde",
+    "greetingEvening": "Boa noite",
+    "title": "Os seus carros",
+    "menu": "Menu e definições",
+    "welcomeTitle": "Bem-vindo ao Diario Auto",
+    "welcomeBody": "Adicione o seu primeiro veículo para acompanhar abastecimentos, manutenções e prazos.",
+    "welcomeCta": "Adicionar veículo",
+    "odometer": "Conta-quilómetros",
+    "overdue": "vencido",
+    "soon": "a vencer",
+    "renew": "Renovar",
+    "view": "Ver",
+    "allClear": "Tudo em ordem",
+    "addVehicle": "Adicionar veículo",
+    "thisMonth": "Este mês",
+    "statsLink": "Estatísticas",
+    "consumption": "Consumo",
+    "costPerKm": "Custo por km",
+    "upcoming": "Próximos prazos",
+    "all": "Todos",
+    "noUpcoming": "Nenhum prazo próximo.",
+    "recent": "Atividade recente",
+    "recentEmpty": "Ainda sem registos. Toque em + para começar.",
+    "fullTank": "Depósito cheio",
+    "partialFill": "Abastecimento parcial",
+    "charge": "Carregamento"
+  },
+  "addSheet": {
+    "open": "Registar",
+    "title": "O que quer registar?",
+    "for": "Para",
+    "change": "mudar",
+    "repeatTitle": "Igual ao último?",
+    "repeatBody": "{{cost}} · {{price}}/l — só confirme os km",
+    "yes": "Sim",
+    "fuel": "Abastecimento",
+    "charge": "Carregamento",
+    "maintenance": "Manutenção",
+    "km": "Km atuais",
+    "expense": "Despesa",
+    "reminder": "Prazo",
+    "hint": "Conta-quilómetros atual: {{km}} km"
+  },
+  "menu": {
+    "title": "Menu",
+    "garage": "Garagem",
+    "addVehicle": "Adicionar veículo",
+    "manageVehicles": "Gerir veículos",
+    "commuteSub": "Calcule o custo de um trajeto",
+    "expensesSub": "Seguro, impostos, portagens e mais",
+    "kmSub": "Evolução dos quilómetros",
+    "remindersSub": "Todos os prazos"
   }
 }
