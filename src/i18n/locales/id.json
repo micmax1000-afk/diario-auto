@@ -1020,7 +1020,8 @@
     "notificationsOff": "Nonaktif",
     "notificationsHintNative": "Pengingat 30 dan 7 hari sebelumnya serta pada hari jatuh tempo, pukul 9, meski aplikasi tertutup. Jatuh tempo berdasarkan km diperiksa saat aplikasi dibuka.",
     "notificationsHintWeb": "Dapatkan pengingat saat jatuh tempo sudah dekat atau terlewat (hanya saat aplikasi terbuka di browser).",
-    "openNotificationSettings": "Buka pengaturan notifikasi"
+    "openNotificationSettings": "Buka pengaturan notifikasi",
+    "terms": "Ketentuan penggunaan"
   },
   "passport": {
     "generate": "Paspor servis",
@@ -1081,10 +1082,11 @@
       "Jatuh tempo, pengingat, dan biaya hanyalah bantuan: tanggung jawab atas inspeksi, servis, asuransi, dan pajak tetap pada Anda.",
       "Aplikasi disediakan \"apa adanya\", tanpa jaminan. Sejauh diizinkan hukum, pembuat tidak bertanggung jawab atas kerusakan pada kendaraan, ponsel, atau kerugian lain akibat penggunaan. Hak hukum Anda sebagai konsumen tidak terpengaruh."
     ],
-    "check": "Saya telah membaca dan menyetujui peringatan",
+    "check": "Saya telah membaca dan menerima peringatan serta ketentuan penggunaan",
     "accept": "Setuju dan lanjutkan",
     "decline": "Tidak setuju, keluar",
-    "declineNote": "Anda harus menyetujui peringatan untuk memakai aplikasi."
+    "declineNote": "Anda harus menyetujui peringatan untuk memakai aplikasi.",
+    "readAlso": "Baca juga:"
   },
   "utilities": {
     "title": "Utilitas"

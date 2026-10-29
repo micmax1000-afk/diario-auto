@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { App as CapacitorApp } from "@capacitor/app";
 import { Capacitor } from "@capacitor/core";
 import { isRtlLanguage } from "../i18n";
+import { PRIVACY_URL, TERMS_URL } from "../utils/links";
 
 interface Props {
   onAccept: () => void;
@@ -36,6 +37,12 @@ export default function DisclaimerGate({ onAccept }: Props) {
         <ol className="disclaimer__list">
           {Array.isArray(points) && points.map((p, i) => <li key={i}>{p}</li>)}
         </ol>
+        <p className="disclaimer__docs">
+          {t("disclaimer.readAlso")}{" "}
+          <a href={TERMS_URL} target="_blank" rel="noopener noreferrer">{t("settingsScreen.terms")}</a>
+          {" · "}
+          <a href={PRIVACY_URL} target="_blank" rel="noopener noreferrer">{t("settingsScreen.privacy")}</a>
+        </p>
         <label className="disclaimer__check">
           <input type="checkbox" checked={checked} onChange={(e) => setChecked(e.target.checked)} />
           <span>{t("disclaimer.check")}</span>

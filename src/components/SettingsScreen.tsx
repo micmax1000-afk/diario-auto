@@ -8,6 +8,7 @@ import type { Theme } from "../utils/theme";
 import { SUPPORTED_LANGUAGES, changeLanguage } from "../i18n";
 import { isGoogleDriveConfigured } from "../services/googleDrive/config";
 import QuickEntryHeader from "./QuickEntryHeader";
+import { PRIVACY_URL, TERMS_URL } from "../utils/links";
 import {
   disableNotifications,
   enableNotificationsDetailed,
@@ -26,7 +27,6 @@ interface Props {
 
 type RowId = "language" | "units" | "theme" | "notifications" | null;
 
-const PRIVACY_URL = "https://micmax-apps.netlify.app/privacy-diario-auto.html";
 
 const ROW_ICONS: Record<string, string> = {
   language: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 0c2.5 2.7 4 6.2 4 10s-1.5 7.3-4 10m0-20c-2.5 2.7-4 6.2-4 10s1.5 7.3 4 10M2.5 9h19M2.5 15h19",
@@ -38,6 +38,7 @@ const ROW_ICONS: Record<string, string> = {
   route: "M4 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm16-16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6 18C6 12 10 12 12 9s4-3 4-3M8 20h8a2 2 0 0 0 2-2v-1",
   backup: "M12 4a5 5 0 0 0-4.9 4.02A4 4 0 0 0 6 16h11a4 4 0 0 0 1-7.87A5 5 0 0 0 12 4z",
   privacy: "M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6l7-3zm-3 9l2.2 2.2L15.5 10",
+  terms: "M7 3h7l4 4v14H7V3zm7 0v4h4M10 11h5M10 14h5M10 17h3",
   info: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v.01M11 11h1.5v6H11",
 };
 
@@ -227,6 +228,21 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
           <span className="settings-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={ROW_ICONS.privacy} /></svg></span>
           <span className="settings-row__text">
             <span className="settings-row__label">{t("settingsScreen.privacy")}</span>
+            <span className="settings-row__value">micmax-apps.netlify.app</span>
+          </span>
+          <span className="settings-row__chevron">↗</span>
+        </a>
+
+        <a
+          className="settings-row"
+          href={TERMS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ textDecoration: "none", color: "inherit" }}
+        >
+          <span className="settings-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={ROW_ICONS.terms} /></svg></span>
+          <span className="settings-row__text">
+            <span className="settings-row__label">{t("settingsScreen.terms")}</span>
             <span className="settings-row__value">micmax-apps.netlify.app</span>
           </span>
           <span className="settings-row__chevron">↗</span>

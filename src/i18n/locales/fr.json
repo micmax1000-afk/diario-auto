@@ -1023,7 +1023,8 @@
     "notificationsOff": "Désactivées",
     "notificationsHintNative": "Un rappel 30 et 7 jours avant et le jour de l'échéance, à 9 h, même app fermée. Les échéances au kilométrage sont vérifiées à l'ouverture de l'app.",
     "notificationsHintWeb": "Recevez un rappel quand une échéance approche ou est dépassée (uniquement avec l'app ouverte dans le navigateur).",
-    "openNotificationSettings": "Ouvrir les réglages des notifications"
+    "openNotificationSettings": "Ouvrir les réglages des notifications",
+    "terms": "Conditions d'utilisation"
   },
   "passport": {
     "generate": "Carnet d'entretien",
@@ -1084,10 +1085,11 @@
       "Échéances, rappels et coûts ne sont qu'une aide : la responsabilité du contrôle technique, de l'entretien, de l'assurance et des taxes reste la vôtre.",
       "L'app est fournie « telle quelle », sans garantie. Dans les limites permises par la loi, l'auteur n'est pas responsable des dommages au véhicule, au téléphone ou autres résultant de l'utilisation. Vos droits légaux de consommateur restent intacts."
     ],
-    "check": "J'ai lu et j'accepte les avertissements",
+    "check": "J'ai lu et j'accepte les avertissements et les conditions d'utilisation",
     "accept": "Accepter et continuer",
     "decline": "Refuser et quitter",
-    "declineNote": "Vous devez accepter les avertissements pour utiliser l'app."
+    "declineNote": "Vous devez accepter les avertissements pour utiliser l'app.",
+    "readAlso": "À lire aussi :"
   },
   "utilities": {
     "title": "Utilitaires"

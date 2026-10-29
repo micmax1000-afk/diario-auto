@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, CartesianGrid } from "recharts";
+import { BarChart, Bar, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
 import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
-import CategoryIcon from "./CategoryIcon";
 
 interface Props {
   fuelEntries: FuelEntry[];
@@ -156,38 +155,8 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
             tickFormatter={(v: number) => `${currencySymbol} ${v.toLocaleString(locale, { maximumFractionDigits: 0 })}`}
           />
           <Tooltip cursor={{ fill: "color-mix(in srgb, var(--text-muted) 12%, transparent)" }} content={() => null} />
-          <Legend
-            content={() => (
-              <div className="chart-legend">
-                {hasFuel && (
-                  <span className="chart-legend__item">
-                    <CategoryIcon kind="fuel" category="benzina" size="small" />
-                    {t("summary.chartFuel")}
-                  </span>
-                )}
-                {hasCharging && (
-                  <span className="chart-legend__item">
-                    <CategoryIcon kind="charging" category="" size="small" />
-                    {t("summary.charging")}
-                  </span>
-                )}
-                {hasMaintenance && (
-                  <span className="chart-legend__item">
-                    <CategoryIcon kind="maintenance" category="tagliando" size="small" />
-                    {t("summary.chartMaintenance")}
-                  </span>
-                )}
-                {hasExpenses && (
-                  <span className="chart-legend__item">
-                    <CategoryIcon kind="expense" category="altro" size="small" />
-                    {t("summary.chartExpenses")}
-                  </span>
-                )}
-              </div>
-            )}
-          />
           {series.map((serie) => (
-            <Bar key={serie.key} dataKey={serie.key} name={serie.name} stackId="costs" fill={serie.color} maxBarSize={28} stroke="var(--card)" strokeWidth={1}>
+            <Bar key={serie.key} dataKey={serie.key} name={serie.name} stackId="costs" fill={serie.color} maxBarSize={28}>
               {data.map((_, i) => (
                 <Cell key={i} fillOpacity={i === selected ? 1 : 0.55} />
               ))}
@@ -195,6 +164,15 @@ export default function CostChart({ fuelEntries, maintenanceEntries, expenseEntr
           ))}
         </BarChart>
       </ResponsiveContainer>
+      {/* Legenda fuori dal grafico: dentro rubava altezza e le barre restavano schiacciate. */}
+      <div className="chart-legend">
+        {series.map((serie) => (
+          <span key={serie.key} className="chart-legend__item">
+            <i className="chart-legend__swatch" style={{ background: serie.color }} aria-hidden="true" />
+            {serie.name}
+          </span>
+        ))}
+      </div>
 
       <div className="cost-detail" aria-live="polite">
         <strong>{row.monthLabel}</strong>
