@@ -43,7 +43,18 @@ export default function PremiumScreen({ onClose, onPurchaseToken }: Props) {
           </button>
         </div>
 
-        <div style={{ padding: "0 1.5rem 1.5rem" }}>
+        <div style={{ padding: "0 1.15rem 1.5rem" }}>
+          <ul className="premium-benefits">
+            {(["vehicles", "fleet", "passport", "csv", "drive"] as const).map((k) => (
+              <li key={k}>
+                <span className="premium-benefits__check" aria-hidden="true">✓</span>
+                <span>
+                  <b>{t(`premium.benefits.${k}Title`)}</b>
+                  <small>{t(`premium.benefits.${k}Body`)}</small>
+                </span>
+              </li>
+            ))}
+          </ul>
           {status === "checking" && <p className="empty-state__body">{t("premium.checking")}</p>}
 
           {status === "unavailable" && (

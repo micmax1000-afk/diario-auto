@@ -935,7 +935,19 @@
     "alreadyUnlockedBody": "Ya has comprado el desbloqueo para esta cuenta de Google Play. ¡Gracias por tu apoyo!",
     "topbarCta": "Pásate a Pro",
     "unavailableTitleNative": "Google Play no está disponible en este momento",
-    "unavailableBodyNative": "Comprueba que tienes conexión a Internet y que has iniciado sesión con una cuenta de Google en Play Store; después, vuelve a intentarlo. Si la aplicación aún no se ha publicado (ni siquiera en fase de pruebas internas), las compras no funcionarán hasta que se publique."
+    "unavailableBodyNative": "Comprueba que tienes conexión a Internet y que has iniciado sesión con una cuenta de Google en Play Store; después, vuelve a intentarlo. Si la aplicación aún no se ha publicado (ni siquiera en fase de pruebas internas), las compras no funcionarán hasta que se publique.",
+    "benefits": {
+      "vehiclesTitle": "Vehículos ilimitados",
+      "vehiclesBody": "La versión gratuita permite 2 vehículos activos.",
+      "fleetTitle": "Todos los vehículos juntos",
+      "fleetBody": "Compara gasto, coste por km y consumo de toda la familia.",
+      "passportTitle": "Pasaporte de mantenimiento",
+      "passportBody": "Un PDF con el historial de mantenimiento, útil al vender el coche.",
+      "csvTitle": "Exportación CSV",
+      "csvBody": "Repostajes, mantenimientos y gastos en una hoja de cálculo.",
+      "driveTitle": "Copia en Google Drive",
+      "driveBody": "Guarda tus datos en tu Drive, también automáticamente."
+    }
   },
   "bodyType": {
     "citycar": "Urbano",
@@ -1124,7 +1136,8 @@
     "last12": "Últimos 12 meses",
     "costPerKm": "Coste/km",
     "urgent": "Urgentes",
-    "hint": "Toca un vehículo para abrirlo."
+    "hint": "Toca un vehículo para abrirlo.",
+    "allVehicles": "Todos los vehículos"
   },
   "photoCrop": {
     "title": "Encuadra la foto",

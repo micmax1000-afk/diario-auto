@@ -935,7 +935,19 @@
     "alreadyUnlockedBody": "Du hast die Freischaltung für dieses Google Play-Konto bereits erworben. Vielen Dank für deine Unterstützung!",
     "topbarCta": "Upgrade auf Pro",
     "unavailableTitleNative": "Google Play ist derzeit nicht erreichbar",
-    "unavailableBodyNative": "Stelle sicher, dass du mit dem Internet verbunden bist und dich im Play Store mit einem Google-Konto angemeldet hast, und versuche es dann erneut. Wenn die App noch nicht veröffentlicht ist (auch nicht im internen Test), funktionieren die Käufe erst, sobald sie veröffentlicht ist."
+    "unavailableBodyNative": "Stelle sicher, dass du mit dem Internet verbunden bist und dich im Play Store mit einem Google-Konto angemeldet hast, und versuche es dann erneut. Wenn die App noch nicht veröffentlicht ist (auch nicht im internen Test), funktionieren die Käufe erst, sobald sie veröffentlicht ist.",
+    "benefits": {
+      "vehiclesTitle": "Unbegrenzte Fahrzeuge",
+      "vehiclesBody": "In der kostenlosen Version sind 2 aktive Fahrzeuge möglich.",
+      "fleetTitle": "Alle Fahrzeuge zusammen",
+      "fleetBody": "Vergleiche Ausgaben, Kosten pro km und Verbrauch der ganzen Familie.",
+      "passportTitle": "Wartungspass",
+      "passportBody": "Ein PDF mit der Wartungshistorie, praktisch beim Verkauf.",
+      "csvTitle": "CSV-Export",
+      "csvBody": "Tankvorgänge, Wartungen und Ausgaben in einer Tabelle.",
+      "driveTitle": "Google-Drive-Backup",
+      "driveBody": "Speichere deine Daten in deinem Drive, auch automatisch."
+    }
   },
   "bodyType": {
     "citycar": "Kleinstwagen",
@@ -1124,7 +1136,8 @@
     "last12": "Letzte 12 Monate",
     "costPerKm": "Kosten/km",
     "urgent": "Dringend",
-    "hint": "Fahrzeug antippen, um es zu öffnen."
+    "hint": "Fahrzeug antippen, um es zu öffnen.",
+    "allVehicles": "Alle Fahrzeuge"
   },
   "photoCrop": {
     "title": "Foto zuschneiden",

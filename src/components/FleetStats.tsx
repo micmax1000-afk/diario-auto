@@ -3,7 +3,7 @@ import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry,
 import { calculateConsumption, averageConsumption, calculateVehicleCosts, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import VehicleSwitcher from "./VehicleSwitcher";
+import CartoonCar from "./CartoonCar";
 import { reminderStatus } from "../utils/kmForecast";
 
 interface Props {
@@ -52,62 +52,59 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
   const grandTotal = rows.reduce((a, r) => a + r.total, 0);
   const maxTotal = Math.max(1, ...rows.map((r) => r.total));
   const money = (n: number) => formatMoney(n, 0);
-  const urgentCounts = Object.fromEntries(rows.map((r) => [r.vehicle.id, r.urgent]));
 
   return (
     <section className="fleet-stats">
-      <div className="section-head">
-        <h1>
-          {t("bottomNav.stats")} <span className="vswitch__pro">PRO</span>
+      <div className="screen-head">
+        <h1 className="screen-title">
+          {t("fleet.allVehicles")} <span className="vpick__pro">PRO</span>
         </h1>
       </div>
 
-      <VehicleSwitcher
-        vehicles={vehicles}
-        currentId={null}
-        colors={colors}
-        urgentCounts={urgentCounts}
-        onSelect={onOpenVehicle}
-        leading={{ label: t("fleet.all", "Tutti"), active: true, onClick: () => undefined }}
-      />
+      <section className="stotal">
+        <span className="stotal__label">{t("fleet.last12", "Spesa ultimi 12 mesi")}</span>
+        <div className="stotal__value">{money(grandTotal)}</div>
+      </section>
 
-      <div className="fleet-stats__head">
-        <span>{t("fleet.last12", "Spesa ultimi 12 mesi")}</span>
-        <strong>{money(grandTotal)}</strong>
+      <div className="fleet-list">
+        {rows.map((r) => (
+          <button
+            key={r.vehicle.id}
+            type="button"
+            className="fleet-card"
+            onClick={() => onOpenVehicle(r.vehicle.id)}
+          >
+            <span className="fleet-card__top">
+              <span className="fleet-card__thumb">
+                {r.vehicle.photo ? (
+                  <img src={r.vehicle.photo} alt="" />
+                ) : (
+                  <CartoonCar bodyType={r.vehicle.bodyType} color={colors[r.vehicle.id] ?? "#4f9dff"} />
+                )}
+              </span>
+              <span className="fleet-card__name">{r.vehicle.name}</span>
+              <b className="fleet-card__total">{money(r.total)}</b>
+            </span>
+            <span className="fleet-card__bar" aria-hidden="true">
+              <i style={{ width: `${Math.round((r.total / maxTotal) * 100)}%`, background: colors[r.vehicle.id] ?? "var(--amber)" }} />
+            </span>
+            <span className="fleet-card__grid">
+              <span>
+                <b>{r.costPerKm !== null ? formatMoney(r.costPerKm, 2) : "–"}</b>
+                {t("fleet.costPerKm", "costo/km")}
+              </span>
+              <span>
+                <b>{r.consumption !== null ? r.consumption.toLocaleString(locale, { maximumFractionDigits: 1 }) : "–"}</b>
+                {r.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")}
+              </span>
+              <span>
+                <b className={r.urgent > 0 ? "is-urgent" : "is-ok"}>{r.urgent}</b>
+                {t("fleet.urgent", "scadenze urgenti")}
+              </span>
+            </span>
+          </button>
+        ))}
       </div>
-
-      {rows.map((r) => (
-        <button
-          key={r.vehicle.id}
-          type="button"
-          className="fleet-stats__card"
-          style={{ ["--c" as string]: colors[r.vehicle.id] }}
-          onClick={() => onOpenVehicle(r.vehicle.id)}
-        >
-          <span className="fleet-stats__title">
-            <span className="vdot" />
-            {r.vehicle.name}
-            <b>{money(r.total)}</b>
-          </span>
-          <span className="fleet-stats__grid">
-            <span>
-              <b>{r.costPerKm !== null ? formatMoney(r.costPerKm, 2) : "–"}</b>
-              {t("fleet.costPerKm", "costo/km")}
-            </span>
-            <span>
-              <b>{r.consumption !== null ? r.consumption.toLocaleString(locale, { maximumFractionDigits: 1 }) : "–"}</b>
-              {r.electric ? "kWh/100km" : t("dashboardGarage.avgConsumptionUnit", "l/100km")}
-            </span>
-            <span>
-              <b className={r.urgent > 0 ? "is-urgent" : "is-ok"}>{r.urgent}</b>
-              {t("fleet.urgent", "scadenze urgenti")}
-            </span>
-          </span>
-          <span className="fleet-stats__bar">
-            <i style={{ width: `${Math.round((r.total / maxTotal) * 100)}%` }} />
-          </span>
-        </button>
-      ))}
       <p className="fleet-stats__hint">{t("fleet.hint", "Tocca un veicolo per vedere il suo dettaglio")}</p>
     </section>
   );

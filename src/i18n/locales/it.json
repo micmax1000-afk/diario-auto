@@ -935,7 +935,19 @@
     "alreadyUnlockedBody": "Hai già acquistato lo sblocco su questo account Google Play. Grazie per il supporto!",
     "topbarCta": "Passa a Pro",
     "unavailableTitleNative": "Google Play non raggiungibile al momento",
-    "unavailableBodyNative": "Verifica di essere connesso a internet e di aver eseguito l'accesso con un account Google nel Play Store, poi riprova. Se l'app non è ancora pubblicata (nemmeno in test interno), gli acquisti non funzionano finché non lo è."
+    "unavailableBodyNative": "Verifica di essere connesso a internet e di aver eseguito l'accesso con un account Google nel Play Store, poi riprova. Se l'app non è ancora pubblicata (nemmeno in test interno), gli acquisti non funzionano finché non lo è.",
+    "benefits": {
+      "vehiclesTitle": "Veicoli illimitati",
+      "vehiclesBody": "Nella versione gratuita puoi avere 2 veicoli attivi.",
+      "fleetTitle": "Tutti i veicoli insieme",
+      "fleetBody": "Confronta spesa, costo al km e consumi di tutta la famiglia.",
+      "passportTitle": "Passaporto tagliandi",
+      "passportBody": "Un PDF con lo storico della manutenzione, utile quando vendi l'auto.",
+      "csvTitle": "Esportazione CSV",
+      "csvBody": "Rifornimenti, manutenzioni e spese in un foglio di calcolo.",
+      "driveTitle": "Backup su Google Drive",
+      "driveBody": "Salva i dati sul tuo Drive, anche in automatico."
+    }
   },
   "bodyType": {
     "citycar": "City car",
@@ -1124,7 +1136,8 @@
     "last12": "Ultimi 12 mesi",
     "costPerKm": "Costo/km",
     "urgent": "Urgenti",
-    "hint": "Tocca un veicolo per aprirlo."
+    "hint": "Tocca un veicolo per aprirlo.",
+    "allVehicles": "Tutti i veicoli"
   },
   "photoCrop": {
     "title": "Inquadra la foto",
