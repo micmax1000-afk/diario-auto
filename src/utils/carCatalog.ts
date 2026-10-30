@@ -108,3 +108,15 @@ export const CAR_CATALOG: CarBrand[] = [
 
 export const OTHER_BRAND = "__altra_marca__";
 export const OTHER_MODEL = "__altro_modello__";
+
+/** Riconosce marca e modello dal nome già salvato (es. "Fiat 500L"), se sono nell'elenco. */
+export function guessBrandModel(name: string): { brand: string; model: string } {
+  const lower = name.trim().toLowerCase();
+  const brand = [...CAR_CATALOG]
+    .sort((a, b) => b.brand.length - a.brand.length)
+    .find((b) => lower === b.brand.toLowerCase() || lower.startsWith(b.brand.toLowerCase() + " "));
+  if (!brand) return { brand: "", model: "" };
+  const rest = lower.slice(brand.brand.length).trim();
+  const model = brand.models.find((m) => m.toLowerCase() === rest);
+  return { brand: brand.brand, model: model ?? "" };
+}

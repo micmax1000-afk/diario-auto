@@ -4,7 +4,7 @@ import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, FuelType, BodyType } from "../types";
 import { generateId } from "../utils/storage";
-import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL } from "../utils/carCatalog";
+import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL, guessBrandModel } from "../utils/carCatalog";
 import { getNumberLocale } from "../utils/locale";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import PhotoPicker from "./PhotoPicker";
@@ -20,18 +20,6 @@ interface Props {
   onSave: (vehicle: Vehicle) => void;
   onClose: () => void;
   onArchive?: (id: string) => void;
-}
-
-/** Riconosce marca e modello dal nome già salvato (es. "Fiat 500L"), se sono nell'elenco. */
-function guessBrandModel(name: string): { brand: string; model: string } {
-  const lower = name.trim().toLowerCase();
-  const brand = [...CAR_CATALOG]
-    .sort((a, b) => b.brand.length - a.brand.length)
-    .find((b) => lower === b.brand.toLowerCase() || lower.startsWith(b.brand.toLowerCase() + " "));
-  if (!brand) return { brand: "", model: "" };
-  const rest = lower.slice(brand.brand.length).trim();
-  const model = brand.models.find((m) => m.toLowerCase() === rest);
-  return { brand: brand.brand, model: model ?? "" };
 }
 
 export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose, onArchive }: Props) {

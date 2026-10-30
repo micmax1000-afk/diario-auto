@@ -990,6 +990,7 @@ export default function App() {
               initialTab={detailInitialTab}
               restrictToTab={detailInitialTab}
               autoOpenForm={detailAutoOpen}
+              onAutoOpenHandled={() => setDetailAutoOpen(undefined)}
               onBack={handleBackFromDetail}
               onSaveFuel={handleSaveFuel}
               onDeleteFuel={handleDeleteFuel}

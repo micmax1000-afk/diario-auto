@@ -60,7 +60,7 @@ export default function VehicleHeader({ vehicle, vehicles = [], colors = {}, urg
             <Thumb vehicle={vehicle} color={colors[vehicle.id] ?? "#4f9dff"} />
           </span>
           <span className="vhead__text">
-            {onBack ? <h1 className="vhead__name">{vehicle.name}</h1> : <span className="vhead__name">{vehicle.name}</span>}
+            <span className="vhead__name">{vehicle.name}</span>
             <span className="vhead__sub">{sub(vehicle)}</span>
           </span>
           {urgent > 0 && <span className="vhead__badge">{urgent > 9 ? "9+" : urgent}</span>}

@@ -12,6 +12,10 @@ describe("isValidBackupData", () => {
     expect(isValidBackupData({ ...minimal, vehicles: [{ id: "v1", name: "Auto", currentKm: 1000 }] })).toBe(true);
   });
 
+  it("accetta i veicoli con le carrozzerie nuove (es. cabrio)", () => {
+    expect(isValidBackupData({ ...minimal, vehicles: [{ id: "v1", name: "Spider", currentKm: 1000, bodyType: "convertible", color: "#f06292" }] })).toBe(true);
+  });
+
   it("rifiuta file che non sono backup di Diario Auto", () => {
     expect(isValidBackupData(null)).toBe(false);
     expect(isValidBackupData("testo")).toBe(false);

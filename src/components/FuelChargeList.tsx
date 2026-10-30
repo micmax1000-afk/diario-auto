@@ -80,11 +80,14 @@ export default function FuelChargeList({
   const periodCharging = periodFilteredRows.filter((r) => r.kind === "charge").map((r) => r.entry as ChargingEntry);
   const avgElectric = periodFuel.length === 0 ? averageElectricConsumption(calculateElectricConsumption(periodCharging)) : null;
   // Prezzo medio al litro (o al kWh se ci sono solo ricariche).
-  const fuelQty = periodFuel.reduce((sum, e) => sum + e.liters, 0);
+  // Per GPL e metano conta solo quel carburante (la benzina di riserva ha un altro prezzo).
+  const mainSource = mainFuelSource(vehicleFuelType);
+  const priceFuel = mainSource && periodFuel.some((e) => e.source === mainSource) ? periodFuel.filter((e) => e.source === mainSource) : periodFuel;
+  const fuelQty = priceFuel.reduce((sum, e) => sum + e.liters, 0);
   const chargeQty = periodCharging.reduce((sum, e) => sum + e.kWh, 0);
   const avgPrice =
     periodFuel.length > 0
-      ? fuelQty > 0 ? `${formatMoney(periodFuel.reduce((sum, e) => sum + e.totalCost, 0) / fuelQty, 3)}/l` : null
+      ? fuelQty > 0 ? `${formatMoney(priceFuel.reduce((sum, e) => sum + e.totalCost, 0) / fuelQty, 3)}/l` : null
       : chargeQty > 0 ? `${formatMoney(periodCharging.reduce((sum, e) => sum + e.totalCost, 0) / chargeQty, 2)}/kWh` : null;
   const allKm = periodFilteredRows.map((r) => r.entry.km);
   const totalDistance = allKm.length > 1 ? Math.max(...allKm) - Math.min(...allKm) : 0;

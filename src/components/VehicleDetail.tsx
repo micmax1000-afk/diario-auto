@@ -60,6 +60,7 @@ interface Props {
   initialTab?: DetailTab;
   /** Apre subito il modulo per aggiungere una voce (dal tasto + della barra in basso). */
   autoOpenForm?: "maintenance" | "expense" | "reminder";
+  onAutoOpenHandled?: () => void;
   onBack: () => void;
   onSaveFuel: (entry: FuelEntry) => void;
   onDeleteFuel: (id: string) => void;
@@ -127,6 +128,7 @@ export default function VehicleDetail({
   reminders,
   initialTab,
   autoOpenForm,
+  onAutoOpenHandled,
   onBack,
   onSaveFuel,
   onDeleteFuel,
@@ -176,10 +178,14 @@ export default function VehicleDetail({
   const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceEntry | null>(null);
   const [editingExpense, setEditingExpense] = useState<ExpenseEntry | null>(null);
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
+  // Modulo aperto dal tasto +: lo apre una volta e lo segnala, così la stessa richiesta può ripetersi.
   useEffect(() => {
+    if (!autoOpenForm) return;
     if (autoOpenForm === "maintenance") setShowMaintenanceForm(true);
     else if (autoOpenForm === "expense") setShowExpenseForm(true);
     else if (autoOpenForm === "reminder") setShowReminderForm(true);
+    onAutoOpenHandled?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoOpenForm]);
   // Dopo "Fatto" su una scadenza del catalogo: modulo manutenzione o spesa già compilato.
   const [doneFollowUp, setDoneFollowUp] = useState<
