@@ -1281,5 +1281,35 @@
     "choose": "Choose vehicle",
     "toDo": "to do: {{count}}",
     "fleetSub": "Costs of all vehicles together"
+  },
+  "obdAdapters": {
+    "title": "Recommended adapters",
+    "lead": "Diario Auto reads your car's data with a Bluetooth OBD2 adapter that plugs into the socket under the steering wheel.",
+    "lookFor": "What to look for",
+    "okClassic": "Classic Bluetooth: the description says \"Bluetooth 3.0\", \"Classic\" or \"Android\"",
+    "okChip": "ELM327 chip or compatible, ideally a known brand",
+    "noBle": "Bluetooth 4.0 (BLE) only or Wi‑Fi: they don't work with this app",
+    "okBleWeb": "Bluetooth Low Energy (BLE), for the web version of the app",
+    "noClones": "No-name clones for a few euros marked \"v2.1\": they often freeze",
+    "models": "Models that work",
+    "howTo": "How to connect it",
+    "step3": "Go back to Diario Auto, open OBD and tap \"Connect adapter\".",
+    "note": "No adapter is guaranteed to work with every car. The app only reads data and changes nothing in the ECU.",
+    "inviteTitle": "Don't have an adapter yet?",
+    "inviteSub": "Which ones work and which to avoid",
+    "menuTitle": "OBD adapters",
+    "menuSub": "Which ones work with the app",
+    "tag": {
+      "best": "Most reliable",
+      "balanced": "Good balance",
+      "high": "high end",
+      "mid": "mid range",
+      "cheap": "budget"
+    },
+    "model": {
+      "lx": "Fast and stable, works with almost every car. It switches off on its own, so it can stay plugged in.",
+      "icar": "Compact and reliable. Get the Bluetooth 3.0 version, not the BLE 4.0 one.",
+      "veepeak": "For a small budget: simple, for Android. Best unplugged after use."
+    }
   }
 }

@@ -1278,5 +1278,35 @@
     "choose": "Pilih kendaraan",
     "toDo": "perlu dikerjakan: {{count}}",
     "fleetSub": "Biaya semua kendaraan sekaligus"
+  },
+  "obdAdapters": {
+    "title": "Adaptor yang disarankan",
+    "lead": "Diario Auto membaca data mobil dengan adaptor OBD2 Bluetooth yang dipasang di soket di bawah setir.",
+    "lookFor": "Yang perlu dicari",
+    "okClassic": "Bluetooth klasik: di deskripsi tertulis \"Bluetooth 3.0\", \"Classic\" atau \"Android\"",
+    "okChip": "Chip ELM327 atau kompatibel, sebaiknya bermerek",
+    "noBle": "Hanya Bluetooth 4.0 (BLE) atau Wi‑Fi: tidak berfungsi dengan aplikasi ini",
+    "okBleWeb": "Bluetooth Low Energy (BLE), untuk versi web aplikasi",
+    "noClones": "Klon tanpa merek yang sangat murah bertulisan \"v2.1\": sering macet",
+    "models": "Model yang berfungsi",
+    "howTo": "Cara menghubungkan",
+    "step3": "Kembali ke Diario Auto, buka OBD lalu ketuk \"Hubungkan adaptor\".",
+    "note": "Tidak ada adaptor yang dijamin cocok untuk semua mobil. Aplikasi hanya membaca data dan tidak mengubah apa pun di ECU.",
+    "inviteTitle": "Belum punya adaptor?",
+    "inviteSub": "Mana yang berfungsi dan mana yang dihindari",
+    "menuTitle": "Adaptor OBD",
+    "menuSub": "Yang berfungsi dengan aplikasi",
+    "tag": {
+      "best": "Paling andal",
+      "balanced": "Seimbang",
+      "high": "kelas atas",
+      "mid": "kelas menengah",
+      "cheap": "murah"
+    },
+    "model": {
+      "lx": "Cepat dan stabil, cocok untuk hampir semua mobil. Mati sendiri, jadi bisa tetap terpasang.",
+      "icar": "Ringkas dan andal. Pilih versi Bluetooth 3.0, bukan BLE 4.0.",
+      "veepeak": "Untuk anggaran kecil: sederhana, untuk Android. Sebaiknya dicabut setelah dipakai."
+    }
   }
 }

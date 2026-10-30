@@ -29,6 +29,8 @@ interface Props {
   vehicle: Vehicle;
   /** Chiamata quando l'utente conferma di aggiornare i km del diario con quelli letti dall'auto. */
   onOdometerKm?: (km: number) => void;
+  /** Apre la pagina "Adattatori consigliati". */
+  onOpenAdapters?: () => void;
 }
 
 const GAUGE_KEYS: (keyof LiveReading)[] = [
@@ -100,7 +102,7 @@ const LIVE_TABS: LiveTab[] = ["live", "diagnosis", "tools"];
 const DTC_MODES: DtcMode[] = ["03", "07", "0A"];
 const DTC_MODE_I18N_KEYS: Record<DtcMode, string> = { "03": "live.dtcModes.stored", "07": "live.dtcModes.pending", "0A": "live.dtcModes.permanent" };
 
-export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
+export default function LiveDataPanel({ vehicle, onOdometerKm, onOpenAdapters }: Props) {
   const { t, i18n } = useTranslation();
   const { temperatureUnit, formatTemperature, distanceUnit } = useAppSettings();
   const connRef = useRef<ObdConnection | null>(null);
@@ -640,6 +642,20 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
     );
   }
 
+  const adaptersInvite = onOpenAdapters ? (
+    <button type="button" className="adapters-invite" onClick={onOpenAdapters}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" aria-hidden="true">
+        <path d="M3 7.5h18l-1.8 8.6a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6L3 7.5z" />
+        <path d="M7.5 11h.01M10.5 11h.01M13.5 11h.01M16.5 11h.01M9 14.3h.01M12 14.3h.01M15 14.3h.01" strokeWidth="2.6" strokeLinecap="round" />
+      </svg>
+      <span>
+        <b>{t("obdAdapters.inviteTitle")}</b>
+        <small>{t("obdAdapters.inviteSub")}</small>
+      </span>
+      <span className="adapters-invite__go" aria-hidden="true">›</span>
+    </button>
+  ) : null;
+
   if (!supported && !nativeSupported && !(connRef.current?.isDemo && status !== "disconnected")) {
     return (
       <>
@@ -650,6 +666,7 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
             {t("live.demo.start")}
           </button>
         </div>
+        {adaptersInvite}
         {renderDtcHistory()}
       </>
     );
@@ -1091,12 +1108,21 @@ export default function LiveDataPanel({ vehicle, onOdometerKm }: Props) {
       )}
 
       {status === "disconnected" && <p className="obd-hint">{t("live.disconnectedHint")}</p>}
+      {(status === "disconnected" || status === "error") && adaptersInvite}
 
       {showRequirementNotice && (
         <ObdRequirementNotice
           onContinue={handleNoticeContinue}
           onClose={() => setShowRequirementNotice(false)}
           isNative={nativeSupported}
+          onOpenAdapters={
+            onOpenAdapters
+              ? () => {
+                  setShowRequirementNotice(false);
+                  onOpenAdapters();
+                }
+              : undefined
+          }
         />
       )}
 
