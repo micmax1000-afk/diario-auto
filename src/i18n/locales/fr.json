@@ -1281,5 +1281,35 @@
     "choose": "Choisir le véhicule",
     "toDo": "à faire : {{count}}",
     "fleetSub": "Coûts de tous les véhicules ensemble"
+  },
+  "obdAdapters": {
+    "title": "Adaptateurs conseillés",
+    "lead": "Diario Auto lit les données de la voiture avec un adaptateur OBD2 Bluetooth branché dans la prise sous le volant.",
+    "lookFor": "Ce qu'il faut chercher",
+    "okClassic": "Bluetooth classique : dans la description « Bluetooth 3.0 », « Classic » ou « Android »",
+    "okChip": "Puce ELM327 ou compatible, de préférence de marque",
+    "noBle": "Bluetooth 4.0 (BLE) seul ou Wi‑Fi : ne fonctionnent pas avec cette app",
+    "okBleWeb": "Bluetooth Low Energy (BLE), pour la version web de l'app",
+    "noClones": "Clones sans marque à quelques euros marqués « v2.1 » : ils se bloquent souvent",
+    "models": "Modèles qui fonctionnent",
+    "howTo": "Comment le connecter",
+    "step3": "Revenez dans Diario Auto, ouvrez OBD et touchez « Connecter l'adaptateur ».",
+    "note": "Aucun adaptateur n'est garanti compatible avec toutes les voitures. L'app lit seulement les données et ne modifie rien dans le calculateur.",
+    "inviteTitle": "Pas encore d'adaptateur ?",
+    "inviteSub": "Lesquels fonctionnent et lesquels éviter",
+    "menuTitle": "Adaptateurs OBD",
+    "menuSub": "Lesquels fonctionnent avec l'app",
+    "tag": {
+      "best": "Le plus fiable",
+      "balanced": "Bon compromis",
+      "high": "haut de gamme",
+      "mid": "milieu de gamme",
+      "cheap": "économique"
+    },
+    "model": {
+      "lx": "Rapide et stable, convient à presque toutes les voitures. Il s'éteint tout seul, il peut donc rester branché.",
+      "icar": "Compact et fiable. Prenez la version Bluetooth 3.0, pas la BLE 4.0.",
+      "veepeak": "Pour un petit budget : simple, pour Android. Mieux vaut le débrancher après usage."
+    }
   }
 }

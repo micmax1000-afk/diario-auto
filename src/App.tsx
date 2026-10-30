@@ -44,6 +44,7 @@ import VehicleCard from "./components/VehicleCard";
 import VehicleForm from "./components/VehicleForm";
 import Dashboard, { type ActivityKind } from "./components/Dashboard";
 import QuickEntryHeader from "./components/QuickEntryHeader";
+import ObdAdapters from "./components/ObdAdapters";
 import AddSheet, { type AddAction } from "./components/AddSheet";
 import MenuSections from "./components/MenuSections";
 import BottomTabBar, { type TabId } from "./components/BottomTabBar";
@@ -130,6 +131,7 @@ export default function App() {
   const [editingVehicle, setEditingVehicle] = useState<Vehicle | null>(null);
   const [showNewVehicleForm, setShowNewVehicleForm] = useState(false);
   const [showPremium, setShowPremium] = useState(false);
+  const [showAdapters, setShowAdapters] = useState(false);
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
   const { isPro, refresh: refreshProStatus } = useProStatus();
   // Backup automatico su Drive bloccato per sicurezza (molti meno dati dell'ultimo backup).
@@ -176,6 +178,7 @@ export default function App() {
   useBackButtonClose(showManageVehicles, () => setShowManageVehicles(false));
   useBackButtonClose(showBackup, () => { setShowBackup(false); setMainTab("impostazioni"); });
   useBackButtonClose(showPremium, () => setShowPremium(false));
+  useBackButtonClose(showAdapters, () => setShowAdapters(false));
   useBackButtonClose(showFleet, () => setShowFleet(false));
   useBackButtonClose(quickKmVehicle !== null, () => setQuickKmVehicle(null));
   useBackButtonClose(kmHistoryVehicleId !== null, () => setKmHistoryVehicleId(null));
@@ -927,6 +930,7 @@ export default function App() {
                   onOpenKmHistory={() => {
                     if (currentVehicle) setKmHistoryVehicleId(currentVehicle.id);
                   }}
+                  onOpenAdapters={() => setShowAdapters(true)}
                 />
               }
             />
@@ -991,6 +995,7 @@ export default function App() {
               restrictToTab={detailInitialTab}
               autoOpenForm={detailAutoOpen}
               onAutoOpenHandled={() => setDetailAutoOpen(undefined)}
+              onOpenAdapters={() => setShowAdapters(true)}
               onBack={handleBackFromDetail}
               onSaveFuel={handleSaveFuel}
               onDeleteFuel={handleDeleteFuel}
@@ -1099,6 +1104,8 @@ export default function App() {
           onClose={() => setPendingVehicleAction(null)}
         />
       )}
+
+      {showAdapters && <ObdAdapters onBack={() => setShowAdapters(false)} />}
 
       {kmHistoryVehicleId &&
         (() => {

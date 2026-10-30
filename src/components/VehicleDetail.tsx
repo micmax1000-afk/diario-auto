@@ -61,6 +61,7 @@ interface Props {
   /** Apre subito il modulo per aggiungere una voce (dal tasto + della barra in basso). */
   autoOpenForm?: "maintenance" | "expense" | "reminder";
   onAutoOpenHandled?: () => void;
+  onOpenAdapters?: () => void;
   onBack: () => void;
   onSaveFuel: (entry: FuelEntry) => void;
   onDeleteFuel: (id: string) => void;
@@ -129,6 +130,7 @@ export default function VehicleDetail({
   initialTab,
   autoOpenForm,
   onAutoOpenHandled,
+  onOpenAdapters,
   onBack,
   onSaveFuel,
   onDeleteFuel,
@@ -405,7 +407,7 @@ export default function VehicleDetail({
             <div className="screen-head">
               <h2 className="screen-title">{t("bottomNav.obd")}</h2>
             </div>
-            <LiveDataPanel vehicle={vehicle} onOdometerKm={onOdometerKm} />
+            <LiveDataPanel vehicle={vehicle} onOdometerKm={onOdometerKm} onOpenAdapters={onOpenAdapters} />
           </>
         )}
 

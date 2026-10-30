@@ -5,9 +5,10 @@ interface Props {
   onContinue: (dontShowAgain: boolean) => void;
   onClose: () => void;
   isNative?: boolean;
+  onOpenAdapters?: () => void;
 }
 
-export default function ObdRequirementNotice({ onContinue, onClose, isNative = false }: Props) {
+export default function ObdRequirementNotice({ onContinue, onClose, isNative = false, onOpenAdapters }: Props) {
   const { t } = useTranslation();
   const [dontShowAgain, setDontShowAgain] = useState(false);
 
@@ -49,6 +50,12 @@ export default function ObdRequirementNotice({ onContinue, onClose, isNative = f
               <p className="obd-hint">{t("obdNotice.bleOnlyHint")}</p>
               <p className="obd-notice__note">{t("obdNotice.notGuaranteed")}</p>
             </>
+          )}
+
+          {onOpenAdapters && (
+            <button type="button" className="obd-notice__adapters" onClick={onOpenAdapters}>
+              {t("obdAdapters.inviteTitle")} ›
+            </button>
           )}
 
           <label className="obd-notice__checkbox">
