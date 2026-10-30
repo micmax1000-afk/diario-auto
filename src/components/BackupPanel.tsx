@@ -53,6 +53,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [csvNote, setCsvNote] = useState<{ text: string; error: boolean } | null>(null);
   const [lastBackup, setLastBackup] = useState<string | null>(null);
   const [storageUsedKb, setStorageUsedKb] = useState<number | null>(null);
   const [driveBusy, setDriveBusy] = useState(false);
@@ -102,65 +103,31 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     setError(null);
   }
 
-  async function handleExportFuelCsv() {
+  // L'esito dei CSV si mostra sotto i loro pulsanti: in cima alla pagina non si vedrebbe.
+  async function exportCsv(count: number, emptyKey: string, build: () => string, name: string, okKey: string) {
     if (!isPro) {
       setShowPremium(true);
       return;
     }
-    if (fuelEntries.length === 0) {
-      setError(t("backupPanel.noFuelToExport"));
+    if (count === 0) {
+      setCsvNote({ text: t(emptyKey), error: true });
       return;
     }
-    const csv = fuelEntriesToCsv(fuelEntries, vehicles);
     try {
-      await exportTextFile(`rifornimenti-${localDateString()}.csv`, csv, "text/csv");
+      await exportTextFile(`${name}-${localDateString()}.csv`, build(), "text/csv");
     } catch {
-      setError(t("backupPanel.exportFailed"));
+      setCsvNote({ text: t("backupPanel.exportFailed"), error: true });
       return;
     }
-    setMessage(t("backupPanel.fuelExportedOk"));
-    setError(null);
+    setCsvNote({ text: t(okKey), error: false });
   }
 
-  async function handleExportMaintenanceCsv() {
-    if (!isPro) {
-      setShowPremium(true);
-      return;
-    }
-    if (maintenanceEntries.length === 0) {
-      setError(t("backupPanel.noMaintenanceToExport"));
-      return;
-    }
-    const csv = maintenanceEntriesToCsv(maintenanceEntries, vehicles);
-    try {
-      await exportTextFile(`manutenzioni-${localDateString()}.csv`, csv, "text/csv");
-    } catch {
-      setError(t("backupPanel.exportFailed"));
-      return;
-    }
-    setMessage(t("backupPanel.maintenanceExportedOk"));
-    setError(null);
-  }
-
-  async function handleExportExpensesCsv() {
-    if (!isPro) {
-      setShowPremium(true);
-      return;
-    }
-    if (expenseEntries.length === 0) {
-      setError(t("backupPanel.noExpensesToExport"));
-      return;
-    }
-    const csv = expenseEntriesToCsv(expenseEntries, vehicles);
-    try {
-      await exportTextFile(`spese-${localDateString()}.csv`, csv, "text/csv");
-    } catch {
-      setError(t("backupPanel.exportFailed"));
-      return;
-    }
-    setMessage(t("backupPanel.expensesExportedOk"));
-    setError(null);
-  }
+  const handleExportFuelCsv = () =>
+    exportCsv(fuelEntries.length, "backupPanel.noFuelToExport", () => fuelEntriesToCsv(fuelEntries, vehicles), "rifornimenti", "backupPanel.fuelExportedOk");
+  const handleExportMaintenanceCsv = () =>
+    exportCsv(maintenanceEntries.length, "backupPanel.noMaintenanceToExport", () => maintenanceEntriesToCsv(maintenanceEntries, vehicles), "manutenzioni", "backupPanel.maintenanceExportedOk");
+  const handleExportExpensesCsv = () =>
+    exportCsv(expenseEntries.length, "backupPanel.noExpensesToExport", () => expenseEntriesToCsv(expenseEntries, vehicles), "spese", "backupPanel.expensesExportedOk");
 
   function handleImportClick() {
     fileInputRef.current?.click();
@@ -361,6 +328,9 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
             {t("backupPanel.expensesCsv")}
           </button>
         </div>
+        {csvNote && (
+          <p role="status" className={`backup-panel__message backup-panel__message--${csvNote.error ? "error" : "ok"}`}>{csvNote.text}</p>
+        )}
       </div>
 
       {vehicles.some((v) => !v.archived) && (
