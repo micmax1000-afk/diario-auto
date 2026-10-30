@@ -20,10 +20,17 @@ interface Props {
 }
 
 const ICONS = {
-  route: "M4 20a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm16-16a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM6 18C6 12 10 12 12 9s4-3 4-3M8 20h8a2 2 0 0 0 2-2v-1",
-  wallet: "M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7zM3 10h18M15 14h3",
-  chart: "M4 20V10M11 20V4M18 20v-7",
-  calendar: "M7 3v3M17 3v3M4 8h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z",
+  // percorso: partenza, strada tratteggiata, bandierina d'arrivo
+  route: (
+    <>
+      <circle cx="4.6" cy="19" r="2.6" />
+      <path d="M7.4 18.3c3.6-.5 5-2.6 5-4.9 0-2.4 2.3-3.6 5.9-3.6" strokeDasharray="2.4 2.6" />
+      <path d="M19.6 11V2.4l3.6 1.8-3.6 1.8" />
+    </>
+  ),
+  wallet: <path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7zM3 10h18M15 14h3" />,
+  chart: <path d="M4 20V10M11 20V4M18 20v-7" />,
+  calendar: <path d="M7 3v3M17 3v3M4 8h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1z" />,
 };
 
 /** Garage e Utilità in cima al Menu che si apre dall'ingranaggio della Home. */
@@ -45,7 +52,7 @@ export default function MenuSections({
   const row = (icon: keyof typeof ICONS, label: string, sub: string, onClick: () => void) => (
     <button type="button" className="settings-row" onClick={onClick}>
       <span className="settings-row__icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={ICONS[icon]} /></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">{ICONS[icon]}</svg>
       </span>
       <span className="settings-row__text">
         <span className="settings-row__label">{label}</span>
