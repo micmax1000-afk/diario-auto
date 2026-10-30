@@ -243,6 +243,8 @@ export interface BackupData {
   commuteSettings?: CommuteSettings[];
   commuteScenarios?: CommuteScenario[];
   homeChargingDefaults?: HomeChargingDefaults[];
+  /** Installata prima che il Pro fosse a pagamento: resta sbloccato anche su un telefono nuovo. */
+  earlyUser?: boolean;
 }
 
 export async function buildBackup(): Promise<BackupData> {
@@ -271,6 +273,7 @@ export async function buildBackup(): Promise<BackupData> {
     loadCommuteScenarios(),
     getAllValues<HomeChargingDefaults>("homeChargingDefaults"),
   ]);
+  const earlyUser = (await getMeta("early-user")) === "1";
 
   return {
     version: 2,
@@ -286,6 +289,7 @@ export async function buildBackup(): Promise<BackupData> {
     commuteSettings,
     commuteScenarios,
     homeChargingDefaults,
+    ...(earlyUser ? { earlyUser: true } : {}),
   };
 }
 
@@ -324,6 +328,7 @@ export async function restoreBackup(data: BackupData): Promise<void> {
   await replaceAllByVehicleKey("commuteSettings", data.commuteSettings ?? []);
   await replaceAllByVehicleKey("homeChargingDefaults", data.homeChargingDefaults ?? []);
   await replaceAll("commuteScenarios", data.commuteScenarios ?? []);
+  if (data.earlyUser) await setMeta("early-user", "1");
 }
 
 export async function getLastBackupDate(): Promise<string | null> {

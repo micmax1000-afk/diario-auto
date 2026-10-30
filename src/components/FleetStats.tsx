@@ -4,6 +4,7 @@ import { calculateConsumption, averageConsumption, calculateVehicleCosts, calcul
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import CartoonCar from "./CartoonCar";
+import { PRO_ENABLED } from "../services/billing/useProStatus";
 import { reminderStatus } from "../utils/kmForecast";
 
 interface Props {
@@ -57,7 +58,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
     <section className="fleet-stats">
       <div className="screen-head">
         <h1 className="screen-title">
-          {t("fleet.allVehicles")} <span className="vpick__pro">PRO</span>
+          {t("fleet.allVehicles")} {PRO_ENABLED && <span className="vpick__pro">PRO</span>}
         </h1>
       </div>
 
