@@ -141,4 +141,11 @@ describe("fixedCostsPerYear", () => {
   it("niente spese, o solo multe: nessun costo", () => {
     expect(fixedCostsPerYear([], [e("2026-06-01", 80, "multa")], now)).toEqual({ perYear: 0, basis: "none" });
   });
+
+  it("conta anche le spese di oggi salvate a mezzogiorno, non quelle future", () => {
+    const morning = new Date(2026, 9, 30, 9).getTime();
+    const noon = new Date(2026, 9, 30, 12).toISOString();
+    const tomorrow = new Date(2026, 9, 31, 12).toISOString();
+    expect(fixedCostsPerYear([m(noon, 300), m(tomorrow, 500)], [], morning)).toEqual({ perYear: 300, basis: "lastYear" });
+  });
 });

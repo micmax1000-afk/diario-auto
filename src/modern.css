@@ -1245,7 +1245,9 @@ body {
 }
 .modal form .modal__actions .btn { flex: 1; justify-content: center; }
 .modal form .modal__actions .btn--primary { flex: 2; }
-.modal form .modal__actions .modal__delete { flex: 0 0 auto; margin-inline-end: auto; }
+/* Con "Elimina" tre bottoni non entrano: Annulla e Salva in alto, Elimina sotto a tutta larghezza. */
+.modal form .modal__actions:has(.modal__delete) { flex-wrap: wrap; row-gap: 0.45rem; }
+.modal form .modal__actions .modal__delete { order: 1; flex: 1 0 100%; margin: 0; min-height: 2.4rem; }
 .form-error { border-radius: 12px; }
 
 .modal > .modal__actions,

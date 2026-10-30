@@ -161,10 +161,13 @@ export function fixedCostsPerYear(
   now = Date.now(),
 ): FixedCosts {
   const year = 365 * 24 * 60 * 60 * 1000;
+  // Le date si salvano a mezzogiorno: conta tutto fino alla fine di oggi.
+  const endOfToday = new Date(now);
+  endOfToday.setHours(23, 59, 59, 999);
   const items = [
     ...maintenance.map((e) => ({ t: new Date(e.date).getTime(), amount: e.cost || 0 })),
     ...expenses.filter((e) => e.category !== "multa").map((e) => ({ t: new Date(e.date).getTime(), amount: e.amount || 0 })),
-  ].filter((i) => i.amount > 0 && !Number.isNaN(i.t) && i.t <= now);
+  ].filter((i) => i.amount > 0 && !Number.isNaN(i.t) && i.t <= endOfToday.getTime());
 
   const lastYear = items.filter((i) => i.t >= now - year).reduce((sum, i) => sum + i.amount, 0);
   if (lastYear > 0) return { perYear: lastYear, basis: "lastYear" };
