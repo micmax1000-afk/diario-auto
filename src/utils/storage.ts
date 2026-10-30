@@ -368,7 +368,7 @@ export function fuelEntriesToCsv(entries: FuelEntry[], vehicles: Vehicle[]): str
       vehicleName,
       e.km,
       e.liters,
-      e.totalCost.toFixed(2),
+      (Number(e.totalCost) || 0).toFixed(2),
       e.source,
       e.fullTank ? "Sì" : "No",
       e.notes ?? "",
@@ -398,7 +398,7 @@ export function maintenanceEntriesToCsv(entries: MaintenanceEntry[], vehicles: V
       e.km,
       e.category,
       e.description,
-      e.cost.toFixed(2),
+      (Number(e.cost) || 0).toFixed(2),
       e.partsCost !== undefined ? e.partsCost.toFixed(2) : "",
       e.laborCost !== undefined ? e.laborCost.toFixed(2) : "",
       e.workshop ?? "",
@@ -412,7 +412,7 @@ export function expenseEntriesToCsv(entries: ExpenseEntry[], vehicles: Vehicle[]
   const header = toCsvRow(["Data", "Veicolo", "Categoria", "Descrizione", "Importo (EUR)", "Note"]);
   const rows = entries.map((e) => {
     const vehicleName = vehicles.find((v) => v.id === e.vehicleId)?.name ?? "";
-    return toCsvRow([isoToLocalDate(e.date), vehicleName, e.category, e.description, e.amount.toFixed(2), e.notes ?? ""]);
+    return toCsvRow([isoToLocalDate(e.date), vehicleName, e.category, e.description, (Number(e.amount) || 0).toFixed(2), e.notes ?? ""]);
   });
   return [header, ...rows].join("\n");
 }
