@@ -8,7 +8,27 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
+      # Lo spazio per gli artifact è limitato: si tengono solo quelli delle
+      # ultime 3 build, gli altri si cancellano prima di caricare i nuovi.
+      - name: Cancella gli artifact vecchi
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo, {
+              owner: context.repo.owner, repo: context.repo.repo, per_page: 100,
+            });
+            const runs = [...new Set(artifacts.map((a) => a.workflow_run?.id).filter(Boolean))].sort((a, b) => b - a);
+            const keep = new Set(runs.slice(0, 3));
+            for (const a of artifacts) {
+              if (a.expired || keep.has(a.workflow_run?.id)) continue;
+              await github.rest.actions.deleteArtifact({ owner: context.repo.owner, repo: context.repo.repo, artifact_id: a.id });
+            }
+            core.info(`Artifact: ${artifacts.length}, build tenute: ${keep.size}`);
+
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
@@ -40,6 +60,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: diario-auto-debug.apk
+          retention-days: 14
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
       # L'AAB firmato si genera solo se i secrets del keystore sono
@@ -74,6 +95,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: diario-auto-release.aab
+          retention-days: 14
           path: android/app/build/outputs/bundle/release/app-release.aab
 
       # File per leggere i report di crash del codice offuscato: da caricare in
@@ -83,4 +105,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: diario-auto-mapping.txt
+          retention-days: 14
           path: android/app/build/outputs/mapping/release/mapping.txt
