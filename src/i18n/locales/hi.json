@@ -81,7 +81,10 @@
     "chooseModelTitle": "मॉडल {{brand}}",
     "searchBrand": "ब्रांड खोजें",
     "searchModel": "मॉडल खोजें",
-    "modelsCount": "{{count}} मॉडल"
+    "modelsCount": "{{count}} मॉडल",
+    "optional": "(वैकल्पिक)",
+    "bodyTypeHint": "कार की तस्वीर दिखाने के लिए एक प्रकार चुनें।",
+    "bodyNone": "कोई नहीं"
   },
   "fuelType": {
     "benzina": "पेट्रोल",
@@ -926,9 +929,6 @@
     "monthAll": "इस महीने · सभी वाहन",
     "moveUp": "ऊपर",
     "moveDown": "नीचे",
-    "backupNag": "आपने {{days}} दिनों से बैकअप नहीं सहेजा है। फ़ोन बदलने या खोने पर कॉपी आपको बचाती है।",
-    "backupNagAction": "बैकअप लें",
-    "backupNagLater": "बाद में",
     "charge": "चार्जिंग",
     "refuelCount_one": "{{count}} ईंधन भराई",
     "refuelCount_other": "{{count}} ईंधन भराई",
@@ -969,12 +969,15 @@
     "citycar": "सिटी कार",
     "hatchback": "हैचबैक",
     "sedan": "सेडान",
-    "suv": "एसयूवी",
+    "suv": "कॉम्पैक्ट एसयूवी",
     "pickup": "पिक-अप",
     "van": "वैन",
     "coupe": "कूपे",
     "wagon": "स्टेशन वैगन",
-    "convertible": "कन्वर्टिबल"
+    "convertible": "कन्वर्टिबल",
+    "premium": "प्रीमियम सेडान",
+    "suvlarge": "बड़ी एसयूवी",
+    "mpv": "एमपीवी"
   },
   "vehiclePicker": {
     "title": "कौन सा वाहन?"

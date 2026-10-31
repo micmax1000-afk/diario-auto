@@ -81,7 +81,10 @@
     "chooseModelTitle": "Modelo {{brand}}",
     "searchBrand": "Buscar marca",
     "searchModel": "Buscar modelo",
-    "modelsCount": "{{count}} modelos"
+    "modelsCount": "{{count}} modelos",
+    "optional": "(opcional)",
+    "bodyTypeHint": "Elige un tipo para ver una foto del coche.",
+    "bodyNone": "Ninguno"
   },
   "fuelType": {
     "benzina": "Gasolina",
@@ -926,9 +929,6 @@
     "monthAll": "Este mes · todos los vehículos",
     "moveUp": "Subir",
     "moveDown": "Bajar",
-    "backupNag": "Hace {{days}} días que no guardas una copia de seguridad. Una copia te protege si cambias o pierdes el móvil.",
-    "backupNagAction": "Hacer copia",
-    "backupNagLater": "Más tarde",
     "charge": "Recarga",
     "refuelCount_one": "{{count}} repostaje",
     "refuelCount_other": "{{count}} repostajes",
@@ -969,12 +969,15 @@
     "citycar": "Urbano",
     "hatchback": "Compacto",
     "sedan": "Berlina",
-    "suv": "SUV",
+    "suv": "SUV compacto",
     "pickup": "Pick-up",
     "van": "Furgoneta",
     "coupe": "Coupé",
     "wagon": "Familiar",
-    "convertible": "Descapotable"
+    "convertible": "Descapotable",
+    "premium": "Berlina de gama alta",
+    "suvlarge": "SUV grande",
+    "mpv": "Monovolumen"
   },
   "vehiclePicker": {
     "title": "¿En qué vehículo?"

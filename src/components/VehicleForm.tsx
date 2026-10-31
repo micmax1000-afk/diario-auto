@@ -8,7 +8,7 @@ import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL, guessBrandModel } from "../utils
 import { getNumberLocale } from "../utils/locale";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import PhotoPicker from "./PhotoPicker";
-import CartoonCar from "./CartoonCar";
+import { CAR_IMAGES } from "../utils/carImages";
 import { BODY_TYPES, shade } from "../utils/bodyTypes";
 
 const FUEL_TYPES: FuelType[] = ["benzina", "diesel", "gpl", "metano", "elettrico", "ibrido"];
@@ -39,7 +39,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
   const [notes, setNotes] = useState(initialVehicle?.notes ?? "");
   const [photo, setPhoto] = useState<string | null>(initialVehicle?.photo ?? null);
   const [color, setColor] = useState<string | undefined>(initialVehicle?.color);
-  const [bodyType, setBodyType] = useState<BodyType>(initialVehicle?.bodyType ?? "hatchback");
+  const [bodyType, setBodyType] = useState<BodyType | undefined>(initialVehicle?.bodyType);
   const [error, setError] = useState("");
   const [picker, setPicker] = useState<"brand" | "model" | null>(null);
   const [query, setQuery] = useState("");
@@ -142,9 +142,9 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
             className="vform-hero"
             style={photo ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.6)), url(${photo})` } : { backgroundImage: `linear-gradient(135deg, ${shade(shownColor, -0.12)}, ${shade(shownColor, -0.45)})` }}
           >
-            {!photo && (
-              <span className="vform-hero__car">
-                <CartoonCar bodyType={bodyType} color={shownColor} />
+            {!photo && bodyType && (
+              <span className="vform-hero__car is-cut">
+                <img src={CAR_IMAGES[bodyType]} alt="" />
               </span>
             )}
             <span className="vform-hero__text">
@@ -300,8 +300,21 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
           </div>
 
           <div className="field">
-            <span className="vform-title">{t("vehicleForm.bodyTypeTitle")}</span>
-            <div className="body-picker" role="radiogroup" aria-label={t("vehicleForm.bodyTypeTitle")}>
+            <span className="vform-title">
+              {t("vehicleForm.bodyTypeTitle")} <small>{t("vehicleForm.optional")}</small>
+            </span>
+            <small className="vform-hint">{t("vehicleForm.bodyTypeHint")}</small>
+            <div className="body-picker body-picker--img" role="radiogroup" aria-label={t("vehicleForm.bodyTypeTitle")}>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={!bodyType}
+                className={`body-picker__item body-picker__item--none${!bodyType ? " is-on" : ""}`}
+                onClick={() => setBodyType(undefined)}
+              >
+                <i aria-hidden="true">—</i>
+                <span>{t("vehicleForm.bodyNone")}</span>
+              </button>
               {BODY_TYPES.map((b) => (
                 <button
                   key={b}
@@ -311,7 +324,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
                   className={`body-picker__item${bodyType === b ? " is-on" : ""}`}
                   onClick={() => setBodyType(b)}
                 >
-                  <CartoonCar bodyType={b} color={shownColor} />
+                  <img src={CAR_IMAGES[b]} alt="" />
                   <span>{t(`bodyType.${b}`)}</span>
                 </button>
               ))}

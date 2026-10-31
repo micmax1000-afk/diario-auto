@@ -5,14 +5,13 @@ import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import ActionGridIcon from "./ActionGridIcon";
-import CartoonCar from "./CartoonCar";
+import VehicleThumb from "./VehicleThumb";
 
 export type AddAction = "fuel" | "fuelRepeat" | "charge" | "maintenance" | "km" | "expense" | "reminder";
 
 interface Props {
   vehicle: Vehicle;
   vehicles: Vehicle[];
-  colors: Record<string, string>;
   /** Ultimo rifornimento del veicolo, per proporre "come l'ultimo". */
   lastFuel?: FuelEntry;
   onPick: (action: AddAction) => void;
@@ -24,7 +23,7 @@ interface Props {
  * Foglio che si apre dal tasto + della barra in basso: un solo posto da cui
  * registrare tutto per il veicolo in uso.
  */
-export default function AddSheet({ vehicle, vehicles, colors, lastFuel, onPick, onChangeVehicle, onClose }: Props) {
+export default function AddSheet({ vehicle, vehicles, lastFuel, onPick, onChangeVehicle, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
@@ -72,9 +71,7 @@ export default function AddSheet({ vehicle, vehicles, colors, lastFuel, onPick, 
                   setChoosing(false);
                 }}
               >
-                <span className="add-sheet__thumb">
-                  <CartoonCar bodyType={v.bodyType} color={colors[v.id] ?? "#4f9dff"} />
-                </span>
+                <VehicleThumb vehicle={v} className="add-sheet__thumb" />
                 {v.name}
               </button>
             ))}

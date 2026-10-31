@@ -4,11 +4,10 @@ import { getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { FREE_VEHICLE_LIMIT } from "../services/billing/useProStatus";
-import CartoonCar from "./CartoonCar";
+import VehicleThumb from "./VehicleThumb";
 
 interface Props {
   vehicles: Vehicle[];
-  colors: Record<string, string>;
   isPro: boolean;
   onEditVehicle: (vehicle: Vehicle) => void;
   onAddVehicle: () => void;
@@ -43,7 +42,6 @@ const ICONS = {
 /** Garage e Utilità in cima al Menu che si apre dall'ingranaggio della Home. */
 export default function MenuSections({
   vehicles,
-  colors,
   isPro,
   onEditVehicle,
   onAddVehicle,
@@ -79,9 +77,7 @@ export default function MenuSections({
       <div className="menu-garage">
         {vehicles.map((v) => (
           <button key={v.id} type="button" className="menu-garage__item" onClick={() => onEditVehicle(v)}>
-            <span className="menu-garage__thumb">
-              {v.photo ? <img src={v.photo} alt="" /> : <CartoonCar bodyType={v.bodyType} color={colors[v.id] ?? "#4f9dff"} />}
-            </span>
+            <VehicleThumb vehicle={v} className="menu-garage__thumb" />
             <span className="menu-garage__text">
               <span className="menu-garage__name">{v.name}</span>
               <span className="menu-garage__sub">

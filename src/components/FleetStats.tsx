@@ -3,7 +3,7 @@ import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry,
 import { calculateConsumption, averageConsumption, calculateVehicleCosts, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import CartoonCar from "./CartoonCar";
+import VehicleThumb from "./VehicleThumb";
 import { PRO_ENABLED } from "../services/billing/useProStatus";
 import { reminderStatus } from "../utils/kmForecast";
 
@@ -76,13 +76,7 @@ export default function FleetStats({ vehicles, colors, fuelEntries, chargingEntr
             onClick={() => onOpenVehicle(r.vehicle.id)}
           >
             <span className="fleet-card__top">
-              <span className="fleet-card__thumb">
-                {r.vehicle.photo ? (
-                  <img src={r.vehicle.photo} alt="" />
-                ) : (
-                  <CartoonCar bodyType={r.vehicle.bodyType} color={colors[r.vehicle.id] ?? "#4f9dff"} />
-                )}
-              </span>
+              <VehicleThumb vehicle={r.vehicle} className="fleet-card__thumb" />
               <span className="fleet-card__name">{r.vehicle.name}</span>
               <b className="fleet-card__total">{money(r.total)}</b>
             </span>
