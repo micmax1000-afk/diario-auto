@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       actions: write
     steps:
       # Lo spazio per gli artifact è limitato: si tengono solo quelli delle
@@ -58,6 +58,7 @@ jobs:
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: diario-auto-debug.apk
           retention-days: 14
@@ -93,6 +94,7 @@ jobs:
       - name: Upload release AAB
         if: steps.signing.outputs.available == 'true'
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: diario-auto-release.aab
           retention-days: 14
@@ -103,7 +105,25 @@ jobs:
       - name: Upload mapping R8
         if: steps.signing.outputs.available == 'true'
         uses: actions/upload-artifact@v4
+        continue-on-error: true
         with:
           name: diario-auto-mapping.txt
           retention-days: 14
           path: android/app/build/outputs/mapping/release/mapping.txt
+
+      # AAB e mapping anche in una Release (privata come il repo): non usa lo
+      # spazio degli artifact, quindi resta scaricabile anche se è pieno.
+      - name: Pubblica AAB e mapping nella Release
+        if: steps.signing.outputs.available == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="v$(node -p "require('./package.json').version")"
+          cp android/app/build/outputs/bundle/release/app-release.aab "diario-auto-$VERSION.aab"
+          cp android/app/build/outputs/mapping/release/mapping.txt "mapping-$VERSION.txt"
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release upload "$VERSION" "diario-auto-$VERSION.aab" "mapping-$VERSION.txt" --clobber
+          else
+            gh release create "$VERSION" "diario-auto-$VERSION.aab" "mapping-$VERSION.txt" \
+              --target "$GITHUB_SHA" --title "Diario Auto $VERSION" --notes "AAB firmato e mapping.txt per Play Console."
+          fi
