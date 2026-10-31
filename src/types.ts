@@ -11,7 +11,7 @@ export interface SyncFields {
   deletedAt?: string; // ISO date, soft-delete: se presente il record è "cancellato" ma non rimosso fisicamente
 }
 
-export type BodyType = "citycar" | "hatchback" | "sedan" | "suv" | "pickup" | "van" | "coupe" | "wagon" | "convertible";
+export type BodyType = "citycar" | "hatchback" | "sedan" | "premium" | "suv" | "suvlarge" | "pickup" | "van" | "mpv" | "coupe" | "wagon" | "convertible";
 
 export interface Vehicle extends SyncFields {
   id: string;
@@ -21,7 +21,7 @@ export interface Vehicle extends SyncFields {
   currentKm: number;
   year?: number;
   notes?: string;
-  bodyType?: BodyType; // categoria di carrozzeria, per l'icona mostrata nelle card
+  bodyType?: BodyType; // categoria di carrozzeria: se manca il veicolo non mostra nessuna immagine
   photo?: string; // foto dell'auto (data URL JPEG, ritagliata 16:9 e compressa), mostrata nella card
   color?: string; // colore identificativo (hex) scelto dall'utente; se manca ne viene assegnato uno in automatico
   createdAt: string; // ISO date

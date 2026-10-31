@@ -6,12 +6,11 @@ import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import { isRtlLanguage } from "../i18n";
-import CartoonCar from "./CartoonCar";
+import VehicleThumb from "./VehicleThumb";
 
 interface Props {
   vehicle: Vehicle;
   vehicles?: Vehicle[];
-  colors?: Record<string, string>;
   urgentCounts?: Record<string, number>;
   /** Senza onBack mostra solo il veicolo (es. sotto il titolo delle pagine rapide). */
   onBack?: () => void;
@@ -20,15 +19,12 @@ interface Props {
   leading?: { label: string; sub: string; onClick: () => void; badge?: string };
 }
 
-function Thumb({ vehicle, color }: { vehicle: Vehicle; color: string }) {
-  return vehicle.photo ? <img src={vehicle.photo} alt="" /> : <CartoonCar bodyType={vehicle.bodyType} color={color} />;
-}
 
 /**
  * Intestazione delle schermate del veicolo: indietro e il veicolo in uso.
  * Toccando il veicolo si apre l'elenco per sceglierne un altro.
  */
-export default function VehicleHeader({ vehicle, vehicles = [], colors = {}, urgentCounts = {}, onBack, onSelect, leading }: Props) {
+export default function VehicleHeader({ vehicle, vehicles = [], urgentCounts = {}, onBack, onSelect, leading }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit } = useAppSettings();
   const locale = getNumberLocale(i18n.language);
@@ -56,9 +52,7 @@ export default function VehicleHeader({ vehicle, vehicles = [], colors = {}, urg
           aria-haspopup={canSwitch ? "dialog" : undefined}
           aria-label={canSwitch ? `${vehicle.name} · ${t("vehicleHeader.change")}` : vehicle.name}
         >
-          <span className="vhead__thumb">
-            <Thumb vehicle={vehicle} color={colors[vehicle.id] ?? "#4f9dff"} />
-          </span>
+          <VehicleThumb vehicle={vehicle} className="vhead__thumb" />
           <span className="vhead__text">
             <span className="vhead__name">{vehicle.name}</span>
             <span className="vhead__sub">{sub(vehicle)}</span>
@@ -111,9 +105,7 @@ export default function VehicleHeader({ vehicle, vehicles = [], colors = {}, urg
                       if (v.id !== vehicle.id) onSelect?.(v.id);
                     }}
                   >
-                    <span className="vpick__thumb">
-                      <Thumb vehicle={v} color={colors[v.id] ?? "#4f9dff"} />
-                    </span>
+                    <VehicleThumb vehicle={v} className="vpick__thumb" />
                     <span className="vpick__text">
                       <b>{v.name}</b>
                       <span>{sub(v)}</span>

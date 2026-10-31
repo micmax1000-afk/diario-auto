@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { isRtlLanguage } from "../i18n";
 import ActionGridIcon from "./ActionGridIcon";
-import CartoonCar from "./CartoonCar";
+import { CAR_IMAGES } from "../utils/carImages";
 import { useBackButtonClose } from "../utils/backButtonStack";
 
 interface Props {
@@ -44,9 +44,9 @@ export default function WelcomeGuide({ onDone }: Props) {
       <div className="welcome-guide__body" key={current.key}>
         {step === 0 && (
           <span className="welcome-guide__cars" aria-hidden="true">
-            <CartoonCar bodyType="citycar" color="#3fb36b" />
-            <CartoonCar bodyType="suv" color="#3b7ddd" />
-            <CartoonCar bodyType="hatchback" color="#f5901f" />
+            <img src={CAR_IMAGES.citycar} alt="" />
+            <img src={CAR_IMAGES.suv} alt="" />
+            <img src={CAR_IMAGES.hatchback} alt="" />
           </span>
         )}
         <span className="welcome-guide__icon">

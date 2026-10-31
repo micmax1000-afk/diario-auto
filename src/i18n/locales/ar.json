@@ -81,7 +81,10 @@
     "chooseModelTitle": "طراز {{brand}}",
     "searchBrand": "ابحث عن الماركة",
     "searchModel": "ابحث عن الطراز",
-    "modelsCount": "{{count}} طرازات"
+    "modelsCount": "{{count}} طرازات",
+    "optional": "(اختياري)",
+    "bodyTypeHint": "اختر نوعًا لعرض صورة للسيارة.",
+    "bodyNone": "لا شيء"
   },
   "fuelType": {
     "benzina": "بنزين",
@@ -930,9 +933,6 @@
     "monthAll": "هذا الشهر · كل المركبات",
     "moveUp": "أعلى",
     "moveDown": "أسفل",
-    "backupNag": "لم تحفظ نسخة احتياطية منذ {{days}} يومًا. النسخة تحميك إذا غيّرت هاتفك أو فقدته.",
-    "backupNagAction": "نسخ احتياطي",
-    "backupNagLater": "لاحقًا",
     "charge": "شحن",
     "refuelCount_zero": "{{count}} عملية تزود",
     "refuelCount_one": "عملية تزود واحدة",
@@ -981,12 +981,15 @@
     "citycar": "سيارة مدينة",
     "hatchback": "هاتشباك",
     "sedan": "سيدان",
-    "suv": "SUV",
+    "suv": "سيارة دفع رباعي مدمجة",
     "pickup": "بيك أب",
     "van": "فان",
     "coupe": "كوبيه",
     "wagon": "ستيشن واغن",
-    "convertible": "مكشوفة"
+    "convertible": "مكشوفة",
+    "premium": "سيارة سيدان فاخرة",
+    "suvlarge": "سيارة دفع رباعي كبيرة",
+    "mpv": "سيارة متعددة الأغراض"
   },
   "vehiclePicker": {
     "title": "في أي مركبة؟"

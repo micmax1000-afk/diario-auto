@@ -81,7 +81,10 @@
     "chooseModelTitle": "{{brand}} model",
     "searchBrand": "Search brand",
     "searchModel": "Search model",
-    "modelsCount": "{{count}} models"
+    "modelsCount": "{{count}} models",
+    "optional": "(optional)",
+    "bodyTypeHint": "Pick a type to show a picture of the car.",
+    "bodyNone": "None"
   },
   "fuelType": {
     "benzina": "Gasoline",
@@ -926,9 +929,6 @@
     "monthAll": "This month · all vehicles",
     "moveUp": "Move up",
     "moveDown": "Move down",
-    "backupNag": "You haven't saved a backup in {{days}} days. A copy protects you if you change or lose your phone.",
-    "backupNagAction": "Back up",
-    "backupNagLater": "Later",
     "charge": "Charge",
     "refuelCount_one": "{{count}} refuel",
     "refuelCount_other": "{{count}} refuels",
@@ -969,12 +969,15 @@
     "citycar": "City car",
     "hatchback": "Hatchback",
     "sedan": "Sedan",
-    "suv": "SUV",
+    "suv": "Compact SUV",
     "pickup": "Pickup",
     "van": "Van",
     "coupe": "Coupe",
     "wagon": "Station wagon",
-    "convertible": "Convertible"
+    "convertible": "Convertible",
+    "premium": "Premium sedan",
+    "suvlarge": "Large SUV",
+    "mpv": "MPV"
   },
   "vehiclePicker": {
     "title": "On which vehicle?"

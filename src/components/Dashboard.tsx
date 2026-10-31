@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, Reminder, MaintenanceEntry, FuelEntry, ChargingEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
@@ -6,10 +6,8 @@ import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import UpcomingReminders from "./UpcomingReminders";
 import CategoryIcon from "./CategoryIcon";
-import CartoonCar from "./CartoonCar";
+import { vehicleVisual } from "../utils/carImages";
 import { shade } from "../utils/bodyTypes";
-import { getMeta, setMeta } from "../utils/db";
-import { daysSince } from "../utils/storage";
 import { resolveVehicleColors } from "../utils/vehicleColor";
 import {
   calculateConsumption,
@@ -39,12 +37,8 @@ interface Props {
   onOpenStats: () => void;
   onOpenActivity: (vehicleId: string, kind: ActivityKind) => void;
   onOpenSettings: () => void;
-  onOpenBackup: () => void;
 }
 
-const BACKUP_STALE_DAYS = 30;
-const BACKUP_NAG_SNOOZE_DAYS = 7;
-const BACKUP_NAG_KEY = "backup-nag-snoozed";
 const YEAR_MS = 365 * 24 * 60 * 60 * 1000;
 
 export default function Dashboard({
@@ -62,7 +56,6 @@ export default function Dashboard({
   onOpenStats,
   onOpenActivity,
   onOpenSettings,
-  onOpenBackup,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit, formatMoney } = useAppSettings();
@@ -70,35 +63,6 @@ export default function Dashboard({
   const activeVehicles = vehicles.filter((v) => !v.archived);
   const current = activeVehicles.find((v) => v.id === currentVehicleId) ?? activeVehicles[0];
   const colors = resolveVehicleColors(vehicles);
-
-  // ---- Avviso backup vecchio (come prima) ----
-  const [backupStaleDays, setBackupStaleDays] = useState<number | null>(null);
-  const oldestCreated = vehicles.map((v) => v.createdAt).filter(Boolean).sort()[0];
-  const hasVehicles = vehicles.length > 0;
-  useEffect(() => {
-    if (!hasVehicles) return;
-    let cancelled = false;
-    (async () => {
-      try {
-        const snoozed = await getMeta(BACKUP_NAG_KEY);
-        if (snoozed && daysSince(snoozed) < BACKUP_NAG_SNOOZE_DAYS) return;
-        const last = await getMeta("last-backup");
-        const reference = last ?? oldestCreated;
-        if (!reference) return;
-        const days = daysSince(reference);
-        if (!cancelled && days >= BACKUP_STALE_DAYS) setBackupStaleDays(days);
-      } catch {
-        /* nessun avviso se non si riesce a leggere */
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, [hasVehicles, oldestCreated]);
-  function snoozeBackupNag() {
-    setBackupStaleDays(null);
-    void setMeta(BACKUP_NAG_KEY, new Date().toISOString());
-  }
 
   // ---- Carosello: scorrendo di lato cambia il veicolo in primo piano ----
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -218,22 +182,20 @@ export default function Dashboard({
             .filter((x) => x.s !== "ok")
             .sort((a, b) => (a.s === "overdue" ? -1 : 0) - (b.s === "overdue" ? -1 : 0));
           const top = open[0];
+          const visual = vehicleVisual(v);
+          const cut = visual && !visual.isPhoto;
           const style = v.photo
             ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.62)), url(${v.photo})` }
             : { backgroundImage: `linear-gradient(135deg, ${shade(color, -0.12)}, ${shade(color, -0.45)})` };
           return (
-            <section key={v.id} className={`home-hero${v.photo ? " home-hero--photo" : ""}`} style={style} aria-label={v.name}>
+            <section key={v.id} className={`home-hero${v.photo ? " home-hero--photo" : ""}${cut ? " home-hero--car" : ""}`} style={style} aria-label={v.name}>
               <div className="home-hero__top">
-                {!v.photo && (
-                  <span className="home-hero__badge">
-                    <CartoonCar bodyType={v.bodyType} color={color} />
-                  </span>
-                )}
                 <div className="home-hero__id">
                   <h2 className="home-hero__name">{v.name}</h2>
                   {v.plate && <span className="home-hero__plate">{v.plate}</span>}
                 </div>
               </div>
+              {cut && <img className="home-hero__car" src={visual.src} alt="" />}
               <p className="home-hero__label">{t("home.odometer")}</p>
               <p className="home-hero__km">{formatDistance(v.currentKm, distanceUnit, locale)}</p>
               {top ? (
@@ -264,20 +226,6 @@ export default function Dashboard({
             <i key={v.id} className={v.id === current.id ? "is-on" : ""} />
           ))}
         </div>
-      )}
-
-      {backupStaleDays !== null && (
-        <section className="dash-backup-nag" role="status">
-          <span>{t("dashboardGarage.backupNag", { days: backupStaleDays })}</span>
-          <span className="dash-backup-nag__actions">
-            <button type="button" className="dash-link" onClick={onOpenBackup}>
-              {t("dashboardGarage.backupNagAction")}
-            </button>
-            <button type="button" className="dash-link" onClick={snoozeBackupNag}>
-              {t("dashboardGarage.backupNagLater")}
-            </button>
-          </span>
-        </section>
       )}
 
       <div className="home-sect">

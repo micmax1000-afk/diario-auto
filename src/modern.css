@@ -410,7 +410,6 @@ body {
 .home-dots i { width: 6px; height: 6px; border-radius: 3px; background: var(--border); transition: width 0.2s; }
 .home-dots i.is-on { width: 18px; background: var(--amber); }
 
-.home .dash-backup-nag { margin-top: 1rem; }
 
 /* Sezioni */
 .home-sect {
@@ -1827,3 +1826,40 @@ body {
 [dir="rtl"] .adapters__steps { padding: 0.85rem 2.1rem 0.85rem 0.95rem; }
 .adapters__steps li::marker { color: var(--amber); font-weight: 800; }
 .adapters__note { margin: 0.4rem 0.1rem 0; font-size: 0.76rem; line-height: 1.45; color: var(--text-muted); }
+
+/* =====================================================================
+   Immagini dei tipi di carrozzeria (già scontornate)
+   Si vedono solo se il tipo è scelto; la foto dell'utente ha la precedenza.
+   ===================================================================== */
+.is-cut { background: none !important; padding: 0 !important; overflow: visible !important; border-radius: 0 !important; }
+.is-cut img { width: 100%; height: 100%; object-fit: contain; border-radius: 0; }
+.vhead__thumb.is-cut { width: 58px; }
+
+.home-hero--car .home-hero__id { max-width: 58%; }
+.home-hero--car .home-hero__km { font-size: 1.65rem; position: relative; z-index: 1; }
+.home-hero__car {
+  position: absolute;
+  right: 0.55rem;
+  bottom: 3.55rem;
+  width: 42%;
+  max-width: 210px;
+  max-height: 104px;
+  object-fit: contain;
+  object-position: right bottom;
+  filter: drop-shadow(0 10px 10px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+}
+
+.vform-hero__car.is-cut { width: 132px; }
+.vform-hero__car.is-cut img { height: auto; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35)); }
+.vform-title small { font-weight: 500; color: var(--text-muted); font-size: 0.8rem; }
+.vform-hint { display: block; color: var(--text-muted); font-size: 0.78rem; margin-top: 0.1rem; }
+
+.body-picker--img { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.body-picker--img .body-picker__item { flex-direction: column; justify-content: flex-end; padding: 0.4rem 0.25rem 0.45rem; font-size: 0.74rem; text-align: center; gap: 0.15rem; background: var(--card); border-color: var(--border); }
+.body-picker--img .body-picker__item.is-on { border-color: var(--amber); background: var(--amber-soft); }
+.body-picker--img .body-picker__item img { width: 100%; height: 52px; object-fit: contain; }
+.body-picker--img .body-picker__item--none i { height: 52px; display: grid; place-items: center; font-style: normal; font-size: 1.4rem; color: var(--text-muted); }
+
+.welcome-guide__cars img { width: 112px; height: auto; }
+.welcome-guide__cars img:nth-child(2) { width: 140px; margin: 0 -14px; position: relative; z-index: 1; }

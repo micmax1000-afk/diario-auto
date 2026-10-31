@@ -81,7 +81,10 @@
     "chooseModelTitle": "Model {{brand}}",
     "searchBrand": "Cari merek",
     "searchModel": "Cari model",
-    "modelsCount": "{{count}} model"
+    "modelsCount": "{{count}} model",
+    "optional": "(opsional)",
+    "bodyTypeHint": "Pilih jenisnya untuk menampilkan gambar mobil.",
+    "bodyNone": "Tidak ada"
   },
   "fuelType": {
     "benzina": "Bensin",
@@ -925,9 +928,6 @@
     "monthAll": "Bulan ini · semua kendaraan",
     "moveUp": "Naik",
     "moveDown": "Turun",
-    "backupNag": "Sudah {{days}} hari Anda tidak menyimpan cadangan. Salinan melindungi Anda jika berganti atau kehilangan ponsel.",
-    "backupNagAction": "Cadangkan",
-    "backupNagLater": "Nanti",
     "charge": "Isi daya",
     "refuelCount_other": "{{count}} pengisian BBM",
     "chargeCount_other": "{{count}} pengisian daya"
@@ -966,12 +966,15 @@
     "citycar": "Mobil kota",
     "hatchback": "Mobil kecil",
     "sedan": "Sedan",
-    "suv": "SUV",
+    "suv": "SUV kompak",
     "pickup": "Pick-up",
     "van": "Van",
     "coupe": "Coupé",
     "wagon": "Station wagon",
-    "convertible": "Kabriolet"
+    "convertible": "Kabriolet",
+    "premium": "Sedan kelas atas",
+    "suvlarge": "SUV besar",
+    "mpv": "MPV"
   },
   "vehiclePicker": {
     "title": "Kendaraan apa?"

@@ -1,6 +1,6 @@
 import type { BodyType } from "../types";
 
-export const BODY_TYPES: BodyType[] = ["citycar", "hatchback", "sedan", "wagon", "suv", "van", "coupe", "convertible", "pickup"];
+export const BODY_TYPES: BodyType[] = ["citycar", "hatchback", "sedan", "premium", "suv", "suvlarge", "wagon", "coupe", "convertible", "mpv", "van", "pickup"];
 
 /** Schiarisce (amt > 0) o scurisce (amt < 0) un colore esadecimale. */
 export function shade(hex: string, amt: number): string {

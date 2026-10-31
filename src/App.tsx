@@ -919,7 +919,6 @@ export default function App() {
               beforeList={
                 <MenuSections
                   vehicles={activeOrderedVehicles}
-                  colors={vehicleColors}
                   isPro={isPro}
                   onEditVehicle={(v) => setEditingVehicle(v)}
                   onAddVehicle={handleRequestAddVehicle}
@@ -960,7 +959,6 @@ export default function App() {
             onOpenStats={() => handleMainTabChange("statistiche")}
             onOpenActivity={handleOpenActivity}
             onOpenSettings={() => handleMainTabChange("impostazioni")}
-            onOpenBackup={() => { setMainTab("impostazioni"); setShowBackup(true); }}
           />
         )}
 
@@ -1044,7 +1042,6 @@ export default function App() {
         <AddSheet
           vehicle={currentVehicle}
           vehicles={activeOrderedVehicles}
-          colors={vehicleColors}
           lastFuel={[...fuelEntries].filter((e) => e.vehicleId === currentVehicle.id).sort((a, b) => b.date.localeCompare(a.date))[0]}
           onPick={handleAddAction}
           onChangeVehicle={(id) => {

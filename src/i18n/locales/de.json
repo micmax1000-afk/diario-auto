@@ -81,7 +81,10 @@
     "chooseModelTitle": "Modell {{brand}}",
     "searchBrand": "Marke suchen",
     "searchModel": "Modell suchen",
-    "modelsCount": "{{count}} Modelle"
+    "modelsCount": "{{count}} Modelle",
+    "optional": "(optional)",
+    "bodyTypeHint": "Wähle einen Typ aus, um ein Bild des Autos anzuzeigen.",
+    "bodyNone": "Keine"
   },
   "fuelType": {
     "benzina": "Benzin",
@@ -926,9 +929,6 @@
     "monthAll": "Diesen Monat · alle Fahrzeuge",
     "moveUp": "Nach oben",
     "moveDown": "Nach unten",
-    "backupNag": "Seit {{days}} Tagen keine Sicherung gespeichert. Eine Kopie schützt dich, wenn du das Handy wechselst oder verlierst.",
-    "backupNagAction": "Sichern",
-    "backupNagLater": "Später",
     "charge": "Laden",
     "refuelCount_one": "{{count}} Tankvorgang",
     "refuelCount_other": "{{count}} Tankvorgänge",
@@ -969,12 +969,15 @@
     "citycar": "Kleinstwagen",
     "hatchback": "Kleinwagen",
     "sedan": "Limousine",
-    "suv": "SUV",
+    "suv": "Kompakt-SUV",
     "pickup": "Pick-up",
     "van": "Lieferwagen",
     "coupe": "Coupé",
     "wagon": "Kombi",
-    "convertible": "Cabrio"
+    "convertible": "Cabrio",
+    "premium": "Premium-Limousine",
+    "suvlarge": "Großer SUV",
+    "mpv": "Van"
   },
   "vehiclePicker": {
     "title": "Für welches Fahrzeug?"

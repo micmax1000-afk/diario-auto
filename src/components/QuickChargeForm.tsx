@@ -100,7 +100,7 @@ export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCount
 
       <form onSubmit={handleSubmit} className="quick-entry-page__body">
         {vehicles && vehicles.length > 1 && colors && onChangeVehicle && (
-          <VehicleHeader vehicle={vehicle} vehicles={vehicles} colors={colors} urgentCounts={urgentCounts} onSelect={onChangeVehicle} />
+          <VehicleHeader vehicle={vehicle} vehicles={vehicles} urgentCounts={urgentCounts} onSelect={onChangeVehicle} />
         )}
         <div className="quick-entry-card">
           <div className="quick-entry-card__title-row">

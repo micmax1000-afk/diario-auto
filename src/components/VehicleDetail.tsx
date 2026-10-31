@@ -372,7 +372,6 @@ export default function VehicleDetail({
       <VehicleHeader
         vehicle={vehicle}
         vehicles={allVehicles}
-        colors={colors}
         urgentCounts={urgentCounts}
         onBack={onBack}
         onSelect={onSwitchVehicle}

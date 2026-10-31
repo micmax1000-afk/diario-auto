@@ -81,7 +81,10 @@
     "chooseModelTitle": "Модель {{brand}}",
     "searchBrand": "Поиск марки",
     "searchModel": "Поиск модели",
-    "modelsCount": "Моделей: {{count}}"
+    "modelsCount": "Моделей: {{count}}",
+    "optional": "(необязательно)",
+    "bodyTypeHint": "Выберите тип, чтобы посмотреть фотографию автомобиля.",
+    "bodyNone": "Нет"
   },
   "fuelType": {
     "benzina": "Бензин",
@@ -928,9 +931,6 @@
     "monthAll": "В этом месяце · все автомобили",
     "moveUp": "Вверх",
     "moveDown": "Вниз",
-    "backupNag": "Вы не сохраняли резервную копию {{days}} дн. Копия защитит вас при смене или потере телефона.",
-    "backupNagAction": "Сделать копию",
-    "backupNagLater": "Позже",
     "charge": "Зарядка",
     "refuelCount_one": "{{count}} заправка",
     "refuelCount_few": "{{count}} заправки",
@@ -975,12 +975,15 @@
     "citycar": "Городской",
     "hatchback": "Малолитражка",
     "sedan": "Седан",
-    "suv": "Кроссовер/SUV",
+    "suv": "Компактный внедорожник",
     "pickup": "Пикап",
     "van": "Фургон",
     "coupe": "Купе",
     "wagon": "Универсал",
-    "convertible": "Кабриолет"
+    "convertible": "Кабриолет",
+    "premium": "Седан премиум-класса",
+    "suvlarge": "Крупный внедорожник",
+    "mpv": "Минивэн"
   },
   "vehiclePicker": {
     "title": "Какой автомобиль?"
