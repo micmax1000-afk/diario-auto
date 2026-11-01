@@ -48,6 +48,7 @@ import VehicleForm from "./components/VehicleForm";
 import Dashboard, { type ActivityKind } from "./components/Dashboard";
 import QuickEntryHeader from "./components/QuickEntryHeader";
 import ObdAdapters from "./components/ObdAdapters";
+import VoiceFuelSheet from "./components/VoiceFuelSheet";
 import AddSheet, { type AddAction } from "./components/AddSheet";
 import MenuSections from "./components/MenuSections";
 import BottomTabBar, { type TabId } from "./components/BottomTabBar";
@@ -126,7 +127,9 @@ export default function App() {
   // quello usato dal tasto + e dalle schede della barra in basso.
   const [homeVehicleId, setHomeVehicleId] = useState<string | null>(null);
   const [showAddSheet, setShowAddSheet] = useState(false);
-  const [quickFuelPrefill, setQuickFuelPrefill] = useState<{ pricePerUnit: number; totalCost: number } | undefined>(undefined);
+  const [quickFuelPrefill, setQuickFuelPrefill] = useState<{ pricePerUnit: number; totalCost: number; km?: number; fullTank?: boolean } | undefined>(undefined);
+  const [voiceFuelVehicleId, setVoiceFuelVehicleId] = useState<string | null>(null);
+  useBackButtonClose(!!voiceFuelVehicleId, () => setVoiceFuelVehicleId(null));
   const [detailAutoOpen, setDetailAutoOpen] = useState<"maintenance" | "expense" | "reminder" | undefined>(undefined);
   const [showManageVehicles, setShowManageVehicles] = useState(false);
   const [openVehicleId, setOpenVehicleId] = useState<string | null>(null);
@@ -727,7 +730,9 @@ export default function App() {
     const v = currentVehicle;
     setShowAddSheet(false);
     if (!v) return;
-    if (action === "fuel" || action === "fuelRepeat") {
+    if (action === "fuelVoice") {
+      setVoiceFuelVehicleId(v.id);
+    } else if (action === "fuel" || action === "fuelRepeat") {
       const last = [...fuelEntries].filter((e) => e.vehicleId === v.id).sort((a, b) => b.date.localeCompare(a.date))[0];
       setQuickFuelPrefill(action === "fuelRepeat" && last && last.liters > 0 ? { pricePerUnit: last.totalCost / last.liters, totalCost: last.totalCost } : undefined);
       setQuickFuelVehicleId(v.id);
@@ -1178,6 +1183,19 @@ export default function App() {
             </Suspense>
           );
         })()}
+
+      {voiceFuelVehicleId && (
+        <VoiceFuelSheet
+          vehicles={activeOrderedVehicles.filter((v) => v.fuelType !== "elettrico")}
+          currentVehicleId={voiceFuelVehicleId}
+          onClose={() => setVoiceFuelVehicleId(null)}
+          onContinue={(vehicleId, data) => {
+            setVoiceFuelVehicleId(null);
+            setQuickFuelPrefill({ pricePerUnit: data.pricePerUnit ?? 0, totalCost: data.totalCost ?? 0, km: data.km, fullTank: data.fullTank });
+            setQuickFuelVehicleId(vehicleId);
+          }}
+        />
+      )}
 
       {quickFuelVehicleId &&
         (() => {

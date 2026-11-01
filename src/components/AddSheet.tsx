@@ -7,7 +7,7 @@ import { useBackButtonClose } from "../utils/backButtonStack";
 import ActionGridIcon from "./ActionGridIcon";
 import VehicleThumb from "./VehicleThumb";
 
-export type AddAction = "fuel" | "fuelRepeat" | "charge" | "maintenance" | "km" | "expense" | "reminder";
+export type AddAction = "fuel" | "fuelVoice" | "fuelRepeat" | "charge" | "maintenance" | "km" | "expense" | "reminder";
 
 interface Props {
   vehicle: Vehicle;
@@ -93,6 +93,17 @@ export default function AddSheet({ vehicle, vehicles, lastFuel, onPick, onChange
                   </span>
                 </span>
                 <span className="add-sheet__go">{t("addSheet.yes")}</span>
+              </button>
+            )}
+            {canFuel && (
+              <button type="button" className="add-sheet__repeat add-sheet__voice" onClick={() => onPick("fuelVoice")}>
+                <span className="add-sheet__icon add-sheet__icon--solid">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" /></svg>
+                </span>
+                <span className="add-sheet__repeat-text">
+                  <b>{t("voiceFuel.title", "Rifornimento a voce")}</b>
+                  <span>{t("voiceFuel.sheetSub", "«20 euro sulla Golf a 1,90»")}</span>
+                </span>
               </button>
             )}
             <div className="add-sheet__grid">

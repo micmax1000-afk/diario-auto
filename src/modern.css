@@ -1893,3 +1893,22 @@ body {
 .trips-preview { display: flex; flex-direction: column; gap: 0.2rem; }
 .trips-preview__row { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.84rem; color: var(--text-muted); }
 .trips-preview__tot { margin-top: 0.2rem; padding-top: 0.3rem; border-top: 1px solid color-mix(in srgb, var(--amber) 30%, transparent); color: var(--text); font-size: 0.95rem; }
+
+/* Rifornimento a voce */
+.add-sheet__voice { margin-bottom: 0.6rem; }
+.voice-sheet { text-align: center; }
+.voice-mic { display: grid; place-items: center; width: 92px; height: 92px; margin: 0.6rem auto 0.5rem; border: none; border-radius: 50%; background: var(--amber); color: #fff; box-shadow: 0 10px 24px color-mix(in srgb, var(--amber) 45%, transparent); cursor: pointer; }
+.voice-mic svg { width: 40px; height: 40px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.voice-mic.is-on { animation: voice-pulse 1.2s ease-in-out infinite; }
+@keyframes voice-pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--amber) 45%, transparent); } 50% { box-shadow: 0 0 0 16px color-mix(in srgb, var(--amber) 0%, transparent); } }
+.voice-status { margin: 0; font-weight: 750; }
+.voice-example { margin: 0.2rem 0 0.9rem; font-size: 0.82rem; color: var(--text-muted); }
+.voice-sheet .field { text-align: start; }
+.voice-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.45rem; margin-top: 0.3rem; text-align: start; }
+.voice-chip { padding: 0.5rem 0.6rem; border-radius: 12px; background: var(--surface-alt); display: flex; flex-direction: column; gap: 0.1rem; min-width: 0; }
+.voice-chip span { font-size: 0.7rem; color: var(--text-muted); }
+.voice-chip b { font-size: 0.88rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); }
+.voice-chip.is-ok { background: var(--green-soft); }
+.voice-chip.is-ok b { color: var(--text); }
+.voice-note { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--text-muted); }
+.add-sheet__voice .add-sheet__icon svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }

@@ -21,7 +21,7 @@ interface Props {
   onChangeVehicle?: (vehicleId: string) => void;
   existingEntries?: FuelEntry[];
   /** "Come l'ultimo": prezzo e importo già compilati, si scrivono solo i km. */
-  prefill?: { pricePerUnit: number; totalCost: number };
+  prefill?: { pricePerUnit: number; totalCost: number; km?: number; fullTank?: boolean };
   onSave: (entry: FuelEntry) => void;
   onClose: () => void;
 }
@@ -48,8 +48,8 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
   const source = defaultSource(vehicle);
   const [pricePerUnit, setPricePerUnit] = useState(prefill ? String(Math.round(prefill.pricePerUnit * 1000) / 1000) : "");
   const [totalCost, setTotalCost] = useState(prefill ? String(Math.round(prefill.totalCost * 100) / 100) : "");
-  const [fullTank, setFullTank] = useState(true);
-  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(vehicle.currentKm))));
+  const [fullTank, setFullTank] = useState(prefill?.fullTank ?? true);
+  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(prefill?.km ?? vehicle.currentKm))));
   const [error, setError] = useState("");
 
   const priceValue = Number(pricePerUnit);
