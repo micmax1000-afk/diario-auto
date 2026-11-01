@@ -12,7 +12,13 @@ export default function TripForm({ vehicle, trip, rate, onClose }: { vehicle: Ve
   const [roundTrip, setRoundTrip] = useState(trip?.roundTrip ?? true);
   const [byOdometer, setByOdometer] = useState(false);
   const [km, setKm] = useState(trip ? String(trip.km) : "");
-  const [extra, setExtra] = useState(trip?.extra ? String(trip.extra) : "");
+  const [toll, setToll] = useState(trip?.extra ? String(trip.extra) : "");
+  const [parking, setParking] = useState("");
+  const [other, setOther] = useState("");
+  const [otherWhat, setOtherWhat] = useState("");
+  const [alsoExpense, setAlsoExpense] = useState(true);
+  const num = (v: string) => Number(v.replace(",", ".")) || 0;
+  const extras = num(toll) + num(parking) + num(other);
   const dist = (Number(km) || 0) * (roundTrip ? 2 : 1);
 
   return (
@@ -91,16 +97,44 @@ export default function TripForm({ vehicle, trip, rate, onClose }: { vehicle: Ve
             </label>
           </div>
           {work && (
-            <div className="field">
-              <label htmlFor="trip-extra">{t("tripForm.extra", "Pedaggi e parcheggio (€, facoltativo)")}</label>
-              <input id="trip-extra" inputMode="decimal" value={extra} onChange={(e) => setExtra(e.target.value)} placeholder="0,00" />
-            </div>
+            <>
+              <p className="trips-section">{t("tripForm.expenses", "Spese del viaggio")} <small>{t("vehicleForm.optional")}</small></p>
+              <div className="field-row">
+                <div className="field">
+                  <label htmlFor="trip-toll">{t("tripForm.toll", "Pedaggio autostrada")}</label>
+                  <input id="trip-toll" inputMode="decimal" value={toll} onChange={(e) => setToll(e.target.value)} placeholder="0,00" />
+                </div>
+                <div className="field">
+                  <label htmlFor="trip-park">{t("tripForm.parking", "Parcheggio")}</label>
+                  <input id="trip-park" inputMode="decimal" value={parking} onChange={(e) => setParking(e.target.value)} placeholder="0,00" />
+                </div>
+              </div>
+              <div className="field-row">
+                <div className="field">
+                  <label htmlFor="trip-other">{t("tripForm.other", "Altre spese")}</label>
+                  <input id="trip-other" inputMode="decimal" value={other} onChange={(e) => setOther(e.target.value)} placeholder="0,00" />
+                </div>
+                <div className="field">
+                  <label htmlFor="trip-otherwhat">{t("tripForm.otherWhat", "Per cosa")}</label>
+                  <input id="trip-otherwhat" value={otherWhat} onChange={(e) => setOtherWhat(e.target.value)} placeholder={t("tripForm.otherPh", "pranzo, treno, taxi…")} />
+                </div>
+              </div>
+              <div className="field field--checkbox">
+                <label htmlFor="trip-also">
+                  <input id="trip-also" type="checkbox" checked={alsoExpense} onChange={(e) => setAlsoExpense(e.target.checked)} />
+                  {t("tripForm.alsoExpense", "Pedaggio e parcheggio anche nelle Spese dell'auto")}
+                </label>
+              </div>
+            </>
           )}
-          {work && dist > 0 && (
-            <p className="trips-preview">
-              {t("tripForm.preview", "Rimborso")}: <b>{formatMoney(dist * rate + (Number(extra.replace(",", ".")) || 0))}</b>
-              <small> · {dist} km × {formatMoney(rate, 2)}</small>
-            </p>
+          {work && (dist > 0 || extras > 0) && (
+            <div className="trips-preview">
+              <div className="trips-preview__row"><span>{dist} km × {formatMoney(rate, 2)}</span><span>{formatMoney(dist * rate)}</span></div>
+              {num(toll) > 0 && <div className="trips-preview__row"><span>{t("tripForm.toll", "Pedaggio autostrada")}</span><span>{formatMoney(num(toll))}</span></div>}
+              {num(parking) > 0 && <div className="trips-preview__row"><span>{t("tripForm.parking", "Parcheggio")}</span><span>{formatMoney(num(parking))}</span></div>}
+              {num(other) > 0 && <div className="trips-preview__row"><span>{otherWhat || t("tripForm.other", "Altre spese")}</span><span>{formatMoney(num(other))}</span></div>}
+              <div className="trips-preview__row trips-preview__tot"><span>{t("tripForm.preview", "Rimborso")}</span><b>{formatMoney(dist * rate + extras)}</b></div>
+            </div>
           )}
           <div className="modal__actions">
             <button type="button" className="btn btn--ghost" onClick={onClose}>{t("common.cancel")}</button>

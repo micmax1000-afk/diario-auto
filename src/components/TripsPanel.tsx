@@ -65,7 +65,7 @@ export default function TripsPanel({ vehicle }: { vehicle: Vehicle }) {
             <b>{km(workKm)} <small>km</small></b>
           </div>
           <div className="fc-sum__kpi">
-            <span>{t("trips.tolls", "Pedaggi e sosta")}</span>
+            <span>{t("trips.expenses", "Spese viaggio")}</span>
             <b>{formatMoney(extra)}</b>
           </div>
           <button type="button" className="fc-sum__kpi trips-rate">
