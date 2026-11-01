@@ -49,6 +49,7 @@ import Dashboard, { type ActivityKind } from "./components/Dashboard";
 import QuickEntryHeader from "./components/QuickEntryHeader";
 import ObdAdapters from "./components/ObdAdapters";
 import VoiceFuelSheet from "./components/VoiceFuelSheet";
+import FuelStations from "./components/FuelStations";
 import AddSheet, { type AddAction } from "./components/AddSheet";
 import MenuSections from "./components/MenuSections";
 import BottomTabBar, { type TabId } from "./components/BottomTabBar";
@@ -140,6 +141,7 @@ export default function App() {
   const [showNewVehicleForm, setShowNewVehicleForm] = useState(false);
   const [showPremium, setShowPremium] = useState(false);
   const [showAdapters, setShowAdapters] = useState(false);
+  const [showStations, setShowStations] = useState(false);
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
   const { isPro, refresh: refreshProStatus } = useProStatus();
   // Backup automatico su Drive bloccato per sicurezza (molti meno dati dell'ultimo backup).
@@ -187,6 +189,7 @@ export default function App() {
   useBackButtonClose(showBackup, () => { setShowBackup(false); setMainTab("impostazioni"); });
   useBackButtonClose(showPremium, () => setShowPremium(false));
   useBackButtonClose(showAdapters, () => setShowAdapters(false));
+  useBackButtonClose(showStations, () => setShowStations(false));
   useBackButtonClose(showFleet, () => setShowFleet(false));
   useBackButtonClose(quickKmVehicle !== null, () => setQuickKmVehicle(null));
   useBackButtonClose(kmHistoryVehicleId !== null, () => setKmHistoryVehicleId(null));
@@ -988,6 +991,7 @@ export default function App() {
                     if (currentVehicle) setKmHistoryVehicleId(currentVehicle.id);
                   }}
                   onOpenAdapters={() => setShowAdapters(true)}
+                  onOpenStations={() => setShowStations(true)}
                 />
               }
             />
@@ -1164,6 +1168,18 @@ export default function App() {
       )}
 
       {showAdapters && <ObdAdapters onBack={() => setShowAdapters(false)} />}
+      {showStations && (
+        <FuelStations
+          onBack={() => setShowStations(false)}
+          onUsePrice={(price) => {
+            const v = currentVehicle;
+            setShowStations(false);
+            if (!v) return;
+            setQuickFuelPrefill({ pricePerUnit: price, totalCost: 0 });
+            setQuickFuelVehicleId(v.id);
+          }}
+        />
+      )}
 
       {kmHistoryVehicleId &&
         (() => {

@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { Vehicle, Reminder, MaintenanceEntry, FuelEntry, ChargingEntry, ExpenseEntry } from "../types";
 import { getNumberLocale } from "../utils/locale";
@@ -15,7 +15,9 @@ import {
   calculateElectricConsumption,
   averageElectricConsumption,
   mainFuelSource,
+  consumptionAlert,
 } from "../utils/calculations";
+import { getMeta, setMeta } from "../utils/db";
 import { isoToLocalDate, localMonthString } from "../utils/dates";
 import { reminderStatus } from "../utils/kmForecast";
 
@@ -63,6 +65,23 @@ export default function Dashboard({
   const activeVehicles = vehicles.filter((v) => !v.archived);
   const current = activeVehicles.find((v) => v.id === currentVehicleId) ?? activeVehicles[0];
   const colors = resolveVehicleColors(vehicles);
+
+  // Avvisi intelligenti chiusi: si ricordano i km del pieno a cui si riferivano.
+  const [dismissed, setDismissed] = useState<Record<string, number>>({});
+  useEffect(() => {
+    let cancelled = false;
+    Promise.all(activeVehicles.map(async (v) => [`consumption-alert-${v.id}`, Number(await getMeta(`consumption-alert-${v.id}`))] as const)).then((pairs) => {
+      if (!cancelled) setDismissed(Object.fromEntries(pairs.filter(([, km]) => km > 0)));
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeVehicles.map((v) => v.id).join()]);
+  function dismissAlert(key: string, atKm: number) {
+    setDismissed((d) => ({ ...d, [key]: atKm }));
+    void setMeta(key, String(atKm));
+  }
 
   // ---- Carosello: scorrendo di lato cambia il veicolo in primo piano ----
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -149,6 +168,10 @@ export default function Dashboard({
         const kmPerL = averageConsumption(calculateConsumption(vFuel), mainFuelSource(current.fuelType));
         return kmPerL ? 100 / kmPerL : null;
       })();
+  const alert = electric
+    ? null
+    : consumptionAlert(calculateConsumption(vFuel).filter((p) => !mainFuelSource(current.fuelType) || p.source === mainFuelSource(current.fuelType)));
+  const alertKey = `consumption-alert-${current.id}`;
   const yearAgo = Date.now() - YEAR_MS;
   const inYear = (d: string) => new Date(d).getTime() >= yearAgo;
   const yearKms = [...vFuel, ...vCharge].filter((e) => inYear(e.date)).map((e) => e.km);
@@ -226,6 +249,34 @@ export default function Dashboard({
             <i key={v.id} className={v.id === current.id ? "is-on" : ""} />
           ))}
         </div>
+      )}
+
+      {alert && dismissed[alertKey] !== alert.atKm && (
+        <section className="smart-alert" role="status">
+          <div className="smart-alert__head">
+            <span className="smart-alert__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 18l6-6 4 4 6-8M20 8v5M20 8h-5" /></svg>
+            </span>
+            <span>
+              <b>{t("smart.consumptionTitle", { pct: alert.increasePct })}</b>
+              <small>
+                {t("smart.consumptionBody", {
+                  recent: alert.recent.toLocaleString(locale, { maximumFractionDigits: 1 }),
+                  usual: alert.usual.toLocaleString(locale, { maximumFractionDigits: 1 }),
+                })}
+              </small>
+            </span>
+          </div>
+          <ul className="smart-alert__tips">
+            <li>{t("smart.tipTyres")}</li>
+            <li>{t("smart.tipLoad")}</li>
+            <li>{t("smart.tipFilter")}</li>
+            <li>{t("smart.tipStyle")}</li>
+          </ul>
+          <button type="button" className="dash-link" onClick={() => dismissAlert(alertKey, alert.atKm)}>
+            {t("smart.dismiss")}
+          </button>
+        </section>
       )}
 
       <div className="home-sect">

@@ -1426,5 +1426,45 @@
     "no": "No",
     "vehicleDefault": "Veicolo non detto: uso {{name}}.",
     "continue": "Controlla e salva"
+  },
+  "entryCheck": {
+    "title": "Controlla questi dati",
+    "priceOdd": "Il prezzo {{price}} al litro sembra sbagliato: forse manca la virgola?",
+    "priceOff": "Il prezzo {{price}} è molto diverso dal solito ({{usual}}).",
+    "litersHigh": "{{liters}} litri sono molti per un solo rifornimento.",
+    "kmJump": "Sono passati {{km}} km dall'ultimo rifornimento: hai saltato qualche pieno?",
+    "saveAnyway": "Salva comunque",
+    "fix": "Correggi"
+  },
+  "smart": {
+    "consumptionTitle": "Consumo in aumento del {{pct}}%",
+    "consumptionBody": "Negli ultimi due pieni {{recent}} l/100 km, di solito {{usual}}. Cosa controllare:",
+    "tipTyres": "Pressione delle gomme",
+    "tipLoad": "Carichi e portapacchi sul tetto",
+    "tipFilter": "Filtro dell'aria e tagliando",
+    "tipStyle": "Tragitti brevi o guida più sportiva del solito",
+    "dismiss": "Ho capito"
+  },
+  "stations": {
+    "title": "Distributori vicini",
+    "menuSub": "I prezzi più bassi intorno a te",
+    "near": "Vicino a te",
+    "radius": "Raggio",
+    "within": "entro {{km}} km",
+    "fuel_benzina": "Benzina",
+    "fuel_gasolio": "Gasolio",
+    "fuel_gpl": "GPL",
+    "fuel_metano": "Metano",
+    "self": "Self",
+    "served": "Servito",
+    "sort": "Ordina",
+    "byPrice": "Prezzo più basso",
+    "byDistance": "Più vicino",
+    "saving": "Da {{name}} risparmi circa {{amount}} su un pieno da 40 litri rispetto alla media della zona.",
+    "cheapest": "Il più economico",
+    "navigate": "Portami lì",
+    "usePrice": "Usa questo prezzo",
+    "none": "Nessun distributore in questo raggio",
+    "source": "Prezzi comunicati dai gestori al Ministero delle Imprese e del Made in Italy (Osservaprezzi carburanti), aggiornati alle 8 del giorno prima. Dati aperti, licenza IODL 2.0."
   }
 }
