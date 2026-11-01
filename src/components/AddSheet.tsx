@@ -95,7 +95,7 @@ export default function AddSheet({ vehicle, vehicles, lastFuel, onPick, onChange
                 <span className="add-sheet__go">{t("addSheet.yes")}</span>
               </button>
             )}
-            {(canFuel || canCharge) && (
+            {(canFuel || canCharge) && i18n.language.startsWith("it") && (
               <button type="button" className="add-sheet__repeat add-sheet__voice" onClick={() => onPick("fuelVoice")}>
                 <span className="add-sheet__icon add-sheet__icon--solid">
                   <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" /><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21M8.5 21h7" /></svg>

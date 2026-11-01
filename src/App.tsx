@@ -1170,6 +1170,7 @@ export default function App() {
       {showAdapters && <ObdAdapters onBack={() => setShowAdapters(false)} />}
       {showStations && (
         <FuelStations
+          defaultFuel={currentVehicle?.fuelType === "diesel" ? "gasolio" : currentVehicle?.fuelType === "gpl" ? "gpl" : currentVehicle?.fuelType === "metano" ? "metano" : "benzina"}
           onBack={() => setShowStations(false)}
           onUsePrice={(price) => {
             const v = currentVehicle;

@@ -1465,6 +1465,13 @@
     "navigate": "Portami lì",
     "usePrice": "Usa questo prezzo",
     "none": "Nessun distributore in questo raggio",
-    "source": "Prezzi comunicati dai gestori al Ministero delle Imprese e del Made in Italy (Osservaprezzi carburanti), aggiornati alle 8 del giorno prima. Dati aperti, licenza IODL 2.0."
+    "source": "Prezzi comunicati dai gestori al Ministero delle Imprese e del Made in Italy (Osservaprezzi carburanti), aggiornati alle 8 del giorno prima. Dati aperti, licenza IODL 2.0.",
+    "loading": "Cerco i distributori…",
+    "loadingBody": "La prima volta scarico i prezzi del Ministero: può volerci qualche secondo.",
+    "deniedTitle": "Serve la posizione",
+    "deniedBody": "Per trovare i distributori vicini consenti all'app di usare la posizione (anche approssimativa).",
+    "errorTitle": "Prezzi non disponibili",
+    "errorBody": "Non riesco a scaricare i prezzi del Ministero. Controlla la connessione e riprova.",
+    "retry": "Riprova"
   }
 }

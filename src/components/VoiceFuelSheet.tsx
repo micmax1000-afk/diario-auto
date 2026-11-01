@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from "react";
+import { Capacitor } from "@capacitor/core";
+import { SpeechRecognition } from "@capacitor-community/speech-recognition";
 import { useTranslation } from "react-i18next";
 import type { Vehicle } from "../types";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -25,6 +27,7 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
   const { formatMoney } = useAppSettings();
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
+  const [voiceError, setVoiceError] = useState<"unavailable" | "denied" | null>(null);
   const recRef = useRef<Recognition | null>(null);
   const parsed = parseVoiceFuel(text, vehicles);
   const vehicle = vehicles.find((v) => v.id === (parsed.vehicleId ?? currentVehicleId));
@@ -37,9 +40,40 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
   const qty = (charge ? parsed.kWh : parsed.liters) ?? (parsed.totalCost && parsed.pricePerUnit ? parsed.totalCost / parsed.pricePerUnit : undefined);
   const ready = !!vehicle && !!parsed.totalCost && !!parsed.pricePerUnit;
 
+  async function listenNative() {
+    try {
+      const { available } = await SpeechRecognition.available();
+      if (!available) return setVoiceError("unavailable");
+      let perm = await SpeechRecognition.checkPermissions();
+      if (perm.speechRecognition !== "granted") perm = await SpeechRecognition.requestPermissions();
+      if (perm.speechRecognition !== "granted") return setVoiceError("denied");
+      setVoiceError(null);
+      await SpeechRecognition.removeAllListeners();
+      await SpeechRecognition.addListener("partialResults", (d) => {
+        if (d.matches?.[0]) setText(d.matches[0]);
+      });
+      await SpeechRecognition.addListener("listeningState", (d) => setListening(d.status === "started"));
+      setListening(true);
+      await SpeechRecognition.start({ language: "it-IT", partialResults: true, popup: false, maxResults: 1 });
+    } catch {
+      setListening(false);
+      setVoiceError("unavailable");
+    }
+  }
+
   function listen() {
+    if (listening) {
+      if (Capacitor.isNativePlatform()) void SpeechRecognition.stop();
+      else recRef.current?.stop();
+      setListening(false);
+      return;
+    }
+    if (Capacitor.isNativePlatform()) {
+      void listenNative();
+      return;
+    }
     const rec = createRecognition();
-    if (!rec) return;
+    if (!rec) return setVoiceError("unavailable");
     recRef.current = rec;
     rec.lang = i18n.language === "it" ? "it-IT" : i18n.language;
     rec.interimResults = true;
@@ -49,7 +83,16 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
     setListening(true);
     rec.start();
   }
-  useEffect(() => () => recRef.current?.stop(), []);
+  useEffect(
+    () => () => {
+      recRef.current?.stop();
+      if (Capacitor.isNativePlatform()) {
+        void SpeechRecognition.stop().catch(() => {});
+        void SpeechRecognition.removeAllListeners();
+      }
+    },
+    [],
+  );
 
   const chip = (label: string, value: string | undefined, ok = !!value) => (
     <div className={`voice-chip${ok ? " is-ok" : ""}`}>
@@ -73,6 +116,7 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
           </svg>
         </button>
         <p className="voice-status">{listening ? t("voiceFuel.listening") : t("voiceFuel.tap")}</p>
+        {voiceError && <p className="voice-error">{t(voiceError === "denied" ? "voiceFuel.denied" : "voiceFuel.unavailable")}</p>}
         <p className="voice-example">{t(current?.fuelType === "elettrico" ? "voiceFuel.exampleCharge" : "voiceFuel.example")}</p>
 
         <div className="field">

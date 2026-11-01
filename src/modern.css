@@ -1925,7 +1925,7 @@ body {
 .smart-alert__head small { display: block; margin-top: 0.15rem; color: var(--text-muted); font-size: 0.82rem; line-height: 1.35; }
 .smart-alert__icon { flex: none; width: 36px; height: 36px; border-radius: 12px; background: var(--amber-soft); color: var(--amber); display: grid; place-items: center; }
 .smart-alert__icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-.smart-alert__tips { margin: 0.55rem 0 0.45rem 3.2rem; padding: 0; font-size: 0.82rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem 0.8rem; }
+.smart-alert__tips { margin: 0.55rem 0 0.45rem 3.2rem; padding: 0; font-size: 0.82rem; display: grid; grid-template-columns: 1fr; gap: 0.2rem; }
 .smart-alert__tips { list-style: none; }
 .smart-alert__tips li { color: var(--text); position: relative; padding-inline-start: 0.7rem; }
 .smart-alert__tips li::before { content: ""; position: absolute; inset-inline-start: 0; top: 0.5em; width: 4px; height: 4px; border-radius: 50%; background: var(--amber); }
@@ -1956,3 +1956,4 @@ body {
 .station__actions { display: flex; gap: 0.5rem; margin-top: 0.6rem; }
 .station__actions .btn { flex: 1; justify-content: center; }
 .stations__source { margin: 0.3rem 0 0; font-size: 0.72rem; color: var(--text-muted); line-height: 1.4; }
+.voice-error { margin: 0.3rem 0 0; font-size: 0.82rem; color: var(--danger); }
