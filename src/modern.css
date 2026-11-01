@@ -1863,3 +1863,9 @@ body {
 
 .welcome-guide__cars img { width: 112px; height: auto; }
 .welcome-guide__cars img:nth-child(2) { width: 140px; margin: 0 -14px; position: relative; z-index: 1; }
+
+/* Icone del tragitto (a linea, come nel resto dell'app) */
+.commute-icon { width: 1.05em; height: 1.05em; flex: none; vertical-align: -0.17em; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; color: var(--amber); }
+.commute-scenario .record-card__title .commute-icon,
+.commute-compare__name .commute-icon { width: 1.15em; height: 1.15em; }
+.commute-preset .commute-icon { color: inherit; }

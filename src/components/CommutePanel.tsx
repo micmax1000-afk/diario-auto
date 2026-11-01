@@ -42,7 +42,7 @@ import {
 } from "../utils/storage";
 import CommuteSettingsForm from "./CommuteSettingsForm";
 import CommuteScenarioForm from "./CommuteScenarioForm";
-import { SCENARIO_ICONS } from "./commuteIcons";
+import CommuteIcon, { type CommuteIconName } from "./CommuteIcon";
 
 interface Props {
   vehicle: Vehicle;
@@ -160,11 +160,11 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
 
   const segments = year
     ? [
-        { key: "fuel", label: t(electric ? "commute.energy" : "commute.fuel"), icon: electric ? "⚡" : "⛽", value: year.fuel },
-        { key: "toll", label: t("commute.toll"), icon: "🛣️", value: year.toll },
-        { key: "parking", label: t("commute.parking"), icon: "🅿️", value: year.parking },
-        { key: "other", label: t("commute.other"), icon: "➕", value: year.other },
-        ...(allIncluded ? [{ key: "fixed", label: t("commute.fixedCosts"), icon: "🔧", value: fixedCosts }] : []),
+        { key: "fuel", label: t(electric ? "commute.energy" : "commute.fuel"), icon: (electric ? "energy" : "fuel") as CommuteIconName, value: year.fuel },
+        { key: "toll", label: t("commute.toll"), icon: "toll" as CommuteIconName, value: year.toll },
+        { key: "parking", label: t("commute.parking"), icon: "parking" as CommuteIconName, value: year.parking },
+        { key: "other", label: t("commute.other"), icon: "other" as CommuteIconName, value: year.other },
+        ...(allIncluded ? [{ key: "fixed", label: t("commute.fixedCosts"), icon: "fixed" as CommuteIconName, value: fixedCosts }] : []),
       ].filter((s) => s.value > 0)
     : [];
   const barTotal = segments.reduce((sum, s) => sum + s.value, 0);
@@ -172,8 +172,8 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
   // Barre del confronto: veicolo attuale + scenari, costo annuo solo viaggio.
   const rows = year
     ? [
-        { id: "current", label: `${vehicle.name}`, tag: t("commute.currentVehicleTag"), icon: "", value: year.total as number | null },
-        ...scenarios.map((s) => ({ id: s.id, label: scenarioName(s), tag: s.note ?? "", icon: SCENARIO_ICONS[s.fuelType], value: yearCostOf(s) })),
+        { id: "current", label: `${vehicle.name}`, tag: t("commute.currentVehicleTag"), icon: "car" as CommuteIconName, value: year.total as number | null },
+        ...scenarios.map((s) => ({ id: s.id, label: scenarioName(s), tag: s.note ?? "", icon: s.fuelType as CommuteIconName, value: yearCostOf(s) })),
       ]
     : [];
   const maxRow = Math.max(1, ...rows.map((r) => r.value ?? 0));
@@ -257,7 +257,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
                 <li key={s.key}>
                   <span className={`commute-legend__dot commute-bar__seg--${s.key}`} aria-hidden="true" />
                   <span className="commute-legend__label">
-                    <span aria-hidden="true">{s.icon}</span> {s.label}
+                    <CommuteIcon name={s.icon} /> {s.label}
                   </span>
                   <span className="commute-legend__value">{money0(s.value)}</span>
                 </li>
@@ -266,7 +266,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
                 <li className="commute-legend__muted">
                   <span className="commute-legend__dot" aria-hidden="true" />
                   <span className="commute-legend__label">
-                    <span aria-hidden="true">🔧</span> {t("commute.fixedCosts")}
+                    <CommuteIcon name="fixed" /> {t("commute.fixedCosts")}
                   </span>
                   <span className="commute-legend__value">+{money0(fixedCosts)}</span>
                 </li>
@@ -343,7 +343,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
                   <li key={r.id}>
                     <div className="commute-compare__head">
                       <span className="commute-compare__name">
-                        {r.icon && <span aria-hidden="true">{r.icon} </span>}
+                        <CommuteIcon name={r.icon} />{" "}
                         {r.label}
                         {r.tag && <span className="commute-compare__tag"> {i === 0 ? r.tag : `· ${r.tag}`}</span>}
                       </span>
@@ -386,7 +386,7 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
                   >
                     <span className="record-card__header">
                       <span className="record-card__title">
-                        <span aria-hidden="true">{SCENARIO_ICONS[s.fuelType]}</span> {scenarioName(s)}
+                        <CommuteIcon name={s.fuelType} /> {scenarioName(s)}
                       </span>
                       {s.note && <span className="commute-scenario__note">{s.note}</span>}
                     </span>
