@@ -129,6 +129,7 @@ export default function App() {
   const [showAddSheet, setShowAddSheet] = useState(false);
   const [quickFuelPrefill, setQuickFuelPrefill] = useState<{ pricePerUnit: number; totalCost: number; km?: number; fullTank?: boolean } | undefined>(undefined);
   const [voiceFuelVehicleId, setVoiceFuelVehicleId] = useState<string | null>(null);
+  const [quickChargePrefill, setQuickChargePrefill] = useState<{ pricePerKWh?: number; totalCost?: number; atHome?: boolean; km?: number } | undefined>(undefined);
   useBackButtonClose(!!voiceFuelVehicleId, () => setVoiceFuelVehicleId(null));
   const [detailAutoOpen, setDetailAutoOpen] = useState<"maintenance" | "expense" | "reminder" | undefined>(undefined);
   const [showManageVehicles, setShowManageVehicles] = useState(false);
@@ -1186,13 +1187,18 @@ export default function App() {
 
       {voiceFuelVehicleId && (
         <VoiceFuelSheet
-          vehicles={activeOrderedVehicles.filter((v) => v.fuelType !== "elettrico")}
+          vehicles={activeOrderedVehicles}
           currentVehicleId={voiceFuelVehicleId}
           onClose={() => setVoiceFuelVehicleId(null)}
-          onContinue={(vehicleId, data) => {
+          onContinue={(vehicleId, data, kind) => {
             setVoiceFuelVehicleId(null);
-            setQuickFuelPrefill({ pricePerUnit: data.pricePerUnit ?? 0, totalCost: data.totalCost ?? 0, km: data.km, fullTank: data.fullTank });
-            setQuickFuelVehicleId(vehicleId);
+            if (kind === "charge") {
+              setQuickChargePrefill({ pricePerKWh: data.pricePerUnit, totalCost: data.totalCost, atHome: data.atHome, km: data.km });
+              setQuickChargeVehicleId(vehicleId);
+            } else {
+              setQuickFuelPrefill({ pricePerUnit: data.pricePerUnit ?? 0, totalCost: data.totalCost ?? 0, km: data.km, fullTank: data.fullTank });
+              setQuickFuelVehicleId(vehicleId);
+            }
           }}
         />
       )}
@@ -1237,11 +1243,16 @@ export default function App() {
               urgentCounts={urgentByVehicle}
               onChangeVehicle={(id) => setQuickChargeVehicleId(id)}
               existingEntries={chargingEntries.filter((c) => c.vehicleId === v.id)}
+              prefill={quickChargePrefill}
               onSave={(entry) => {
                 handleSaveCharging(entry);
                 setQuickChargeVehicleId(null);
+                setQuickChargePrefill(undefined);
               }}
-              onClose={() => setQuickChargeVehicleId(null)}
+              onClose={() => {
+                setQuickChargeVehicleId(null);
+                setQuickChargePrefill(undefined);
+              }}
             />
           );
         })()}

@@ -2,7 +2,11 @@ import type { Vehicle } from "../types";
 
 /** Cosa si capisce da una frase come "20 euro sulla Golf a 1,90 al litro, 92.900 km, pieno". */
 export interface VoiceFuel {
+  /** Ricarica se si parla di kWh, colonnina o "ricarica"; rifornimento se di litri o "pieno". */
+  kind?: "fuel" | "charge";
   vehicleId?: string;
+  kWh?: number;
+  atHome?: boolean;
   totalCost?: number;
   pricePerUnit?: number;
   liters?: number;
@@ -29,8 +33,25 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
     s = s.replace(km[0], " ");
   }
 
+  // ricarica: "0,59 euro al kWh", poi "30 kWh"
+  const kwhPrice = s.match(new RegExp(`(${NUM})\\s*(?:euro\\s*)?(?:al\\s*|/\\s*)(?:kwh|kw\\s*h|chilowattora|kilowattora)\\b`));
+  if (kwhPrice && toNum(kwhPrice[1]) > 0 && toNum(kwhPrice[1]) < 5) {
+    out.pricePerUnit = toNum(kwhPrice[1]);
+    out.kind = "charge";
+    s = s.replace(kwhPrice[0], " ");
+  }
+  const kwh = s.match(new RegExp(`(${NUM})\\s*(?:kwh|kw\\s*h|chilowattora|kilowattora)\\b`));
+  if (kwh) {
+    out.kWh = toNum(kwh[1]);
+    out.kind = "charge";
+    s = s.replace(kwh[0], " ");
+  }
+  if (/\b(?:a|da|in)\s+casa\b|wallbox|garage/.test(s)) out.atHome = true;
+  else if (/colonnin|supercharger|fuori casa/.test(s)) out.atHome = false;
+  if (out.atHome !== undefined || /\bricaric/.test(s)) out.kind = "charge";
+
   // prezzo al litro: "1,90 euro al litro", "a 1,90 al litro", "1.90 €/l", "prezzo 1,90"
-  const price =
+  const price = out.pricePerUnit !== undefined ? null :
     s.match(new RegExp(`(${NUM})\\s*(?:euro\\s*)?(?:al\\s*litro|/\\s*l\\b|al\\s*kg)`)) ??
     s.match(new RegExp(`prezzo\\s*(?:di\\s*)?(${NUM})`)) ??
     s.match(new RegExp(`\\ba\\s*(${NUM})\\b(?!\\s*(?:litri|euro))`));
@@ -41,6 +62,7 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
 
   const liters = s.match(new RegExp(`(${NUM})\\s*(?:litri|litro|lt|l)\\b`));
   if (liters) {
+    out.kind = "fuel";
     out.liters = toNum(liters[1]);
     s = s.replace(liters[0], " ");
   }
@@ -50,8 +72,11 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
 
   if (/\bnon\s+(?:il\s+)?pieno\b|\bparziale\b/.test(s)) out.fullTank = false;
   else if (/\bpieno\b/.test(s)) out.fullTank = true;
+  if (out.kind === undefined && (out.fullTank !== undefined || /\brifornimento\b|\bbenzina\b|\bdiesel\b|\bgasolio\b/.test(s))) out.kind = "fuel";
 
   // completa la terza grandezza se ne mancano solo una
+  if (out.totalCost === undefined && out.kWh && out.pricePerUnit) out.totalCost = Math.round(out.kWh * out.pricePerUnit * 100) / 100;
+  if (out.pricePerUnit === undefined && out.kWh && out.totalCost) out.pricePerUnit = Math.round((out.totalCost / out.kWh) * 1000) / 1000;
   if (out.totalCost === undefined && out.liters && out.pricePerUnit) out.totalCost = Math.round(out.liters * out.pricePerUnit * 100) / 100;
   if (out.pricePerUnit === undefined && out.liters && out.totalCost) out.pricePerUnit = Math.round((out.totalCost / out.liters) * 1000) / 1000;
 
