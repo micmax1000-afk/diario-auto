@@ -89,6 +89,28 @@ export interface MaintenanceEntry extends SyncFields {
 // Tenute separate dalla manutenzione, come nelle app di riferimento: i costi di
 // servizio/officina sono più interessanti da monitorare a parte da bollo/assicurazione/multe.
 
+/** Viaggio (di lavoro o privato) per il rimborso chilometrico. */
+export interface TripEntry extends SyncFields {
+  id: string;
+  vehicleId: string;
+  date: string; // ISO date
+  work: boolean;
+  from?: string;
+  to?: string;
+  purpose?: string;
+  distanceKm: number; // km percorsi in tutto (andata e ritorno compresi)
+  oneWayKm?: number; // inserimento per distanza
+  roundTrip?: boolean;
+  kmStart?: number; // inserimento da contachilometri
+  kmEnd?: number;
+  toll?: number;
+  parking?: number;
+  otherCost?: number;
+  otherWhat?: string;
+  /** Spese dell'auto create da questo viaggio (pedaggio e parcheggio). */
+  linkedExpenseIds?: string[];
+}
+
 export type ExpenseCategory = "assicurazione" | "bollo" | "multa" | "documenti" | "altro";
 
 export interface ExpenseEntry extends SyncFields {

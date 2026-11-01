@@ -1879,7 +1879,10 @@ body {
 .trips-split__legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--surface-alt); border: 1px solid var(--border); margin-inline-end: 0.25rem; }
 .trips-split__legend i.is-work { background: var(--amber); border-color: var(--amber); }
 .trips-actions { display: flex; flex-direction: column; gap: 0.5rem; }
-.trips-export { display: flex; align-items: center; justify-content: center; gap: 0.45rem; }
+.trips-export { display: flex; gap: 0.5rem; }
+.trips-export .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+.trips-ratehint { display: block; width: 100%; margin: 0 0 0.75rem; padding: 0.7rem 0.9rem; border: 1px dashed color-mix(in srgb, var(--amber) 60%, transparent); border-radius: 14px; background: var(--amber-soft); color: var(--amber-ink); font: inherit; font-size: 0.85rem; font-weight: 600; text-align: start; cursor: pointer; }
+.trips-rate__set { color: var(--amber-ink); font-size: 0.85rem !important; }
 .trips-export svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .trips-row--private .mrow__amt { color: var(--text-muted); font-weight: 500; }
 .trips-kmmode { margin-top: 0.3rem; }

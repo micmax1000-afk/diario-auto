@@ -9,6 +9,7 @@ import type {
   ObdVehicleProfile,
   CommuteSettings,
   CommuteScenario,
+  TripEntry,
 } from "../types";
 import { isoToLocalDate } from "./dates";
 import {
@@ -227,6 +228,18 @@ export async function deleteCommuteScenario(id: string): Promise<void> {
   return softDeleteOne("commuteScenarios", id);
 }
 
+// ---------- Viaggi ----------
+
+export async function loadTripEntries(): Promise<TripEntry[]> {
+  return getAll<TripEntry>("tripEntries");
+}
+export async function putTripEntry(entry: TripEntry): Promise<void> {
+  return putOne("tripEntries", entry);
+}
+export async function deleteTripEntry(id: string): Promise<void> {
+  return softDeleteOne("tripEntries", id);
+}
+
 // ---------- Backup completo ----------
 
 export interface BackupData {
@@ -242,6 +255,7 @@ export interface BackupData {
   obdProfiles?: ObdVehicleProfile[];
   commuteSettings?: CommuteSettings[];
   commuteScenarios?: CommuteScenario[];
+  tripEntries?: TripEntry[];
   homeChargingDefaults?: HomeChargingDefaults[];
   /** Installata prima che il Pro fosse a pagamento: resta sbloccato anche su un telefono nuovo. */
   earlyUser?: boolean;
@@ -260,6 +274,7 @@ export async function buildBackup(): Promise<BackupData> {
     commuteSettings,
     commuteScenarios,
     homeChargingDefaults,
+    tripEntries,
   ] = await Promise.all([
     loadVehicles(),
     loadFuelEntries(),
@@ -272,6 +287,7 @@ export async function buildBackup(): Promise<BackupData> {
     loadCommuteSettings(),
     loadCommuteScenarios(),
     getAllValues<HomeChargingDefaults>("homeChargingDefaults"),
+    loadTripEntries(),
   ]);
   const earlyUser = (await getMeta("early-user")) === "1";
 
@@ -289,6 +305,7 @@ export async function buildBackup(): Promise<BackupData> {
     commuteSettings,
     commuteScenarios,
     homeChargingDefaults,
+    tripEntries,
     ...(earlyUser ? { earlyUser: true } : {}),
   };
 }
@@ -328,6 +345,7 @@ export async function restoreBackup(data: BackupData): Promise<void> {
   await replaceAllByVehicleKey("commuteSettings", data.commuteSettings ?? []);
   await replaceAllByVehicleKey("homeChargingDefaults", data.homeChargingDefaults ?? []);
   await replaceAll("commuteScenarios", data.commuteScenarios ?? []);
+  await replaceAll("tripEntries", data.tripEntries ?? []);
   if (data.earlyUser) await setMeta("early-user", "1");
 }
 
@@ -347,7 +365,7 @@ export function daysSince(iso: string): number {
 
 // ---------- Export CSV ----------
 
-function toCsvRow(values: (string | number)[]): string {
+export function toCsvRow(values: (string | number)[]): string {
   return values
     .map((v) => {
       const s = String(v ?? "");

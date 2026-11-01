@@ -10,11 +10,12 @@ import type {
   ObdVehicleProfile,
   CommuteSettings,
   CommuteScenario,
+  TripEntry,
 } from "../types";
 import type { HomeChargingDefaults } from "./storage";
 
 const DB_NAME = "diario-auto";
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 interface DiarioAutoDB extends DBSchema {
   vehicles: { key: string; value: Vehicle };
@@ -27,6 +28,7 @@ interface DiarioAutoDB extends DBSchema {
   obdProfiles: { key: string; value: ObdVehicleProfile }; // keyPath: vehicleId
   commuteSettings: { key: string; value: CommuteSettings }; // keyPath: vehicleId
   commuteScenarios: { key: string; value: CommuteScenario; indexes: { vehicleId: string } };
+  tripEntries: { key: string; value: TripEntry; indexes: { vehicleId: string } };
   homeChargingDefaults: { key: string; value: HomeChargingDefaults }; // keyPath: vehicleId
   meta: { key: string; value: { key: string; value: string } };
 }
@@ -40,6 +42,7 @@ const ID_KEYED_STORES_WITH_VEHICLE_INDEX = [
   "reminders",
   "logSessions",
   "commuteScenarios",
+  "tripEntries",
 ] as const;
 
 let dbPromise: Promise<IDBPDatabase<DiarioAutoDB>> | null = null;
@@ -47,18 +50,21 @@ let dbPromise: Promise<IDBPDatabase<DiarioAutoDB>> | null = null;
 export function getDb(): Promise<IDBPDatabase<DiarioAutoDB>> {
   if (!dbPromise) {
     dbPromise = openDB<DiarioAutoDB>(DB_NAME, DB_VERSION, {
+      // Crea solo gli store che mancano: vale sia per una nuova installazione
+      // sia per chi aggiorna (es. dalla versione 1 arriva solo tripEntries).
       upgrade(db) {
-        db.createObjectStore("vehicles", { keyPath: "id" });
+        if (!db.objectStoreNames.contains("vehicles")) db.createObjectStore("vehicles", { keyPath: "id" });
 
         for (const name of ID_KEYED_STORES_WITH_VEHICLE_INDEX) {
+          if (db.objectStoreNames.contains(name)) continue;
           const store = db.createObjectStore(name, { keyPath: "id" });
           store.createIndex("vehicleId", "vehicleId");
         }
 
-        db.createObjectStore("obdProfiles", { keyPath: "vehicleId" });
-        db.createObjectStore("commuteSettings", { keyPath: "vehicleId" });
-        db.createObjectStore("homeChargingDefaults", { keyPath: "vehicleId" });
-        db.createObjectStore("meta", { keyPath: "key" });
+        for (const name of ["obdProfiles", "commuteSettings", "homeChargingDefaults"] as const) {
+          if (!db.objectStoreNames.contains(name)) db.createObjectStore(name, { keyPath: "vehicleId" });
+        }
+        if (!db.objectStoreNames.contains("meta")) db.createObjectStore("meta", { keyPath: "key" });
       },
     });
   }

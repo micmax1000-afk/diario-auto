@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
-import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
+import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder, TripEntry } from "../types";
 import { calculateVehicleCosts, calculateConsumption, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
@@ -73,6 +73,9 @@ interface Props {
   onDeleteMaintenance: (id: string) => void;
   onAddExpense: (entry: ExpenseEntry) => void;
   onDeleteExpense: (id: string) => void;
+  tripEntries: TripEntry[];
+  onSaveTrip: (trip: TripEntry, alsoExpense: boolean) => void;
+  onDeleteTrip: (id: string) => void;
   onAddReminder: (reminder: Reminder) => void;
   onToggleReminder: (id: string) => void;
   onDeleteReminder: (id: string) => void;
@@ -143,6 +146,9 @@ export default function VehicleDetail({
   onDeleteMaintenance,
   onAddExpense,
   onDeleteExpense,
+  tripEntries,
+  onSaveTrip,
+  onDeleteTrip,
   onAddReminder,
   onToggleReminder,
   onDeleteReminder,
@@ -569,7 +575,7 @@ export default function VehicleDetail({
           </>
         )}
 
-        {tab === "viaggi" && <TripsPanel vehicle={vehicle} />}
+        {tab === "viaggi" && <TripsPanel vehicle={vehicle} trips={tripEntries} onSave={onSaveTrip} onDelete={onDeleteTrip} />}
         {tab === "tragitto" && <CommutePanel vehicle={vehicle} fuelEntries={fuelEntries} chargingEntries={chargingEntries} maintenanceEntries={maintenanceEntries} expenseEntries={expenseEntries} />}
 
         {tab === "riepilogo" && (
