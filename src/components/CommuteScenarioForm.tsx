@@ -11,7 +11,7 @@ import {
   TRANSIT_PRESET_EUR,
   isCarScenario,
 } from "../utils/commute";
-import { SCENARIO_ICONS } from "./commuteIcons";
+import CommuteIcon from "./CommuteIcon";
 
 interface Props {
   vehicleId: string;
@@ -158,7 +158,7 @@ export default function CommuteScenarioForm({
                 className={`commute-preset${fuelType === type ? " is-active" : ""}`}
                 onClick={() => pickType(type)}
               >
-                <span aria-hidden="true">{SCENARIO_ICONS[type]}</span> {t(`commuteFuelType.${type}`)}
+                <CommuteIcon name={type} /> {t(`commuteFuelType.${type}`)}
               </button>
             ))}
           </div>
