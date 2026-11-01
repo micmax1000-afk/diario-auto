@@ -73,7 +73,7 @@ const PremiumScreen = lazy(() => import("./components/PremiumScreen"));
 const KmHistory = lazy(() => import("./components/KmHistory"));
 
 // Mappa il tab della bottom bar alla scheda di dettaglio veicolo da aprire
-type DetailTabTarget = "live" | "rifornimenti" | "manutenzioni" | "spese" | "scadenze" | "tragitto" | "riepilogo";
+type DetailTabTarget = "live" | "rifornimenti" | "manutenzioni" | "spese" | "scadenze" | "tragitto" | "viaggi" | "riepilogo";
 
 type PendingAction =
   | { kind: "navigate"; tab: DetailTabTarget }
@@ -924,6 +924,7 @@ export default function App() {
                   onAddVehicle={handleRequestAddVehicle}
                   onManageVehicles={() => setShowManageVehicles(true)}
                   onOpenCommute={() => requestVehicleAction({ kind: "navigate", tab: "tragitto" })}
+                  onOpenTrips={() => requestVehicleAction({ kind: "navigate", tab: "viaggi" })}
                   onOpenExpenses={() => requestVehicleAction({ kind: "navigate", tab: "spese" })}
                   onOpenReminders={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
                   onOpenKmHistory={() => {

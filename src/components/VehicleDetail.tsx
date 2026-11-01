@@ -38,6 +38,7 @@ import CostChart from "./CostChart";
 import FuelPriceChart from "./FuelPriceChart";
 import LiveDataPanel from "./LiveDataPanel";
 import CommutePanel from "./CommutePanel";
+import TripsPanel from "./TripsPanel";
 import { reminderStatus } from "../utils/kmForecast";
 
 type DetailTab =
@@ -47,6 +48,7 @@ type DetailTab =
   | "spese"
   | "scadenze"
   | "tragitto"
+  | "viaggi"
   | "riepilogo";
 type Period = "sempre" | "anno-scorso" | "anno-corrente" | number;
 
@@ -87,7 +89,7 @@ interface Props {
   onOpenRemindersTab?: () => void;
 }
 
-const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "riepilogo"];
+const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "viaggi", "riepilogo"];
 // Scadenze del catalogo → cosa registrare quando si segnano come fatte.
 const REMINDER_FOLLOW_UP: Record<
   string,
@@ -117,6 +119,7 @@ const TAB_I18N_KEYS: Record<DetailTab, string> = {
   spese: "expenses.title",
   scadenze: "detail.tabs.reminders",
   tragitto: "detail.tabs.commute",
+  viaggi: "trips.title",
   riepilogo: "detail.tabs.summary",
 };
 
@@ -566,6 +569,7 @@ export default function VehicleDetail({
           </>
         )}
 
+        {tab === "viaggi" && <TripsPanel vehicle={vehicle} />}
         {tab === "tragitto" && <CommutePanel vehicle={vehicle} fuelEntries={fuelEntries} chargingEntries={chargingEntries} maintenanceEntries={maintenanceEntries} expenseEntries={expenseEntries} />}
 
         {tab === "riepilogo" && (
