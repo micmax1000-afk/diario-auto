@@ -1869,3 +1869,27 @@ body {
 .commute-scenario .record-card__title .commute-icon,
 .commute-compare__name .commute-icon { width: 1.15em; height: 1.15em; }
 .commute-preset .commute-icon { color: inherit; }
+
+/* Viaggi di lavoro (anteprima) */
+.trips-rate { border: none; background: none; font: inherit; color: inherit; text-align: start; padding: 0; cursor: pointer; }
+.trips-rate span { color: var(--amber-ink); }
+.trips-split { margin-top: 0.85rem; height: 8px; border-radius: 4px; background: var(--surface-alt); overflow: hidden; }
+.trips-split i { display: block; height: 100%; background: var(--amber); border-radius: 4px; }
+.trips-split__legend { display: flex; justify-content: space-between; margin-top: 0.4rem; font-size: 0.74rem; color: var(--text-muted); }
+.trips-split__legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--surface-alt); border: 1px solid var(--border); margin-inline-end: 0.25rem; }
+.trips-split__legend i.is-work { background: var(--amber); border-color: var(--amber); }
+.trips-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+.trips-export { display: flex; gap: 0.5rem; }
+.trips-export .btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.4rem; }
+.trips-ratehint { display: block; width: 100%; margin: 0 0 0.75rem; padding: 0.7rem 0.9rem; border: 1px dashed color-mix(in srgb, var(--amber) 60%, transparent); border-radius: 14px; background: var(--amber-soft); color: var(--amber-ink); font: inherit; font-size: 0.85rem; font-weight: 600; text-align: start; cursor: pointer; }
+.trips-rate__set { color: var(--amber-ink); font-size: 0.85rem !important; }
+.trips-export svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.trips-row--private .mrow__amt { color: var(--text-muted); font-weight: 500; }
+.trips-kmmode { margin-top: 0.3rem; }
+.trips-preview { margin: 0.2rem 0 0.4rem; padding: 0.65rem 0.8rem; border-radius: 12px; background: var(--amber-soft); font-size: 0.9rem; }
+.trips-preview small { color: var(--text-muted); }
+.trips-section { margin: 0.4rem 0 0; font-size: 0.95rem; font-weight: 800; }
+.trips-section small { font-weight: 500; color: var(--text-muted); font-size: 0.8rem; }
+.trips-preview { display: flex; flex-direction: column; gap: 0.2rem; }
+.trips-preview__row { display: flex; justify-content: space-between; gap: 0.5rem; font-size: 0.84rem; color: var(--text-muted); }
+.trips-preview__tot { margin-top: 0.2rem; padding-top: 0.3rem; border-top: 1px solid color-mix(in srgb, var(--amber) 30%, transparent); color: var(--text); font-size: 0.95rem; }

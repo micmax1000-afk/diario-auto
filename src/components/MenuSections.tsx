@@ -17,6 +17,7 @@ interface Props {
   onOpenKmHistory: () => void;
   onOpenReminders: () => void;
   onOpenAdapters: () => void;
+  onOpenTrips: () => void;
 }
 
 const ICONS = {
@@ -30,6 +31,7 @@ const ICONS = {
   ),
   wallet: <path d="M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7zM3 10h18M15 14h3" />,
   chart: <path d="M4 20V10M11 20V4M18 20v-7" />,
+  briefcase: <path d="M4 8h16v11H4zM9 8V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V8M4 13h16" />,
   obd: (
     <>
       <path d="M3 7.5h18l-1.8 8.6a2 2 0 0 1-2 1.6H6.8a2 2 0 0 1-2-1.6L3 7.5z" />
@@ -51,6 +53,7 @@ export default function MenuSections({
   onOpenKmHistory,
   onOpenReminders,
   onOpenAdapters,
+  onOpenTrips,
 }: Props) {
   const { t, i18n } = useTranslation();
   const { distanceUnit } = useAppSettings();
@@ -102,6 +105,7 @@ export default function MenuSections({
           <h2 className="menu-sect">{t("utilities.title")}</h2>
           <div className="menu-list">
             {row("route", t("detail.tabs.commute"), t("menu.commuteSub"), onOpenCommute)}
+            {row("briefcase", t("trips.title"), t("menu.tripsSub"), onOpenTrips)}
             {row("wallet", t("detail.expensesTitle"), t("menu.expensesSub"), onOpenExpenses)}
             {row("chart", t("kmHistory.title"), t("menu.kmSub"), onOpenKmHistory)}
             {row("calendar", t("dashboardGarage.deadlines"), t("menu.remindersSub"), onOpenReminders)}

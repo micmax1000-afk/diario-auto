@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
-import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder } from "../types";
+import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder, TripEntry } from "../types";
 import { calculateVehicleCosts, calculateConsumption, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
@@ -38,6 +38,7 @@ import CostChart from "./CostChart";
 import FuelPriceChart from "./FuelPriceChart";
 import LiveDataPanel from "./LiveDataPanel";
 import CommutePanel from "./CommutePanel";
+import TripsPanel from "./TripsPanel";
 import { reminderStatus } from "../utils/kmForecast";
 
 type DetailTab =
@@ -47,6 +48,7 @@ type DetailTab =
   | "spese"
   | "scadenze"
   | "tragitto"
+  | "viaggi"
   | "riepilogo";
 type Period = "sempre" | "anno-scorso" | "anno-corrente" | number;
 
@@ -71,6 +73,9 @@ interface Props {
   onDeleteMaintenance: (id: string) => void;
   onAddExpense: (entry: ExpenseEntry) => void;
   onDeleteExpense: (id: string) => void;
+  tripEntries: TripEntry[];
+  onSaveTrip: (trip: TripEntry, alsoExpense: boolean) => void;
+  onDeleteTrip: (id: string) => void;
   onAddReminder: (reminder: Reminder) => void;
   onToggleReminder: (id: string) => void;
   onDeleteReminder: (id: string) => void;
@@ -87,7 +92,7 @@ interface Props {
   onOpenRemindersTab?: () => void;
 }
 
-const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "riepilogo"];
+const TAB_IDS: DetailTab[] = ["live", "rifornimenti", "manutenzioni", "spese", "scadenze", "tragitto", "viaggi", "riepilogo"];
 // Scadenze del catalogo → cosa registrare quando si segnano come fatte.
 const REMINDER_FOLLOW_UP: Record<
   string,
@@ -117,6 +122,7 @@ const TAB_I18N_KEYS: Record<DetailTab, string> = {
   spese: "expenses.title",
   scadenze: "detail.tabs.reminders",
   tragitto: "detail.tabs.commute",
+  viaggi: "trips.title",
   riepilogo: "detail.tabs.summary",
 };
 
@@ -140,6 +146,9 @@ export default function VehicleDetail({
   onDeleteMaintenance,
   onAddExpense,
   onDeleteExpense,
+  tripEntries,
+  onSaveTrip,
+  onDeleteTrip,
   onAddReminder,
   onToggleReminder,
   onDeleteReminder,
@@ -566,6 +575,7 @@ export default function VehicleDetail({
           </>
         )}
 
+        {tab === "viaggi" && <TripsPanel vehicle={vehicle} trips={tripEntries} onSave={onSaveTrip} onDelete={onDeleteTrip} />}
         {tab === "tragitto" && <CommutePanel vehicle={vehicle} fuelEntries={fuelEntries} chargingEntries={chargingEntries} maintenanceEntries={maintenanceEntries} expenseEntries={expenseEntries} />}
 
         {tab === "riepilogo" && (

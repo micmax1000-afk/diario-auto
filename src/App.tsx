@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import { App as CapacitorApp } from "@capacitor/app";
-import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder } from "./types";
+import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, Reminder, TripEntry } from "./types";
 import {
   initStorage,
   loadVehicles,
@@ -20,6 +20,9 @@ import {
   loadExpenseEntries,
   putExpenseEntry,
   deleteExpenseEntry,
+  loadTripEntries,
+  putTripEntry,
+  deleteTripEntry,
   loadReminders,
   putReminder,
   deleteReminder,
@@ -73,7 +76,7 @@ const PremiumScreen = lazy(() => import("./components/PremiumScreen"));
 const KmHistory = lazy(() => import("./components/KmHistory"));
 
 // Mappa il tab della bottom bar alla scheda di dettaglio veicolo da aprire
-type DetailTabTarget = "live" | "rifornimenti" | "manutenzioni" | "spese" | "scadenze" | "tragitto" | "riepilogo";
+type DetailTabTarget = "live" | "rifornimenti" | "manutenzioni" | "spese" | "scadenze" | "tragitto" | "viaggi" | "riepilogo";
 
 type PendingAction =
   | { kind: "navigate"; tab: DetailTabTarget }
@@ -111,6 +114,7 @@ export default function App() {
   const [chargingEntries, setChargingEntries] = useState<ChargingEntry[]>([]);
   const [maintenanceEntries, setMaintenanceEntries] = useState<MaintenanceEntry[]>([]);
   const [expenseEntries, setExpenseEntries] = useState<ExpenseEntry[]>([]);
+  const [tripEntries, setTripEntries] = useState<TripEntry[]>([]);
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [vehicleOrder, setVehicleOrder] = useState<string[]>([]);
 
@@ -204,13 +208,14 @@ export default function App() {
   }
 
   async function reloadAll() {
-    const [vehiclesData, fuelData, chargingData, maintenanceData, expensesData, remindersData] = await Promise.all([
+    const [vehiclesData, fuelData, chargingData, maintenanceData, expensesData, remindersData, tripsData] = await Promise.all([
       loadVehicles(),
       loadFuelEntries(),
       loadChargingEntries(),
       loadMaintenanceEntries(),
       loadExpenseEntries(),
       loadReminders(),
+      loadTripEntries(),
     ]);
     setVehicles(vehiclesData);
     setFuelEntries(fuelData);
@@ -218,6 +223,7 @@ export default function App() {
     setMaintenanceEntries(maintenanceData);
     setExpenseEntries(expensesData);
     setReminders(remindersData);
+    setTripEntries(tripsData);
   }
 
   useEffect(() => {
@@ -423,15 +429,18 @@ export default function App() {
     const relatedMaint = maintenanceEntries.filter((e) => e.vehicleId === id);
     const relatedExpenses = expenseEntries.filter((e) => e.vehicleId === id);
     const relatedReminders = reminders.filter((r) => r.vehicleId === id);
+    const relatedTrips = tripEntries.filter((e) => e.vehicleId === id);
 
     setFuelEntries((prev) => prev.filter((e) => e.vehicleId !== id));
     setChargingEntries((prev) => prev.filter((e) => e.vehicleId !== id));
     setMaintenanceEntries((prev) => prev.filter((e) => e.vehicleId !== id));
     setExpenseEntries((prev) => prev.filter((e) => e.vehicleId !== id));
     setReminders((prev) => prev.filter((r) => r.vehicleId !== id));
+    setTripEntries((prev) => prev.filter((e) => e.vehicleId !== id));
     if (openVehicleId === id) setOpenVehicleId(null);
 
     await Promise.all([
+      ...relatedTrips.map((e) => deleteTripEntry(e.id)),
       deleteVehicle(id),
       ...relatedFuel.map((e) => deleteFuelEntry(e.id)),
       ...relatedCharging.map((e) => deleteChargingEntry(e.id)),
@@ -520,6 +529,48 @@ export default function App() {
     offerUndo(expenseEntries.find((e) => e.id === id), setExpenseEntries, putExpenseEntry);
     setExpenseEntries((prev) => prev.filter((e) => e.id !== id));
     await deleteExpenseEntry(id);
+  }
+
+  // ---------- Viaggi ----------
+
+  /** Salva il viaggio; pedaggio e parcheggio diventano (se richiesto) anche spese dell'auto. */
+  async function handleSaveTrip(trip: TripEntry, alsoExpense: boolean) {
+    const oldIds = trip.linkedExpenseIds ?? [];
+    if (oldIds.length) {
+      setExpenseEntries((prev) => prev.filter((e) => !oldIds.includes(e.id)));
+      await Promise.all(oldIds.map((id) => deleteExpenseEntry(id)));
+    }
+    const where = [trip.from, trip.to].filter(Boolean).join(" → ");
+    const linked: ExpenseEntry[] = [];
+    if (alsoExpense) {
+      for (const [amount, label] of [[trip.toll, t("tripForm.toll")], [trip.parking, t("tripForm.parking")]] as const) {
+        if (!amount) continue;
+        linked.push({ id: generateId(), vehicleId: trip.vehicleId, date: trip.date, category: "altro", description: where ? `${label} · ${where}` : label, amount });
+      }
+    }
+    const saved: TripEntry = { ...trip, linkedExpenseIds: linked.length ? linked.map((e) => e.id) : undefined };
+    if (linked.length) setExpenseEntries((prev) => [...prev, ...linked]);
+    setTripEntries((prev) => (prev.some((e) => e.id === saved.id) ? prev.map((e) => (e.id === saved.id ? saved : e)) : [...prev, saved]));
+    await Promise.all([putTripEntry(saved), ...linked.map((e) => putExpenseEntry(e))]);
+    if (saved.kmEnd) await bumpVehicleKmIfNeeded(saved.vehicleId, saved.kmEnd);
+  }
+
+  async function handleDeleteTrip(id: string) {
+    const trip = tripEntries.find((e) => e.id === id);
+    if (!trip) return;
+    const linked = expenseEntries.filter((e) => trip.linkedExpenseIds?.includes(e.id));
+    setUndoable({
+      id: Date.now(),
+      restore: async () => {
+        const restored = { ...trip, deletedAt: undefined };
+        setTripEntries((prev) => (prev.some((e) => e.id === id) ? prev : [...prev, restored]));
+        setExpenseEntries((prev) => [...prev, ...linked.filter((l) => !prev.some((e) => e.id === l.id)).map((l) => ({ ...l, deletedAt: undefined }))]);
+        await Promise.all([putTripEntry(restored), ...linked.map((l) => putExpenseEntry({ ...l, deletedAt: undefined }))]);
+      },
+    });
+    setTripEntries((prev) => prev.filter((e) => e.id !== id));
+    setExpenseEntries((prev) => prev.filter((e) => !trip.linkedExpenseIds?.includes(e.id)));
+    await Promise.all([deleteTripEntry(id), ...linked.map((l) => deleteExpenseEntry(l.id))]);
   }
 
   // ---------- Scadenze ----------
@@ -924,6 +975,7 @@ export default function App() {
                   onAddVehicle={handleRequestAddVehicle}
                   onManageVehicles={() => setShowManageVehicles(true)}
                   onOpenCommute={() => requestVehicleAction({ kind: "navigate", tab: "tragitto" })}
+                  onOpenTrips={() => requestVehicleAction({ kind: "navigate", tab: "viaggi" })}
                   onOpenExpenses={() => requestVehicleAction({ kind: "navigate", tab: "spese" })}
                   onOpenReminders={() => requestVehicleAction({ kind: "navigate", tab: "scadenze" })}
                   onOpenKmHistory={() => {
@@ -1003,6 +1055,9 @@ export default function App() {
               onDeleteMaintenance={handleDeleteMaintenance}
               onAddExpense={handleAddExpense}
               onDeleteExpense={handleDeleteExpense}
+              tripEntries={tripEntries.filter((e) => e.vehicleId === openVehicle.id)}
+              onSaveTrip={handleSaveTrip}
+              onDeleteTrip={handleDeleteTrip}
               onAddReminder={handleAddReminder}
               onToggleReminder={handleToggleReminder}
               onDeleteReminder={handleDeleteReminder}
