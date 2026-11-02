@@ -57,6 +57,7 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
     s.match(new RegExp(`\\ba\\s*(${NUM})\\b(?!\\s*(?:litri|euro))`));
   if (price && toNum(price[1]) > 0 && toNum(price[1]) < 5) {
     out.pricePerUnit = toNum(price[1]);
+    if (/litro|\/\s*l\b/.test(price[0])) out.kind ??= "fuel";
     s = s.replace(price[0], " ");
   }
 
@@ -67,7 +68,11 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
     s = s.replace(liters[0], " ");
   }
 
-  const total = s.match(new RegExp(`(${NUM})\\s*euro\\b`)) ?? s.match(new RegExp(`\\bdi\\s*(${NUM})\\b`));
+  // "20 euro", "20 €", ma anche "€20" / "euro 20" come scrive il riconoscimento vocale
+  const total =
+    s.match(new RegExp(`(${NUM})\\s*euro\\b`)) ??
+    s.match(new RegExp(`\\beuro\\s*(${NUM})`)) ??
+    s.match(new RegExp(`\\bdi\\s*(${NUM})\\b`));
   if (total && toNum(total[1]) > 0) out.totalCost = toNum(total[1]);
 
   if (/\bnon\s+(?:il\s+)?pieno\b|\bparziale\b/.test(s)) out.fullTank = false;

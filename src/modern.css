@@ -1965,3 +1965,17 @@ body {
 .stations__search { padding: 0.7rem 0.8rem; border-radius: 14px; background: var(--card); box-shadow: var(--shadow-card); }
 .stations__search .field { margin-bottom: 0.4rem; }
 .station__price em { display: block; font-style: normal; font-size: 0.68rem; font-weight: 600; color: var(--text-muted); text-align: end; letter-spacing: 0; }
+
+/* Distributori: vista mappa */
+.stations__view { display: inline-flex; padding: 3px; border-radius: 12px; background: var(--surface-alt); }
+.stations__view button { border: none; background: none; padding: 0.4rem 0.8rem; border-radius: 9px; font: inherit; font-size: 0.84rem; font-weight: 650; color: var(--text-muted); cursor: pointer; }
+.stations__view button.is-active { background: var(--card); color: var(--text); box-shadow: var(--shadow-card); }
+.smap { height: 58vh; min-height: 320px; border-radius: 18px; overflow: hidden; background: var(--surface-alt); box-shadow: var(--shadow-card); }
+.smap-pin { position: relative; border: 2px solid #fff; border-radius: 10px; padding: 0.15rem 0.4rem; background: var(--pin); color: #fff; font: 700 0.74rem/1.2 var(--font-body); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); cursor: pointer; white-space: nowrap; }
+.smap-pin::after { content: ""; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #fff; }
+.smap-pin.is-best { font-size: 0.86rem; padding: 0.25rem 0.5rem; z-index: 1; }
+.smap-pin.is-on { transform: scale(1.18); z-index: 2; outline: 2px solid var(--text); }
+.smap-me { width: 16px; height: 16px; border-radius: 50%; background: #2f6fd6; border: 3px solid #fff; box-shadow: 0 0 0 6px rgba(47, 111, 214, 0.25); }
+.stations__hint { margin: 0; text-align: center; font-size: 0.84rem; color: var(--text-muted); }
+.voice-actions .btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+.stations__detail { margin: 0.3rem 0 0.8rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }

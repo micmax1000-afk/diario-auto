@@ -1447,7 +1447,14 @@
     "change": "ubah",
     "placeLabel": "Kota atau alamat",
     "placePh": "mis. Bologna",
-    "useGps": "Pakai lokasi saya"
+    "useGps": "Pakai lokasi saya",
+    "list": "Daftar",
+    "map": "Peta",
+    "tapPin": "Ketuk harga di peta untuk melihat SPBU.",
+    "mapTop": "Di peta, {{count}} termurah.",
+    "locating": "Mencari lokasi Anda…",
+    "reading": "Membaca harga…",
+    "wait": "Sebentar…"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

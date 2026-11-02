@@ -1450,7 +1450,14 @@
     "change": "cambiar",
     "placeLabel": "Municipio o dirección",
     "placePh": "p. ej. Bolonia",
-    "useGps": "Usar mi ubicación"
+    "useGps": "Usar mi ubicación",
+    "list": "Lista",
+    "map": "Mapa",
+    "tapPin": "Toca un precio en el mapa para ver la gasolinera.",
+    "mapTop": "En el mapa, las {{count}} más baratas.",
+    "locating": "Buscando tu ubicación…",
+    "reading": "Leyendo los precios…",
+    "wait": "Un momento…"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

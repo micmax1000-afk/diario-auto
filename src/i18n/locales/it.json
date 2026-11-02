@@ -1480,6 +1480,13 @@
     "change": "cambia",
     "placeLabel": "Comune o indirizzo",
     "placePh": "es. Bologna",
-    "useGps": "Usa la mia posizione"
+    "useGps": "Usa la mia posizione",
+    "list": "Elenco",
+    "map": "Mappa",
+    "tapPin": "Tocca un prezzo sulla mappa per vedere il distributore.",
+    "mapTop": "Sulla mappa i {{count}} più economici.",
+    "locating": "Cerco la tua posizione…",
+    "reading": "Leggo i prezzi…",
+    "wait": "Un attimo…"
   }
 }

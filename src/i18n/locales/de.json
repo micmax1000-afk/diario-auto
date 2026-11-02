@@ -1450,7 +1450,14 @@
     "change": "ändern",
     "placeLabel": "Ort oder Adresse",
     "placePh": "z. B. Bologna",
-    "useGps": "Meinen Standort verwenden"
+    "useGps": "Meinen Standort verwenden",
+    "list": "Liste",
+    "map": "Karte",
+    "tapPin": "Tippe auf einen Preis auf der Karte, um die Tankstelle zu sehen.",
+    "mapTop": "Auf der Karte die {{count}} günstigsten.",
+    "locating": "Standort wird ermittelt…",
+    "reading": "Preise werden gelesen…",
+    "wait": "Einen Moment…"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

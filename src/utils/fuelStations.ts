@@ -124,7 +124,12 @@ interface Cache { at: number; lat: number; lng: number; radiusKm: number; statio
  * posizione è cambiata di poco; altrimenti riscarica dal Ministero (serve
  * l'app Android: il sito non permette il download da una pagina web).
  */
-export async function loadNearbyStations(lat: number, lng: number, force = false): Promise<{ stations: Station[]; at: number }> {
+export async function loadNearbyStations(
+  lat: number,
+  lng: number,
+  force = false,
+  onStage?: (stage: "download" | "read") => void,
+): Promise<{ stations: Station[]; at: number }> {
   const radiusKm = 30;
   if (!force) {
     const raw = await getMeta(CACHE_KEY);
@@ -139,13 +144,33 @@ export async function loadNearbyStations(lat: number, lng: number, force = false
       }
     }
   }
-  const [reg, pri] = await Promise.all([
-    CapacitorHttp.get({ url: MIMIT_STATIONS_URL, responseType: "text" }),
-    CapacitorHttp.get({ url: MIMIT_PRICES_URL, responseType: "text" }),
-  ]);
-  if (reg.status !== 200 || pri.status !== 200) throw new Error(`download ${reg.status}/${pri.status}`);
+  onStage?.("download");
+  // Tempi massimi: senza, se il sito non risponde la pagina resterebbe in attesa per sempre.
+  const get = (url: string) =>
+    withTimeout(CapacitorHttp.get({ url, responseType: "text", connectTimeout: 20_000, readTimeout: 60_000 }), 90_000, "timeout");
+  const [reg, pri] = await Promise.all([get(MIMIT_STATIONS_URL), get(MIMIT_PRICES_URL)]);
+  if (reg.status !== 200 || pri.status !== 200) throw new Error(`HTTP ${reg.status}/${pri.status}`);
+  onStage?.("read");
+  await new Promise((r) => setTimeout(r, 0)); // lascia disegnare "Leggo i prezzi…" prima del lavoro pesante
   const stations = buildStations(parseMimitCsv(String(reg.data)), parseMimitCsv(String(pri.data)), lat, lng, radiusKm);
+  if (stations.length === 0 && String(pri.data).length < 1000) throw new Error("dati vuoti");
   const cache: Cache = { at: Date.now(), lat, lng, radiusKm, stations };
   await setMeta(CACHE_KEY, JSON.stringify(cache));
   return { stations, at: cache.at };
+}
+
+function withTimeout<T>(p: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const t = setTimeout(() => reject(new Error(label)), ms);
+    p.then(
+      (v) => {
+        clearTimeout(t);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(t);
+        reject(e);
+      },
+    );
+  });
 }
