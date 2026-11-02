@@ -48,6 +48,8 @@ import VehicleForm from "./components/VehicleForm";
 import Dashboard, { type ActivityKind } from "./components/Dashboard";
 import QuickEntryHeader from "./components/QuickEntryHeader";
 import ObdAdapters from "./components/ObdAdapters";
+import VoiceFuelSheet from "./components/VoiceFuelSheet";
+import FuelStations from "./components/FuelStations";
 import AddSheet, { type AddAction } from "./components/AddSheet";
 import MenuSections from "./components/MenuSections";
 import BottomTabBar, { type TabId } from "./components/BottomTabBar";
@@ -126,7 +128,10 @@ export default function App() {
   // quello usato dal tasto + e dalle schede della barra in basso.
   const [homeVehicleId, setHomeVehicleId] = useState<string | null>(null);
   const [showAddSheet, setShowAddSheet] = useState(false);
-  const [quickFuelPrefill, setQuickFuelPrefill] = useState<{ pricePerUnit: number; totalCost: number } | undefined>(undefined);
+  const [quickFuelPrefill, setQuickFuelPrefill] = useState<{ pricePerUnit: number; totalCost: number; km?: number; fullTank?: boolean } | undefined>(undefined);
+  const [voiceFuelVehicleId, setVoiceFuelVehicleId] = useState<string | null>(null);
+  const [quickChargePrefill, setQuickChargePrefill] = useState<{ pricePerKWh?: number; totalCost?: number; atHome?: boolean; km?: number } | undefined>(undefined);
+  useBackButtonClose(!!voiceFuelVehicleId, () => setVoiceFuelVehicleId(null));
   const [detailAutoOpen, setDetailAutoOpen] = useState<"maintenance" | "expense" | "reminder" | undefined>(undefined);
   const [showManageVehicles, setShowManageVehicles] = useState(false);
   const [openVehicleId, setOpenVehicleId] = useState<string | null>(null);
@@ -136,6 +141,7 @@ export default function App() {
   const [showNewVehicleForm, setShowNewVehicleForm] = useState(false);
   const [showPremium, setShowPremium] = useState(false);
   const [showAdapters, setShowAdapters] = useState(false);
+  const [showStations, setShowStations] = useState(false);
   const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
   const { isPro, refresh: refreshProStatus } = useProStatus();
   // Backup automatico su Drive bloccato per sicurezza (molti meno dati dell'ultimo backup).
@@ -183,6 +189,7 @@ export default function App() {
   useBackButtonClose(showBackup, () => { setShowBackup(false); setMainTab("impostazioni"); });
   useBackButtonClose(showPremium, () => setShowPremium(false));
   useBackButtonClose(showAdapters, () => setShowAdapters(false));
+  useBackButtonClose(showStations, () => setShowStations(false));
   useBackButtonClose(showFleet, () => setShowFleet(false));
   useBackButtonClose(quickKmVehicle !== null, () => setQuickKmVehicle(null));
   useBackButtonClose(kmHistoryVehicleId !== null, () => setKmHistoryVehicleId(null));
@@ -727,7 +734,9 @@ export default function App() {
     const v = currentVehicle;
     setShowAddSheet(false);
     if (!v) return;
-    if (action === "fuel" || action === "fuelRepeat") {
+    if (action === "fuelVoice") {
+      setVoiceFuelVehicleId(v.id);
+    } else if (action === "fuel" || action === "fuelRepeat") {
       const last = [...fuelEntries].filter((e) => e.vehicleId === v.id).sort((a, b) => b.date.localeCompare(a.date))[0];
       setQuickFuelPrefill(action === "fuelRepeat" && last && last.liters > 0 ? { pricePerUnit: last.totalCost / last.liters, totalCost: last.totalCost } : undefined);
       setQuickFuelVehicleId(v.id);
@@ -982,6 +991,7 @@ export default function App() {
                     if (currentVehicle) setKmHistoryVehicleId(currentVehicle.id);
                   }}
                   onOpenAdapters={() => setShowAdapters(true)}
+                  onOpenStations={() => setShowStations(true)}
                 />
               }
             />
@@ -1158,6 +1168,19 @@ export default function App() {
       )}
 
       {showAdapters && <ObdAdapters onBack={() => setShowAdapters(false)} />}
+      {showStations && (
+        <FuelStations
+          defaultFuel={currentVehicle?.fuelType === "diesel" ? "gasolio" : currentVehicle?.fuelType === "gpl" ? "gpl" : currentVehicle?.fuelType === "metano" ? "metano" : "benzina"}
+          onBack={() => setShowStations(false)}
+          onUsePrice={(price) => {
+            const v = currentVehicle;
+            setShowStations(false);
+            if (!v) return;
+            setQuickFuelPrefill({ pricePerUnit: price, totalCost: 0 });
+            setQuickFuelVehicleId(v.id);
+          }}
+        />
+      )}
 
       {kmHistoryVehicleId &&
         (() => {
@@ -1178,6 +1201,24 @@ export default function App() {
             </Suspense>
           );
         })()}
+
+      {voiceFuelVehicleId && (
+        <VoiceFuelSheet
+          vehicles={activeOrderedVehicles}
+          currentVehicleId={voiceFuelVehicleId}
+          onClose={() => setVoiceFuelVehicleId(null)}
+          onContinue={(vehicleId, data, kind) => {
+            setVoiceFuelVehicleId(null);
+            if (kind === "charge") {
+              setQuickChargePrefill({ pricePerKWh: data.pricePerUnit, totalCost: data.totalCost, atHome: data.atHome, km: data.km });
+              setQuickChargeVehicleId(vehicleId);
+            } else {
+              setQuickFuelPrefill({ pricePerUnit: data.pricePerUnit ?? 0, totalCost: data.totalCost ?? 0, km: data.km, fullTank: data.fullTank });
+              setQuickFuelVehicleId(vehicleId);
+            }
+          }}
+        />
+      )}
 
       {quickFuelVehicleId &&
         (() => {
@@ -1219,11 +1260,16 @@ export default function App() {
               urgentCounts={urgentByVehicle}
               onChangeVehicle={(id) => setQuickChargeVehicleId(id)}
               existingEntries={chargingEntries.filter((c) => c.vehicleId === v.id)}
+              prefill={quickChargePrefill}
               onSave={(entry) => {
                 handleSaveCharging(entry);
                 setQuickChargeVehicleId(null);
+                setQuickChargePrefill(undefined);
               }}
-              onClose={() => setQuickChargeVehicleId(null)}
+              onClose={() => {
+                setQuickChargeVehicleId(null);
+                setQuickChargePrefill(undefined);
+              }}
             />
           );
         })()}

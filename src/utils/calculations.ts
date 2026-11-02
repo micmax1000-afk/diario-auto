@@ -202,3 +202,31 @@ export function groupByMonth<T>(entries: T[], getDate: (e: T) => string, locale 
   });
   return groups.sort((a, b) => b.key.localeCompare(a.key));
 }
+
+export interface ConsumptionAlert {
+  recent: number; // l/100 km degli ultimi due pieni
+  usual: number; // l/100 km dei pieni precedenti
+  increasePct: number;
+  /** km dell'ultimo pieno: serve a non riproporre lo stesso avviso dopo che è stato chiuso. */
+  atKm: number;
+}
+
+/**
+ * Avvisa se il consumo degli ultimi due pieni è peggiorato di almeno il 15%
+ * rispetto alla media dei pieni precedenti (servono almeno 5 tratti misurati).
+ */
+export function consumptionAlert(points: ConsumptionPoint[], threshold = 0.15): ConsumptionAlert | null {
+  const sorted = [...points].sort((a, b) => a.toKm - b.toKm);
+  if (sorted.length < 5) return null;
+  const per100 = (list: ConsumptionPoint[]) => {
+    const km = list.reduce((s, p) => s + (p.toKm - p.fromKm), 0);
+    const liters = list.reduce((s, p) => s + p.liters, 0);
+    return km > 0 ? (liters / km) * 100 : null;
+  };
+  const recent = per100(sorted.slice(-2));
+  const usual = per100(sorted.slice(-10, -2));
+  if (!recent || !usual) return null;
+  const increase = (recent - usual) / usual;
+  if (increase < threshold) return null;
+  return { recent, usual, increasePct: Math.round(increase * 100), atKm: sorted[sorted.length - 1].toKm };
+}

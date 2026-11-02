@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, FuelSource, Vehicle } from "../types";
+import { checkFuelEntry, type EntryWarning } from "../utils/entryChecks";
 import { generateId } from "../utils/storage";
 import { calculateConsumption, averageConsumption } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
@@ -21,7 +22,7 @@ interface Props {
   onChangeVehicle?: (vehicleId: string) => void;
   existingEntries?: FuelEntry[];
   /** "Come l'ultimo": prezzo e importo già compilati, si scrivono solo i km. */
-  prefill?: { pricePerUnit: number; totalCost: number };
+  prefill?: { pricePerUnit: number; totalCost: number; km?: number; fullTank?: boolean };
   onSave: (entry: FuelEntry) => void;
   onClose: () => void;
 }
@@ -47,10 +48,11 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
   const { currency, formatMoney } = useAppSettings();
   const source = defaultSource(vehicle);
   const [pricePerUnit, setPricePerUnit] = useState(prefill ? String(Math.round(prefill.pricePerUnit * 1000) / 1000) : "");
-  const [totalCost, setTotalCost] = useState(prefill ? String(Math.round(prefill.totalCost * 100) / 100) : "");
-  const [fullTank, setFullTank] = useState(true);
-  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(vehicle.currentKm))));
+  const [totalCost, setTotalCost] = useState(prefill?.totalCost ? String(Math.round(prefill.totalCost * 100) / 100) : "");
+  const [fullTank, setFullTank] = useState(prefill?.fullTank ?? true);
+  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(prefill?.km ?? vehicle.currentKm))));
   const [error, setError] = useState("");
+  const [warnings, setWarnings] = useState<EntryWarning[] | null>(null);
 
   const priceValue = Number(pricePerUnit);
   const costValue = Number(totalCost);
@@ -82,8 +84,8 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
     newAvgConsumption = averageConsumption(calculateConsumption([...existingEntries, previewEntry]), source);
   }
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  function handleSubmit(e: FormEvent | null, confirmed = false) {
+    e?.preventDefault();
     if (kmValue <= 0 || kmValue < Math.round(vehicle.currentKm)) {
       setError(t("quickEntry.errorKmLower", { km: Math.round(vehicle.currentKm).toLocaleString(locale) }));
       return;
@@ -95,6 +97,14 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
     if (Number.isNaN(costValue) || costValue <= 0) {
       setError(t("fuelForm.errorTotalCost"));
       return;
+    }
+
+    if (!confirmed) {
+      const found = checkFuelEntry({ pricePerUnit: priceValue, liters: costValue / priceValue, km: kmValue, source }, existingEntries);
+      if (found.length) {
+        setWarnings(found);
+        return;
+      }
     }
 
     const entry: FuelEntry = {
@@ -204,6 +214,32 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
 
         <p className="quick-entry__full-form-hint">{t("quickEntry.fullFormHint")}</p>
       </form>
+      {warnings && (
+        <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="check-title">
+          <div className="modal entry-check">
+            <div className="modal__header">
+              <h2 id="check-title">{t("entryCheck.title")}</h2>
+            </div>
+            <ul className="entry-check__list">
+              {warnings.map((w) => (
+                <li key={w.kind}>
+                  <span className="entry-check__icon" aria-hidden="true">!</span>
+                  <span>
+                    {w.kind === "priceOdd" && t("entryCheck.priceOdd", { price: formatMoney(w.price, 3) })}
+                    {w.kind === "priceOff" && t("entryCheck.priceOff", { price: formatMoney(w.price, 3), usual: formatMoney(w.usual, 3) })}
+                    {w.kind === "litersHigh" && t("entryCheck.litersHigh", { liters: w.liters.toLocaleString(locale, { maximumFractionDigits: 1 }) })}
+                    {w.kind === "kmJump" && t("entryCheck.kmJump", { km: w.distance.toLocaleString(locale) })}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="modal__actions">
+              <button type="button" className="btn btn--ghost" onClick={() => { setWarnings(null); handleSubmit(null, true); }}>{t("entryCheck.saveAnyway")}</button>
+              <button type="button" className="btn btn--primary" onClick={() => setWarnings(null)}>{t("entryCheck.fix")}</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

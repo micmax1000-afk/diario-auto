@@ -18,6 +18,8 @@ interface Props {
   urgentCounts?: Record<string, number>;
   onChangeVehicle?: (vehicleId: string) => void;
   existingEntries?: ChargingEntry[];
+  /** Valori già detti a voce. */
+  prefill?: { pricePerKWh?: number; totalCost?: number; atHome?: boolean; km?: number };
   onSave: (entry: ChargingEntry) => void;
   onClose: () => void;
 }
@@ -27,15 +29,15 @@ function formatPrice(value: number, locale: string, currency: string) {
   return formatCurrency(value, currency, 3, locale);
 }
 
-export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], onSave, onClose }: Props) {
+export default function QuickChargeForm({ vehicle, vehicles, colors, urgentCounts, onChangeVehicle, existingEntries = [], prefill, onSave, onClose }: Props) {
   const { t, i18n } = useTranslation();
   const cur = useCurrencySymbol();
   const locale = getNumberLocale(i18n.language);
   const { currency } = useAppSettings();
-  const [pricePerKWh, setPricePerKWh] = useState("");
-  const [totalCost, setTotalCost] = useState("");
-  const [atHome, setAtHome] = useState(false);
-  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(vehicle.currentKm))));
+  const [pricePerKWh, setPricePerKWh] = useState(prefill?.pricePerKWh ? String(Math.round(prefill.pricePerKWh * 1000) / 1000) : "");
+  const [totalCost, setTotalCost] = useState(prefill?.totalCost ? String(Math.round(prefill.totalCost * 100) / 100) : "");
+  const [atHome, setAtHome] = useState(prefill?.atHome ?? false);
+  const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(prefill?.km ?? vehicle.currentKm))));
   const [error, setError] = useState("");
 
   const priceValue = Number(pricePerKWh);

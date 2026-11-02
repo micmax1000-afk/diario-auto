@@ -40,6 +40,9 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Distributori vicini: posizione approssimativa o precisa, solo quando si apre la pagina -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Bluetooth: per il futuro plugin nativo OBD2. BLUETOOTH_CONNECT/SCAN
          servono da Android 12 (API 31) in su; le versioni legacy sotto
