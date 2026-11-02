@@ -1457,7 +1457,8 @@
     "mapTop": "Auf der Karte die {{count}} günstigsten.",
     "locating": "Standort wird ermittelt…",
     "reading": "Preise werden gelesen…",
-    "wait": "Einen Moment…"
+    "wait": "Einen Moment…",
+    "more": "{{count}} weitere anzeigen (von {{total}})"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

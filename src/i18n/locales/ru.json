@@ -1463,7 +1463,8 @@
     "mapTop": "На карте {{count}} самых дешёвых.",
     "locating": "Определяем местоположение…",
     "reading": "Читаем цены…",
-    "wait": "Минутку…"
+    "wait": "Минутку…",
+    "more": "Показать ещё {{count}} (из {{total}})"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

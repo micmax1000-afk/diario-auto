@@ -1979,3 +1979,4 @@ body {
 .stations__hint { margin: 0; text-align: center; font-size: 0.84rem; color: var(--text-muted); }
 .voice-actions .btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
 .stations__detail { margin: 0.3rem 0 0.8rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
+.stations__more { width: 100%; justify-content: center; }

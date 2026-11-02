@@ -1457,7 +1457,8 @@
     "mapTop": "नक्शे पर {{count}} सबसे सस्ते।",
     "locating": "आपकी लोकेशन खोज रहे हैं…",
     "reading": "कीमतें पढ़ रहे हैं…",
-    "wait": "एक पल…"
+    "wait": "एक पल…",
+    "more": "{{count}} और दिखाएँ ({{total}} में से)"
   },
   "voiceFuel": {
     "title": "Fuel by voice",
