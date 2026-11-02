@@ -1442,7 +1442,9 @@
     "deniedBody": "Para encontrar gasolineras cercanas, permite que la app use tu ubicación (aunque sea aproximada).",
     "errorTitle": "Precios no disponibles",
     "errorBody": "No se pueden descargar los precios del Ministerio. Revisa la conexión y vuelve a intentarlo.",
-    "retry": "Reintentar"
+    "retry": "Reintentar",
+    "abroadTitle": "Solo en Italia",
+    "abroadBody": "Los precios de las gasolineras proceden del Ministerio italiano: esta sección funciona cuando estás en Italia."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

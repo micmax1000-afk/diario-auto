@@ -1439,7 +1439,9 @@
     "deniedBody": "Untuk menemukan SPBU terdekat, izinkan aplikasi memakai lokasi Anda (perkiraan pun cukup).",
     "errorTitle": "Harga tidak tersedia",
     "errorBody": "Tidak dapat mengunduh harga dari Kementerian. Periksa koneksi lalu coba lagi.",
-    "retry": "Coba lagi"
+    "retry": "Coba lagi",
+    "abroadTitle": "Hanya di Italia",
+    "abroadBody": "Harga SPBU berasal dari Kementerian Italia: bagian ini berfungsi saat Anda berada di Italia."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

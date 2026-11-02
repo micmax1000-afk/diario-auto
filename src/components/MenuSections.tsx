@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import type { Vehicle } from "../types";
 import { getNumberLocale } from "../utils/locale";
-import { formatDistance } from "../utils/settings";
+import { formatDistance, isLikelyItaly } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { FREE_VEHICLE_LIMIT } from "../services/billing/useProStatus";
 import VehicleThumb from "./VehicleThumb";
@@ -113,7 +113,7 @@ export default function MenuSections({
           <h2 className="menu-sect">{t("utilities.title")}</h2>
           <div className="menu-list">
             {row("route", t("detail.tabs.commute"), t("menu.commuteSub"), onOpenCommute)}
-            {row("pin", t("stations.title"), t("stations.menuSub"), onOpenStations)}
+            {isLikelyItaly(i18n.language) && row("pin", t("stations.title"), t("stations.menuSub"), onOpenStations)}
             {row("briefcase", t("trips.title"), t("menu.tripsSub"), onOpenTrips)}
             {row("wallet", t("detail.expensesTitle"), t("menu.expensesSub"), onOpenExpenses)}
             {row("chart", t("kmHistory.title"), t("menu.kmSub"), onOpenKmHistory)}

@@ -75,6 +75,23 @@ function deviceRegion(locale?: string): string | null {
   }
 }
 
+/**
+ * Il telefono sembra usato in Italia: regione del dispositivo IT (anche "en-IT")
+ * oppure app in italiano senza un'altra regione. Serve per le funzioni che usano
+ * dati solo italiani, come i prezzi dei distributori del Ministero.
+ */
+export function isLikelyItaly(appLanguage: string): boolean {
+  const tags = typeof navigator !== "undefined" ? [...(navigator.languages ?? []), navigator.language] : [];
+  const regions = tags.map((tag) => deviceRegion(tag)).filter(Boolean);
+  if (regions.includes("IT")) return true;
+  return appLanguage.startsWith("it") && regions.every((r) => r === "IT" || r === "SM" || r === "VA" || r === "CH");
+}
+
+/** Coordinate dentro l'Italia (rettangolo largo: comprende San Marino e il Vaticano). */
+export function isInItaly(lat: number, lng: number): boolean {
+  return lat > 35.2 && lat < 47.2 && lng > 6.5 && lng < 18.6;
+}
+
 export function guessCurrencyFromDeviceLocale(locale?: string): string {
   const region = deviceRegion(locale);
   return (region && REGION_TO_CURRENCY[region]) || DEFAULT_CURRENCY;
