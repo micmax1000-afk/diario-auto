@@ -1439,12 +1439,18 @@
     "loading": "Suche Tankstellen…",
     "loadingBody": "Beim ersten Mal werden die Preise des Ministeriums geladen: das kann einige Sekunden dauern.",
     "deniedTitle": "Standort benötigt",
-    "deniedBody": "Um Tankstellen in der Nähe zu finden, erlaube der App, deinen Standort zu verwenden (ungefähr genügt).",
+    "deniedBody": "Um Tankstellen in der Nähe zu finden, erlaube den Standort oder gib unten den Ort ein.",
     "errorTitle": "Preise nicht verfügbar",
     "errorBody": "Die Preise des Ministeriums lassen sich nicht laden. Prüfe die Verbindung und versuche es erneut.",
     "retry": "Erneut versuchen",
     "abroadTitle": "Nur in Italien",
-    "abroadBody": "Die Tankstellenpreise stammen vom italienischen Ministerium: Dieser Bereich funktioniert, wenn du in Italien bist."
+    "abroadBody": "Die Tankstellenpreise stammen vom italienischen Ministerium: Dieser Bereich funktioniert, wenn du in Italien bist.",
+    "all": "Alle",
+    "nearPlace": "In der Nähe von {{place}}",
+    "change": "ändern",
+    "placeLabel": "Ort oder Adresse",
+    "placePh": "z. B. Bologna",
+    "useGps": "Meinen Standort verwenden"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

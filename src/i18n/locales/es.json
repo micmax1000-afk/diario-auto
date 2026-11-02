@@ -1439,12 +1439,18 @@
     "loading": "Buscando gasolineras…",
     "loadingBody": "La primera vez se descargan los precios del Ministerio: puede tardar unos segundos.",
     "deniedTitle": "Se necesita la ubicación",
-    "deniedBody": "Para encontrar gasolineras cercanas, permite que la app use tu ubicación (aunque sea aproximada).",
+    "deniedBody": "Para encontrar gasolineras cercanas permite la ubicación o escribe el municipio aquí abajo.",
     "errorTitle": "Precios no disponibles",
     "errorBody": "No se pueden descargar los precios del Ministerio. Revisa la conexión y vuelve a intentarlo.",
     "retry": "Reintentar",
     "abroadTitle": "Solo en Italia",
-    "abroadBody": "Los precios de las gasolineras proceden del Ministerio italiano: esta sección funciona cuando estás en Italia."
+    "abroadBody": "Los precios de las gasolineras proceden del Ministerio italiano: esta sección funciona cuando estás en Italia.",
+    "all": "Todas",
+    "nearPlace": "Cerca de {{place}}",
+    "change": "cambiar",
+    "placeLabel": "Municipio o dirección",
+    "placePh": "p. ej. Bolonia",
+    "useGps": "Usar mi ubicación"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

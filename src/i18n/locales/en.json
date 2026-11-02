@@ -1439,12 +1439,18 @@
     "loading": "Looking for fuel stations…",
     "loadingBody": "The first time the Ministry's prices are downloaded: it may take a few seconds.",
     "deniedTitle": "Location needed",
-    "deniedBody": "To find nearby fuel stations, allow the app to use your location (approximate is fine).",
+    "deniedBody": "To find nearby stations allow location access, or type the town below.",
     "errorTitle": "Prices not available",
     "errorBody": "Can't download the Ministry's prices. Check your connection and try again.",
     "retry": "Try again",
     "abroadTitle": "Italy only",
-    "abroadBody": "Fuel prices come from the Italian Ministry: this section works when you are in Italy."
+    "abroadBody": "Fuel prices come from the Italian Ministry: this section works when you are in Italy.",
+    "all": "All",
+    "nearPlace": "Near {{place}}",
+    "change": "change",
+    "placeLabel": "Town or address",
+    "placePh": "e.g. Bologna",
+    "useGps": "Use my location"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

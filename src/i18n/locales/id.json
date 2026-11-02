@@ -1436,12 +1436,18 @@
     "loading": "Mencari SPBU…",
     "loadingBody": "Pertama kali, harga dari Kementerian diunduh: mungkin perlu beberapa detik.",
     "deniedTitle": "Lokasi diperlukan",
-    "deniedBody": "Untuk menemukan SPBU terdekat, izinkan aplikasi memakai lokasi Anda (perkiraan pun cukup).",
+    "deniedBody": "Untuk menemukan SPBU terdekat, izinkan lokasi atau ketik nama kota di bawah.",
     "errorTitle": "Harga tidak tersedia",
     "errorBody": "Tidak dapat mengunduh harga dari Kementerian. Periksa koneksi lalu coba lagi.",
     "retry": "Coba lagi",
     "abroadTitle": "Hanya di Italia",
-    "abroadBody": "Harga SPBU berasal dari Kementerian Italia: bagian ini berfungsi saat Anda berada di Italia."
+    "abroadBody": "Harga SPBU berasal dari Kementerian Italia: bagian ini berfungsi saat Anda berada di Italia.",
+    "all": "Semua",
+    "nearPlace": "Dekat {{place}}",
+    "change": "ubah",
+    "placeLabel": "Kota atau alamat",
+    "placePh": "mis. Bologna",
+    "useGps": "Pakai lokasi saya"
   },
   "voiceFuel": {
     "title": "Fuel by voice",
