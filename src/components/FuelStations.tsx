@@ -4,6 +4,7 @@ import { Geolocation } from "@capacitor/geolocation";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { loadNearbyStations, type Station, type StationFuel } from "../utils/fuelStations";
 import QuickEntryHeader from "./QuickEntryHeader";
+import { isInItaly } from "../utils/settings";
 
 interface Props {
   defaultFuel: StationFuel;
@@ -11,7 +12,7 @@ interface Props {
   onUsePrice: (price: number) => void;
 }
 
-type State = { kind: "loading" } | { kind: "denied" } | { kind: "error" } | { kind: "ready"; stations: Station[]; at: number };
+type State = { kind: "loading" } | { kind: "denied" } | { kind: "error" } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number };
 
 /** "VIA ROMA 1, MILANO" → "Via Roma 1, Milano" */
 const tidy = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/(^|[\s,'(/-])(\p{L})/gu, (_m, a: string, b: string) => a + b.toUpperCase()) : s);
@@ -32,6 +33,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
       if (perm.location !== "granted" && perm.coarseLocation !== "granted") perm = await Geolocation.requestPermissions({ permissions: ["coarseLocation"] });
       if (perm.location !== "granted" && perm.coarseLocation !== "granted") return setState({ kind: "denied" });
       const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60_000 });
+      if (!isInItaly(pos.coords.latitude, pos.coords.longitude)) return setState({ kind: "abroad" });
       const { stations, at } = await loadNearbyStations(pos.coords.latitude, pos.coords.longitude, force);
       setState({ kind: "ready", stations, at });
     } catch (e) {
@@ -95,6 +97,12 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
             <p className="empty-state__title">{t("stations.deniedTitle")}</p>
             <p className="empty-state__body">{t("stations.deniedBody")}</p>
             <button type="button" className="btn btn--primary" onClick={() => void load()}>{t("stations.retry")}</button>
+          </div>
+        )}
+        {state.kind === "abroad" && (
+          <div className="empty-state">
+            <p className="empty-state__title">{t("stations.abroadTitle")}</p>
+            <p className="empty-state__body">{t("stations.abroadBody")}</p>
           </div>
         )}
         {state.kind === "error" && (

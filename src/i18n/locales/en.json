@@ -1442,7 +1442,9 @@
     "deniedBody": "To find nearby fuel stations, allow the app to use your location (approximate is fine).",
     "errorTitle": "Prices not available",
     "errorBody": "Can't download the Ministry's prices. Check your connection and try again.",
-    "retry": "Try again"
+    "retry": "Try again",
+    "abroadTitle": "Italy only",
+    "abroadBody": "Fuel prices come from the Italian Ministry: this section works when you are in Italy."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

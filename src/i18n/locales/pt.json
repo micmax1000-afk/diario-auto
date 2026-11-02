@@ -1442,7 +1442,9 @@
     "deniedBody": "Para encontrar postos próximos, permita que a app use a sua localização (mesmo aproximada).",
     "errorTitle": "Preços indisponíveis",
     "errorBody": "Não é possível descarregar os preços do Ministério. Verifique a ligação e tente novamente.",
-    "retry": "Tentar novamente"
+    "retry": "Tentar novamente",
+    "abroadTitle": "Só em Itália",
+    "abroadBody": "Os preços dos postos vêm do Ministério italiano: esta secção funciona quando está em Itália."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

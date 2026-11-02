@@ -1442,7 +1442,9 @@
     "deniedBody": "Um Tankstellen in der Nähe zu finden, erlaube der App, deinen Standort zu verwenden (ungefähr genügt).",
     "errorTitle": "Preise nicht verfügbar",
     "errorBody": "Die Preise des Ministeriums lassen sich nicht laden. Prüfe die Verbindung und versuche es erneut.",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "abroadTitle": "Nur in Italien",
+    "abroadBody": "Die Tankstellenpreise stammen vom italienischen Ministerium: Dieser Bereich funktioniert, wenn du in Italien bist."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

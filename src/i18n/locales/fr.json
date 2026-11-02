@@ -1442,7 +1442,9 @@
     "deniedBody": "Pour trouver les stations proches, autorisez l'app à utiliser votre position (même approximative).",
     "errorTitle": "Prix indisponibles",
     "errorBody": "Impossible de télécharger les prix du ministère. Vérifiez la connexion et réessayez.",
-    "retry": "Réessayer"
+    "retry": "Réessayer",
+    "abroadTitle": "Uniquement en Italie",
+    "abroadBody": "Les prix des stations proviennent du ministère italien : cette section fonctionne quand vous êtes en Italie."
   },
   "voiceFuel": {
     "title": "Fuel by voice",
