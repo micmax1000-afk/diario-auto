@@ -20,8 +20,8 @@ interface Place { name: string; lat: number; lng: number }
 const PLACE_KEY = "stations-place";
 const StationsMap = lazy(() => import("./StationsMap"));
 const MAP_MAX = 25;
-// Vista mappa pronta ma nascosta finché non viene approvata.
-const SHOW_MAP = false;
+// Vista mappa dei distributori (OpenFreeMap).
+const SHOW_MAP = true;
 
 type State = { kind: "loading"; stage: "locate" | "download" | "read" } | { kind: "denied" } | { kind: "error"; detail: string } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number; center: { lat: number; lng: number } };
 
