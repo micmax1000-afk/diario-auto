@@ -31,6 +31,15 @@ describe("distributori del Ministero", () => {
     expect(eni.address).toBe("VIA ROMA 1, MILANO");
   });
 
+  it("scarta un impianto con le coordinate sbagliate (unico di un'altra provincia)", () => {
+    const many = Array.from({ length: 12 }, (_, i) => `${10 + i};G;Bandiera${i};Stradale;N;VIA ${i};MILANO;MI;45.46${i};9.19`).join("\n");
+    const reg = `idImpianto;Gestore;Bandiera;Tipo Impianto;Nome Impianto;Indirizzo;Comune;Provincia;Latitudine;Longitudine\n${many}\n99;X;Api-Ip;Stradale;N;DANTE ALIGHIERI 6;FINALE EMILIA;MO;45.4642035;9.189982`;
+    const pr = `idImpianto|descCarburante|prezzo|isSelf|dtComu\n${[...Array.from({ length: 12 }, (_, i) => `${10 + i}|Benzina|1.9|1|x`), "99|Benzina|1.8|1|x"].join("\n")}`;
+    const ids = buildStations(parseMimitCsv(reg), parseMimitCsv(pr), 45.4642, 9.19, 10).map((s) => s.id);
+    expect(ids).toHaveLength(12);
+    expect(ids).not.toContain("99");
+  });
+
   it("distanza in km", () => {
     expect(distanceKm(45.4642, 9.19, 45.0703, 7.6869)).toBeCloseTo(126, -1);
   });

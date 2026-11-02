@@ -17,6 +17,7 @@ export interface Station {
   lng: number;
   km: number;
   prices: Partial<Record<StationFuel, { self?: number; served?: number; updated?: string }>>;
+  province?: string;
 }
 
 export const MIMIT_STATIONS_URL = "https://www.mimit.gov.it/images/exportCSV/anagrafica_impianti_attivi.csv";
@@ -91,6 +92,7 @@ export function buildStations(
       lng: sLng,
       km,
       prices: {},
+      province: pick(r, "provincia").toUpperCase() || undefined,
     });
   }
   for (const p of prices) {
@@ -104,7 +106,14 @@ export function buildStations(
     if (slot[key] === undefined || price < slot[key]!) slot[key] = price;
     slot.updated = pick(p, "dtcomu") || slot.updated;
   }
-  return [...near.values()].filter((s) => Object.keys(s.prices).length > 0);
+  // Coordinate sbagliate nell'anagrafica (es. un impianto di Modena con le coordinate
+  // del centro di Milano): se è l'unico della sua provincia tra quelli vicini, si scarta.
+  const byProvince = new Map<string, number>();
+  for (const s of near.values()) if (s.province) byProvince.set(s.province, (byProvince.get(s.province) ?? 0) + 1);
+  const main = [...byProvince.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
+  return [...near.values()].filter(
+    (s) => Object.keys(s.prices).length > 0 && !(near.size >= 10 && s.province && s.province !== main && byProvince.get(s.province) === 1),
+  );
 }
 
 const CACHE_KEY = "stations-cache";
