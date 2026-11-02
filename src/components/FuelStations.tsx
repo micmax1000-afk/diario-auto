@@ -20,6 +20,7 @@ interface Place { name: string; lat: number; lng: number }
 const PLACE_KEY = "stations-place";
 const StationsMap = lazy(() => import("./StationsMap"));
 const MAP_MAX = 25;
+const PAGE = 30;
 // Vista mappa dei distributori (OpenFreeMap).
 const SHOW_MAP = true;
 
@@ -43,6 +44,9 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   const [query, setQuery] = useState("");
   const [view, setView] = useState<"list" | "map">("list");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [shown, setShown] = useState(PAGE);
+  // con altri filtri si riparte dai primi
+  useEffect(() => setShown(PAGE), [fuel, service, sort, radius, place]);
 
   const loadAt = useCallback(async (lat: number, lng: number, force: boolean) => {
     if (!isInItaly(lat, lng)) return setState({ kind: "abroad" });
@@ -251,7 +255,12 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
               <div className="empty-state"><p className="empty-state__title">{t("stations.none")}</p></div>
             ) : (
               <div className="stations__list">
-                {rows.slice(0, 30).map((r) => card(r))}
+                {rows.slice(0, shown).map((r) => card(r))}
+                {rows.length > shown && (
+                  <button type="button" className="btn btn--ghost stations__more" onClick={() => setShown((n) => n + PAGE)}>
+                    {t("stations.more", { count: Math.min(PAGE, rows.length - shown), total: rows.length })}
+                  </button>
+                )}
               </div>
             )}
           </>

@@ -1454,7 +1454,8 @@
     "mapTop": "Di peta, {{count}} termurah.",
     "locating": "Mencari lokasi Anda…",
     "reading": "Membaca harga…",
-    "wait": "Sebentar…"
+    "wait": "Sebentar…",
+    "more": "Tampilkan {{count}} lagi (dari {{total}})"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

@@ -1469,7 +1469,8 @@
     "mapTop": "على الخريطة أرخص {{count}}.",
     "locating": "جارٍ تحديد موقعك…",
     "reading": "جارٍ قراءة الأسعار…",
-    "wait": "لحظة…"
+    "wait": "لحظة…",
+    "more": "عرض {{count}} أخرى (من {{total}})"
   },
   "voiceFuel": {
     "title": "Fuel by voice",
