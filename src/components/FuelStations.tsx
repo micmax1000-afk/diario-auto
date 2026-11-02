@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Geolocation } from "@capacitor/geolocation";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -18,8 +18,10 @@ interface Props {
 type Service = "all" | "self" | "served";
 interface Place { name: string; lat: number; lng: number }
 const PLACE_KEY = "stations-place";
+const StationsMap = lazy(() => import("./StationsMap"));
+const MAP_MAX = 25;
 
-type State = { kind: "loading" } | { kind: "denied" } | { kind: "error" } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number };
+type State = { kind: "loading" } | { kind: "denied" } | { kind: "error" } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number; center: { lat: number; lng: number } };
 
 /** "VIA ROMA 1, MILANO" → "Via Roma 1, Milano" */
 const tidyPart = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/(^|[\s,'(/-])(\p{L})/gu, (_m, a: string, b: string) => a + b.toUpperCase()) : s);
@@ -37,11 +39,13 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   const [place, setPlace] = useState<Place | null | undefined>(undefined);
   const [editing, setEditing] = useState(false);
   const [query, setQuery] = useState("");
+  const [view, setView] = useState<"list" | "map">("list");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const loadAt = useCallback(async (lat: number, lng: number, force: boolean) => {
     if (!isInItaly(lat, lng)) return setState({ kind: "abroad" });
     const { stations, at } = await loadNearbyStations(lat, lng, force);
-    setState({ kind: "ready", stations, at });
+    setState({ kind: "ready", stations, at, center: { lat, lng } });
   }, []);
 
   const load = useCallback(async (force = false, chosen: Place | null = null) => {
@@ -105,7 +109,35 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   const avg = rows.length ? rows.reduce((sum, r) => sum + r.price, 0) / rows.length : 0;
   const best = rows.reduce<(typeof rows)[number] | null>((m, r) => (!m || r.price < m.price ? r : m), null);
   const saving = best ? (avg - best.price) * 40 : 0;
+  const mapPrice = useCallback((n: number) => n.toLocaleString(i18n.language, { minimumFractionDigits: 3, maximumFractionDigits: 3 }), [i18n.language]);
   const km = (n: number) => `${n.toLocaleString(i18n.language, { maximumFractionDigits: 1 })} km`;
+  // Sulla mappa solo i 25 più economici (più quello selezionato): in città sarebbero troppi.
+  const mapRows = (() => {
+    const cheapest = [...rows].sort((a, b) => a.price - b.price).slice(0, MAP_MAX);
+    const sel = rows.find((r) => r.s.id === selectedId);
+    return sel && !cheapest.includes(sel) ? [...cheapest, sel] : cheapest;
+  })();
+  const areaPrices = rows.map((r) => r.price);
+  const card = (r: (typeof rows)[number]) => (
+    <article key={r.s.id} className={`station${best?.s.id === r.s.id ? " is-best" : ""}`}>
+                    <div className="station__top">
+                      <span className="station__info">
+                        <b>{r.s.brand}</b>
+                        <small>{tidy(r.s.address)} · {km(r.s.km)}</small>
+                      </span>
+                      <span className="station__price">
+                        {formatMoney(r.price, 3)}
+                        <small>/{fuel === "metano" ? "kg" : "l"}</small>
+                        {service === "all" && <em>{t(r.isSelf ? "stations.self" : "stations.served")}</em>}
+                      </span>
+                    </div>
+                    {best?.s.id === r.s.id && <span className="station__badge">{t("stations.cheapest")}</span>}
+                    <div className="station__actions">
+                      <button type="button" className="btn btn--ghost btn--small" onClick={() => navigate(r.s)}>{t("stations.navigate")}</button>
+                      <button type="button" className="btn btn--primary btn--small" onClick={() => onUsePrice(r.price)}>{t("stations.usePrice")}</button>
+                    </div>
+                  </article>
+  );
   const navigate = (s: Station) => {
     window.location.href = `geo:${s.lat},${s.lng}?q=${s.lat},${s.lng}(${encodeURIComponent(s.brand)})`;
   };
@@ -157,6 +189,10 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
               </button>
             ))}
           </div>
+          <div className="stations__view" role="tablist">
+            <button type="button" role="tab" aria-selected={view === "list"} className={view === "list" ? "is-active" : ""} onClick={() => setView("list")}>{t("stations.list")}</button>
+            <button type="button" role="tab" aria-selected={view === "map"} className={view === "map" ? "is-active" : ""} onClick={() => setView("map")}>{t("stations.map")}</button>
+          </div>
           <select className="fc-sum__period" value={sort} onChange={(e) => setSort(e.target.value as "price" | "distance")} aria-label={t("stations.sort")}>
             <option value="price">{t("stations.byPrice")}</option>
             <option value="distance">{t("stations.byDistance")}</option>
@@ -190,30 +226,29 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
             {best && rows.length > 1 && saving > 0.2 && (
               <p className="stations__tip">{t("stations.saving", { name: best.s.brand, amount: formatMoney(saving) })}</p>
             )}
-            {rows.length === 0 ? (
+            {view === "map" && rows.length > 0 && (
+              <>
+                <Suspense fallback={<div className="smap" />}>
+                  <StationsMap
+                    center={state.center}
+                    rows={mapRows}
+                    areaPrices={areaPrices}
+                    selectedId={selectedId}
+                    formatPrice={mapPrice}
+                    onSelect={setSelectedId}
+                  />
+                </Suspense>
+                {(() => {
+                  const sel = rows.find((r) => r.s.id === selectedId);
+                  return sel ? card(sel) : <p className="stations__hint">{rows.length > MAP_MAX ? t("stations.mapTop", { count: MAP_MAX }) + " " : ""}{t("stations.tapPin")}</p>;
+                })()}
+              </>
+            )}
+            {view === "map" ? null : rows.length === 0 ? (
               <div className="empty-state"><p className="empty-state__title">{t("stations.none")}</p></div>
             ) : (
               <div className="stations__list">
-                {rows.slice(0, 30).map((r) => (
-                  <article key={r.s.id} className={`station${best?.s.id === r.s.id ? " is-best" : ""}`}>
-                    <div className="station__top">
-                      <span className="station__info">
-                        <b>{r.s.brand}</b>
-                        <small>{tidy(r.s.address)} · {km(r.s.km)}</small>
-                      </span>
-                      <span className="station__price">
-                        {formatMoney(r.price, 3)}
-                        <small>/{fuel === "metano" ? "kg" : "l"}</small>
-                        {service === "all" && <em>{t(r.isSelf ? "stations.self" : "stations.served")}</em>}
-                      </span>
-                    </div>
-                    {best?.s.id === r.s.id && <span className="station__badge">{t("stations.cheapest")}</span>}
-                    <div className="station__actions">
-                      <button type="button" className="btn btn--ghost btn--small" onClick={() => navigate(r.s)}>{t("stations.navigate")}</button>
-                      <button type="button" className="btn btn--primary btn--small" onClick={() => onUsePrice(r.price)}>{t("stations.usePrice")}</button>
-                    </div>
-                  </article>
-                ))}
+                {rows.slice(0, 30).map((r) => card(r))}
               </div>
             )}
           </>

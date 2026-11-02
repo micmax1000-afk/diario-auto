@@ -1450,7 +1450,11 @@
     "change": "alterar",
     "placeLabel": "Município ou morada",
     "placePh": "ex. Bolonha",
-    "useGps": "Usar a minha localização"
+    "useGps": "Usar a minha localização",
+    "list": "Lista",
+    "map": "Mapa",
+    "tapPin": "Toque num preço no mapa para ver o posto.",
+    "mapTop": "No mapa, os {{count}} mais baratos."
   },
   "voiceFuel": {
     "title": "Fuel by voice",
