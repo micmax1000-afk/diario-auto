@@ -16,6 +16,11 @@ describe("rifornimento a voce", () => {
     expect(parseVoiceFuel("20 € sulla Panda a 1,85 €/l 152.300 km pieno", V)).toEqual({ kind: "fuel", vehicleId: "p", totalCost: 20, pricePerUnit: 1.85, km: 152300, fullTank: true });
   });
 
+  it("simbolo dell'euro davanti, come lo scrive il riconoscimento vocale", () => {
+    expect(parseVoiceFuel("€20 a 1,89 al litro", V)).toMatchObject({ kind: "fuel", totalCost: 20, pricePerUnit: 1.89 });
+    expect(parseVoiceFuel("rifornimento €35,50 a €1,79 al litro", V)).toMatchObject({ totalCost: 35.5, pricePerUnit: 1.79 });
+  });
+
   it("prezzo detto a parole: 1 e 90", () => {
     expect(parseVoiceFuel("30 euro a 1 e 90", V)).toMatchObject({ totalCost: 30, pricePerUnit: 1.9 });
   });

@@ -20,8 +20,10 @@ interface Place { name: string; lat: number; lng: number }
 const PLACE_KEY = "stations-place";
 const StationsMap = lazy(() => import("./StationsMap"));
 const MAP_MAX = 25;
+// Vista mappa pronta ma nascosta finché non viene approvata.
+const SHOW_MAP = false;
 
-type State = { kind: "loading" } | { kind: "denied" } | { kind: "error" } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number; center: { lat: number; lng: number } };
+type State = { kind: "loading"; stage: "locate" | "download" | "read" } | { kind: "denied" } | { kind: "error"; detail: string } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number; center: { lat: number; lng: number } };
 
 /** "VIA ROMA 1, MILANO" → "Via Roma 1, Milano" */
 const tidyPart = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/(^|[\s,'(/-])(\p{L})/gu, (_m, a: string, b: string) => a + b.toUpperCase()) : s);
@@ -34,7 +36,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   const [service, setService] = useState<Service>("all");
   const [sort, setSort] = useState<"price" | "distance">("price");
   const [radius, setRadius] = useState(5);
-  const [state, setState] = useState<State>({ kind: "loading" });
+  const [state, setState] = useState<State>({ kind: "loading", stage: "locate" });
   // Comune scelto a mano (null = posizione del telefono); editing = campo di ricerca aperto
   const [place, setPlace] = useState<Place | null | undefined>(undefined);
   const [editing, setEditing] = useState(false);
@@ -44,12 +46,12 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
 
   const loadAt = useCallback(async (lat: number, lng: number, force: boolean) => {
     if (!isInItaly(lat, lng)) return setState({ kind: "abroad" });
-    const { stations, at } = await loadNearbyStations(lat, lng, force);
+    const { stations, at } = await loadNearbyStations(lat, lng, force, (stage) => setState({ kind: "loading", stage }));
     setState({ kind: "ready", stations, at, center: { lat, lng } });
   }, []);
 
   const load = useCallback(async (force = false, chosen: Place | null = null) => {
-    setState({ kind: "loading" });
+    setState({ kind: "loading", stage: "locate" });
     try {
       if (chosen) return await loadAt(chosen.lat, chosen.lng, force);
       let perm = await Geolocation.checkPermissions();
@@ -59,7 +61,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
       await loadAt(pos.coords.latitude, pos.coords.longitude, force);
     } catch (e) {
       const msg = String((e as Error)?.message ?? e).toLowerCase();
-      setState({ kind: msg.includes("denied") || msg.includes("permission") ? "denied" : "error" });
+      setState(msg.includes("denied") || msg.includes("permission") ? { kind: "denied" } : { kind: "error", detail: String((e as Error)?.message ?? e).slice(0, 120) });
     }
   }, [loadAt]);
 
@@ -189,17 +191,17 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
               </button>
             ))}
           </div>
-          <div className="stations__view" role="tablist">
+          {SHOW_MAP && <div className="stations__view" role="tablist">
             <button type="button" role="tab" aria-selected={view === "list"} className={view === "list" ? "is-active" : ""} onClick={() => setView("list")}>{t("stations.list")}</button>
             <button type="button" role="tab" aria-selected={view === "map"} className={view === "map" ? "is-active" : ""} onClick={() => setView("map")}>{t("stations.map")}</button>
-          </div>
+          </div>}
           <select className="fc-sum__period" value={sort} onChange={(e) => setSort(e.target.value as "price" | "distance")} aria-label={t("stations.sort")}>
             <option value="price">{t("stations.byPrice")}</option>
             <option value="distance">{t("stations.byDistance")}</option>
           </select>
         </div>
 
-        {state.kind === "loading" && <div className="empty-state"><p className="empty-state__title">{t("stations.loading")}</p><p className="empty-state__body">{t("stations.loadingBody")}</p></div>}
+        {state.kind === "loading" && <div className="empty-state"><p className="empty-state__title">{t(state.stage === "locate" ? "stations.locating" : state.stage === "read" ? "stations.reading" : "stations.loading")}</p><p className="empty-state__body">{t(state.stage === "download" ? "stations.loadingBody" : "stations.wait")}</p></div>}
         {state.kind === "denied" && (
           <div className="empty-state">
             <p className="empty-state__title">{t("stations.deniedTitle")}</p>
@@ -217,6 +219,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
           <div className="empty-state">
             <p className="empty-state__title">{t("stations.errorTitle")}</p>
             <p className="empty-state__body">{t("stations.errorBody")}</p>
+            <p className="stations__detail">{state.detail}</p>
             <button type="button" className="btn btn--primary" onClick={() => void load(true, place ?? null)}>{t("stations.retry")}</button>
           </div>
         )}

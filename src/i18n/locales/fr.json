@@ -1454,7 +1454,10 @@
     "list": "Liste",
     "map": "Carte",
     "tapPin": "Touchez un prix sur la carte pour voir la station.",
-    "mapTop": "Sur la carte, les {{count}} moins chères."
+    "mapTop": "Sur la carte, les {{count}} moins chères.",
+    "locating": "Recherche de votre position…",
+    "reading": "Lecture des prix…",
+    "wait": "Un instant…"
   },
   "voiceFuel": {
     "title": "Fuel by voice",
