@@ -1469,11 +1469,17 @@
     "loading": "Cerco i distributori…",
     "loadingBody": "La prima volta scarico i prezzi del Ministero: può volerci qualche secondo.",
     "deniedTitle": "Serve la posizione",
-    "deniedBody": "Per trovare i distributori vicini consenti all'app di usare la posizione (anche approssimativa).",
+    "deniedBody": "Per trovare i distributori vicini consenti la posizione, oppure scrivi qui sotto il comune.",
     "errorTitle": "Prezzi non disponibili",
     "errorBody": "Non riesco a scaricare i prezzi del Ministero. Controlla la connessione e riprova.",
     "retry": "Riprova",
     "abroadTitle": "Solo in Italia",
-    "abroadBody": "I prezzi dei distributori arrivano dal Ministero italiano: questa sezione funziona quando sei in Italia."
+    "abroadBody": "I prezzi dei distributori arrivano dal Ministero italiano: questa sezione funziona quando sei in Italia.",
+    "all": "Tutti",
+    "nearPlace": "Vicino a {{place}}",
+    "change": "cambia",
+    "placeLabel": "Comune o indirizzo",
+    "placePh": "es. Bologna",
+    "useGps": "Usa la mia posizione"
   }
 }

@@ -1439,12 +1439,18 @@
     "loading": "Recherche des stations…",
     "loadingBody": "La première fois, les prix du ministère sont téléchargés : cela peut prendre quelques secondes.",
     "deniedTitle": "Position nécessaire",
-    "deniedBody": "Pour trouver les stations proches, autorisez l'app à utiliser votre position (même approximative).",
+    "deniedBody": "Pour trouver les stations proches, autorisez la position ou saisissez la commune ci-dessous.",
     "errorTitle": "Prix indisponibles",
     "errorBody": "Impossible de télécharger les prix du ministère. Vérifiez la connexion et réessayez.",
     "retry": "Réessayer",
     "abroadTitle": "Uniquement en Italie",
-    "abroadBody": "Les prix des stations proviennent du ministère italien : cette section fonctionne quand vous êtes en Italie."
+    "abroadBody": "Les prix des stations proviennent du ministère italien : cette section fonctionne quand vous êtes en Italie.",
+    "all": "Toutes",
+    "nearPlace": "Près de {{place}}",
+    "change": "modifier",
+    "placeLabel": "Commune ou adresse",
+    "placePh": "ex. Bologne",
+    "useGps": "Utiliser ma position"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

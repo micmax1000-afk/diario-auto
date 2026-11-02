@@ -3,6 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Geolocation } from "@capacitor/geolocation";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { loadNearbyStations, type Station, type StationFuel } from "../utils/fuelStations";
+import { getMeta, setMeta } from "../utils/db";
+import type { GeocodeResult } from "../utils/geocoding";
+import AddressAutocompleteInput from "./AddressAutocompleteInput";
 import QuickEntryHeader from "./QuickEntryHeader";
 import { isInItaly } from "../utils/settings";
 
@@ -12,45 +15,91 @@ interface Props {
   onUsePrice: (price: number) => void;
 }
 
+type Service = "all" | "self" | "served";
+interface Place { name: string; lat: number; lng: number }
+const PLACE_KEY = "stations-place";
+
 type State = { kind: "loading" } | { kind: "denied" } | { kind: "error" } | { kind: "abroad" } | { kind: "ready"; stations: Station[]; at: number };
 
 /** "VIA ROMA 1, MILANO" → "Via Roma 1, Milano" */
-const tidy = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/(^|[\s,'(/-])(\p{L})/gu, (_m, a: string, b: string) => a + b.toUpperCase()) : s);
+const tidyPart = (s: string) => (s === s.toUpperCase() ? s.toLowerCase().replace(/(^|[\s,'(/-])(\p{L})/gu, (_m, a: string, b: string) => a + b.toUpperCase()) : s);
+const tidy = (s: string) => s.split(", ").map(tidyPart).join(", ");
 
 export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props) {
   const { t, i18n } = useTranslation();
   const { formatMoney } = useAppSettings();
   const [fuel, setFuel] = useState<StationFuel>(defaultFuel);
-  const [self, setSelf] = useState(defaultFuel !== "gpl" && defaultFuel !== "metano");
+  const [service, setService] = useState<Service>("all");
   const [sort, setSort] = useState<"price" | "distance">("price");
   const [radius, setRadius] = useState(5);
   const [state, setState] = useState<State>({ kind: "loading" });
+  // Comune scelto a mano (null = posizione del telefono); editing = campo di ricerca aperto
+  const [place, setPlace] = useState<Place | null | undefined>(undefined);
+  const [editing, setEditing] = useState(false);
+  const [query, setQuery] = useState("");
 
-  const load = useCallback(async (force = false) => {
+  const loadAt = useCallback(async (lat: number, lng: number, force: boolean) => {
+    if (!isInItaly(lat, lng)) return setState({ kind: "abroad" });
+    const { stations, at } = await loadNearbyStations(lat, lng, force);
+    setState({ kind: "ready", stations, at });
+  }, []);
+
+  const load = useCallback(async (force = false, chosen: Place | null = null) => {
     setState({ kind: "loading" });
     try {
+      if (chosen) return await loadAt(chosen.lat, chosen.lng, force);
       let perm = await Geolocation.checkPermissions();
       if (perm.location !== "granted" && perm.coarseLocation !== "granted") perm = await Geolocation.requestPermissions({ permissions: ["coarseLocation"] });
       if (perm.location !== "granted" && perm.coarseLocation !== "granted") return setState({ kind: "denied" });
       const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60_000 });
-      if (!isInItaly(pos.coords.latitude, pos.coords.longitude)) return setState({ kind: "abroad" });
-      const { stations, at } = await loadNearbyStations(pos.coords.latitude, pos.coords.longitude, force);
-      setState({ kind: "ready", stations, at });
+      await loadAt(pos.coords.latitude, pos.coords.longitude, force);
     } catch (e) {
       const msg = String((e as Error)?.message ?? e).toLowerCase();
       setState({ kind: msg.includes("denied") || msg.includes("permission") ? "denied" : "error" });
     }
-  }, []);
+  }, [loadAt]);
 
   useEffect(() => {
-    void load();
+    getMeta(PLACE_KEY).then((raw) => {
+      let saved: Place | null = null;
+      try {
+        saved = raw ? (JSON.parse(raw) as Place) : null;
+      } catch {
+        saved = null;
+      }
+      setPlace(saved);
+      void load(false, saved);
+    });
   }, [load]);
+
+  function choosePlace(r: GeocodeResult) {
+    const p: Place = { name: query.split(",")[0].trim() || r.displayName.split(",")[0], lat: r.lat, lng: r.lng };
+    setPlace(p);
+    setEditing(false);
+    void setMeta(PLACE_KEY, JSON.stringify(p));
+    void load(false, p);
+  }
+  function useGps() {
+    setPlace(null);
+    setEditing(false);
+    void setMeta(PLACE_KEY, "");
+    void load();
+  }
 
   const rows =
     state.kind === "ready"
       ? state.stations
-          .map((s) => ({ s, price: self ? s.prices[fuel]?.self : s.prices[fuel]?.served }))
-          .filter((r): r is { s: Station; price: number } => r.price !== undefined && r.s.km <= radius)
+          .map((s) => {
+            const p = s.prices[fuel];
+            const self = p?.self;
+            const served = p?.served;
+            if (service === "self") return { s, price: self, isSelf: true };
+            if (service === "served") return { s, price: served, isSelf: false };
+            // Tutti: il prezzo più basso tra self e servito (il GPL è quasi sempre solo servito)
+            if (self !== undefined && (served === undefined || self <= served)) return { s, price: self, isSelf: true };
+            return { s, price: served, isSelf: false };
+          })
+          .filter((r): r is { s: Station; price: number; isSelf: boolean } => r.price !== undefined && r.s.km <= radius)
           .sort((a, b) => (sort === "price" ? a.price - b.price || a.s.km - b.s.km : a.s.km - b.s.km))
       : [];
   const avg = rows.length ? rows.reduce((sum, r) => sum + r.price, 0) / rows.length : 0;
@@ -67,11 +116,31 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
       <div className="quick-entry-page__body stations">
         <div className="stations__where">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" /><circle cx="12" cy="10" r="2.4" /></svg>
-          <span>{t("stations.near")}</span>
+          <button type="button" className="stations__place" onClick={() => setEditing((v) => !v)}>
+            <span>{place ? t("stations.nearPlace", { place: place.name }) : t("stations.near")}</span>
+            <small>{t("stations.change")}</small>
+          </button>
           <select value={radius} onChange={(e) => setRadius(Number(e.target.value))} aria-label={t("stations.radius")}>
-            {[2, 5, 10].map((r) => <option key={r} value={r}>{t("stations.within", { km: r })}</option>)}
+            {[5, 10, 20, 30].map((r) => <option key={r} value={r}>{t("stations.within", { km: r })}</option>)}
           </select>
         </div>
+        {(editing || state.kind === "denied") && (
+          <div className="stations__search">
+            <AddressAutocompleteInput
+              id="stations-place"
+              label={t("stations.placeLabel")}
+              placeholder={t("stations.placePh")}
+              value={query}
+              onChange={setQuery}
+              onSelectSuggestion={choosePlace}
+            />
+            {place && (
+              <button type="button" className="dash-link" onClick={useGps}>
+                {t("stations.useGps")}
+              </button>
+            )}
+          </div>
+        )}
 
         <div className="stations__fuels" role="tablist">
           {(["benzina", "gasolio", "gpl", "metano"] as StationFuel[]).map((f) => (
@@ -82,8 +151,11 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
         </div>
         <div className="stations__opts">
           <div className="commute-toggle" role="tablist">
-            <button type="button" role="tab" aria-selected={self} className={self ? "is-active" : ""} onClick={() => setSelf(true)}>{t("stations.self")}</button>
-            <button type="button" role="tab" aria-selected={!self} className={!self ? "is-active" : ""} onClick={() => setSelf(false)}>{t("stations.served")}</button>
+            {(["all", "self", "served"] as Service[]).map((sv) => (
+              <button key={sv} type="button" role="tab" aria-selected={service === sv} className={service === sv ? "is-active" : ""} onClick={() => setService(sv)}>
+                {t(sv === "all" ? "stations.all" : sv === "self" ? "stations.self" : "stations.served")}
+              </button>
+            ))}
           </div>
           <select className="fc-sum__period" value={sort} onChange={(e) => setSort(e.target.value as "price" | "distance")} aria-label={t("stations.sort")}>
             <option value="price">{t("stations.byPrice")}</option>
@@ -96,7 +168,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
           <div className="empty-state">
             <p className="empty-state__title">{t("stations.deniedTitle")}</p>
             <p className="empty-state__body">{t("stations.deniedBody")}</p>
-            <button type="button" className="btn btn--primary" onClick={() => void load()}>{t("stations.retry")}</button>
+            <button type="button" className="btn btn--ghost" onClick={() => void load()}>{t("stations.retry")}</button>
           </div>
         )}
         {state.kind === "abroad" && (
@@ -109,7 +181,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
           <div className="empty-state">
             <p className="empty-state__title">{t("stations.errorTitle")}</p>
             <p className="empty-state__body">{t("stations.errorBody")}</p>
-            <button type="button" className="btn btn--primary" onClick={() => void load(true)}>{t("stations.retry")}</button>
+            <button type="button" className="btn btn--primary" onClick={() => void load(true, place ?? null)}>{t("stations.retry")}</button>
           </div>
         )}
 
@@ -132,6 +204,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
                       <span className="station__price">
                         {formatMoney(r.price, 3)}
                         <small>/{fuel === "metano" ? "kg" : "l"}</small>
+                        {service === "all" && <em>{t(r.isSelf ? "stations.self" : "stations.served")}</em>}
                       </span>
                     </div>
                     {best?.s.id === r.s.id && <span className="station__badge">{t("stations.cheapest")}</span>}

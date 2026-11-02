@@ -1439,12 +1439,18 @@
     "loading": "A procurar postos…",
     "loadingBody": "Na primeira vez são descarregados os preços do Ministério: pode demorar alguns segundos.",
     "deniedTitle": "É necessária a localização",
-    "deniedBody": "Para encontrar postos próximos, permita que a app use a sua localização (mesmo aproximada).",
+    "deniedBody": "Para encontrar postos próximos, permita a localização ou escreva o município abaixo.",
     "errorTitle": "Preços indisponíveis",
     "errorBody": "Não é possível descarregar os preços do Ministério. Verifique a ligação e tente novamente.",
     "retry": "Tentar novamente",
     "abroadTitle": "Só em Itália",
-    "abroadBody": "Os preços dos postos vêm do Ministério italiano: esta secção funciona quando está em Itália."
+    "abroadBody": "Os preços dos postos vêm do Ministério italiano: esta secção funciona quando está em Itália.",
+    "all": "Todos",
+    "nearPlace": "Perto de {{place}}",
+    "change": "alterar",
+    "placeLabel": "Município ou morada",
+    "placePh": "ex. Bolonha",
+    "useGps": "Usar a minha localização"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

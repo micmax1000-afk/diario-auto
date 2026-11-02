@@ -120,18 +120,18 @@ const CACHE_KEY = "stations-cache";
 interface Cache { at: number; lat: number; lng: number; radiusKm: number; stations: Station[] }
 
 /**
- * Distributori entro 10 km. Riusa i dati salvati se hanno meno di 6 ore e la
+ * Distributori entro 30 km. Riusa i dati salvati se hanno meno di 6 ore e la
  * posizione è cambiata di poco; altrimenti riscarica dal Ministero (serve
  * l'app Android: il sito non permette il download da una pagina web).
  */
 export async function loadNearbyStations(lat: number, lng: number, force = false): Promise<{ stations: Station[]; at: number }> {
-  const radiusKm = 10;
+  const radiusKm = 30;
   if (!force) {
     const raw = await getMeta(CACHE_KEY);
     if (raw) {
       try {
         const c = JSON.parse(raw) as Cache;
-        if (Date.now() - c.at < 6 * 3600_000 && distanceKm(lat, lng, c.lat, c.lng) < 2) {
+        if (c.radiusKm >= radiusKm && Date.now() - c.at < 6 * 3600_000 && distanceKm(lat, lng, c.lat, c.lng) < 2) {
           return { stations: c.stations.map((s) => ({ ...s, km: distanceKm(lat, lng, s.lat, s.lng) })), at: c.at };
         }
       } catch {
