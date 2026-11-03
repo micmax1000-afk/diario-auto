@@ -1495,6 +1495,7 @@
     "locating": "Cerco la tua posizione…",
     "reading": "Leggo i prezzi…",
     "wait": "Un attimo…",
-    "more": "Mostra altri {{count}} (su {{total}})"
+    "more": "Mostra altri {{count}} (su {{total}})",
+    "mapTopNear": "Sulla mappa i {{count}} più vicini e il più economico."
   }
 }

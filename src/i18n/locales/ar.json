@@ -1470,7 +1470,8 @@
     "locating": "جارٍ تحديد موقعك…",
     "reading": "جارٍ قراءة الأسعار…",
     "wait": "لحظة…",
-    "more": "عرض {{count}} أخرى (من {{total}})"
+    "more": "عرض {{count}} أخرى (من {{total}})",
+    "mapTopNear": "على الخريطة أقرب {{count}} والأرخص."
   },
   "voiceFuel": {
     "title": "Fuel by voice",
