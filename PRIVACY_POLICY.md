@@ -23,9 +23,9 @@ Puoi cancellare tutto in qualsiasi momento cancellando i dati dell'app dalle imp
 
 ## Backup
 
-L'app include un backup manuale: il file che generi lo salvi dove vuoi e resta sotto il tuo controllo, non viene inviato a noi. Con Diario Auto Pro puoi anche salvare una copia sul tuo Google Drive (vedi sotto).
+L'app include un backup manuale: il file che generi lo salvi dove vuoi e resta sotto il tuo controllo, non viene inviato a noi. Puoi anche salvare una copia sul tuo Google Drive (vedi sotto).
 
-**Backup automatico settimanale (solo Pro)**: dopo che hai fatto almeno un backup manuale su Google Drive, l'app carica da sola una nuova copia sul tuo Drive circa una volta a settimana, quando la apri e sei connesso. Usa lo stesso accesso Google che hai già autorizzato, senza chiederti nulla. Aggiunge un file su Drive e non modifica mai i dati sul telefono. Se i dati sul telefono risultano molto meno dell'ultimo backup (per esempio dopo una cancellazione accidentale), il backup automatico si ferma per non sostituire i backup buoni. Puoi disattivarlo in qualsiasi momento dalla sezione Backup dell'app.
+**Backup automatico settimanale**: dopo che hai fatto almeno un backup manuale su Google Drive, l'app carica da sola una nuova copia sul tuo Drive circa una volta a settimana, quando la apri e sei connesso. Usa lo stesso accesso Google che hai già autorizzato, senza chiederti nulla. Aggiunge un file su Drive e non modifica mai i dati sul telefono. Se i dati sul telefono risultano molto meno dell'ultimo backup (per esempio dopo una cancellazione accidentale), il backup automatico si ferma per non sostituire i backup buoni. Puoi disattivarlo in qualsiasi momento dalla sezione Backup dell'app.
 
 ## Servizi esterni contattati durante l'uso
 
@@ -40,7 +40,6 @@ Alcune funzionalità dell'app contattano servizi di terze parti. Questi servizi 
 | Mappa dei distributori | OpenFreeMap (tiles.openfreemap.org), dati OpenStreetMap | Le richieste delle porzioni di mappa della zona che stai guardando, come per qualsiasi mappa online |
 | Rifornimento a voce (solo con l'app in italiano) | Servizio di riconoscimento vocale di Android (di solito Google) | La tua voce, solo mentre il microfono è attivo: il servizio vocale del telefono la trasforma in testo e può elaborarla sui server di Google secondo la [Privacy Policy di Google](https://policies.google.com/privacy). Diario Auto riceve solo il testo, non registra e non salva l'audio. |
 | Backup su Google Drive, manuale o automatico (funzione opzionale, da attivare tu) | Google (accesso Google + Google Drive API) | Il tuo indirizzo email Google, usato solo per identificare l'accesso, e il contenuto del backup. L'app può vedere e gestire **solo i file che crea lei stessa** su Drive (permesso "drive.file"), mai il resto del tuo Drive. Dopo ogni salvataggio l'app tiene gli ultimi 5 backup (manuali e automatici insieme) e sposta i più vecchi nel cestino di Drive, da cui puoi recuperarli per 30 giorni. I dati vanno direttamente dal tuo dispositivo a Google: lo sviluppatore non li riceve. Gestito secondo la [Privacy Policy di Google](https://policies.google.com/privacy). |
-| Acquisto Diario Auto Pro                                                          | Google Play Billing                        | Gestito interamente da Google secondo la [Privacy Policy di Google](https://policies.google.com/privacy); Diario Auto riceve solo la conferma dell'acquisto, non dati di pagamento                                                                                                                                                                                                                                                                                                                                                                                               |
 
 Le funzioni base dell'app (registro rifornimenti, manutenzioni, scadenze, spese) funzionano anche senza connessione.
 
@@ -100,9 +99,9 @@ You can delete everything at any time by clearing the app's data in your device 
 
 ## Backup
 
-The app includes a manual backup: you save the file wherever you want and it stays under your control; it is never sent to us. With Diario Auto Pro you can also save a copy to your Google Drive (see below).
+The app includes a manual backup: you save the file wherever you want and it stays under your control; it is never sent to us. You can also save a copy to your Google Drive (see below).
 
-**Weekly automatic backup (Pro only)**: after you have made at least one manual backup to Google Drive, the app uploads a new copy to your Drive by itself about once a week, when you open it and are online. It uses the Google access you have already authorized, without asking you anything. It adds a file on Drive and never changes the data on your phone. If the data on your phone is much less than in the last backup (for example after an accidental deletion), the automatic backup stops so that it does not replace your good backups. You can turn it off at any time in the app's Backup section.
+**Weekly automatic backup**: after you have made at least one manual backup to Google Drive, the app uploads a new copy to your Drive by itself about once a week, when you open it and are online. It uses the Google access you have already authorized, without asking you anything. It adds a file on Drive and never changes the data on your phone. If the data on your phone is much less than in the last backup (for example after an accidental deletion), the automatic backup stops so that it does not replace your good backups. You can turn it off at any time in the app's Backup section.
 
 ## External services contacted during use
 
@@ -117,7 +116,6 @@ Some features of the app contact third-party services. These services only recei
 | Fuel station map | OpenFreeMap (tiles.openfreemap.org), OpenStreetMap data | Requests for the map tiles of the area you are viewing, as with any online map |
 | Voice refuel entry (only with the app in Italian) | Android speech recognition service (usually Google) | Your voice, only while the microphone is on: the phone's speech service turns it into text and may process it on Google's servers according to [Google's Privacy Policy](https://policies.google.com/privacy). Diario Auto only receives the text; it does not record or store the audio. |
 | Google Drive backup, manual or automatic (optional feature, you turn it on) | Google (Google sign-in + Google Drive API) | Your Google email address, used only to identify the sign-in, and the content of the backup. The app can see and manage **only the files it creates itself** on Drive ("drive.file" permission), never the rest of your Drive. After each save the app keeps the last 5 backups (manual and automatic together) and moves older ones to the Drive trash, where you can recover them for 30 days. Data goes directly from your device to Google: the developer does not receive it. Handled according to [Google's Privacy Policy](https://policies.google.com/privacy). |
-| Diario Auto Pro purchase                                                    | Google Play Billing                        | Handled entirely by Google according to [Google's Privacy Policy](https://policies.google.com/privacy); Diario Auto only receives the purchase confirmation, no payment details                                                                                                                                                                                                                                                                                                                                                                                         |
 
 The app's basic features (refuel log, maintenance, deadlines, expenses) also work offline.
 

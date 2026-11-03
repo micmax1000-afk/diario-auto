@@ -17,7 +17,7 @@ Sostituisci quella pagina su Netlify con il file aggiornato `public/privacy.html
 
 Percorso: Play Console → Diario Auto → Norme e programmi → Contenuti dell'app → Sicurezza dei dati → Gestisci.
 
-Lascia com'è tutto quello che avevi già dichiarato (email per il backup su Google Drive, acquisti gestiti da Google Play). Cambia solo questo:
+Lascia com'è l'email per il backup su Google Drive. Se avevi dichiarato "Cronologia acquisti" per il Pro, toglila: l'app è gratuita e non ha acquisti attivi. Cambia anche questo:
 
 ### Posizione → NON dichiararla come raccolta
 - "Posizione approssimativa" e "Posizione precisa": **non selezionare**.
@@ -38,6 +38,9 @@ Il riconoscimento vocale di Android può elaborare la voce sui server di Google.
 - Gli utenti possono richiedere l'eliminazione dei dati? **Sì**: i dati sono sul telefono e si cancellano dalle impostazioni di Android o disinstallando l'app. I backup su Drive si cancellano da Google Drive.
 
 ## 3. Altre cose da controllare al caricamento
+
+- **App gratuita**: in Monetizza → Prodotti → Prodotti in-app imposta `diario_auto_pro_lifetime` su **Inattivo**. Nella dichiarazione DSA scegli **non operatore commerciale**.
+- **Termini d'uso**: sostituisci anche https://micmax-apps.netlify.app/termini-diario-auto.html con il file aggiornato `public/terms.html` (la sezione 8 ora dice che l'app è gratuita).
 
 - **Permesso posizione**: è in primo piano, non in background, quindi non serve il modulo speciale per la posizione in background.
 - **Microfono**: non serve nessuna dichiarazione speciale, basta il modulo Sicurezza dei dati.
