@@ -27,8 +27,9 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
   const { formatMoney } = useAppSettings();
   const [text, setText] = useState("");
   const [listening, setListening] = useState(false);
-  const [voiceError, setVoiceError] = useState<"unavailable" | "denied" | null>(null);
+  const [voiceError, setVoiceError] = useState<"unavailable" | "denied" | "nomatch" | null>(null);
   const recRef = useRef<Recognition | null>(null);
+  const heard = useRef(false);
   const parsed = parseVoiceFuel(text, vehicles);
   const vehicle = vehicles.find((v) => v.id === (parsed.vehicleId ?? currentVehicleId));
   const current = vehicles.find((v) => v.id === currentVehicleId);
@@ -55,6 +56,7 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
   }
 
   async function listenNative() {
+    let ready = false;
     try {
       const { available } = await SpeechRecognition.available();
       if (!available) return setVoiceError("unavailable");
@@ -63,16 +65,25 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
       if (perm.speechRecognition !== "granted") return setVoiceError("denied");
       setVoiceError(null);
       await SpeechRecognition.removeAllListeners();
+      heard.current = false;
       await SpeechRecognition.addListener("partialResults", (d) => {
         const best = pickBest(d.matches ?? []);
-        if (best) setText(best);
+        if (best) {
+          heard.current = true;
+          setText(best);
+        }
       });
-      await SpeechRecognition.addListener("listeningState", (d) => setListening(d.status === "started"));
+      await SpeechRecognition.addListener("listeningState", (d) => {
+        setListening(d.status === "started");
+        if (d.status === "stopped" && !heard.current) setVoiceError("nomatch");
+      });
       setListening(true);
+      ready = true;
       await SpeechRecognition.start({ language: "it-IT", partialResults: true, popup: false, maxResults: 5 });
     } catch {
       setListening(false);
-      setVoiceError("unavailable");
+      // a microfono pronto l'errore vuol dire "non ho sentito/capito", non che manca il riconoscimento
+      setVoiceError(ready ? "nomatch" : "unavailable");
     }
   }
 
@@ -155,7 +166,7 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
           </svg>
         </button>
         <p className="voice-status">{listening ? t("voiceFuel.listening") : t("voiceFuel.tap")}</p>
-        {voiceError && <p className="voice-error">{t(voiceError === "denied" ? "voiceFuel.denied" : "voiceFuel.unavailable")}</p>}
+        {voiceError && <p className="voice-error">{t(voiceError === "denied" ? "voiceFuel.denied" : voiceError === "nomatch" ? "voiceFuel.nomatch" : "voiceFuel.unavailable")}</p>}
         <p className="voice-example">{t(current?.fuelType === "elettrico" ? "voiceFuel.exampleCharge" : "voiceFuel.example")}</p>
 
         <div className="field">
@@ -187,7 +198,11 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
 
         <div className="modal__actions voice-actions">
           <button type="button" className="btn btn--ghost" onClick={onClose}>{t("common.cancel")}</button>
-          <button type="button" className="btn btn--primary" disabled={!ready} onClick={() => vehicle && onContinue(vehicle.id, { ...parsed, km: usableKm }, kind)}>
+          <button type="button" className="btn btn--primary" disabled={!ready} onClick={() => {
+              if (!vehicle) return;
+              if (listening) void (Capacitor.isNativePlatform() ? SpeechRecognition.stop() : Promise.resolve(recRef.current?.stop()));
+              onContinue(vehicle.id, { ...parsed, km: usableKm }, kind);
+            }}>
             {t("voiceFuel.continue")}
           </button>
         </div>

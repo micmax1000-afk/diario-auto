@@ -73,84 +73,119 @@ export function voiceScore(v: VoiceFuel): number {
   return [v.totalCost, v.pricePerUnit, v.liters ?? v.kWh, v.km, v.vehicleId].filter((x) => x !== undefined).length;
 }
 
-/** Interpreta la frase detta (in italiano) senza servizi esterni: solo regole sul testo. */
-export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "name" | "plate">[]): VoiceFuel {
-  let s = wordsToDigits(` ${text.toLowerCase()} `.replace(/€/g, " euro ").replace(/[,;](?=\s)/g, " ").replace(/\s+/g, " "))
-    // "20 euro e 50" → 20,50 euro
-    .replace(/\b(\d{2,3})\s*euro\s*e\s*(\d{1,2})\b(?!\s*(?:km|litri|kwh))/g, "$1,$2 euro")
-    // "1 euro e 90" / "1 e 90" → 1,90 (prezzo detto a voce)
-    .replace(/\b(\d)\s*(?:euro\s*)?e\s*(\d{2,3})\b/g, "$1,$2");
-  const out: VoiceFuel = {};
+/** Prepara la frase: minuscole, € e kWh scritti in un solo modo, numeri a parole in cifre. */
+function normalize(text: string): string {
+  let s = ` ${text.toLowerCase()} `
+    .replace(/€/g, " euro ")
+    .replace(/\b(?:kilowatt|chilowatt)\s*(?:ora|ore)?\b|\bkw\s*h\b|\bkwh\b/g, " kwh ")
+    .replace(/[,;](?=\s)/g, " ")
+    .replace(/\s+/g, " ");
+  // "un euro e 89", "un virgola 85": qui "un" è il numero 1
+  s = s.replace(/\bun(?=\s+(?:euro|e|virgola)\b)/g, "uno");
+  s = wordsToDigits(s);
+  return (
+    s
+      // "92 mila 900", "92mila 900", "92mila" → 92900 / 92000
+      .replace(/\b(\d{1,3})\s*mila(?:\s+(\d{1,3}))?\b/g, (_m, a: string, b?: string) => String(Number(a) * 1000 + Number(b ?? 0)))
+      // "20 euro e 50 (centesimi)" → 20,50 euro
+      .replace(/\b(\d{2,3})\s*euro\s*e\s*(\d{1,2})(?:\s*centesimi)?\b(?!\s*(?:km|litri|kwh))/g, "$1,$2 euro")
+      // "1 euro e 90" / "1 e 90" → 1,90 (prezzo detto a voce)
+      .replace(/\b(\d)\s*(?:euro\s*)?e\s*(\d{2,3})\b/g, "$1,$2")
+      .replace(/\s+/g, " ")
+  );
+}
 
-  // km: "92.900 km", "92900 chilometri"
+const PRICE_MAX = 4.5; // €/l, €/kg, €/kWh: sopra è un importo
+const round = (n: number, d: number) => Math.round(n * 10 ** d) / 10 ** d;
+
+/**
+ * Interpreta la frase detta (in italiano) senza servizi esterni.
+ * Prima trova tutti i numeri, poi decide cos'è ognuno guardando le parole vicine
+ * (euro, litri, kWh, km, "al litro", "prezzo"...) e il valore.
+ */
+export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "name" | "plate">[]): VoiceFuel {
+  const full = normalize(text);
+  let s = full;
+  const out: VoiceFuel = {};
+  const cut = (m: RegExpMatchArray) => {
+    s = s.replace(m[0], " ");
+  };
+
+  // km: "92.900 km", "92 900 km", "km 92.900", "contachilometri 92900"
   const km =
     s.match(/(\d{1,3}(?:[.\s]\d{3})+|\d{2,7})\s*(?:km|chilometri|kilometri)\b/) ??
-    // "km 92.900", "contachilometri 92900"
     s.match(/\b(?:km|chilometri|kilometri|contachilometri|contakm)\s*(?:a\s*|di\s*)?(\d{1,3}(?:[.\s]\d{3})+|\d{2,7})\b(?![.,]\d)/);
   if (km) {
     out.km = Number(km[1].replace(/[.\s]/g, ""));
-    s = s.replace(km[0], " ");
+    cut(km);
   }
 
-  // ricarica: "0,59 euro al kWh", poi "30 kWh"
-  const kwhPrice = s.match(new RegExp(`(${NUM})\\s*(?:euro\\s*)?(?:al\\s*|/\\s*)(?:kwh|kw\\s*h|chilowattora|kilowattora)\\b`));
-  if (kwhPrice && toNum(kwhPrice[1]) > 0 && toNum(kwhPrice[1]) < 5) {
-    out.pricePerUnit = toNum(kwhPrice[1]);
-    out.kind = "charge";
-    s = s.replace(kwhPrice[0], " ");
+  // prezzo dichiarato: "1,89 (euro) al litro", "0,25 al kwh", "1,89 €/l", "prezzo (di) 1,89"
+  const priceUnit = s.match(new RegExp(`(${NUM})\\s*(?:euro\\s*)?(?:al\\s*(?:litro|lt|kg|chilo|kilo|kwh)\\b|/\\s*(?:l|litro|kg|kwh)\\b|per\\s*litro)`));
+  const priceWord = s.match(new RegExp(`\\bprezzo\\s*(?:di\\s*|a\\s*)?(?:euro\\s*)?(${NUM})`));
+  const priceDecl = priceUnit ?? priceWord;
+  if (priceDecl && toNum(priceDecl[1]) > 0 && toNum(priceDecl[1]) <= PRICE_MAX) {
+    out.pricePerUnit = toNum(priceDecl[1]);
+    if (priceUnit && /kwh/.test(priceUnit[0])) out.kind = "charge";
+    if (priceUnit && /litro|lt\b|\/\s*l\b|kg|chilo|kilo/.test(priceUnit[0])) out.kind = "fuel";
+    cut(priceDecl);
   }
-  const kwh = s.match(new RegExp(`(${NUM})\\s*(?:kwh|kw\\s*h|chilowattora|kilowattora)\\b`));
+
+  // quantità: "40 litri", "40 l", "30 kwh"
+  const kwh = s.match(new RegExp(`(${NUM})\\s*kwh\\b`));
   if (kwh) {
     out.kWh = toNum(kwh[1]);
     out.kind = "charge";
-    s = s.replace(kwh[0], " ");
+    cut(kwh);
   }
-  if (/\b(?:a|da|in)\s+casa\b|wallbox|garage/.test(s)) out.atHome = true;
-  else if (/colonnin|supercharger|fuori casa/.test(s)) out.atHome = false;
-  if (out.atHome !== undefined || /\bricaric/.test(s)) out.kind = "charge";
-
-  // prezzo al litro: "1,90 euro al litro", "a 1,90 al litro", "1.90 €/l", "prezzo 1,90"
-  const price = out.pricePerUnit !== undefined ? null :
-    s.match(new RegExp(`(${NUM})\\s*(?:euro\\s*)?(?:al\\s*litro|/\\s*l\\b|al\\s*kg)`)) ??
-    s.match(new RegExp(`prezzo\\s*(?:di\\s*)?(${NUM})`)) ??
-    s.match(new RegExp(`\\ba\\s*(${NUM})\\b(?!\\s*(?:litri|euro))`));
-  if (price && toNum(price[1]) > 0 && toNum(price[1]) < 5) {
-    out.pricePerUnit = toNum(price[1]);
-    if (/litro|\/\s*l\b/.test(price[0])) out.kind ??= "fuel";
-    s = s.replace(price[0], " ");
-  }
-
   const liters = s.match(new RegExp(`(${NUM})\\s*(?:litri|litro|lt|l)\\b`));
   if (liters) {
-    out.kind = "fuel";
     out.liters = toNum(liters[1]);
-    s = s.replace(liters[0], " ");
+    out.kind ??= "fuel";
+    cut(liters);
   }
 
-  // "20 euro", "20 €", ma anche "€20" / "euro 20" come scrive il riconoscimento vocale
-  const total =
-    s.match(new RegExp(`(${NUM})\\s*euro\\b`)) ??
-    s.match(new RegExp(`\\beuro\\s*(${NUM})`)) ??
-    s.match(new RegExp(`\\bdi\\s*(${NUM})\\b`));
-  if (total && toNum(total[1]) > 0) out.totalCost = toNum(total[1]);
+  // i numeri rimasti: importo o prezzo, secondo il valore e le parole vicine
+  const nums = [...s.matchAll(new RegExp(`(?:\\b(euro)\\s*|\\b(a)\\s+)?(${NUM})(\\s*euro)?`, "g"))].map((m) => ({
+    value: toNum(m[3]),
+    euro: !!m[1] || !!m[4],
+    afterA: !!m[2],
+    decimal: /[.,]\d/.test(m[3]),
+  }));
+  if (out.pricePerUnit === undefined) {
+    // un prezzo ha i decimali ed è piccolo; "a 1,89" o "1,89 €" lo rendono certo
+    const cand = nums.filter((n) => n.value > 0 && n.value <= PRICE_MAX && (n.decimal || n.afterA));
+    const pick = cand.find((n) => n.afterA) ?? cand.find((n) => n.decimal);
+    if (pick) {
+      out.pricePerUnit = pick.value;
+      nums.splice(nums.indexOf(pick), 1);
+    }
+  }
+  // importo: il più grande tra i numeri con "euro", altrimenti il più grande rimasto
+  const amounts = nums.filter((n) => n.value > 0 && (n.euro || n.value > PRICE_MAX));
+  const amount = (amounts.filter((n) => n.euro).length ? amounts.filter((n) => n.euro) : amounts).sort((a, b) => b.value - a.value)[0];
+  if (amount) out.totalCost = amount.value;
 
-  if (/\bnon\s+(?:il\s+)?pieno\b|\bparziale\b/.test(s)) out.fullTank = false;
-  else if (/\bpieno\b/.test(s)) out.fullTank = true;
-  if (out.kind === undefined && (out.fullTank !== undefined || /\brifornimento\b|\bbenzina\b|\bdiesel\b|\bgasolio\b/.test(s))) out.kind = "fuel";
+  if (/\b(?:a|da|in)\s+casa\b|wallbox|garage/.test(full)) out.atHome = true;
+  else if (/colonnin|supercharger|fuori casa/.test(full)) out.atHome = false;
+  if (out.atHome !== undefined || /\bricaric/.test(full)) out.kind = "charge";
+
+  if (/\bnon\s+(?:il\s+)?pieno\b|\bparziale\b/.test(full)) out.fullTank = false;
+  else if (/\bpieno\b/.test(full)) out.fullTank = true;
+  if (out.kind === undefined && (out.fullTank !== undefined || /\brifornimento\b|\bbenzina\b|\bdiesel\b|\bgasolio\b|\bgpl\b|\bmetano\b/.test(full))) out.kind = "fuel";
 
   // completa la terza grandezza se ne mancano solo una
-  if (out.totalCost === undefined && out.kWh && out.pricePerUnit) out.totalCost = Math.round(out.kWh * out.pricePerUnit * 100) / 100;
-  if (out.pricePerUnit === undefined && out.kWh && out.totalCost) out.pricePerUnit = Math.round((out.totalCost / out.kWh) * 1000) / 1000;
-  if (out.totalCost === undefined && out.liters && out.pricePerUnit) out.totalCost = Math.round(out.liters * out.pricePerUnit * 100) / 100;
-  if (out.pricePerUnit === undefined && out.liters && out.totalCost) out.pricePerUnit = Math.round((out.totalCost / out.liters) * 1000) / 1000;
+  const qty = out.kWh ?? out.liters;
+  if (out.totalCost === undefined && qty && out.pricePerUnit) out.totalCost = round(qty * out.pricePerUnit, 2);
+  if (out.pricePerUnit === undefined && qty && out.totalCost) out.pricePerUnit = round(out.totalCost / qty, 3);
 
   // veicolo: la targa o una parola del nome (es. "golf" in "Volkswagen Golf")
   let best = 0;
   for (const v of vehicles) {
     const plate = v.plate?.toLowerCase().replace(/\s/g, "");
-    let score = plate && s.replace(/\s/g, "").includes(plate) ? 10 : 0;
+    let score = plate && full.replace(/\s/g, "").includes(plate) ? 10 : 0;
     for (const w of v.name.toLowerCase().split(/[^\p{L}\p{N}]+/u)) {
-      if (w.length >= 3 && new RegExp(`\\b${w}\\b`, "u").test(s)) score += w.length;
+      if (w.length >= 3 && new RegExp(`\\b${w}\\b`, "u").test(full)) score += w.length;
     }
     if (score > best) {
       best = score;

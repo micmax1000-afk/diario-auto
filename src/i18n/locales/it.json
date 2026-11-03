@@ -1429,7 +1429,10 @@
     "kmSuffix": "Hai detto «{{said}}»: intendevi {{km}} km?",
     "kmUse": "Sì, {{km}}",
     "kmLower": "{{said}} km sono meno dei km attuali ({{km}}): non li uso. Correggi la frase o scrivili nel passaggio dopo.",
-    "kmJump": "{{distance}} km in più rispetto ai km attuali ({{km}}): controlla che siano giusti."
+    "kmJump": "{{distance}} km in più rispetto ai km attuali ({{km}}): controlla che siano giusti.",
+    "nomatch": "Non ho capito, tocca il microfono e riprova (oppure scrivi la frase).",
+    "denied": "Serve il permesso del microfono: consentilo nelle impostazioni del telefono.",
+    "unavailable": "Il riconoscimento vocale non è disponibile su questo telefono: scrivi la frase qui sotto."
   },
   "entryCheck": {
     "title": "Controlla questi dati",
