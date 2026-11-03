@@ -45,7 +45,7 @@ export default function PremiumScreen({ onClose, onPurchaseToken }: Props) {
 
         <div style={{ padding: "0 1.15rem 1.5rem" }}>
           <ul className="premium-benefits">
-            {(["vehicles", "fleet", "passport", "csv", "drive"] as const).map((k) => (
+            {(["vehicles", "fleet", "passport", "trips", "csv", "drive"] as const).map((k) => (
               <li key={k}>
                 <span className="premium-benefits__check" aria-hidden="true">✓</span>
                 <span>

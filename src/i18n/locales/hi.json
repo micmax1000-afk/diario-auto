@@ -962,7 +962,9 @@
       "csvTitle": "CSV निर्यात",
       "csvBody": "ईंधन, रखरखाव और खर्च स्प्रेडशीट में।",
       "driveTitle": "Google Drive बैकअप",
-      "driveBody": "अपना डेटा Drive पर सहेजें, अपने आप भी।"
+      "driveBody": "अपना डेटा Drive पर सहेजें, अपने आप भी।",
+      "tripsTitle": "काम की यात्राओं की प्रतिपूर्ति",
+      "tripsBody": "कंपनी को देने के लिए काम के किमी और खर्चों का PDF और CSV।"
     }
   },
   "bodyType": {

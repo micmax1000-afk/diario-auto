@@ -962,7 +962,9 @@
       "csvTitle": "CSV-Export",
       "csvBody": "Tankvorgänge, Wartungen und Ausgaben in einer Tabelle.",
       "driveTitle": "Google-Drive-Backup",
-      "driveBody": "Speichere deine Daten in deinem Drive, auch automatisch."
+      "driveBody": "Speichere deine Daten in deinem Drive, auch automatisch.",
+      "tripsTitle": "Erstattung der Dienstfahrten",
+      "tripsBody": "PDF und CSV der Dienstkilometer und Kosten für deine Firma."
     }
   },
   "bodyType": {

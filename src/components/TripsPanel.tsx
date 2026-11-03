@@ -9,6 +9,8 @@ import { exportPdfBytes, exportTextFile } from "../utils/nativeFileExport";
 import { tripExtras, tripRefund, tripTotals, tripsInPeriod, tripsToCsv, type TripPeriod } from "../utils/trips";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import TripForm from "./TripForm";
+import PremiumScreen from "./PremiumScreen";
+import { useProStatus } from "../services/billing/useProStatus";
 
 const RATE_KEY = "trip-rate";
 
@@ -28,6 +30,9 @@ export default function TripsPanel({ vehicle, trips, onSave, onDelete }: Props) 
   const [rateDraft, setRateDraft] = useState<string | null>(null);
   const [form, setForm] = useState<{ trip?: TripEntry } | null>(null);
   const [notice, setNotice] = useState<{ text: string; error: boolean } | null>(null);
+  // l'export del rimborso (PDF e CSV) fa parte del Pro; con l'interruttore spento è libero
+  const { isPro } = useProStatus();
+  const [showPremium, setShowPremium] = useState(false);
   useBackButtonClose(rateDraft !== null, () => setRateDraft(null));
 
   useEffect(() => {
@@ -72,6 +77,7 @@ export default function TripsPanel({ vehicle, trips, onSave, onDelete }: Props) 
   const fileBase = `rimborso-km-${vehicle.name.replace(/\s+/g, "-").toLowerCase()}-${localDateString()}`;
 
   async function exportCsv() {
+    if (!isPro) return setShowPremium(true);
     const labels = Object.fromEntries(
       ["date", "vehicle", "from", "to", "purpose", "km", "rate", "kmAmount", "toll", "parking", "other", "otherWhat", "total"].map((k) => [k, t(`trips.csv.${k}`)]),
     );
@@ -84,6 +90,7 @@ export default function TripsPanel({ vehicle, trips, onSave, onDelete }: Props) 
   }
 
   async function exportPdf() {
+    if (!isPro) return setShowPremium(true);
     const work = [...shown].filter((tr) => tr.work).sort((a, b) => a.date.localeCompare(b.date));
     try {
       const { generateTripReportPdf } = await import("../utils/tripReportPdf");
@@ -180,10 +187,12 @@ export default function TripsPanel({ vehicle, trips, onSave, onDelete }: Props) 
             <button type="button" className="btn btn--ghost" onClick={exportPdf}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
               {t("trips.exportPdf")}
+              {!isPro && " 🔒"}
             </button>
             <button type="button" className="btn btn--ghost" onClick={exportCsv}>
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" /></svg>
               {t("trips.exportCsv")}
+              {!isPro && " 🔒"}
             </button>
           </div>
         )}
@@ -280,6 +289,7 @@ export default function TripsPanel({ vehicle, trips, onSave, onDelete }: Props) 
           onClose={() => setForm(null)}
         />
       )}
+      {showPremium && <PremiumScreen onClose={() => setShowPremium(false)} />}
     </>
   );
 }
