@@ -1458,7 +1458,8 @@
     "locating": "आपकी लोकेशन खोज रहे हैं…",
     "reading": "कीमतें पढ़ रहे हैं…",
     "wait": "एक पल…",
-    "more": "{{count}} और दिखाएँ ({{total}} में से)"
+    "more": "{{count}} और दिखाएँ ({{total}} में से)",
+    "mapTopNear": "नक्शे पर {{count}} सबसे पास और सबसे सस्ता।"
   },
   "voiceFuel": {
     "title": "Fuel by voice",

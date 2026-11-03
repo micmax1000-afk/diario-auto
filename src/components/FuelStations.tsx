@@ -147,11 +147,14 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   const saving = best ? (avg - best.price) * 40 : 0;
   const mapPrice = useCallback((n: number) => n.toLocaleString(i18n.language, { minimumFractionDigits: 3, maximumFractionDigits: 3 }), [i18n.language]);
   const km = (n: number) => `${n.toLocaleString(i18n.language, { maximumFractionDigits: 1 })} km`;
-  // Sulla mappa solo i 25 più economici (più quello selezionato): in città sarebbero troppi.
+  // Sulla mappa i primi 25 nell'ordine scelto (più vicini o più economici), sempre con
+  // il più economico e quello selezionato: tutti insieme in città sarebbero troppi.
   const mapRows = (() => {
-    const cheapest = [...rows].sort((a, b) => a.price - b.price).slice(0, MAP_MAX);
-    const sel = rows.find((r) => r.s.id === selectedId);
-    return sel && !cheapest.includes(sel) ? [...cheapest, sel] : cheapest;
+    const list = rows.slice(0, MAP_MAX);
+    for (const extra of [best, rows.find((r) => r.s.id === selectedId)]) {
+      if (extra && !list.includes(extra)) list.push(extra);
+    }
+    return list;
   })();
   const areaPrices = rows.map((r) => r.price);
   const card = (r: (typeof rows)[number]) => (
@@ -277,7 +280,7 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
                 </Suspense>
                 {(() => {
                   const sel = rows.find((r) => r.s.id === selectedId);
-                  return sel ? card(sel) : <p className="stations__hint">{rows.length > MAP_MAX ? t("stations.mapTop", { count: MAP_MAX }) + " " : ""}{t("stations.tapPin")}</p>;
+                  return sel ? card(sel) : <p className="stations__hint">{rows.length > MAP_MAX ? t(sort === "distance" ? "stations.mapTopNear" : "stations.mapTop", { count: MAP_MAX }) + " " : ""}{t("stations.tapPin")}</p>;
                 })()}
               </>
             )}

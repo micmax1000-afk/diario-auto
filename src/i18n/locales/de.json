@@ -1458,7 +1458,8 @@
     "locating": "Standort wird ermittelt…",
     "reading": "Preise werden gelesen…",
     "wait": "Einen Moment…",
-    "more": "{{count}} weitere anzeigen (von {{total}})"
+    "more": "{{count}} weitere anzeigen (von {{total}})",
+    "mapTopNear": "Auf der Karte die {{count}} nächsten und die günstigste."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

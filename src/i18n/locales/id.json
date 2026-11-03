@@ -1455,7 +1455,8 @@
     "locating": "Mencari lokasi Anda…",
     "reading": "Membaca harga…",
     "wait": "Sebentar…",
-    "more": "Tampilkan {{count}} lagi (dari {{total}})"
+    "more": "Tampilkan {{count}} lagi (dari {{total}})",
+    "mapTopNear": "Di peta, {{count}} terdekat dan yang termurah."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

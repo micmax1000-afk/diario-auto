@@ -1464,7 +1464,8 @@
     "locating": "Определяем местоположение…",
     "reading": "Читаем цены…",
     "wait": "Минутку…",
-    "more": "Показать ещё {{count}} (из {{total}})"
+    "more": "Показать ещё {{count}} (из {{total}})",
+    "mapTopNear": "На карте {{count}} ближайших и самая дешёвая."
   },
   "voiceFuel": {
     "title": "Fuel by voice",

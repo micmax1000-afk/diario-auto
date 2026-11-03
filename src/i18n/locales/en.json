@@ -1458,7 +1458,8 @@
     "locating": "Finding your location…",
     "reading": "Reading prices…",
     "wait": "One moment…",
-    "more": "Show {{count}} more (of {{total}})"
+    "more": "Show {{count}} more (of {{total}})",
+    "mapTopNear": "The {{count}} nearest and the cheapest are on the map."
   },
   "voiceFuel": {
     "title": "Fuel by voice",
