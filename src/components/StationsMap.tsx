@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+// MapLibre 6 carica il worker da file separato: Vite lo copia tra le risorse e qui gli diciamo dove sta
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import type { Station } from "../utils/fuelStations";
 
 export interface MapRow {
@@ -17,6 +19,8 @@ interface Props {
   formatPrice: (n: number) => string;
   onSelect: (id: string) => void;
 }
+
+maplibregl.setWorkerUrl(workerUrl);
 
 // Mappe OpenFreeMap: dati OpenStreetMap, gratuite, senza chiave.
 const STYLE_URL = "https://tiles.openfreemap.org/styles/liberty";
