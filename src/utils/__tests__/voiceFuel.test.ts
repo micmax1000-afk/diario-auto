@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseVoiceFuel } from "../voiceFuel";
+import { italianNumber, parseVoiceFuel, voiceScore } from "../voiceFuel";
 
 const V = [
   { id: "t", name: "Tesla Model 3" },
@@ -41,7 +41,31 @@ describe("rifornimento a voce", () => {
     expect(parseVoiceFuel("15 euro alla colonnina, 25 kWh", V)).toEqual({ kind: "charge", totalCost: 15, kWh: 25, pricePerUnit: 0.6, atHome: false });
   });
 
+  it("numeri detti a parole", () => {
+    expect(parseVoiceFuel("venti euro a uno virgola ottantanove al litro", V)).toMatchObject({ totalCost: 20, pricePerUnit: 1.89 });
+    expect(parseVoiceFuel("quaranta litri a uno e novantanove pieno", V)).toMatchObject({ liters: 40, pricePerUnit: 1.99, fullTank: true });
+    expect(parseVoiceFuel("trentacinque euro e cinquanta sulla golf", V)).toMatchObject({ totalCost: 35.5, vehicleId: "g" });
+  });
+
+  it("km prima del numero", () => {
+    expect(parseVoiceFuel("20 euro a 1,89 al litro km 92.900", V).km).toBe(92900);
+    expect(parseVoiceFuel("contachilometri 152300, 30 euro a 1,80", V).km).toBe(152300);
+  });
+
   it("senza veicolo né dati non inventa nulla", () => {
     expect(parseVoiceFuel("ciao", V)).toEqual({});
+  });
+});
+
+describe("numeri in italiano", () => {
+  it("parole composte", () => {
+    expect(["venti", "ventuno", "trentotto", "novantanove", "cento", "centoventi", "duecentotrenta", "mille", "duemila", "novantaduemilanovecento"].map(italianNumber)).toEqual([
+      20, 21, 38, 99, 100, 120, 230, 1000, 2000, 92900,
+    ]);
+    expect(italianNumber("golf")).toBeNull();
+  });
+
+  it("sceglie l'interpretazione più completa", () => {
+    expect(voiceScore(parseVoiceFuel("20 euro a 1,89 al litro", V))).toBeGreaterThan(voiceScore(parseVoiceFuel("venti euro alla Ritmo", V)));
   });
 });

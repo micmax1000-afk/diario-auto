@@ -4,7 +4,7 @@ import { SpeechRecognition } from "@capacitor-community/speech-recognition";
 import { useTranslation } from "react-i18next";
 import type { Vehicle } from "../types";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { parseVoiceFuel, type VoiceFuel } from "../utils/voiceFuel";
+import { parseVoiceFuel, voiceScore, type VoiceFuel } from "../utils/voiceFuel";
 
 interface Props {
   vehicles: Vehicle[];
@@ -13,7 +13,7 @@ interface Props {
   onClose: () => void;
 }
 
-type Recognition = { lang: string; interimResults: boolean; start: () => void; stop: () => void; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null };
+type Recognition = { lang: string; interimResults: boolean; maxAlternatives: number; start: () => void; stop: () => void; onresult: ((e: { results: ArrayLike<ArrayLike<{ transcript: string }>> }) => void) | null; onend: (() => void) | null; onerror: (() => void) | null };
 
 /** Riconoscimento vocale del sistema (gratuito, nessuna API a pagamento). */
 function createRecognition(): Recognition | null {
@@ -40,6 +40,20 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
   const qty = (charge ? parsed.kWh : parsed.liters) ?? (parsed.totalCost && parsed.pricePerUnit ? parsed.totalCost / parsed.pricePerUnit : undefined);
   const ready = !!vehicle && !!parsed.totalCost && !!parsed.pricePerUnit;
 
+  /** Tra le frasi proposte dal riconoscimento sceglie quella da cui si capiscono più dati. */
+  function pickBest(matches: string[]): string | undefined {
+    let best: string | undefined;
+    let bestScore = -1;
+    for (const m of matches) {
+      const sc = voiceScore(parseVoiceFuel(m, vehicles));
+      if (sc > bestScore) {
+        best = m;
+        bestScore = sc;
+      }
+    }
+    return best;
+  }
+
   async function listenNative() {
     try {
       const { available } = await SpeechRecognition.available();
@@ -50,11 +64,12 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
       setVoiceError(null);
       await SpeechRecognition.removeAllListeners();
       await SpeechRecognition.addListener("partialResults", (d) => {
-        if (d.matches?.[0]) setText(d.matches[0]);
+        const best = pickBest(d.matches ?? []);
+        if (best) setText(best);
       });
       await SpeechRecognition.addListener("listeningState", (d) => setListening(d.status === "started"));
       setListening(true);
-      await SpeechRecognition.start({ language: "it-IT", partialResults: true, popup: false, maxResults: 1 });
+      await SpeechRecognition.start({ language: "it-IT", partialResults: true, popup: false, maxResults: 5 });
     } catch {
       setListening(false);
       setVoiceError("unavailable");
@@ -77,7 +92,13 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
     recRef.current = rec;
     rec.lang = i18n.language === "it" ? "it-IT" : i18n.language;
     rec.interimResults = true;
-    rec.onresult = (e) => setText(Array.from(e.results).map((r) => r[0].transcript).join(" "));
+    rec.maxAlternatives = 5;
+    rec.onresult = (e) =>
+      setText(
+        Array.from(e.results)
+          .map((r) => pickBest(Array.from({ length: (r as ArrayLike<unknown>).length }, (_, i) => r[i].transcript)) ?? "")
+          .join(" "),
+      );
     rec.onend = () => setListening(false);
     rec.onerror = () => setListening(false);
     setListening(true);

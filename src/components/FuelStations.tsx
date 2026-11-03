@@ -1,8 +1,8 @@
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Geolocation } from "@capacitor/geolocation";
 import { useAppSettings } from "../contexts/AppSettingsContext";
-import { loadNearbyStations, type Station, type StationFuel } from "../utils/fuelStations";
+import { distanceKm, loadNearbyStations, type Station, type StationFuel } from "../utils/fuelStations";
 import { getMeta, setMeta } from "../utils/db";
 import type { GeocodeResult } from "../utils/geocoding";
 import AddressAutocompleteInput from "./AddressAutocompleteInput";
@@ -48,9 +48,11 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   // con altri filtri si riparte dai primi
   useEffect(() => setShown(PAGE), [fuel, service, sort, radius, place]);
 
+  const center = useRef<{ lat: number; lng: number } | null>(null);
   const loadAt = useCallback(async (lat: number, lng: number, force: boolean) => {
     if (!isInItaly(lat, lng)) return setState({ kind: "abroad" });
     const { stations, at } = await loadNearbyStations(lat, lng, force, (stage) => setState({ kind: "loading", stage }));
+    center.current = { lat, lng };
     setState({ kind: "ready", stations, at, center: { lat, lng } });
   }, []);
 
@@ -61,7 +63,10 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
       let perm = await Geolocation.checkPermissions();
       if (perm.location !== "granted" && perm.coarseLocation !== "granted") perm = await Geolocation.requestPermissions({ permissions: ["coarseLocation"] });
       if (perm.location !== "granted" && perm.coarseLocation !== "granted") return setState({ kind: "denied" });
-      const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 15000, maximumAge: 10 * 60_000 });
+      // posizione fresca (al massimo di 30 secondi fa); se il GPS è lento, quella approssimativa
+      const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true, timeout: 10_000, maximumAge: 30_000 }).catch(() =>
+        Geolocation.getCurrentPosition({ enableHighAccuracy: false, timeout: 15_000, maximumAge: 120_000 }),
+      );
       await loadAt(pos.coords.latitude, pos.coords.longitude, force);
     } catch (e) {
       const msg = String((e as Error)?.message ?? e).toLowerCase();
@@ -81,6 +86,31 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
       void load(false, saved);
     });
   }, [load]);
+
+  // Con la posizione del telefono, segue gli spostamenti mentre la pagina è aperta:
+  // oltre 250 m ricalcola le distanze (i prezzi già scaricati bastano).
+  const following = place === null && state.kind === "ready";
+  useEffect(() => {
+    if (!following) return;
+    let watchId: string | null = null;
+    let cancelled = false;
+    Geolocation.watchPosition({ enableHighAccuracy: true, maximumAge: 15_000, timeout: 30_000 }, (pos) => {
+      if (!pos || cancelled) return;
+      const { latitude: lat, longitude: lng } = pos.coords;
+      const c = center.current;
+      if (c && distanceKm(lat, lng, c.lat, c.lng) < 0.25) return;
+      void loadAt(lat, lng, false).catch(() => {});
+    })
+      .then((id) => {
+        if (cancelled) void Geolocation.clearWatch({ id });
+        else watchId = id;
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+      if (watchId) void Geolocation.clearWatch({ id: watchId });
+    };
+  }, [following, loadAt]);
 
   function choosePlace(r: GeocodeResult) {
     const p: Place = { name: query.split(",")[0].trim() || r.displayName.split(",")[0], lat: r.lat, lng: r.lng };

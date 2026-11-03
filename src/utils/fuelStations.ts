@@ -136,7 +136,8 @@ export async function loadNearbyStations(
     if (raw) {
       try {
         const c = JSON.parse(raw) as Cache;
-        if (c.radiusKm >= radiusKm && Date.now() - c.at < 6 * 3600_000 && distanceKm(lat, lng, c.lat, c.lng) < 2) {
+        // i dati coprono 30 km: spostandosi di qualche km bastano ancora, si ricalcolano solo le distanze
+        if (c.radiusKm >= radiusKm && Date.now() - c.at < 6 * 3600_000 && distanceKm(lat, lng, c.lat, c.lng) < 5) {
           return { stations: c.stations.map((s) => ({ ...s, km: distanceKm(lat, lng, s.lat, s.lng) })), at: c.at };
         }
       } catch {
