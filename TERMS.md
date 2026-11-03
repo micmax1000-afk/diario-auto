@@ -1,6 +1,6 @@
 # Termini d'uso — Diario Auto
 
-**Ultimo aggiornamento**: 29 ottobre 2026
+**Ultimo aggiornamento**: 3 novembre 2026
 
 In breve: Diario Auto ti aiuta a tenere in ordine i dati della tua auto. **Non usarla mentre guidi.** I dati letti dall'auto e i calcoli sono indicativi e non sostituiscono un meccanico. La diagnostica OBD2 **legge soltanto**: l'app non modifica né cancella nulla nella centralina. I dati restano sul tuo telefono e i backup sono una tua responsabilità.
 
@@ -14,7 +14,7 @@ Installando o usando l'app accetti questi termini, le avvertenze mostrate al pri
 
 ## 3. Cosa fa l'app
 
-L'app permette di registrare veicoli, rifornimenti, ricariche, manutenzioni, spese e scadenze; di calcolare consumi, costi e il costo del tragitto casa-lavoro; di ricevere promemoria; di leggere alcuni dati e codici di errore dell'auto tramite un adattatore OBD2 Bluetooth. Le funzioni possono cambiare con gli aggiornamenti.
+L'app permette di registrare veicoli, rifornimenti, ricariche, manutenzioni, spese e scadenze; di calcolare consumi, costi e il costo del tragitto casa-lavoro; di ricevere promemoria; di leggere alcuni dati e codici di errore dell'auto tramite un adattatore OBD2 Bluetooth. Inoltre mostra i prezzi dei carburanti dei distributori vicini (solo in Italia), registra i viaggi di lavoro con il relativo rimborso e permette di inserire i rifornimenti a voce. Le funzioni possono cambiare con gli aggiornamenti.
 
 ## 4. Uso sicuro
 
@@ -34,19 +34,18 @@ L'app permette di registrare veicoli, rifornimenti, ricariche, manutenzioni, spe
 - Scadenze e promemoria sono un aiuto: la responsabilità di revisione, tagliandi, assicurazione, bollo e degli altri obblighi resta tua. Le notifiche possono arrivare in ritardo o non arrivare (per esempio se le disattivi, se Android limita l'app per risparmiare batteria o se cambi telefono).
 - Consumi, costi, costo al km, costo del tragitto, scenari di confronto e previsioni dei km sono **stime** basate sui dati che inserisci e su valori tipici. Non sono consulenze economiche e possono differire dai costi reali.
 - Distanze e percorsi calcolati con la mappa provengono da servizi di terzi (OpenStreetMap) e possono essere imprecisi.
+- I prezzi dei carburanti sono quelli comunicati dai gestori al Ministero e possono non essere aggiornati: controlla sempre il prezzo al distributore. Anche importi e km riconosciuti a voce vanno controllati prima di salvare.
 
 ## 7. I tuoi dati e i backup
 
 - I dati che inserisci restano sul tuo dispositivo. Sei tu responsabile della loro correttezza e della loro conservazione.
-- Se disinstalli l'app, cancelli i suoi dati, perdi o cambi il telefono, i dati possono andare persi. Ti consigliamo di fare regolarmente un backup (su file o, con Pro, su Google Drive). Lo sviluppatore non può recuperare dati che non ha mai ricevuto.
+- Se disinstalli l'app, cancelli i suoi dati, perdi o cambi il telefono, i dati possono andare persi. Ti consigliamo di fare regolarmente un backup (su file o su Google Drive). Lo sviluppatore non può recuperare dati che non ha mai ricevuto.
 - Il trattamento dei dati personali è descritto nell'[informativa sulla privacy](https://micmax-apps.netlify.app/privacy-diario-auto.html).
 
-## 8. Diario Auto Pro
+## 8. Prezzo
 
-- Alcune funzioni sono disponibili solo con Diario Auto Pro, acquistabile dentro l'app tramite Google Play, come acquisto unico o come abbonamento, secondo le offerte mostrate al momento dell'acquisto.
-- Pagamenti, fatturazione, rinnovi e rimborsi sono gestiti da Google Play secondo le sue condizioni. Gli abbonamenti si rinnovano automaticamente finché non li disdici da Google Play (Abbonamenti); la disdetta vale dal periodo successivo.
-- L'acquisto è legato al tuo account Google Play e si può ripristinare sullo stesso account con "Ripristina acquisto".
-- Le funzioni Pro possono essere aggiornate o migliorate nel tempo. Restano salvi i diritti che la legge ti riconosce come consumatore, compresi quelli sui contenuti digitali.
+- Diario Auto è **gratuita**: tutte le funzioni sono incluse, senza acquisti in-app, abbonamenti né pubblicità.
+- Se in futuro venissero introdotte funzioni a pagamento, questi termini saranno aggiornati prima, indicando chiaramente cosa cambia. Le funzioni che usi già resteranno gratuite per te.
 
 ## 9. Licenza d'uso
 
@@ -54,7 +53,7 @@ Lo sviluppatore ti concede una licenza personale, non esclusiva e non trasferibi
 
 ## 10. Servizi di terzi e marchi
 
-- Alcune funzioni usano servizi di terzi (Google Play, Google Drive, OpenStreetMap Nominatim e OSRM), soggetti alle loro condizioni. Lo sviluppatore non risponde della loro disponibilità.
+- Alcune funzioni usano servizi di terzi (Google Play, Google Drive, OpenStreetMap Nominatim e OSRM, OpenFreeMap, i dati carburanti del Ministero delle Imprese e del Made in Italy e il riconoscimento vocale di Android), soggetti alle loro condizioni. Lo sviluppatore non risponde della loro disponibilità.
 - I nomi di marche e modelli di auto servono solo a identificare il tuo veicolo. Appartengono ai rispettivi proprietari: Diario Auto non è collegata né approvata da alcun costruttore.
 
 ## 11. Garanzie e responsabilità
@@ -79,7 +78,7 @@ Per domande su questi termini: <mic.max.1000@gmail.com>
 
 # Terms of Use — Diario Auto
 
-**Last updated**: October 29, 2026
+**Last updated**: November 3, 2026
 
 In short: Diario Auto helps you keep your car's records in order. **Do not use it while driving.** Data read from the car and calculations are indicative and do not replace a mechanic. OBD2 diagnostics **only read**: the app does not change or erase anything in the engine control unit. Your data stays on your phone and backups are your responsibility.
 
@@ -93,7 +92,7 @@ By installing or using the app you accept these terms, the warnings shown at fir
 
 ## 3. What the app does
 
-The app lets you record vehicles, refuels, charges, maintenance, expenses and deadlines; calculate consumption, costs and the cost of your commute; receive reminders; and read some data and error codes from your car through a Bluetooth OBD2 adapter. Features may change with updates.
+The app lets you record vehicles, refuels, charges, maintenance, expenses and deadlines; calculate consumption, costs and the cost of your commute; receive reminders; and read some data and error codes from your car through a Bluetooth OBD2 adapter. It also shows fuel prices at nearby stations (Italy only), records business trips with their reimbursement and lets you enter refuels by voice. Features may change with updates.
 
 ## 4. Safe use
 
@@ -113,19 +112,18 @@ The app lets you record vehicles, refuels, charges, maintenance, expenses and de
 - Deadlines and reminders are an aid: you remain responsible for inspections, servicing, insurance, road tax and other obligations. Notifications may be late or not arrive (for example if you turn them off, if Android restricts the app to save battery or if you change phone).
 - Consumption, costs, cost per km, commute cost, comparison scenarios and mileage forecasts are **estimates** based on the data you enter and on typical values. They are not financial advice and may differ from actual costs.
 - Distances and routes calculated with the map come from third-party services (OpenStreetMap) and may be inaccurate.
+- Fuel prices are those reported by station operators to the Ministry and may be out of date: always check the price at the pump. Amounts and kilometres recognised by voice should also be checked before saving.
 
 ## 7. Your data and backups
 
 - The data you enter stays on your device. You are responsible for its accuracy and for keeping it.
-- If you uninstall the app, clear its data, lose or change your phone, your data may be lost. We recommend making regular backups (to a file or, with Pro, to Google Drive). The developer cannot recover data it never received.
+- If you uninstall the app, clear its data, lose or change your phone, your data may be lost. We recommend making regular backups (to a file or to Google Drive). The developer cannot recover data it never received.
 - The processing of personal data is described in the [privacy policy](https://micmax-apps.netlify.app/privacy-diario-auto.html#en).
 
-## 8. Diario Auto Pro
+## 8. Price
 
-- Some features are available only with Diario Auto Pro, which you can buy in the app through Google Play, as a one-time purchase or as a subscription, according to the offers shown at the time of purchase.
-- Payments, billing, renewals and refunds are handled by Google Play under its terms. Subscriptions renew automatically until you cancel them in Google Play (Subscriptions); cancellation takes effect from the next period.
-- The purchase is linked to your Google Play account and can be restored on the same account with "Restore purchase".
-- Pro features may be updated or improved over time. Your statutory consumer rights, including those on digital content, are not affected.
+- Diario Auto is **free**: all features are included, with no in-app purchases, subscriptions or ads.
+- If paid features are introduced in the future, these terms will be updated beforehand, clearly stating what changes. The features you already use will stay free for you.
 
 ## 9. Licence
 
@@ -133,7 +131,7 @@ The developer grants you a personal, non-exclusive, non-transferable licence to 
 
 ## 10. Third-party services and trademarks
 
-- Some features use third-party services (Google Play, Google Drive, OpenStreetMap Nominatim and OSRM), subject to their own terms. The developer is not responsible for their availability.
+- Some features use third-party services (Google Play, Google Drive, OpenStreetMap Nominatim and OSRM, OpenFreeMap, fuel data from the Italian Ministry of Enterprises and Made in Italy, and Android speech recognition), subject to their own terms. The developer is not responsible for their availability.
 - Car brand and model names are used only to identify your vehicle. They belong to their respective owners: Diario Auto is not affiliated with or endorsed by any manufacturer.
 
 ## 11. Warranties and liability
