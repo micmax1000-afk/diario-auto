@@ -1980,3 +1980,12 @@ body {
 .voice-actions .btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
 .stations__detail { margin: 0.3rem 0 0.8rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); }
 .stations__more { width: 100%; justify-content: center; }
+.voice-chip.is-warn { background: var(--amber-soft); }
+.voice-chip.is-warn b { color: var(--amber-ink); }
+.voice-chip.is-bad { background: var(--red-soft); }
+.voice-chip.is-bad b { color: var(--danger); }
+.voice-km { display: flex; align-items: center; gap: 0.6rem; margin: 0.5rem 0 0; padding: 0.6rem 0.75rem; border-radius: 12px; font-size: 0.84rem; text-align: start; line-height: 1.35; }
+.voice-km span { flex: 1; }
+.voice-km .btn { flex: none; }
+.voice-km--warn { background: var(--amber-soft); color: var(--text); }
+.voice-km--bad { background: var(--red-soft); color: var(--danger); }

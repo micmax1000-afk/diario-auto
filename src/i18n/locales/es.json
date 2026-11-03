@@ -1488,6 +1488,10 @@
     "yes": "Yes",
     "no": "No",
     "vehicleDefault": "Vehicle not said: using {{name}}.",
-    "continue": "Check and save"
+    "continue": "Check and save",
+    "kmSuffix": "You said “{{said}}”: did you mean {{km}} km?",
+    "kmUse": "Yes, {{km}}",
+    "kmLower": "{{said}} km is less than the current km ({{km}}): not used. Fix the sentence or type them in the next step.",
+    "kmJump": "{{distance}} km more than the current km ({{km}}): check they are right."
   }
 }

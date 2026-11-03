@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { italianNumber, parseVoiceFuel, voiceScore } from "../voiceFuel";
+import { checkVoiceKm, italianNumber, parseVoiceFuel, voiceScore } from "../voiceFuel";
 
 const V = [
   { id: "t", name: "Tesla Model 3" },
@@ -50,6 +50,8 @@ describe("rifornimento a voce", () => {
   it("km prima del numero", () => {
     expect(parseVoiceFuel("20 euro a 1,89 al litro km 92.900", V).km).toBe(92900);
     expect(parseVoiceFuel("contachilometri 152300, 30 euro a 1,80", V).km).toBe(152300);
+    expect(parseVoiceFuel("20 euro a 1,89 al litro km 150", V).km).toBe(150);
+    expect(parseVoiceFuel("20 euro a 1,89 al litro 900 km", V).km).toBe(900);
   });
 
   it("senza veicolo né dati non inventa nulla", () => {
@@ -67,5 +69,22 @@ describe("numeri in italiano", () => {
 
   it("sceglie l'interpretazione più completa", () => {
     expect(voiceScore(parseVoiceFuel("20 euro a 1,89 al litro", V))).toBeGreaterThan(voiceScore(parseVoiceFuel("venti euro alla Ritmo", V)));
+  });
+});
+
+describe("km detti a voce rispetto ai km attuali", () => {
+  it("più alti: ok, molto più alti: avviso", () => {
+    expect(checkVoiceKm(70400, 70100)).toEqual({ status: "ok" });
+    expect(checkVoiceKm(75000, 70100)).toEqual({ status: "jump", distance: 4900 });
+  });
+
+  it("detti solo gli ultimi numeri: completa", () => {
+    expect(checkVoiceKm(900, 92850)).toEqual({ status: "suffix", suggestion: 92900 });
+    expect(checkVoiceKm(150, 70100)).toEqual({ status: "suffix", suggestion: 70150 });
+    expect(checkVoiceKm(50, 70100)).toEqual({ status: "suffix", suggestion: 70150 });
+  });
+
+  it("più bassi e non completabili: da correggere", () => {
+    expect(checkVoiceKm(60000, 70100)).toEqual({ status: "lower" });
   });
 });

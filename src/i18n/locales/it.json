@@ -1425,7 +1425,11 @@
     "yes": "Sì",
     "no": "No",
     "vehicleDefault": "Veicolo non detto: uso {{name}}.",
-    "continue": "Controlla e salva"
+    "continue": "Controlla e salva",
+    "kmSuffix": "Hai detto «{{said}}»: intendevi {{km}} km?",
+    "kmUse": "Sì, {{km}}",
+    "kmLower": "{{said}} km sono meno dei km attuali ({{km}}): non li uso. Correggi la frase o scrivili nel passaggio dopo.",
+    "kmJump": "{{distance}} km in più rispetto ai km attuali ({{km}}): controlla che siano giusti."
   },
   "entryCheck": {
     "title": "Controlla questi dati",

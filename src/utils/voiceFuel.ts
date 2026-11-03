@@ -84,9 +84,9 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
 
   // km: "92.900 km", "92900 chilometri"
   const km =
-    s.match(/(\d{1,3}(?:[.\s]\d{3})+|\d{3,7})\s*(?:km|chilometri|kilometri)\b/) ??
+    s.match(/(\d{1,3}(?:[.\s]\d{3})+|\d{2,7})\s*(?:km|chilometri|kilometri)\b/) ??
     // "km 92.900", "contachilometri 92900"
-    s.match(/\b(?:km|chilometri|kilometri|contachilometri|contakm)\s*(?:a\s*|di\s*)?(\d{1,3}(?:[.\s]\d{3})+|\d{4,7})\b/);
+    s.match(/\b(?:km|chilometri|kilometri|contachilometri|contakm)\s*(?:a\s*|di\s*)?(\d{1,3}(?:[.\s]\d{3})+|\d{2,7})\b(?![.,]\d)/);
   if (km) {
     out.km = Number(km[1].replace(/[.\s]/g, ""));
     s = s.replace(km[0], " ");
@@ -158,4 +158,27 @@ export function parseVoiceFuel(text: string, vehicles: Pick<Vehicle, "id" | "nam
     }
   }
   return out;
+}
+
+export type VoiceKmCheck =
+  | { status: "ok" }
+  | { status: "lower" } // più bassi dei km attuali: non usabili
+  | { status: "suffix"; suggestion: number } // detti solo gli ultimi numeri: "900" con 92.850 attuali → 92.900
+  | { status: "jump"; distance: number }; // molto più alti del solito: possibile errore
+
+/** Controlla i km detti a voce rispetto a quelli attuali del veicolo. */
+export function checkVoiceKm(km: number, currentKm: number): VoiceKmCheck {
+  if (km >= currentKm) {
+    const distance = km - currentKm;
+    return currentKm > 0 && distance > 2500 ? { status: "jump", distance } : { status: "ok" };
+  }
+  const digits = String(Math.round(km)).length;
+  if (digits < String(Math.round(currentKm)).length) {
+    // il primo valore sopra i km attuali che finisce con le cifre dette
+    const base = 10 ** digits;
+    let suggestion = Math.floor(currentKm / base) * base + km;
+    if (suggestion < currentKm) suggestion += base;
+    if (suggestion - currentKm <= 2500) return { status: "suffix", suggestion };
+  }
+  return { status: "lower" };
 }
