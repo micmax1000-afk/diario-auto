@@ -959,7 +959,9 @@
       "csvTitle": "Ekspor CSV",
       "csvBody": "Pengisian, perawatan, dan biaya dalam spreadsheet.",
       "driveTitle": "Cadangan Google Drive",
-      "driveBody": "Simpan data ke Drive Anda, juga otomatis."
+      "driveBody": "Simpan data ke Drive Anda, juga otomatis.",
+      "tripsTitle": "Penggantian perjalanan dinas",
+      "tripsBody": "PDF dan CSV km dinas dan biaya untuk diserahkan ke perusahaan."
     }
   },
   "bodyType": {

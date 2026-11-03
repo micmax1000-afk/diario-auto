@@ -962,7 +962,9 @@
       "csvTitle": "Esportazione CSV",
       "csvBody": "Rifornimenti, manutenzioni e spese in un foglio di calcolo.",
       "driveTitle": "Backup su Google Drive",
-      "driveBody": "Salva i dati sul tuo Drive, anche in automatico."
+      "driveBody": "Salva i dati sul tuo Drive, anche in automatico.",
+      "tripsTitle": "Rimborso dei viaggi di lavoro",
+      "tripsBody": "Il PDF e il CSV dei km di lavoro e delle spese da consegnare all'azienda."
     }
   },
   "bodyType": {

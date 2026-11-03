@@ -962,7 +962,9 @@
       "csvTitle": "Exportación CSV",
       "csvBody": "Repostajes, mantenimientos y gastos en una hoja de cálculo.",
       "driveTitle": "Copia en Google Drive",
-      "driveBody": "Guarda tus datos en tu Drive, también automáticamente."
+      "driveBody": "Guarda tus datos en tu Drive, también automáticamente.",
+      "tripsTitle": "Reembolso de viajes de trabajo",
+      "tripsBody": "PDF y CSV de los km de trabajo y los gastos para entregar a tu empresa."
     }
   },
   "bodyType": {

@@ -962,7 +962,9 @@
       "csvTitle": "Export CSV",
       "csvBody": "Pleins, entretiens et dépenses dans un tableur.",
       "driveTitle": "Sauvegarde Google Drive",
-      "driveBody": "Enregistrez vos données sur votre Drive, aussi automatiquement."
+      "driveBody": "Enregistrez vos données sur votre Drive, aussi automatiquement.",
+      "tripsTitle": "Remboursement des déplacements professionnels",
+      "tripsBody": "Le PDF et le CSV des km professionnels et des frais à remettre à votre entreprise."
     }
   },
   "bodyType": {

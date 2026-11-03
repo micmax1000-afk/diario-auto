@@ -962,7 +962,9 @@
       "csvTitle": "Exportação CSV",
       "csvBody": "Abastecimentos, manutenções e despesas numa folha de cálculo.",
       "driveTitle": "Cópia no Google Drive",
-      "driveBody": "Guarde os dados no seu Drive, também automaticamente."
+      "driveBody": "Guarde os dados no seu Drive, também automaticamente.",
+      "tripsTitle": "Reembolso das viagens de trabalho",
+      "tripsBody": "O PDF e o CSV dos km de trabalho e das despesas para entregar à empresa."
     }
   },
   "bodyType": {
