@@ -51,7 +51,9 @@ export default function StationsMap({ center, rows, areaPrices, selectedId, form
       m.remove();
       map.current = null;
     };
-  }, [center.lat, center.lng]);
+    // la mappa si crea una volta sola; gli spostamenti aggiornano solo i segnaposto
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const m = map.current;
