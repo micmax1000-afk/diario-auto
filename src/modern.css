@@ -1838,7 +1838,8 @@ body {
 .vhead__thumb.is-cut { width: 58px; }
 
 .home-hero--car .home-hero__id { max-width: 58%; }
-.home-hero--car .home-hero__km { font-size: 1.65rem; position: relative; z-index: 1; }
+/* i km si restringono con lo schermo (e con le cifre), così non toccano mai l'auto accanto */
+.home-hero--car .home-hero__km { font-size: clamp(1.2rem, 6.4vw, 1.65rem); position: relative; z-index: 1; white-space: nowrap; }
 .home-hero__car {
   position: absolute;
   right: 0.55rem;
@@ -2120,7 +2121,7 @@ body {
 .accent-swatch__name { font-size: 0.75rem; }
 .accent-swatch.is-active .accent-swatch__name { color: var(--text); font-weight: 700; }
 /* Testo grande: i km della scheda auto restano della misura di prima, così non finiscono sopra l'immagine */
-:root[data-text="large"] .home-hero--car .home-hero__km { font-size: 1.4rem; }
+:root[data-text="large"] .home-hero--car .home-hero__km { font-size: clamp(1.05rem, 5.4vw, 1.4rem); }
 :root[data-text="large"] .home-hero__car { width: 38%; }
 :root[data-text="large"] .home-hero--car .home-hero__id { max-width: 54%; }
 :root[data-text="large"] .home-kpi__label { white-space: normal; }
