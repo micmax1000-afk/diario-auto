@@ -75,7 +75,7 @@
     "choose": "Выбрать…",
     "nameAuto": "Собрано из марки и модели, можно изменить",
     "kmShort": "Текущий пробег *",
-    "colorTitle": "Цвет",
+    "colorTitle": "Цвет фона",
     "bodyTypeTitle": "Кузов",
     "chooseBrandTitle": "Выберите марку",
     "chooseModelTitle": "Модель {{brand}}",

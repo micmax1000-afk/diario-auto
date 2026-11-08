@@ -8,7 +8,6 @@ import UpcomingReminders from "./UpcomingReminders";
 import CategoryIcon from "./CategoryIcon";
 import { vehicleVisual } from "../utils/carImages";
 import { shade } from "../utils/bodyTypes";
-import { resolveVehicleColors } from "../utils/vehicleColor";
 import {
   calculateConsumption,
   averageConsumption,
@@ -64,7 +63,6 @@ export default function Dashboard({
   const locale = getNumberLocale(i18n.language);
   const activeVehicles = vehicles.filter((v) => !v.archived);
   const current = activeVehicles.find((v) => v.id === currentVehicleId) ?? activeVehicles[0];
-  const colors = resolveVehicleColors(vehicles);
 
   // Avvisi intelligenti chiusi: si ricordano i km del pieno a cui si riferivano.
   const [dismissed, setDismissed] = useState<Record<string, number>>({});
@@ -199,7 +197,6 @@ export default function Dashboard({
 
       <div className="home-carousel" ref={carouselRef} onScroll={handleScroll}>
         {activeVehicles.map((v) => {
-          const color = colors[v.id] ?? "#4f9dff";
           const open = reminders
             .filter((r) => r.vehicleId === v.id && !r.completed)
             .map((r) => ({ r, s: reminderStatus(r, v.currentKm) }))
@@ -208,11 +205,14 @@ export default function Dashboard({
           const top = open[0];
           const visual = vehicleVisual(v);
           const cut = visual && !visual.isPhoto;
+          // Sfondo: la foto, il colore scelto dall'utente, oppure bianco (antracite nel tema scuro).
           const style = v.photo
             ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.62)), url(${v.photo})` }
-            : { backgroundImage: `linear-gradient(135deg, ${shade(color, -0.12)}, ${shade(color, -0.45)})` };
+            : v.color
+              ? { backgroundImage: `linear-gradient(135deg, ${shade(v.color, -0.12)}, ${shade(v.color, -0.45)})` }
+              : undefined;
           return (
-            <section key={v.id} className={`home-hero${v.photo ? " home-hero--photo" : ""}${cut ? " home-hero--car" : ""}`} style={style} aria-label={v.name}>
+            <section key={v.id} className={`home-hero${v.photo ? " home-hero--photo" : v.color ? "" : " home-hero--plain"}${cut ? " home-hero--car" : ""}`} style={style} aria-label={v.name}>
               <div className="home-hero__top">
                 <div className="home-hero__id">
                   <h2 className="home-hero__name">{v.name}</h2>

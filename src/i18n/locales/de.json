@@ -75,7 +75,7 @@
     "choose": "Wählen…",
     "nameAuto": "Aus Marke und Modell gebildet, änderbar",
     "kmShort": "Aktuelle km *",
-    "colorTitle": "Farbe",
+    "colorTitle": "Hintergrundfarbe",
     "bodyTypeTitle": "Karosserie",
     "chooseBrandTitle": "Marke wählen",
     "chooseModelTitle": "Modell {{brand}}",
@@ -85,7 +85,7 @@
     "optional": "(optional)",
     "bodyTypeHint": "Wähle einen Typ aus, um ein Bild des Autos anzuzeigen.",
     "bodyNone": "Keine",
-    "carColorTitle": "Farbe des Autos"
+    "carColorTitle": "Autofarbe"
   },
   "fuelType": {
     "benzina": "Benzin",

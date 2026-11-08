@@ -141,7 +141,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
 
         <form onSubmit={handleSubmit} className="vehicle-form">
           <div
-            className="vform-hero"
+            className={`vform-hero${!photo && !color ? " vform-hero--plain" : ""}`}
             style={photo ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.6)), url(${photo})` } : { backgroundImage: `linear-gradient(135deg, ${shade(shownColor, -0.12)}, ${shade(shownColor, -0.45)})` }}
           >
             {!photo && bodyType && (
@@ -286,6 +286,14 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
           <div className="field">
             <span className="vform-title">{t("vehicleForm.colorTitle")}</span>
             <div className="vcolor">
+              <button
+                type="button"
+                aria-label={t("carColor.bianco")}
+                title={t("carColor.bianco")}
+                aria-pressed={!color}
+                className={`vcolor__white${!color ? " is-on" : ""}`}
+                onClick={() => setColor(undefined)}
+              />
               {VEHICLE_COLORS.map((c) => (
                 <button
                   key={c}
@@ -298,7 +306,6 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
                 />
               ))}
             </div>
-            {!color && <small>{t("vehicleForm.colorHint", "Se non scegli, viene assegnato in automatico.")}</small>}
           </div>
 
           <div className="field">
