@@ -1547,5 +1547,24 @@
     "fileQuestion": "Hast du eine Sicherungsdatei?",
     "file": "Datei öffnen",
     "noDriveBackups": "Für dieses Google-Konto wurde kein Backup gefunden."
+  },
+  "annualReport": {
+    "button": "Zusammenfassung {{period}} als PDF",
+    "creating": "PDF wird erstellt…",
+    "title": "Jahresübersicht",
+    "titleAll": "Vollständige Zusammenfassung",
+    "subtitle": "Diario Auto · erstellt am {{date}}",
+    "chartMonths": "Ausgaben Monat für Monat",
+    "chartYears": "Ausgaben im Jahresvergleich",
+    "categories": "Nach Kategorie",
+    "maintenance": "Wartungsarbeiten",
+    "noMaintenance": "In diesem Zeitraum wurden keine Wartungsarbeiten verzeichnet.",
+    "trips": "Erstattung von Dienstreisen: {{km}} · {{amount}}",
+    "page": "Seite {{n}} von {{total}}",
+    "failed": "Ich konnte die PDF-Datei nicht erstellen. Bitte versuche es erneut."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "Aktualisiert am {{date}}"
   }
 }

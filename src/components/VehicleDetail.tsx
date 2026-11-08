@@ -7,6 +7,7 @@ import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { generateMaintenancePassportPdf } from "../utils/vehiclePassport";
+import { generateAnnualReportPdf, imageToPng } from "../utils/annualReportPdf";
 import { describeDtc } from "../utils/dtcCodes";
 import { isManufacturerSpecificDtc } from "../utils/obdDtc";
 import { exportPdfBytes } from "../utils/nativeFileExport";
@@ -40,6 +41,9 @@ import LiveDataPanel from "./LiveDataPanel";
 import CommutePanel from "./CommutePanel";
 import TripsPanel from "./TripsPanel";
 import { reminderStatus } from "../utils/kmForecast";
+import { vehicleVisual } from "../utils/carImages";
+import { getMeta } from "../utils/db";
+import { tripTotals } from "../utils/trips";
 
 type DetailTab =
   | "live"
@@ -167,6 +171,8 @@ export default function VehicleDetail({
   const [showPassportPremium, setShowPassportPremium] = useState(false);
   const [generatingPassport, setGeneratingPassport] = useState(false);
   const [passportError, setPassportError] = useState<string | null>(null);
+  const [reportBusy, setReportBusy] = useState(false);
+  const [reportError, setReportError] = useState<string | null>(null);
   const [tab, setTab] = useState<DetailTab>(restrictToTab ?? initialTab ?? "live");
   const [maintenanceCategoryFilter, setMaintenanceCategoryFilter] = useState<MaintenanceCategory | "all">("all");
 
@@ -318,6 +324,105 @@ export default function VehicleDetail({
       setPassportError(t("passport.exportFailed"));
     } finally {
       setGeneratingPassport(false);
+    }
+  }
+
+  /** Riepilogo del periodo scelto in Statistiche (un anno o "Sempre") come PDF da condividere. */
+  async function handleAnnualReport() {
+    setReportBusy(true);
+    setReportError(null);
+    try {
+      // Il PDF usa un carattere solo latino: in russo, arabo e hindi le scritte del PDF sono in inglese.
+      const latin = !["ru", "ar", "hi"].includes(i18n.language.split("-")[0]);
+      const tp = latin ? t : i18n.getFixedT("en");
+      const locale = latin ? getNumberLocale(i18n.language) : "en";
+      const year = period === "sempre" ? null : period === "anno-corrente" ? currentYear : period === "anno-scorso" ? currentYear - 1 : period;
+      const yearOf = (d: string) => new Date(d).getFullYear();
+      const costItems = [
+        ...filteredFuel.map((e) => ({ d: e.date, v: e.totalCost })),
+        ...filteredCharging.map((e) => ({ d: e.date, v: e.totalCost })),
+        ...filteredMaintenance.map((e) => ({ d: e.date, v: e.cost })),
+        ...filteredExpenses.map((e) => ({ d: e.date, v: e.amount })),
+      ];
+      const bars =
+        year !== null
+          ? Array.from({ length: 12 }, (_, m) => ({
+              label: new Date(year, m, 1).toLocaleDateString(locale, { month: "narrow" }),
+              value: costItems.filter((c) => new Date(c.d).getMonth() === m).reduce((s, c) => s + c.v, 0),
+            }))
+          : Array.from(new Set(costItems.map((c) => yearOf(c.d))))
+              .sort((a, b) => a - b)
+              .slice(-12)
+              .map((y) => ({ label: String(y), value: costItems.filter((c) => yearOf(c.d) === y).reduce((s, c) => s + c.v, 0) }));
+      const expenseCats = ["assicurazione", "bollo", "multa", "documenti", "altro"] as const;
+      const expColors: Record<(typeof expenseCats)[number], [number, number, number]> = {
+        assicurazione: [0.55, 0.36, 0.96],
+        bollo: [0.23, 0.5, 0.96],
+        multa: [0.84, 0.27, 0.27],
+        documenti: [0.42, 0.45, 0.5],
+        altro: [0.91, 0.31, 0.54],
+      };
+      const categories = [
+        { label: tp("summary.fuel"), value: costs.fuelCost, color: [0.96, 0.56, 0.12] as [number, number, number] },
+        { label: tp("summary.charging"), value: costs.chargingCost, color: [0.08, 0.72, 0.65] as [number, number, number] },
+        { label: tp("summary.maintenance"), value: costs.maintenanceCost, color: [0.13, 0.65, 0.4] as [number, number, number] },
+        ...expenseCats.map((c) => ({
+          label: tp(`expenseCategory.${c}`),
+          value: filteredExpenses.filter((e) => e.category === c).reduce((s, e) => s + e.amount, 0),
+          color: expColors[c],
+        })),
+      ]
+        .filter((c) => c.value > 0)
+        .map((c) => ({ ...c, valueLabel: formatMoney(c.value) }));
+      const rawRate = await getMeta("trip-rate").catch(() => null);
+      const rate = rawRate ? Number(rawRate) : null;
+      const trips = tripTotals(tripEntries.filter((tr) => year === null || yearOf(tr.date) === year), rate !== null && Number.isFinite(rate) ? rate : null);
+      const visual = vehicleVisual(vehicle);
+      const [carPng, iconBytes] = await Promise.all([
+        visual ? imageToPng(visual.src) : Promise.resolve(null),
+        fetch(new URL("icons/icon-192.png", document.baseURI)).then((r) => (r.ok ? r.arrayBuffer() : null)).then((b) => (b ? new Uint8Array(b) : undefined)).catch(() => undefined),
+      ]);
+      const consumptionLabel = isElectric
+        ? averageElectric !== null ? `${formatNumber(averageElectric, 1, locale)} kWh/100` : "—"
+        : averageConsumption !== null ? `${formatNumber(averageConsumption, 1, locale)} l/100` : "—";
+      const bytes = await generateAnnualReportPdf({
+        title: tp(year !== null ? "annualReport.title" : "annualReport.titleAll"),
+        subtitle: tp("annualReport.subtitle", { date: new Date().toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" }) }),
+        periodLabel: year !== null ? String(year) : tp("summary.periodAlways"),
+        vehicleName: vehicle.name,
+        vehicleInfo: [vehicle.plate, tp(`fuelType.${vehicle.fuelType}`), formatDistance(vehicle.currentKm, distanceUnit, locale)].filter(Boolean).join(" · "),
+        vehicleImage: carPng ? { bytes: carPng, type: "png" } : undefined,
+        icon: iconBytes,
+        kpis: [
+          { label: tp("summary.total"), value: formatMoney(costs.totalCost) },
+          { label: tp("summary.distance"), value: totalRecordedKm > 0 ? formatDistance(totalRecordedKm, distanceUnit, locale) : "—" },
+          { label: tp("summary.costPerKm"), value: costs.costPerKm !== null ? formatMoney(costs.costPerKm, 3) : "—" },
+          { label: tp("home.consumption"), value: consumptionLabel },
+        ],
+        chartTitle: tp(year !== null ? "annualReport.chartMonths" : "annualReport.chartYears"),
+        bars,
+        categoriesTitle: tp("annualReport.categories"),
+        categories,
+        maintenanceTitle: tp("annualReport.maintenance"),
+        maintenanceColumns: { date: tp("passport.columnDate"), description: tp("passport.columnDescription"), km: tp("passport.columnKm"), cost: tp("passport.columnCost") },
+        maintenance: [...filteredMaintenance]
+          .sort((a, b) => a.date.localeCompare(b.date))
+          .map((e) => ({
+            date: new Date(e.date).toLocaleDateString(locale, { day: "numeric", month: "short", ...(year === null ? { year: "numeric" } : {}) }),
+            description: e.description || tp(`maintenanceCategory.${e.category}`),
+            km: formatDistance(e.km, distanceUnit, locale),
+            cost: formatMoney(e.cost),
+          })),
+        noMaintenance: tp("annualReport.noMaintenance"),
+        footerNote: trips.workTrips > 0 ? tp("annualReport.trips", { km: formatDistance(trips.workKm, distanceUnit, locale), amount: formatMoney(trips.refund + trips.extras) }) : undefined,
+        pageLabel: (n, total) => tp("annualReport.page", { n, total }),
+      });
+      const slug = vehicle.name.replace(/\s+/g, "-").toLowerCase();
+      await exportPdfBytes(`riepilogo-${year ?? "completo"}-${slug}.pdf`, bytes);
+    } catch {
+      setReportError(t("annualReport.failed"));
+    } finally {
+      setReportBusy(false);
     }
   }
 
@@ -674,6 +779,19 @@ export default function VehicleDetail({
                   );
                 })}
             </section>
+
+            <button type="button" className="btn report-btn" onClick={handleAnnualReport} disabled={reportBusy}>
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M9 13h6 M9 17h4" />
+              </svg>
+              {reportBusy
+                ? t("annualReport.creating")
+                : t("annualReport.button", {
+                    period:
+                      period === "sempre" ? t("summary.periodAlways").toLowerCase() : String(period === "anno-corrente" ? currentYear : period === "anno-scorso" ? currentYear - 1 : period),
+                  })}
+            </button>
+            {reportError && <p className="report-btn__error">{reportError}</p>}
 
             {canCharge && (
               <div className="skgrid">

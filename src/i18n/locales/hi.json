@@ -1547,5 +1547,24 @@
     "fileQuestion": "क्या आपके पास बैकअप फ़ाइल है?",
     "file": "फ़ाइल खोलें",
     "noDriveBackups": "इस Google खाते पर कोई बैकअप नहीं मिला।"
+  },
+  "annualReport": {
+    "button": "पीडीएफ प्रारूप में {{period}} का सारांश",
+    "creating": "पीडीएफ बन रहा है…",
+    "title": "वार्षिक सारांश",
+    "titleAll": "पूर्ण सारांश",
+    "subtitle": "Diario Auto · {{date}} को बनाया गया",
+    "chartMonths": "माह-दर-माह व्यय",
+    "chartYears": "वर्ष दर वर्ष व्यय",
+    "categories": "श्रेणी के अनुसार",
+    "maintenance": "रखरखाव",
+    "noMaintenance": "इस अवधि के दौरान कोई रखरखाव कार्य दर्ज नहीं किया गया।",
+    "trips": "व्यावसायिक यात्रा प्रतिपूर्ति: {{km}} · {{amount}}",
+    "page": "पृष्ठ {{n}} का {{total}}",
+    "failed": "मैं PDF नहीं बना सका। कृपया फिर से प्रयास करें।"
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "{{date}} को अद्यतन किया गया"
   }
 }

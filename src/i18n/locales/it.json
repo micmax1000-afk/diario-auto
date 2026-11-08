@@ -1547,5 +1547,24 @@
     "fileQuestion": "Hai un file di backup?",
     "file": "Apri file",
     "noDriveBackups": "Nessun backup trovato su questo account Google."
+  },
+  "annualReport": {
+    "button": "Riepilogo {{period}} in PDF",
+    "creating": "Creo il PDF…",
+    "title": "Riepilogo annuale",
+    "titleAll": "Riepilogo completo",
+    "subtitle": "Diario Auto · creato il {{date}}",
+    "chartMonths": "Spesa mese per mese",
+    "chartYears": "Spesa anno per anno",
+    "categories": "Per categoria",
+    "maintenance": "Manutenzioni",
+    "noMaintenance": "Nessuna manutenzione in questo periodo.",
+    "trips": "Rimborso viaggi di lavoro: {{km}} · {{amount}}",
+    "page": "Pagina {{n}} di {{total}}",
+    "failed": "Non sono riuscito a creare il PDF. Riprova."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "Aggiornato il {{date}}"
   }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_label_vehicle">Diario Auto</string>
+    <string name="widget_desc_vehicle">कारें, किलोमीटर और समय-सीमाएँ</string>
+    <string name="widget_label_station">पास के पेट्रोल पंप</string>
+    <string name="widget_label_deadlines">देय तिथियाँ</string>
+    <string name="widget_open_app">शुरू करने के लिए ऐप खोलें।</string>
+</resources>

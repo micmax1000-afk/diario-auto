@@ -1547,5 +1547,24 @@
     "fileQuestion": "Do you have a backup file?",
     "file": "Open file",
     "noDriveBackups": "No backups were found on this Google account."
+  },
+  "annualReport": {
+    "button": "Summary of {{period}} in PDF format",
+    "creating": "PDF is being created…",
+    "title": "Annual summary",
+    "titleAll": "Full summary",
+    "subtitle": "Diario Auto · created on {{date}}",
+    "chartMonths": "Month-by-month expenditure",
+    "chartYears": "Expenditure year by year",
+    "categories": "By category",
+    "maintenance": "Maintenance",
+    "noMaintenance": "No maintenance work was recorded during this period.",
+    "trips": "Business travel reimbursement: {{km}} · {{amount}}",
+    "page": "Page {{n}} of {{total}}",
+    "failed": "I wasn’t able to create the PDF. Please try again."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "Updated on {{date}}"
   }
 }

@@ -1,23 +1,17 @@
 package com.micmax.diarioauto
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.view.View
 import android.widget.RemoteViews
-import org.json.JSONObject
+import com.micmax.diarioauto.WidgetCommon.text
 
 /**
- * Widget per la home di Android: mostra il veicolo principale, il suo
- * chilometraggio e la scadenza più urgente. I dati arrivano dall'app React
- * tramite @capacitor/preferences (vedi utils/widgetData.ts sul lato
- * TypeScript), che su Android scrive in un file SharedPreferences
- * chiamato "CapacitorStorage" — lo stesso che leggiamo qui.
- *
- * Il widget vive in un processo/contesto separato dalla WebView: non può
- * leggere IndexedDB direttamente, da qui la necessità di questo piccolo
- * "ponte" tramite SharedPreferences.
+ * Widget grande per la home di Android: auto principale, km, scadenza più
+ * urgente, consumo e i pulsanti "Rifornimento" e "A voce". I dati arrivano
+ * dall'app React (vedi utils/widgetData.ts): il widget vive fuori dalla
+ * WebView e non può leggere IndexedDB.
  */
 class VehicleWidgetProvider : AppWidgetProvider() {
 
@@ -28,49 +22,50 @@ class VehicleWidgetProvider : AppWidgetProvider() {
     }
 
     companion object {
-        private const val PREFS_NAME = "CapacitorStorage"
-        private const val DATA_KEY = "widget_vehicle_data"
+        const val DATA_KEY = "widget_vehicle_data"
 
         fun updateWidget(context: Context, manager: AppWidgetManager, widgetId: Int) {
             val views = RemoteViews(context.packageName, R.layout.widget_vehicle)
-            val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            val json = prefs.getString(DATA_KEY, null)
+            val data = WidgetCommon.readJson(context, DATA_KEY)
 
-            if (json != null) {
-                try {
-                    val data = JSONObject(json)
-                    views.setTextViewText(R.id.widget_vehicle_name, data.optString("vehicleName"))
-                    views.setTextViewText(R.id.widget_km, data.optString("km"))
+            if (data != null) {
+                views.setTextViewText(R.id.widget_vehicle_name, data.text("vehicleName") ?: context.getString(R.string.widget_label_vehicle))
+                val plate = data.text("plate")
+                views.setViewVisibility(R.id.widget_plate, if (plate != null) View.VISIBLE else View.GONE)
+                views.setTextViewText(R.id.widget_plate, plate ?: "")
+                views.setTextViewText(R.id.widget_km, data.text("km") ?: "—")
 
-                    val reminder = if (data.isNull("reminderLabel")) null else data.optString("reminderLabel")
-                    if (!reminder.isNullOrEmpty()) {
-                        views.setTextViewText(R.id.widget_reminder, reminder)
-                        views.setViewVisibility(R.id.widget_reminder, View.VISIBLE)
-                    } else {
-                        views.setViewVisibility(R.id.widget_reminder, View.GONE)
-                    }
-                } catch (e: Exception) {
-                    setEmptyState(views)
-                }
+                val labels = data.optJSONObject("labels")
+                views.setViewVisibility(R.id.widget_chips, View.VISIBLE)
+                views.setTextViewText(R.id.widget_deadline_label, labels?.text("deadline") ?: "")
+                val reminder = data.text("reminderLabel")
+                views.setTextViewText(R.id.widget_reminder, reminder ?: (labels?.text("noDeadline") ?: "—"))
+                val reminderColor = if (reminder != null && data.optBoolean("reminderOverdue")) R.color.widget_red else R.color.widget_text
+                views.setTextColor(R.id.widget_reminder, context.getColor(reminderColor))
+
+                val consumption = data.text("consumption")
+                views.setViewVisibility(R.id.widget_consumption_box, if (consumption != null) View.VISIBLE else View.GONE)
+                views.setTextViewText(R.id.widget_consumption_label, labels?.text("consumption") ?: "")
+                views.setTextViewText(R.id.widget_consumption, consumption ?: "")
+
+                views.setViewVisibility(R.id.widget_buttons, View.VISIBLE)
+                views.setTextViewText(R.id.widget_btn_fuel, labels?.text("fuel") ?: "+")
+                views.setOnClickPendingIntent(R.id.widget_btn_fuel, WidgetCommon.openApp(context, 11, "fuel"))
+                val voice = data.optBoolean("voice")
+                views.setViewVisibility(R.id.widget_btn_voice, if (voice) View.VISIBLE else View.GONE)
+                views.setTextViewText(R.id.widget_btn_voice, labels?.text("voice") ?: "")
+                views.setOnClickPendingIntent(R.id.widget_btn_voice, WidgetCommon.openApp(context, 12, "voice"))
             } else {
-                setEmptyState(views)
+                views.setTextViewText(R.id.widget_vehicle_name, context.getString(R.string.widget_label_vehicle))
+                views.setViewVisibility(R.id.widget_plate, View.GONE)
+                views.setTextViewText(R.id.widget_km, context.getString(R.string.widget_open_app))
+                views.setViewVisibility(R.id.widget_chips, View.GONE)
+                views.setViewVisibility(R.id.widget_buttons, View.GONE)
             }
 
-            // Tocco sul widget: apre l'app.
-            val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName)
-            val pendingIntent = PendingIntent.getActivity(
-                context, 0, launchIntent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-            )
-            views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
-
+            // Tocco sul resto del widget: apre l'app.
+            views.setOnClickPendingIntent(R.id.widget_root, WidgetCommon.openApp(context, 10))
             manager.updateAppWidget(widgetId, views)
-        }
-
-        private fun setEmptyState(views: RemoteViews) {
-            views.setTextViewText(R.id.widget_vehicle_name, "Diario Auto")
-            views.setTextViewText(R.id.widget_km, "Apri l'app per iniziare")
-            views.setViewVisibility(R.id.widget_reminder, View.GONE)
         }
     }
 }

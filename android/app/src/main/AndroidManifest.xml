@@ -36,11 +36,23 @@
             <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths" />
         </provider>
 
-        <receiver android:name=".VehicleWidgetProvider" android:exported="false">
+        <receiver android:name=".VehicleWidgetProvider" android:exported="false" android:label="@string/widget_label_vehicle">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_vehicle_info" />
+        </receiver>
+        <receiver android:name=".StationWidgetProvider" android:exported="false" android:label="@string/widget_label_station">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_station_info" />
+        </receiver>
+        <receiver android:name=".DeadlinesWidgetProvider" android:exported="false" android:label="@string/widget_label_deadlines">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_deadlines_info" />
         </receiver>
     </application>
 

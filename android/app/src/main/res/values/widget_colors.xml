@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="widget_background">#1a1d21</color>
-    <color name="widget_amber">#f5901f</color>
-    <color name="widget_text">#f3f1ea</color>
-    <color name="widget_text_muted">#8a93a1</color>
+    <!-- Widget nella home: colori del tema chiaro (quelli scuri sono in values-night) -->
+    <color name="widget_background">#FFFFFF</color>
+    <color name="widget_chip">#F3F1EC</color>
+    <color name="widget_amber">#F5901F</color>
+    <color name="widget_green">#22A565</color>
+    <color name="widget_red">#D64545</color>
+    <color name="widget_text">#17181A</color>
+    <color name="widget_text_muted">#6F7176</color>
 </resources>

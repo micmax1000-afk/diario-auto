@@ -1,4 +1,5 @@
 import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { updateStationWidget } from "../utils/widgetData";
 import { useTranslation } from "react-i18next";
 import { Geolocation } from "@capacitor/geolocation";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -145,6 +146,19 @@ export default function FuelStations({ defaultFuel, onBack, onUsePrice }: Props)
   const avg = rows.length ? rows.reduce((sum, r) => sum + r.price, 0) / rows.length : 0;
   const best = rows.reduce<(typeof rows)[number] | null>((m, r) => (!m || r.price < m.price ? r : m), null);
   const saving = best ? (avg - best.price) * 40 : 0;
+  // Il widget "distributore più economico" mostra l'ultimo risultato visto qui.
+  const bestKey = best ? `${best.s.id}:${best.price}:${fuel}:${service}` : "";
+  useEffect(() => {
+    if (!best) return;
+    void updateStationWidget({
+      title: t(`stations.fuel_${fuel}`),
+      subtitle: t("stations.cheapest"),
+      price: formatMoney(best.price, 3),
+      place: `${best.s.brand} · ${best.s.km.toLocaleString(i18n.language, { maximumFractionDigits: 1 })} km`,
+      note: t("widget.updated", { date: new Date().toLocaleDateString(i18n.language, { day: "numeric", month: "short" }) }),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bestKey]);
   const mapPrice = useCallback((n: number) => n.toLocaleString(i18n.language, { minimumFractionDigits: 3, maximumFractionDigits: 3 }), [i18n.language]);
   const km = (n: number) => `${n.toLocaleString(i18n.language, { maximumFractionDigits: 1 })} km`;
   // Sulla mappa i primi 25 nell'ordine scelto (più vicini o più economici), sempre con

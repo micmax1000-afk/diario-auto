@@ -1547,5 +1547,24 @@
     "fileQuestion": "As-tu un fichier de sauvegarde ?",
     "file": "Ouvrir un fichier",
     "noDriveBackups": "Aucune sauvegarde n'a été trouvée sur ce compte Google."
+  },
+  "annualReport": {
+    "button": "Résumé de la période {{period}} au format PDF",
+    "creating": "Création du PDF en cours…",
+    "title": "Bilan annuel",
+    "titleAll": "Résumé complet",
+    "subtitle": "Diario Auto · créé le {{date}}",
+    "chartMonths": "Dépenses mois par mois",
+    "chartYears": "Dépenses année par année",
+    "categories": "Par catégorie",
+    "maintenance": "Entretien",
+    "noMaintenance": "Aucune intervention de maintenance n'a été enregistrée au cours de cette période.",
+    "trips": "Remboursement des frais de déplacement professionnel : {{km}} · {{amount}}",
+    "page": "Page {{n}} sur {{total}}",
+    "failed": "Je n'ai pas réussi à créer le fichier PDF. Réessayez."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "Mis à jour le {{date}}"
   }
 }

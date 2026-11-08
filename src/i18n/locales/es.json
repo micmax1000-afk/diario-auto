@@ -1547,5 +1547,24 @@
     "fileQuestion": "¿Tienes un archivo de copia de seguridad?",
     "file": "Abrir archivo",
     "noDriveBackups": "No se ha encontrado ninguna copia de seguridad en esta cuenta de Google."
+  },
+  "annualReport": {
+    "button": "Resumen de {{period}} en PDF",
+    "creating": "Se está generando el PDF…",
+    "title": "Resumen anual",
+    "titleAll": "Resumen completo",
+    "subtitle": "Diario Auto · creado el {{date}}",
+    "chartMonths": "Gastos mes a mes",
+    "chartYears": "Gastos año por año",
+    "categories": "Por categoría",
+    "maintenance": "Mantenimiento",
+    "noMaintenance": "No se ha registrado ninguna intervención de mantenimiento durante este periodo.",
+    "trips": "Reembolso de gastos de viaje de trabajo: {{km}} · {{amount}}",
+    "page": "Página {{n}} de {{total}}",
+    "failed": "No he podido crear el PDF. Inténtalo de nuevo."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "Actualizado el {{date}}"
   }
 }

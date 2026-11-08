@@ -2148,3 +2148,8 @@ body {
 .backup-freq { margin: 0.7rem 0 0; padding: 0.8rem; border-radius: 14px; background: var(--surface-alt); display: flex; flex-direction: column; gap: 0.5rem; }
 .backup-freq__chips { flex-wrap: wrap; }
 .backup-freq__hint { color: var(--text-muted); font-size: 0.78rem; line-height: 1.35; }
+
+/* Statistiche: riepilogo in PDF */
+.report-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0.2rem 0 0.9rem; padding: 0.8rem; border-radius: 14px; background: var(--card); border: 1px solid var(--border); color: var(--text); font-weight: 700; }
+.report-btn svg { color: var(--amber); }
+.report-btn__error { margin: -0.4rem 0 0.9rem; color: var(--danger); font-size: 0.85rem; text-align: center; }

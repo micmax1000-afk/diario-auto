@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_label_vehicle">Diario Auto</string>
+    <string name="widget_desc_vehicle">Mobil, km, dan tenggat waktu</string>
+    <string name="widget_label_station">SPBU terdekat</string>
+    <string name="widget_label_deadlines">Jatuh tempo</string>
+    <string name="widget_open_app">Buka aplikasi ini untuk memulai</string>
+</resources>

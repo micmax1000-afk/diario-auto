@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_label_vehicle">Diario Auto</string>
+    <string name="widget_desc_vehicle">السيارات، والكيلومترات، والمواعيد النهائية</string>
+    <string name="widget_label_station">محطات الوقود القريبة</string>
+    <string name="widget_label_deadlines">المواعيد المستحقة</string>
+    <string name="widget_open_app">افتح التطبيق لتبدأ</string>
+</resources>
