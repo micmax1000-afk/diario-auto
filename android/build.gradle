@@ -4,6 +4,9 @@ buildscript {
     
     repositories {
         google()
+        // Copia di Maven Central su Google: GitHub ogni tanto risponde 504 sui download delle librerie
+        // più grandi (es. il compilatore Kotlin). Se una libreria non c'è, Gradle passa a mavenCentral().
+        maven { url 'https://maven-central.storage-download.googleapis.com/maven2/' }
         mavenCentral()
     }
     dependencies {
@@ -23,6 +26,9 @@ apply from: "variables.gradle"
 allprojects {
     repositories {
         google()
+        // Copia di Maven Central su Google: GitHub ogni tanto risponde 504 sui download delle librerie
+        // più grandi (es. il compilatore Kotlin). Se una libreria non c'è, Gradle passa a mavenCentral().
+        maven { url 'https://maven-central.storage-download.googleapis.com/maven2/' }
         mavenCentral()
     }
 }
