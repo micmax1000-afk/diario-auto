@@ -8,13 +8,12 @@ export const DEFAULT_CAR_COLOR: CarColor = "grigio";
 
 /** Colori neutri, disponibili per tutte le carrozzerie. */
 export const NEUTRAL_CAR_COLORS: CarColor[] = ["bianco", "argento", "grigio", "nero"];
-/** Colori vivaci, disponibili solo per le carrozzerie che hanno la vernice adatta. */
+/** Colori vivaci, disponibili per tutte le carrozzerie. */
 export const VIVID_CAR_COLORS: CarColor[] = ["rosso", "arancione", "giallo", "verde", "blu", "viola"];
-const VIVID_BODIES: BodyType[] = ["citycar", "convertible", "coupe", "mpv", "sedan", "suvlarge"];
 
 /** Colori tra cui scegliere per una carrozzeria. */
-export function availableCarColors(body: BodyType): CarColor[] {
-  return VIVID_BODIES.includes(body) ? [...NEUTRAL_CAR_COLORS, ...VIVID_CAR_COLORS] : NEUTRAL_CAR_COLORS;
+export function availableCarColors(_body: BodyType): CarColor[] {
+  return [...NEUTRAL_CAR_COLORS, ...VIVID_CAR_COLORS];
 }
 
 /** Il colore scelto, se la carrozzeria lo ha; altrimenti il grigio scuro. */
