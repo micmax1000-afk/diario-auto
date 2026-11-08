@@ -190,7 +190,7 @@ body {
   display: grid;
   place-items: center;
   margin-top: -30px;
-  box-shadow: 0 8px 20px rgba(245, 144, 31, 0.45);
+  box-shadow: 0 8px 20px rgba(var(--amber-rgb), 0.45);
   cursor: pointer;
   transition: transform 0.2s ease;
   -webkit-tap-highlight-color: transparent;
@@ -1989,3 +1989,136 @@ body {
 .voice-km .btn { flex: none; }
 .voice-km--warn { background: var(--amber-soft); color: var(--text); }
 .voice-km--bad { background: var(--red-soft); color: var(--danger); }
+
+
+/* ===================== Tema: colore principale e testo ===================== */
+/* Il colore principale sostituisce l'arancione di pulsanti, icone ed evidenziazioni.
+   Rosso, verde e i colori delle auto restano quelli: hanno un significato. */
+:root[data-accent="blue"] {
+  --amber: #3b7ff5;
+  --amber-dark: #2563c9;
+  --amber-rgb: 59, 127, 245;
+  --amber-soft: #1b2a44;
+  --amber-ink: #8fb8ff;
+  --on-amber: #ffffff;
+}
+:root[data-accent="blue"][data-theme="light"] {
+  --amber: #3b7ff5;
+  --amber-dark: #2563c9;
+  --amber-rgb: 59, 127, 245;
+  --amber-soft: #e8f0fe;
+  --amber-ink: #1d5bbf;
+  --on-amber: #ffffff;
+}
+:root[data-accent="teal"] {
+  --amber: #14b8a6;
+  --amber-dark: #0f8f82;
+  --amber-rgb: 20, 184, 166;
+  --amber-soft: #123532;
+  --amber-ink: #5fe0d0;
+  --on-amber: #0b2723;
+}
+:root[data-accent="teal"][data-theme="light"] {
+  --amber: #14b8a6;
+  --amber-dark: #0f8f82;
+  --amber-rgb: 20, 184, 166;
+  --amber-soft: #e0f6f3;
+  --amber-ink: #0d7a6f;
+  --on-amber: #ffffff;
+}
+:root[data-accent="violet"] {
+  --amber: #8b5cf6;
+  --amber-dark: #6d3fd6;
+  --amber-rgb: 139, 92, 246;
+  --amber-soft: #2a2040;
+  --amber-ink: #c4a8ff;
+  --on-amber: #ffffff;
+}
+:root[data-accent="violet"][data-theme="light"] {
+  --amber: #8b5cf6;
+  --amber-dark: #6d3fd6;
+  --amber-rgb: 139, 92, 246;
+  --amber-soft: #f0eaff;
+  --amber-ink: #6232c9;
+  --on-amber: #ffffff;
+}
+:root[data-accent="pink"] {
+  --amber: #e8508a;
+  --amber-dark: #c13a6f;
+  --amber-rgb: 232, 80, 138;
+  --amber-soft: #3a1a28;
+  --amber-ink: #ff9cc2;
+  --on-amber: #ffffff;
+}
+:root[data-accent="pink"][data-theme="light"] {
+  --amber: #e8508a;
+  --amber-dark: #c13a6f;
+  --amber-rgb: 232, 80, 138;
+  --amber-soft: #fde8f0;
+  --amber-ink: #b0305f;
+  --on-amber: #ffffff;
+}
+:root[data-accent="graphite"] {
+  --amber: #9ca3af;
+  --amber-dark: #6b7280;
+  --amber-rgb: 156, 163, 175;
+  --amber-soft: #2a2d31;
+  --amber-ink: #d0d4da;
+  --on-amber: #111315;
+}
+:root[data-accent="graphite"][data-theme="light"] {
+  --amber: #4b5563;
+  --amber-dark: #374151;
+  --amber-rgb: 75, 85, 99;
+  --amber-soft: #eceef1;
+  --amber-ink: #374151;
+  --on-amber: #ffffff;
+}
+
+/* Testo grande: tutta l'app è in rem, quindi basta ingrandire la base. */
+:root[data-text="large"] { font-size: 112.5%; }
+
+.theme-panel { gap: 1rem; }
+.theme-panel__label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.theme-panel__hint { font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
+.accent-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4.2rem, 1fr));
+  gap: 0.5rem 0.25rem;
+}
+.accent-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 0;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  color: var(--text-muted);
+  font: inherit;
+}
+.accent-swatch__dot {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.accent-swatch__dot { -webkit-text-fill-color: #fff; }
+.accent-swatch.is-active .accent-swatch__dot { box-shadow: 0 0 0 3px var(--surface-alt), 0 0 0 5.5px currentColor; }
+.accent-swatch__name { font-size: 0.75rem; }
+.accent-swatch.is-active .accent-swatch__name { color: var(--text); font-weight: 700; }
+/* Testo grande: i km della scheda auto restano della misura di prima, così non finiscono sopra l'immagine */
+:root[data-text="large"] .home-hero--car .home-hero__km { font-size: 1.4rem; }
+:root[data-text="large"] .home-hero__car { width: 38%; }
+:root[data-text="large"] .home-hero--car .home-hero__id { max-width: 54%; }
+:root[data-text="large"] .home-kpi__label { white-space: normal; }

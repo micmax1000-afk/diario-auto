@@ -1082,7 +1082,28 @@
     "notificationsHintNative": "A reminder 30 and 7 days before and on the due date, at 9 am, even with the app closed. Mileage-based due dates are checked when you open the app.",
     "notificationsHintWeb": "Get a reminder when a due date is close or overdue (only while the app is open in the browser).",
     "openNotificationSettings": "Open notification settings",
-    "terms": "Terms of use"
+    "terms": "Terms of use",
+    "appearance": "Appearance",
+    "themeMode": {
+      "auto": "Automatic",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "accentTitle": "Main colour",
+    "accent": {
+      "orange": "Orange",
+      "blue": "Blue",
+      "teal": "Turquoise",
+      "violet": "Purple",
+      "pink": "Pink",
+      "graphite": "Graphite"
+    },
+    "accentHint": "Change buttons, icons and highlights. Each car retains its own colour.",
+    "textSize": "Text size",
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Large"
+    }
   },
   "passport": {
     "generate": "Service history",

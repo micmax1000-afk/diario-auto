@@ -1082,7 +1082,28 @@
     "notificationsHintNative": "Avviso 30 e 7 giorni prima e il giorno della scadenza, alle 9, anche ad app chiusa. Le scadenze a chilometri vengono controllate quando apri l'app.",
     "notificationsHintWeb": "Ricevi un avviso quando una scadenza è vicina o scaduta (solo con l'app aperta nel browser).",
     "openNotificationSettings": "Apri impostazioni notifiche",
-    "terms": "Termini d'uso"
+    "terms": "Termini d'uso",
+    "appearance": "Aspetto",
+    "themeMode": {
+      "auto": "Automatico",
+      "light": "Chiaro",
+      "dark": "Scuro"
+    },
+    "accentTitle": "Colore principale",
+    "accent": {
+      "orange": "Arancione",
+      "blue": "Blu",
+      "teal": "Turchese",
+      "violet": "Viola",
+      "pink": "Rosa",
+      "graphite": "Grafite"
+    },
+    "accentHint": "Cambia pulsanti, icone ed evidenziazioni. Ogni auto tiene il suo colore.",
+    "textSize": "Dimensione testo",
+    "textSizes": {
+      "normal": "Normale",
+      "large": "Grande"
+    }
   },
   "passport": {
     "generate": "Passaporto tagliandi",

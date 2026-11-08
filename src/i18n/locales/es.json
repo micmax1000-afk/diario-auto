@@ -1082,7 +1082,28 @@
     "notificationsHintNative": "Aviso 30 y 7 días antes y el día del vencimiento, a las 9, incluso con la app cerrada. Los vencimientos por kilometraje se comprueban al abrir la app.",
     "notificationsHintWeb": "Recibe un aviso cuando un vencimiento esté cerca o vencido (solo con la app abierta en el navegador).",
     "openNotificationSettings": "Abrir ajustes de notificaciones",
-    "terms": "Términos de uso"
+    "terms": "Términos de uso",
+    "appearance": "Aspecto",
+    "themeMode": {
+      "auto": "Automático",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "accentTitle": "Color principal",
+    "accent": {
+      "orange": "Naranja",
+      "blue": "Azul",
+      "teal": "Turquesa",
+      "violet": "Morado",
+      "pink": "Rosa",
+      "graphite": "Grafito"
+    },
+    "accentHint": "Cambia los botones, los iconos y los resaltados. Cada coche conserva su color.",
+    "textSize": "Tamaño del texto",
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Grande"
+    }
   },
   "passport": {
     "generate": "Historial de mantenimiento (PDF)",

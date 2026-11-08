@@ -1082,7 +1082,28 @@
     "notificationsHintNative": "Erinnerung 30 und 7 Tage vorher und am Fälligkeitstag um 9 Uhr, auch bei geschlossener App. Kilometer-Fristen werden beim Öffnen der App geprüft.",
     "notificationsHintWeb": "Erhalte eine Erinnerung, wenn eine Frist naht oder überschritten ist (nur bei geöffneter App im Browser).",
     "openNotificationSettings": "Benachrichtigungseinstellungen öffnen",
-    "terms": "Nutzungsbedingungen"
+    "terms": "Nutzungsbedingungen",
+    "appearance": "Aussehen",
+    "themeMode": {
+      "auto": "Automatisch",
+      "light": "Hell",
+      "dark": "Dunkel"
+    },
+    "accentTitle": "Hauptfarbe",
+    "accent": {
+      "orange": "Orange",
+      "blue": "Blau",
+      "teal": "Türkis",
+      "violet": "Violett",
+      "pink": "Rosa",
+      "graphite": "Graphit"
+    },
+    "accentHint": "Ändere Schaltflächen, Symbole und Hervorhebungen. Jedes Auto behält seine eigene Farbe.",
+    "textSize": "Textgröße",
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Groß"
+    }
   },
   "passport": {
     "generate": "Wartungspass",
