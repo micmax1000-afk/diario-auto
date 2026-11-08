@@ -1,4 +1,5 @@
 import type { PDFFont, PDFPage, RGB } from "pdf-lib";
+import { accentRgb } from "./theme";
 
 export interface ReportCategory {
   label: string;
@@ -57,7 +58,7 @@ function fit(text: string, font: PDFFont, size: number, maxWidth: number): strin
 /** Riepilogo annuale di un'auto in PDF, generato sul telefono: i dati non escono dal dispositivo. */
 export async function generateAnnualReportPdf(p: AnnualReportParams): Promise<Uint8Array> {
   const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
-  const AMBER = rgb(0.96, 0.56, 0.12);
+  const AMBER = rgb(...accentRgb());
   const DARK = rgb(0.09, 0.09, 0.1);
   const GRAY = rgb(0.44, 0.44, 0.46);
   const LIGHT = rgb(0.96, 0.957, 0.945);

@@ -13,6 +13,12 @@
   --amber: #f5901f;
   --amber-dark: #c9701a;
   --amber-rgb: 245, 144, 31;
+  /* Avvisi (scadenze in arrivo, controlli, categoria carburante): restano arancioni qualunque sia il colore principale */
+  --warn: #f5901f;
+  --warn-dark: #c9701a;
+  --warn-rgb: 245, 144, 31;
+  --warn-soft: #3a2a17;
+  --warn-ink: #ffb25e;
   --on-amber: var(--asphalt);
   --ok: #3fbb72;
   --danger: #e0563f;
@@ -809,7 +815,7 @@ textarea {
 }
 
 .reminder-item--soon {
-  border-left-color: var(--amber-dark);
+  border-left-color: var(--warn-dark);
 }
 
 .reminder-item--overdue {
@@ -839,7 +845,7 @@ textarea {
 }
 
 .reminder-item--soon .reminder-item__badge {
-  background: var(--amber);
+  background: var(--warn);
   color: var(--asphalt);
 }
 
@@ -1075,8 +1081,8 @@ textarea {
 
 .obd-status-dot--connecting,
 .obd-status-dot--initializing {
-  background: var(--amber);
-  box-shadow: 0 0 0 3px rgba(var(--amber-rgb), 0.25);
+  background: var(--warn);
+  box-shadow: 0 0 0 3px rgba(var(--warn-rgb), 0.25);
 }
 
 .obd-status-dot--error {
@@ -1283,7 +1289,7 @@ textarea {
 .live-card--cold .live-card__tag { background: rgba(74, 168, 255, 0.18); color: #4aa8ff; }
 .live-card--hot .live-card__value { color: #e24b3f; }
 .live-card--hot .live-card__tag { background: rgba(226, 75, 63, 0.18); color: #e24b3f; }
-.live-card--warn .live-card__value { color: var(--amber); }
+.live-card--warn .live-card__value { color: var(--warn); }
 
 .live-card__bar {
   display: block;
@@ -1400,7 +1406,7 @@ textarea {
 }
 
 .monitor-list__dot--pending {
-  background: var(--amber);
+  background: var(--warn);
 }
 
 .monitor-list__dot--na {
@@ -2132,8 +2138,8 @@ textarea {
 }
 
 .upcoming-reminders__icon--soon {
-  background: rgba(var(--amber-rgb), 0.14);
-  color: var(--amber);
+  background: rgba(var(--warn-rgb), 0.14);
+  color: var(--warn);
 }
 
 .upcoming-reminders__body {
@@ -2165,7 +2171,7 @@ textarea {
 }
 
 .upcoming-reminders__bar--soon .upcoming-reminders__bar-fill {
-  background: var(--amber);
+  background: var(--warn);
 }
 
 .upcoming-reminders__remaining {
@@ -2783,7 +2789,7 @@ textarea {
 .quick-entry-card__km-input input { width: 6.5rem; background: transparent; border: 0; outline: 0; color: var(--amber); font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700; text-align: end; }
 .quick-entry-card__km-input small { font-family: var(--font-mono); color: var(--text-muted); }
 .quick-entry-card__km-input:focus-within { border-color: var(--amber); }
-.quick-entry-card__km-hint { margin: 0.6rem 0 0; font-size: 0.78rem; color: var(--amber); }
+.quick-entry-card__km-hint { margin: 0.6rem 0 0; font-size: 0.78rem; color: var(--warn); }
 
 /* ---- Home: card veicolo con scadenze, pillole azione, vista compatta/dettagliata ---- */
 .upcoming-reminders__vehicle { margin-inline-start: 0.4rem; padding: 0 0.4rem; border-radius: 6px; background: color-mix(in srgb, var(--text-muted) 18%, transparent); font-size: 0.68rem; color: var(--text-muted); }
@@ -2972,7 +2978,7 @@ textarea {
 :root[data-theme="light"] .live-card__value { color: var(--text); }
 :root[data-theme="light"] .live-card--cold .live-card__value { color: #1f7fd6; }
 :root[data-theme="light"] .live-card--hot .live-card__value { color: #c9372b; }
-:root[data-theme="light"] .live-card--warn .live-card__value { color: var(--amber-dark); }
+:root[data-theme="light"] .live-card--warn .live-card__value { color: var(--warn-dark); }
 :root[data-theme="light"] .live-card__bar { background: #e4dfd3; }
 :root[data-theme="light"] .arc-gauge__track { stroke: #ddd7ca; }
 :root[data-theme="light"] .live-unavailable { border-color: #d6cfc0; }
@@ -2996,7 +3002,7 @@ textarea {
 .commute-bar { display: flex; gap: 2px; height: 12px; margin-bottom: 0.7rem; border-radius: 999px; overflow: hidden; }
 .commute-bar__seg { min-width: 4px; flex-basis: 0; }
 .commute-bar__seg--fuel { background: #7a828c; }
-.commute-bar__seg--toll { background: var(--amber); }
+.commute-bar__seg--toll { background: var(--warn); }
 .commute-bar__seg--parking { background: #4a8fe0; }
 .commute-bar__seg--other { background: #a07cd0; }
 .commute-bar__seg--fixed { background: var(--ok); }

@@ -154,7 +154,7 @@
             android:layout_height="38dp"
             android:layout_weight="1"
             android:layout_marginStart="8dp"
-            android:background="@drawable/widget_btn_amber"
+            android:background="@drawable/widget_btn_blue"
             android:gravity="center"
             android:textColor="#FFFFFF"
             android:textSize="13sp"

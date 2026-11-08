@@ -1,4 +1,5 @@
 import type { PDFFont } from "pdf-lib";
+import { accentRgb } from "./theme";
 
 export interface TripReportRow {
   date: string;
@@ -38,7 +39,7 @@ function fit(text: string, font: PDFFont, size: number, maxWidth: number): strin
 /** PDF del rimborso chilometrico, generato sul telefono: i dati non escono dal dispositivo. */
 export async function generateTripReportPdf(p: TripReportParams): Promise<Uint8Array> {
   const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
-  const AMBER = rgb(0.96, 0.56, 0.12);
+  const AMBER = rgb(...accentRgb());
   const DARK = rgb(0.12, 0.13, 0.15);
   const GRAY = rgb(0.45, 0.45, 0.48);
   const LINE = rgb(0.85, 0.85, 0.85);

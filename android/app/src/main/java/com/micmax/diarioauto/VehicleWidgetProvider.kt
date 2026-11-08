@@ -24,6 +24,15 @@ class VehicleWidgetProvider : AppWidgetProvider() {
     companion object {
         const val DATA_KEY = "widget_vehicle_data"
 
+        private fun accentButton(accent: String?): Int = when (accent) {
+            "orange" -> R.drawable.widget_btn_orange
+            "teal" -> R.drawable.widget_btn_teal
+            "violet" -> R.drawable.widget_btn_violet
+            "pink" -> R.drawable.widget_btn_pink
+            "graphite" -> R.drawable.widget_btn_graphite
+            else -> R.drawable.widget_btn_blue
+        }
+
         fun updateWidget(context: Context, manager: AppWidgetManager, widgetId: Int) {
             val views = RemoteViews(context.packageName, R.layout.widget_vehicle)
             val data = WidgetCommon.readJson(context, DATA_KEY)
@@ -51,6 +60,8 @@ class VehicleWidgetProvider : AppWidgetProvider() {
                 views.setViewVisibility(R.id.widget_buttons, View.VISIBLE)
                 views.setTextViewText(R.id.widget_btn_fuel, labels?.text("fuel") ?: "+")
                 views.setOnClickPendingIntent(R.id.widget_btn_fuel, WidgetCommon.openApp(context, 11, "fuel"))
+                // il pulsante "A voce" ha il colore principale scelto nell'app
+                views.setInt(R.id.widget_btn_voice, "setBackgroundResource", accentButton(data.text("accent")))
                 val voice = data.optBoolean("voice")
                 views.setViewVisibility(R.id.widget_btn_voice, if (voice) View.VISIBLE else View.GONE)
                 views.setTextViewText(R.id.widget_btn_voice, labels?.text("voice") ?: "")

@@ -40,7 +40,7 @@ import { formatNumber, getNumberLocale } from "./utils/locale";
 import { averageConsumption, averageElectricConsumption, calculateConsumption, calculateElectricConsumption, mainFuelSource } from "./utils/calculations";
 import { formatDistance } from "./utils/settings";
 import { useAppSettings } from "./contexts/AppSettingsContext";
-import { applyTheme, getStoredThemeMode, onSystemThemeChange, resolveTheme, setStoredThemeMode, type ThemeMode } from "./utils/theme";
+import { APPEARANCE_EVENT, applyTheme, getStoredAccent, getStoredThemeMode, onSystemThemeChange, resolveTheme, setStoredThemeMode, type ThemeMode } from "./utils/theme";
 import { isRtlLanguage } from "./i18n";
 import { triggerTopBackHandler, useBackButtonClose } from "./utils/backButtonStack";
 import { updateDeadlinesWidget, updateWidgetData } from "./utils/widgetData";
@@ -149,6 +149,13 @@ export default function App() {
   const [showAdapters, setShowAdapters] = useState(false);
   const [showStations, setShowStations] = useState(false);
   const [themeMode, setThemeMode] = useState<ThemeMode>(() => getStoredThemeMode());
+  // Cambia quando l'utente sceglie un altro colore principale: i widget vanno ridisegnati.
+  const [appearanceTick, setAppearanceTick] = useState(0);
+  useEffect(() => {
+    const bump = () => setAppearanceTick((n) => n + 1);
+    window.addEventListener(APPEARANCE_EVENT, bump);
+    return () => window.removeEventListener(APPEARANCE_EVENT, bump);
+  }, []);
   const [theme, setTheme] = useState(() => resolveTheme(getStoredThemeMode()));
   const { isPro, refresh: refreshProStatus } = useProStatus();
   // Backup automatico su Drive bloccato per sicurezza (molti meno dati dell'ultimo backup).
@@ -387,6 +394,7 @@ export default function App() {
       reminderLabel: mine ? `${mine.r.label} · ${status(mine.s)}` : null,
       reminderOverdue: mine?.s === "overdue",
       consumption,
+      accent: getStoredAccent(),
       voice: i18n.language.startsWith("it") && !electric,
       labels: {
         deadline: t("home.upcoming"),
@@ -412,7 +420,7 @@ export default function App() {
       })),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vehicles, reminders, fuelEntries, chargingEntries, i18n.language, vehicleOrder]);
+  }, [vehicles, reminders, fuelEntries, chargingEntries, i18n.language, vehicleOrder, appearanceTick]);
 
   // Sull'app nativa, programma anche le notifiche future per i promemoria
   // con data: a differenza del controllo sopra (solo ad app aperta), queste
