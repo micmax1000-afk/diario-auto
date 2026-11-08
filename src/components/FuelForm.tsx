@@ -30,7 +30,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDel
   const [source, setSource] = useState<FuelSource>(
     initialEntry?.source ?? (vehicle.fuelType === "ibrido" ? "benzina" : (vehicle.fuelType as FuelSource)),
   );
-  const [fullTank, setFullTank] = useState(initialEntry?.fullTank ?? true);
+  const [fullTank, setFullTank] = useState(initialEntry?.fullTank ?? false);
   const [notes, setNotes] = useState(initialEntry?.notes ?? "");
   const [error, setError] = useState("");
 

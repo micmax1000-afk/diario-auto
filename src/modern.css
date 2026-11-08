@@ -2122,3 +2122,10 @@ body {
 :root[data-text="large"] .home-hero__car { width: 38%; }
 :root[data-text="large"] .home-hero--car .home-hero__id { max-width: 54%; }
 :root[data-text="large"] .home-kpi__label { white-space: normal; }
+
+/* Stessi margini laterali in tutte le pagine (16px): le schede usano tutta la larghezza del telefono */
+.content { padding-left: 1rem; padding-right: 1rem; }
+.home { padding-left: 0; padding-right: 0; }
+.settings-embedded { margin-left: -1rem; margin-right: -1rem; }
+.menu-garage,
+.menu-list { padding-left: 1rem; padding-right: 1rem; }
