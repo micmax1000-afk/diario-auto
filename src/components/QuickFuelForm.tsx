@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import type { FuelEntry, FuelSource, Vehicle } from "../types";
 import { checkFuelEntry, type EntryWarning } from "../utils/entryChecks";
 import { generateId } from "../utils/storage";
-import { calculateConsumption, averageConsumption } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, suspectMissedFill } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { formatCurrency, getCurrencySymbol } from "../utils/settings";
@@ -50,6 +50,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
   const [pricePerUnit, setPricePerUnit] = useState(prefill ? String(Math.round(prefill.pricePerUnit * 1000) / 1000) : "");
   const [totalCost, setTotalCost] = useState(prefill?.totalCost ? String(Math.round(prefill.totalCost * 100) / 100) : "");
   const [fullTank, setFullTank] = useState(prefill?.fullTank ?? false);
+  const [missedBefore, setMissedBefore] = useState(false);
   const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(prefill?.km ?? vehicle.currentKm))));
   const [error, setError] = useState("");
   const [warnings, setWarnings] = useState<EntryWarning[] | null>(null);
@@ -69,6 +70,9 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
   const distanceSinceLast = previousEntry ? kmValue - previousEntry.km : null;
   const costPerKm = distanceSinceLast && distanceSinceLast > 0 && costValue > 0 ? costValue / distanceSinceLast : null;
 
+  // Molti più km del solito dall'ultimo rifornimento: forse uno non è stato registrato.
+  const missedGap = suspectMissedFill(existingEntries.filter((e) => e.source === source), kmValue);
+
   let newAvgConsumption: number | null = null;
   if (computedLiters !== null) {
     const previewEntry: FuelEntry = {
@@ -80,6 +84,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
       totalCost: costValue,
       source,
       fullTank,
+      missedBefore,
     };
     newAvgConsumption = averageConsumption(calculateConsumption([...existingEntries, previewEntry]), source);
   }
@@ -116,6 +121,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
       totalCost: costValue,
       source,
       fullTank,
+      ...(missedBefore ? { missedBefore: true } : {}),
     };
 
     onSave(entry);
@@ -184,6 +190,17 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
             <input id="qf-full" type="checkbox" checked={fullTank} onChange={(e) => setFullTank(e.target.checked)} />
             {t("fuelForm.fullTank")}
           </label>
+        </div>
+
+        {missedGap !== null && (
+          <p className="missed-fill__hint">{t("fuelForm.missedSuspect", { km: formatNumber(missedGap, 0, locale) })}</p>
+        )}
+        <div className="quick-entry-field field--checkbox">
+          <label htmlFor="qf-missed">
+            <input id="qf-missed" type="checkbox" checked={missedBefore} onChange={(e) => setMissedBefore(e.target.checked)} />
+            {t("fuelForm.missedBefore")}
+          </label>
+          <small className="missed-fill__help">{t("fuelForm.missedHelp")}</small>
         </div>
 
         <div className="quick-entry-calc">

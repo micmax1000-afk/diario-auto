@@ -197,7 +197,10 @@
     "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (calculados)",
     "errorPrice": "Introduce un precio válido para {{unit}}.",
-    "errorTotalCost": "Introduce un coste total válido."
+    "errorTotalCost": "Introduce un coste total válido.",
+    "missedBefore": "Se me ha olvidado registrar un repostaje",
+    "missedHelp": "El trayecto desde el último repostaje no se tiene en cuenta en el consumo: el cálculo vuelve a empezar desde aquí. El gasto sigue siendo correcto.",
+    "missedSuspect": "Han pasado {{km}} km desde el último repostaje registrado: ¿te has olvidado de alguno?"
   },
   "common": {
     "close": "Cerrar",
@@ -449,13 +452,25 @@
     "confirmCancel": "Cancelar",
     "confirmRestore": "Restaurar",
     "autoTitle": "Copia automática en Drive cada {{days}} días",
-    "autoHintOn": "Se hace sola al abrir la app, si la última copia es más antigua. Los datos del teléfono no se tocan.",
-    "autoHintLast": "Última copia automática: {{date}}. Se hace sola al abrir la app.",
+    "autoHintOn": "Se inicia solo, sin pedirte nada. Los datos del teléfono no se ven afectados.",
+    "autoHintLast": "Última copia de seguridad automática: {{date}}.",
     "autoHintFirst": "Se activa tras el primer «Guardar en Drive».",
     "autoHintOff": "Desactivada: acuérdate de hacer una copia de vez en cuando.",
     "autoHintPro": "Disponible con Pro.",
     "autoBlocked": "Copia automática en pausa: en el teléfono hay muchos menos datos que en la última copia, así que no se ha guardado nada para no sustituir las copias buenas de Drive. Si borraste datos a propósito, haz una copia manual; si han desaparecido, restaura desde Drive.",
-    "autoBlockedOpen": "Abrir copias"
+    "autoBlockedOpen": "Abrir copias",
+    "autoTitleShort": "Copia de seguridad automática en Drive",
+    "freqTitle": "Cuándo guardar en Drive",
+    "freq": {
+      "change": "Después de cada modificación",
+      "daily": "Todos los días",
+      "weekly": "Cada semana"
+    },
+    "freqHint": {
+      "change": "Unos minutos después de introducir o modificar algo, y al cerrar la aplicación, si estás conectado a Internet. En Drive se guardan las últimas 5 copias de seguridad.",
+      "daily": "Una vez al día, al abrir o cerrar la aplicación, si los datos han cambiado.",
+      "weekly": "Una vez a la semana, al abrir o cerrar la aplicación, si los datos han cambiado."
+    }
   },
   "reminderCatalog": {
     "oilFilter": "Aceite con filtro",
@@ -1521,5 +1536,16 @@
     "nomatch": "I didn't catch that: tap the microphone and try again (or type the sentence).",
     "denied": "Microphone permission is needed: allow it in the phone settings.",
     "unavailable": "Speech recognition isn't available on this phone: type the sentence below."
+  },
+  "restoreOffer": {
+    "title": "¿Ya has utilizado Diario Auto?",
+    "body": "Si tienes una copia de seguridad en Google Drive, la restauraré ahora mismo: recuperarás los datos sobre el coche, los repostajes, los plazos e incluso tu tema.",
+    "pick": "Elige la copia de seguridad que deseas restaurar",
+    "searching": "Estoy buscando las copias de seguridad…",
+    "drive": "Restaurar desde Google Drive",
+    "skip": "Empezar desde cero",
+    "fileQuestion": "¿Tienes un archivo de copia de seguridad?",
+    "file": "Abrir archivo",
+    "noDriveBackups": "No se ha encontrado ninguna copia de seguridad en esta cuenta de Google."
   }
 }

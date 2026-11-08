@@ -1,6 +1,6 @@
 # Informativa sulla privacy — Diario Auto
 
-**Ultimo aggiornamento**: 3 novembre 2026
+**Ultimo aggiornamento**: 8 novembre 2026
 
 ## Il principio di fondo
 
@@ -25,7 +25,7 @@ Puoi cancellare tutto in qualsiasi momento cancellando i dati dell'app dalle imp
 
 L'app include un backup manuale: il file che generi lo salvi dove vuoi e resta sotto il tuo controllo, non viene inviato a noi. Puoi anche salvare una copia sul tuo Google Drive (vedi sotto).
 
-**Backup automatico settimanale**: dopo che hai fatto almeno un backup manuale su Google Drive, l'app carica da sola una nuova copia sul tuo Drive circa una volta a settimana, quando la apri e sei connesso. Usa lo stesso accesso Google che hai già autorizzato, senza chiederti nulla. Aggiunge un file su Drive e non modifica mai i dati sul telefono. Se i dati sul telefono risultano molto meno dell'ultimo backup (per esempio dopo una cancellazione accidentale), il backup automatico si ferma per non sostituire i backup buoni. Puoi disattivarlo in qualsiasi momento dalla sezione Backup dell'app.
+**Backup automatico**: dopo che hai fatto almeno un backup manuale su Google Drive, l'app carica da sola una nuova copia sul tuo Drive con la frequenza che scegli (dopo ogni modifica, ogni giorno o ogni settimana), solo se i dati sono cambiati e sei connesso a internet. Usa lo stesso accesso Google che hai già autorizzato, senza chiederti nulla. Aggiunge un file su Drive e non modifica mai i dati sul telefono. Se i dati sul telefono risultano molto meno dell'ultimo backup (per esempio dopo una cancellazione accidentale), il backup automatico si ferma per non sostituire i backup buoni. Puoi disattivarlo in qualsiasi momento dalla sezione Backup dell'app.
 
 ## Servizi esterni contattati durante l'uso
 
@@ -76,7 +76,7 @@ Per domande su questa informativa: <mic.max.1000@gmail.com>
 
 # Privacy Policy — Diario Auto
 
-**Last updated**: November 3, 2026
+**Last updated**: November 8, 2026
 
 ## The basic principle
 
@@ -101,7 +101,7 @@ You can delete everything at any time by clearing the app's data in your device 
 
 The app includes a manual backup: you save the file wherever you want and it stays under your control; it is never sent to us. You can also save a copy to your Google Drive (see below).
 
-**Weekly automatic backup**: after you have made at least one manual backup to Google Drive, the app uploads a new copy to your Drive by itself about once a week, when you open it and are online. It uses the Google access you have already authorized, without asking you anything. It adds a file on Drive and never changes the data on your phone. If the data on your phone is much less than in the last backup (for example after an accidental deletion), the automatic backup stops so that it does not replace your good backups. You can turn it off at any time in the app's Backup section.
+**Automatic backup**: once you’ve made at least one manual backup to Google Drive, the app automatically uploads a new copy to your Drive at the frequency you choose (after every change, every day or every week), provided that your data has changed and you’re connected to the internet. It uses the Google access you have already authorized, without asking you anything. It adds a file on Drive and never changes the data on your phone. If the data on your phone is much less than in the last backup (for example after an accidental deletion), the automatic backup stops so that it does not replace your good backups. You can turn it off at any time in the app's Backup section.
 
 ## External services contacted during use
 

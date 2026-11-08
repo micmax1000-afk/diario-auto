@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">नई ईंधन भराई</string>
+    <string name="shortcut_fuel_short">ईंधन</string>
+    <string name="shortcut_km">किमी अपडेट करें</string>
+    <string name="shortcut_km_short">किमी अपडेट करें</string>
+</resources>

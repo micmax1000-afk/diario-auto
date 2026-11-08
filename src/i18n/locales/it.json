@@ -197,7 +197,10 @@
     "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (calcolati)",
     "errorPrice": "Inserisci un prezzo per {{unit}} valido.",
-    "errorTotalCost": "Inserisci un costo totale valido."
+    "errorTotalCost": "Inserisci un costo totale valido.",
+    "missedBefore": "Ho saltato un rifornimento",
+    "missedHelp": "Il tratto dall'ultimo rifornimento non conta nel consumo: il calcolo riparte da qui. La spesa resta giusta.",
+    "missedSuspect": "Dall'ultimo rifornimento sono passati {{km}} km: ne hai saltato uno?"
   },
   "common": {
     "close": "Chiudi",
@@ -449,13 +452,25 @@
     "confirmCancel": "Annulla",
     "confirmRestore": "Ripristina",
     "autoTitle": "Backup automatico su Drive ogni {{days}} giorni",
-    "autoHintOn": "Parte da solo quando apri l'app, se l'ultimo backup è più vecchio. I dati sul telefono non vengono toccati.",
-    "autoHintLast": "Ultimo backup automatico: {{date}}. Parte da solo quando apri l'app.",
+    "autoHintOn": "Parte da solo, senza chiederti nulla. I dati sul telefono non vengono toccati.",
+    "autoHintLast": "Ultimo backup automatico: {{date}}.",
     "autoHintFirst": "Si attiva dopo il primo «Salva su Drive».",
     "autoHintOff": "Disattivato: ricordati di fare un backup ogni tanto.",
     "autoHintPro": "Disponibile con Pro.",
     "autoBlocked": "Backup automatico sospeso: sul telefono ci sono molti meno dati dell'ultimo backup, quindi non ho salvato nulla per non sovrascrivere i backup buoni su Drive. Se hai eliminato dei dati di proposito, fai un backup manuale; se invece sono spariti, ripristina da Drive.",
-    "autoBlockedOpen": "Apri backup"
+    "autoBlockedOpen": "Apri backup",
+    "autoTitleShort": "Backup automatico su Drive",
+    "freqTitle": "Quando salvare su Drive",
+    "freq": {
+      "change": "Dopo ogni modifica",
+      "daily": "Ogni giorno",
+      "weekly": "Ogni settimana"
+    },
+    "freqHint": {
+      "change": "Pochi minuti dopo che inserisci o cambi qualcosa, e quando chiudi l'app, se sei connesso. Su Drive restano gli ultimi 5 backup.",
+      "daily": "Una volta al giorno, quando apri o chiudi l'app, se i dati sono cambiati.",
+      "weekly": "Una volta alla settimana, quando apri o chiudi l'app, se i dati sono cambiati."
+    }
   },
   "reminderCatalog": {
     "oilFilter": "Olio con filtro",
@@ -1521,5 +1536,16 @@
     "wait": "Un attimo…",
     "more": "Mostra altri {{count}} (su {{total}})",
     "mapTopNear": "Sulla mappa i {{count}} più vicini e il più economico."
+  },
+  "restoreOffer": {
+    "title": "Hai già usato Diario Auto?",
+    "body": "Se hai un backup su Google Drive, lo ripristino adesso: ritrovi auto, rifornimenti, scadenze e anche il tuo tema.",
+    "pick": "Scegli il backup da ripristinare",
+    "searching": "Cerco i backup…",
+    "drive": "Ripristina da Google Drive",
+    "skip": "Inizio da zero",
+    "fileQuestion": "Hai un file di backup?",
+    "file": "Apri file",
+    "noDriveBackups": "Nessun backup trovato su questo account Google."
   }
 }

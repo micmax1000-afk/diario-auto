@@ -41,6 +41,8 @@ export interface FuelEntry extends SyncFields {
   totalCost: number; // euro
   source: FuelSource; // alimentazione usata in questo rifornimento
   fullTank: boolean; // pieno o parziale (serve per calcolo consumo affidabile)
+  /** Prima di questo c'è stato un rifornimento non registrato: il tratto non conta nel consumo. */
+  missedBefore?: boolean;
   notes?: string;
 }
 

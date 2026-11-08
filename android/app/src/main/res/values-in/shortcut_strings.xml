@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">Pengisian BBM baru</string>
+    <string name="shortcut_fuel_short">Isi BBM</string>
+    <string name="shortcut_km">Perbarui km</string>
+    <string name="shortcut_km_short">Perbarui km</string>
+</resources>

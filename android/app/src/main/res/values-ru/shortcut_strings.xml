@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">Новая заправка</string>
+    <string name="shortcut_fuel_short">Заправка</string>
+    <string name="shortcut_km">Обновить км</string>
+    <string name="shortcut_km_short">Обновить км</string>
+</resources>

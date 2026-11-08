@@ -31,6 +31,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDel
     initialEntry?.source ?? (vehicle.fuelType === "ibrido" ? "benzina" : (vehicle.fuelType as FuelSource)),
   );
   const [fullTank, setFullTank] = useState(initialEntry?.fullTank ?? false);
+  const [missedBefore, setMissedBefore] = useState(initialEntry?.missedBefore ?? false);
   const [notes, setNotes] = useState(initialEntry?.notes ?? "");
   const [error, setError] = useState("");
 
@@ -77,6 +78,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDel
       totalCost: costValue,
       source,
       fullTank,
+      ...(missedBefore ? { missedBefore: true } : { missedBefore: undefined }),
       notes: notes.trim() || undefined,
     };
 
@@ -169,6 +171,14 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDel
               />
               {t("fuelForm.fullTank")}
             </label>
+          </div>
+
+          <div className="field field--checkbox">
+            <label htmlFor="fuel-missed">
+              <input id="fuel-missed" type="checkbox" checked={missedBefore} onChange={(e) => setMissedBefore(e.target.checked)} />
+              {t("fuelForm.missedBefore")}
+            </label>
+            <small className="missed-fill__help">{t("fuelForm.missedHelp")}</small>
           </div>
 
           <div className="field">

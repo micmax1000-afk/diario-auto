@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">Nuevo repostaje</string>
+    <string name="shortcut_fuel_short">Repostaje</string>
+    <string name="shortcut_km">Actualizar km</string>
+    <string name="shortcut_km_short">Actualizar km</string>
+</resources>

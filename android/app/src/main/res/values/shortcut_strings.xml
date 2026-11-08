@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">New refuel</string>
+    <string name="shortcut_fuel_short">Refuel</string>
+    <string name="shortcut_km">Update km</string>
+    <string name="shortcut_km_short">Update km</string>
+    <string name="shortcut_voice">Fuel by voice</string>
+    <string name="shortcut_voice_short">Fuel by voice</string>
+    <string name="shortcut_stations">Nearby fuel stations</string>
+    <string name="shortcut_stations_short">Nearby fuel stations</string>
+</resources>

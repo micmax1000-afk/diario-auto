@@ -9,7 +9,10 @@ import PremiumScreen from "./PremiumScreen";
 import { localDateString } from "../utils/dates";
 import CsvImportPanel from "./CsvImportPanel";
 import {
-  AUTO_BACKUP_DAYS,
+  AUTO_BACKUP_FREQUENCIES,
+  getAutoBackupFrequency,
+  setAutoBackupFrequency,
+  type AutoBackupFrequency,
   getLastAutoBackupDate,
   hasUsedDrive,
   isAutoBackupEnabled,
@@ -60,6 +63,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
   const [driveFiles, setDriveFiles] = useState<DriveBackupFile[] | null>(null);
   // Ripristino in attesa di conferma: sostituisce TUTTI i dati attuali, quindi mai senza un "sei sicuro?"
   const [autoEnabled, setAutoEnabled] = useState(true);
+  const [autoFreq, setAutoFreq] = useState<AutoBackupFrequency>("change");
   const [driveUsed, setDriveUsed] = useState(false);
   const [lastAutoBackup, setLastAutoBackup] = useState<string | null>(null);
   const [pendingRestore, setPendingRestore] = useState<{ data: BackupData; label: string; source: "file" | "drive" } | null>(null);
@@ -67,6 +71,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
   async function refreshStatus() {
     setLastBackup(await getLastBackupDate());
     setAutoEnabled(await isAutoBackupEnabled());
+    setAutoFreq(await getAutoBackupFrequency());
     setDriveUsed(await hasUsedDrive());
     setLastAutoBackup(await getLastAutoBackupDate());
     // stima l'uso reale del quota browser (IndexedDB + resto), più accurata
@@ -388,7 +393,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
             }}
           />
           <span>
-            <strong>{t("backupPanel.autoTitle", { days: AUTO_BACKUP_DAYS })}</strong>
+            <strong>{t("backupPanel.autoTitleShort")}</strong>
             <span className="backup-panel__auto-hint">
               {!isPro
                 ? t("backupPanel.autoHintPro")
@@ -402,6 +407,27 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
             </span>
           </span>
         </label>
+        {isPro && autoEnabled && (
+          <div className="backup-freq">
+            <span className="theme-panel__label">{t("backupPanel.freqTitle")}</span>
+            <div className="settings-chip-row backup-freq__chips">
+              {AUTO_BACKUP_FREQUENCIES.map((f) => (
+                <button
+                  key={f}
+                  type="button"
+                  className={`settings-chip ${autoFreq === f ? "is-active" : ""}`}
+                  onClick={async () => {
+                    await setAutoBackupFrequency(f);
+                    setAutoFreq(f);
+                  }}
+                >
+                  {t(`backupPanel.freq.${f}`)}
+                </button>
+              ))}
+            </div>
+            <small className="backup-freq__hint">{t(`backupPanel.freqHint.${autoFreq}`)}</small>
+          </div>
+        )}
       </div>
 
       {showPremium && <PremiumScreen onClose={() => setShowPremium(false)} />}

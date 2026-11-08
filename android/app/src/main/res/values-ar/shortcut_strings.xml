@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">تزود جديد بالوقود</string>
+    <string name="shortcut_fuel_short">تزود بالوقود</string>
+    <string name="shortcut_km">تحديث العداد</string>
+    <string name="shortcut_km_short">تحديث العداد</string>
+</resources>

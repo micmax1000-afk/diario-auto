@@ -57,6 +57,7 @@ import VehiclePickerModal from "./components/VehiclePickerModal";
 import LanguagePicker from "./components/LanguagePicker";
 import DisclaimerGate from "./components/DisclaimerGate";
 import WelcomeGuide from "./components/WelcomeGuide";
+import RestoreOffer from "./components/RestoreOffer";
 import { getMeta, setMeta } from "./utils/db";
 import { resolveVehicleColors, VEHICLE_COLORS } from "./utils/vehicleColor";
 import QuickFuelForm from "./components/QuickFuelForm";
@@ -104,6 +105,7 @@ function LazyFallback() {
 const DISCLAIMER_META_KEY = "disclaimer:accepted";
 const DISCLAIMER_VERSION = "v1";
 const GUIDE_META_KEY = "welcome-guide:seen";
+const RESTORE_OFFER_KEY = "restore-offer:seen";
 
 export default function App() {
   const { t, i18n } = useTranslation();
@@ -111,6 +113,9 @@ export default function App() {
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [disclaimerAccepted, setDisclaimerAccepted] = useState(true);
   const [guideSeen, setGuideSeen] = useState(true);
+  const [restoreOfferSeen, setRestoreOfferSeen] = useState(true);
+  // Scorciatoia scelta tenendo premuta l'icona (diarioauto://shortcut/...), eseguita appena i dati sono pronti.
+  const [pendingShortcut, setPendingShortcut] = useState<string | null>(null);
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [fuelEntries, setFuelEntries] = useState<FuelEntry[]>([]);
   const [chargingEntries, setChargingEntries] = useState<ChargingEntry[]>([]);
@@ -159,8 +164,23 @@ export default function App() {
     check();
     if (!Capacitor.isNativePlatform()) return;
     const sub = CapacitorApp.addListener("resume", check);
-    return () => void sub.then((h) => h.remove());
+    // anche quando si esce dall'app: spesso si chiude subito dopo aver inserito un dato
+    const subPause = CapacitorApp.addListener("pause", check);
+    return () => {
+      void sub.then((h) => h.remove());
+      void subPause.then((h) => h.remove());
+    };
   }, [loading, isPro]);
+
+  // "Dopo ogni modifica": qualche minuto dopo l'ultimo cambiamento prova un backup
+  // (parte solo se è scelta quella frequenza e i dati sono davvero cambiati).
+  useEffect(() => {
+    if (loading || !isPro || !Capacitor.isNativePlatform()) return;
+    const timer = window.setTimeout(() => {
+      void runAutoBackupIfDue(true).then((result) => setAutoBackupBlocked(result === "blocked" && !autoBackupAlertDismissed.current));
+    }, 3 * 60 * 1000);
+    return () => window.clearTimeout(timer);
+  }, [loading, isPro, vehicles, fuelEntries, chargingEntries, maintenanceEntries, expenseEntries, tripEntries, reminders]);
   const { distanceUnit } = useAppSettings();
   const [quickKmVehicle, setQuickKmVehicle] = useState<Vehicle | null>(null);
   const [kmHistoryVehicleId, setKmHistoryVehicleId] = useState<string | null>(null);
@@ -258,6 +278,7 @@ export default function App() {
       setShowOnboarding(seen !== "true");
       setDisclaimerAccepted((await getMeta(DISCLAIMER_META_KEY)) === DISCLAIMER_VERSION);
       setGuideSeen((await getMeta(GUIDE_META_KEY)) === "true");
+      setRestoreOfferSeen((await getMeta(RESTORE_OFFER_KEY)) === "true");
       setLoading(false);
     })();
   }, []);
@@ -265,6 +286,18 @@ export default function App() {
   async function handleDisclaimerAccepted() {
     await setMeta(DISCLAIMER_META_KEY, DISCLAIMER_VERSION);
     setDisclaimerAccepted(true);
+  }
+
+  async function handleRestoreOfferDone(restored: boolean) {
+    await setMeta(RESTORE_OFFER_KEY, "true");
+    setRestoreOfferSeen(true);
+    if (restored) {
+      // con i dati ripristinati la guida iniziale non serve; il backup può riportare anche il tema
+      await handleGuideDone();
+      setThemeMode(getStoredThemeMode());
+      setTheme(resolveTheme(getStoredThemeMode()));
+      await reloadAll();
+    }
   }
 
   async function handleGuideDone() {
@@ -742,6 +775,35 @@ export default function App() {
     activeOrderedVehicles.find((v) => v.id === homeVehicleId) ??
     activeOrderedVehicles[0];
 
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    const take = (url?: string) => {
+      const m = url?.match(/^diarioauto:\/\/shortcut\/(\w+)/);
+      if (m) setPendingShortcut(m[1]);
+    };
+    void CapacitorApp.getLaunchUrl().then((r) => take(r?.url)).catch(() => undefined);
+    const sub = CapacitorApp.addListener("appUrlOpen", (e) => take(e.url));
+    return () => void sub.then((h) => h.remove());
+  }, []);
+
+  useEffect(() => {
+    if (!pendingShortcut || loading || showOnboarding || !disclaimerAccepted) return;
+    const action = pendingShortcut;
+    setPendingShortcut(null);
+    setShowAddSheet(false);
+    if (action === "stations") {
+      setShowStations(true);
+      return;
+    }
+    const v = currentVehicle;
+    if (!v) return;
+    const electric = v.fuelType === "elettrico";
+    if (action === "voice") handleAddAction(i18n.language.startsWith("it") ? "fuelVoice" : electric ? "charge" : "fuel");
+    else if (action === "fuel") handleAddAction(electric ? "charge" : "fuel");
+    else if (action === "km") handleAddAction("km");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingShortcut, loading, showOnboarding, disclaimerAccepted]);
+
   function handleAddAction(action: AddAction) {
     const v = currentVehicle;
     setShowAddSheet(false);
@@ -859,7 +921,14 @@ export default function App() {
 
   // Guida iniziale: solo per chi parte da zero (chi aggiorna l'app ha già i suoi veicoli).
   if (!guideSeen && vehicles.length === 0) {
-    return <WelcomeGuide onDone={handleGuideDone} />;
+    return (
+      <>
+        <WelcomeGuide onDone={handleGuideDone} />
+        {!restoreOfferSeen && (
+          <RestoreOffer onRestored={() => void handleRestoreOfferDone(true)} onSkip={() => void handleRestoreOfferDone(false)} />
+        )}
+      </>
+    );
   }
 
   return (
