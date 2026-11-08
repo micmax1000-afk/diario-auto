@@ -182,7 +182,7 @@ export default function VoiceFuelSheet({ vehicles, currentVehicleId, onContinue,
           {chip(t("voiceFuel.km"), kmValue, kmTone)}
           {charge
             ? chip(t("voiceFuel.where"), parsed.atHome ? t("voiceFuel.home") : t("voiceFuel.station"), parsed.atHome !== undefined)
-            : chip(t("voiceFuel.full"), parsed.fullTank === false ? t("voiceFuel.no") : t("voiceFuel.yes"), parsed.fullTank !== undefined)}
+            : chip(t("voiceFuel.full"), parsed.fullTank === true ? t("voiceFuel.yes") : t("voiceFuel.no"), parsed.fullTank !== undefined)}
         </div>
         {kmCheck?.status === "suffix" && suffixOk !== kmCheck.suggestion && (
           <div className="voice-km voice-km--warn">

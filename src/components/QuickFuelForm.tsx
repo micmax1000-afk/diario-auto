@@ -49,7 +49,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
   const source = defaultSource(vehicle);
   const [pricePerUnit, setPricePerUnit] = useState(prefill ? String(Math.round(prefill.pricePerUnit * 1000) / 1000) : "");
   const [totalCost, setTotalCost] = useState(prefill?.totalCost ? String(Math.round(prefill.totalCost * 100) / 100) : "");
-  const [fullTank, setFullTank] = useState(prefill?.fullTank ?? true);
+  const [fullTank, setFullTank] = useState(prefill?.fullTank ?? false);
   const [kmInput, setKmInput] = useState(String(Math.max(0, Math.round(prefill?.km ?? vehicle.currentKm))));
   const [error, setError] = useState("");
   const [warnings, setWarnings] = useState<EntryWarning[] | null>(null);

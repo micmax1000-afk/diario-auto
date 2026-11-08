@@ -750,7 +750,7 @@ export default function App() {
       setVoiceFuelVehicleId(v.id);
     } else if (action === "fuel" || action === "fuelRepeat") {
       const last = [...fuelEntries].filter((e) => e.vehicleId === v.id).sort((a, b) => b.date.localeCompare(a.date))[0];
-      setQuickFuelPrefill(action === "fuelRepeat" && last && last.liters > 0 ? { pricePerUnit: last.totalCost / last.liters, totalCost: last.totalCost } : undefined);
+      setQuickFuelPrefill(action === "fuelRepeat" && last && last.liters > 0 ? { pricePerUnit: last.totalCost / last.liters, totalCost: last.totalCost, fullTank: last.fullTank } : undefined);
       setQuickFuelVehicleId(v.id);
     } else if (action === "charge") {
       setQuickChargeVehicleId(v.id);
