@@ -60,6 +60,28 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+      # Gradle si scarica da GitHub (services.gradle.org rimanda lì) e ogni tanto GitHub risponde 504:
+      # la copia scaricata si tiene in cache tra una build e l'altra, e se serve si riprova.
+      - name: Cache di Gradle
+        uses: actions/cache@v4
+        continue-on-error: true
+        with:
+          path: |
+            ~/.gradle/wrapper/dists
+            ~/.gradle/caches
+          key: gradle-${{ runner.os }}-${{ hashFiles('android/gradle/wrapper/gradle-wrapper.properties', 'android/**/*.gradle', 'android/gradle.properties') }}
+          restore-keys: gradle-${{ runner.os }}-
+
+      - name: Prepara Gradle (riprova se il download fallisce)
+        working-directory: android
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            ./gradlew --version && exit 0
+            echo "Download di Gradle non riuscito (tentativo $attempt), riprovo tra 30 secondi"
+            sleep 30
+          done
+          exit 1
+
       - name: Build debug APK (sempre, utile per test rapidi)
         working-directory: android
         run: ./gradlew assembleDebug
