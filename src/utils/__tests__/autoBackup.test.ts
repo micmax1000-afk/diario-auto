@@ -94,7 +94,7 @@ vi.mock("../../services/googleDrive/driveBackup", () => ({
 }));
 
 describe("runAutoBackupIfDue", async () => {
-  const { runAutoBackupIfDue, markDataAsReference, setAutoBackupEnabled } = await import("../autoBackup");
+  const { runAutoBackupIfDue, markDataAsReference, setAutoBackupEnabled, setAutoBackupFrequency } = await import("../autoBackup");
   const longAgo = new Date(Date.now() - 10 * DAY).toISOString();
 
   beforeEach(() => {
@@ -107,6 +107,8 @@ describe("runAutoBackupIfDue", async () => {
   async function driveAlreadyUsed() {
     await markDataAsReference((await (await import("../storage")).buildBackup()) as BackupData, true);
     meta.set("last-backup", longAgo);
+    // dopo il backup manuale l'utente ha inserito qualcosa
+    backupOnPhone = { vehicles: 2, records: 41 };
   }
 
   it("non fa nulla senza Pro o prima del primo backup manuale su Drive", async () => {
@@ -124,8 +126,35 @@ describe("runAutoBackupIfDue", async () => {
     expect(uploads).toHaveLength(1);
   });
 
-  it("non parte se un backup manuale è recente", async () => {
+  it("se i dati non sono cambiati non carica nulla", async () => {
     await driveAlreadyUsed();
+    backupOnPhone = { vehicles: 2, records: 40 };
+    expect(await runAutoBackupIfDue(true)).toBe("skipped");
+    expect(uploads).toHaveLength(0);
+  });
+
+  it("dopo ogni modifica: al massimo uno ogni pochi minuti", async () => {
+    await driveAlreadyUsed();
+    expect(await runAutoBackupIfDue(true)).toBe("done");
+    backupOnPhone = { vehicles: 2, records: 42 };
+    expect(await runAutoBackupIfDue(true)).toBe("skipped");
+    meta.set("autoBackup:last", new Date(Date.now() - 6 * 60 * 1000).toISOString());
+    expect(await runAutoBackupIfDue(true)).toBe("done");
+    expect(uploads).toHaveLength(2);
+  });
+
+  it("ogni giorno: aspetta un giorno dall'ultimo backup", async () => {
+    await driveAlreadyUsed();
+    await setAutoBackupFrequency("daily");
+    meta.set("last-backup", new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+    expect(await runAutoBackupIfDue(true)).toBe("skipped");
+    meta.set("last-backup", new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString());
+    expect(await runAutoBackupIfDue(true)).toBe("done");
+  });
+
+  it("ogni settimana: non parte se un backup manuale è recente", async () => {
+    await driveAlreadyUsed();
+    await setAutoBackupFrequency("weekly");
     meta.set("last-backup", new Date().toISOString());
     expect(await runAutoBackupIfDue(true)).toBe("skipped");
   });

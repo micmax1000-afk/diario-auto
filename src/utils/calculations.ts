@@ -18,6 +18,7 @@ export interface ConsumptionPoint {
  * versato in tutti i rifornimenti successivi fino al pieno attuale compreso
  * (anche i parziali fatti in mezzo, altrimenti il consumo risulterebbe più
  * basso del reale).
+ * Un rifornimento segnato "ho saltato un rifornimento" azzera il tratto in corso.
  */
 export function calculateConsumption(entries: FuelEntry[]): ConsumptionPoint[] {
   const sorted = [...entries].sort((a, b) => a.km - b.km);
@@ -35,6 +36,13 @@ export function calculateConsumption(entries: FuelEntry[]): ConsumptionPoint[] {
     let liters = 0;
     let cost = 0;
     for (const curr of list) {
+      // Rifornimento saltato prima di questo: il tratto non è affidabile, il calcolo riparte da qui.
+      if (curr.missedBefore) {
+        liters = 0;
+        cost = 0;
+        prevFull = curr.fullTank ? curr : null;
+        continue;
+      }
       if (!prevFull) {
         if (curr.fullTank) prevFull = curr;
         continue;
@@ -242,4 +250,20 @@ export function needsFullTankHint(entries: Pick<FuelEntry, "km" | "fullTank">[])
   let sinceFull = 0;
   for (const e of sorted) sinceFull = e.fullTank ? 0 : sinceFull + 1;
   return sinceFull >= 3;
+}
+
+/**
+ * I km dall'ultimo rifornimento sono molti più del solito? Allora forse un
+ * rifornimento non è stato registrato. Confronta con la mediana degli ultimi
+ * tratti (servono almeno 3 tratti per avere un "solito").
+ */
+export function suspectMissedFill(entries: Pick<FuelEntry, "km">[], newKm: number): number | null {
+  const kms = [...entries].map((e) => e.km).filter((k) => k < newKm).sort((a, b) => a - b);
+  if (kms.length < 4) return null;
+  const gaps = kms.slice(1).map((k, i) => k - kms[i]).filter((g) => g > 0).slice(-8);
+  if (gaps.length < 3) return null;
+  const sorted = [...gaps].sort((a, b) => a - b);
+  const median = sorted[Math.floor(sorted.length / 2)];
+  const gap = newKm - kms[kms.length - 1];
+  return median > 0 && gap >= median * 1.8 && gap >= 300 ? gap : null;
 }

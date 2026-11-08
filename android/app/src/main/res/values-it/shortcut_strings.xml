@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">Nuovo rifornimento</string>
+    <string name="shortcut_fuel_short">Rifornimento</string>
+    <string name="shortcut_km">Aggiorna km</string>
+    <string name="shortcut_km_short">Aggiorna km</string>
+    <string name="shortcut_voice">Rifornimento a voce</string>
+    <string name="shortcut_voice_short">A voce</string>
+    <string name="shortcut_stations">Distributori vicini</string>
+    <string name="shortcut_stations_short">Distributori</string>
+</resources>

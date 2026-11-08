@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shortcut_fuel">Neuer Tankvorgang</string>
+    <string name="shortcut_fuel_short">Tanken</string>
+    <string name="shortcut_km">Km aktualisieren</string>
+    <string name="shortcut_km_short">Km aktualisieren</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Scorciatoie che compaiono tenendo premuta l'icona dell'app.
+     Aprono l'app con un indirizzo diarioauto://… che App.tsx riconosce.
+     Voce e distributori funzionano solo in italiano / in Italia: attivi solo con il telefono in italiano. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="voice"
+        android:enabled="@bool/shortcut_italy"
+        android:icon="@drawable/ic_shortcut_mic"
+        android:shortcutShortLabel="@string/shortcut_voice_short"
+        android:shortcutLongLabel="@string/shortcut_voice">
+        <intent android:action="android.intent.action.VIEW" android:data="diarioauto://shortcut/voice"
+            android:targetPackage="com.micmax.diarioauto" android:targetClass="com.micmax.diarioauto.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="fuel"
+        android:icon="@drawable/ic_shortcut_pump"
+        android:shortcutShortLabel="@string/shortcut_fuel_short"
+        android:shortcutLongLabel="@string/shortcut_fuel">
+        <intent android:action="android.intent.action.VIEW" android:data="diarioauto://shortcut/fuel"
+            android:targetPackage="com.micmax.diarioauto" android:targetClass="com.micmax.diarioauto.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="stations"
+        android:enabled="@bool/shortcut_italy"
+        android:icon="@drawable/ic_shortcut_pin"
+        android:shortcutShortLabel="@string/shortcut_stations_short"
+        android:shortcutLongLabel="@string/shortcut_stations">
+        <intent android:action="android.intent.action.VIEW" android:data="diarioauto://shortcut/stations"
+            android:targetPackage="com.micmax.diarioauto" android:targetClass="com.micmax.diarioauto.MainActivity" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="km"
+        android:icon="@drawable/ic_shortcut_gauge"
+        android:shortcutShortLabel="@string/shortcut_km_short"
+        android:shortcutLongLabel="@string/shortcut_km">
+        <intent android:action="android.intent.action.VIEW" android:data="diarioauto://shortcut/km"
+            android:targetPackage="com.micmax.diarioauto" android:targetClass="com.micmax.diarioauto.MainActivity" />
+    </shortcut>
+</shortcuts>

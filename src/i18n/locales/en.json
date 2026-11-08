@@ -197,7 +197,10 @@
     "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (calculated)",
     "errorPrice": "Enter a valid price for {{unit}}.",
-    "errorTotalCost": "Enter a valid total cost."
+    "errorTotalCost": "Enter a valid total cost.",
+    "missedBefore": "I forgot to log a refuelling",
+    "missedHelp": "The distance travelled since the last refuelling is not included in the fuel consumption: the calculation starts afresh from here. The cost remains accurate.",
+    "missedSuspect": "It’s been {{km}} km since your last recorded refuelling: have you missed one?"
   },
   "common": {
     "close": "Close",
@@ -449,13 +452,25 @@
     "confirmCancel": "Cancel",
     "confirmRestore": "Restore",
     "autoTitle": "Automatic Drive backup every {{days}} days",
-    "autoHintOn": "Runs by itself when you open the app, if the last backup is older. The data on your phone is never touched.",
-    "autoHintLast": "Last automatic backup: {{date}}. Runs by itself when you open the app.",
+    "autoHintOn": "It runs on its own, without asking you anything. The data on your phone remains untouched.",
+    "autoHintLast": "Last automatic backup: {{date}}.",
     "autoHintFirst": "Turns on after your first “Save to Drive”.",
     "autoHintOff": "Off: remember to make a backup now and then.",
     "autoHintPro": "Available with Pro.",
     "autoBlocked": "Automatic backup paused: there is much less data on this phone than in the last backup, so nothing was saved to avoid replacing your good backups on Drive. If you deleted data on purpose, make a manual backup; if it disappeared, restore from Drive.",
-    "autoBlockedOpen": "Open backup"
+    "autoBlockedOpen": "Open backup",
+    "autoTitleShort": "Automatic backup to Drive",
+    "freqTitle": "When to save to Drive",
+    "freq": {
+      "change": "After every change",
+      "daily": "Every day",
+      "weekly": "Every week"
+    },
+    "freqHint": {
+      "change": "A few minutes after you enter or change something, and when you close the app, provided you’re connected to the internet. The last five backups are stored on Drive.",
+      "daily": "Once a day, when you open or close the app, if the data has changed.",
+      "weekly": "Once a week, when you open or close the app, if the data has changed."
+    }
   },
   "reminderCatalog": {
     "oilFilter": "Oil and filter",
@@ -1521,5 +1536,16 @@
     "nomatch": "I didn't catch that: tap the microphone and try again (or type the sentence).",
     "denied": "Microphone permission is needed: allow it in the phone settings.",
     "unavailable": "Speech recognition isn't available on this phone: type the sentence below."
+  },
+  "restoreOffer": {
+    "title": "Have you used Diario Auto before?",
+    "body": "If you have a backup on Google Drive, I’ll restore it now: you’ll get your car, fuel top-ups, deadlines and even your theme back.",
+    "pick": "Select the backup you wish to restore",
+    "searching": "I’m looking for the backups…",
+    "drive": "Restore from Google Drive",
+    "skip": "Starting from scratch",
+    "fileQuestion": "Do you have a backup file?",
+    "file": "Open file",
+    "noDriveBackups": "No backups were found on this Google account."
   }
 }

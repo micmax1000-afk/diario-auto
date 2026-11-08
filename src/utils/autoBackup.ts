@@ -1,8 +1,9 @@
-// Backup automatico settimanale su Google Drive (solo Pro, solo app Android).
+// Backup automatico su Google Drive (solo Pro, solo app Android).
 //
 // Non c'è un vero lavoro in background (un'app web su Android non può contarci):
-// il controllo parte all'apertura dell'app, e se l'ultimo backup ha più di
-// AUTO_BACKUP_DAYS giorni ne carica uno nuovo in silenzio. Su Drive si
+// il controllo parte all'apertura dell'app, quando la si chiude e qualche minuto
+// dopo una modifica. La frequenza la sceglie l'utente: dopo ogni modifica, ogni
+// giorno o ogni settimana; se i dati non sono cambiati non carica nulla. Su Drive si
 // aggiunge un file: i dati sul telefono non vengono mai toccati, e restano gli
 // ultimi DRIVE_BACKUPS_TO_KEEP backup (manuali e automatici insieme).
 //
@@ -23,6 +24,48 @@ const ENABLED_KEY = "autoBackup:enabled";
 const LAST_AUTO_KEY = "autoBackup:last";
 const BASELINE_KEY = "autoBackup:baseline";
 const DRIVE_USED_KEY = "drive:used";
+const FREQ_KEY = "autoBackup:freq";
+const HASH_KEY = "autoBackup:hash";
+
+/** Quando salvare su Drive. "change": qualche minuto dopo ogni modifica (al massimo uno ogni CHANGE_MIN_MINUTES). */
+export type AutoBackupFrequency = "change" | "daily" | "weekly";
+export const AUTO_BACKUP_FREQUENCIES: AutoBackupFrequency[] = ["change", "daily", "weekly"];
+const CHANGE_MIN_MINUTES = 5;
+
+export async function getAutoBackupFrequency(): Promise<AutoBackupFrequency> {
+  const v = await getMeta(FREQ_KEY);
+  return v === "daily" || v === "weekly" || v === "change" ? v : "change";
+}
+
+export async function setAutoBackupFrequency(freq: AutoBackupFrequency): Promise<void> {
+  await setMeta(FREQ_KEY, freq);
+}
+
+/** Impronta dei dati (senza la data di esportazione): se non cambia, non serve un nuovo backup. */
+export function backupFingerprint(data: BackupData): string {
+  const text = JSON.stringify({ ...data, exportedAt: "" });
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 0x01000193);
+  }
+  return `${text.length}:${(h >>> 0).toString(16)}`;
+}
+
+/** Il backup automatico deve partire adesso? */
+export function shouldAutoBackup(
+  freq: AutoBackupFrequency,
+  lastAuto: string | null,
+  lastAny: string | null,
+  changed: boolean,
+  now = Date.now(),
+): boolean {
+  if (!changed) return false;
+  if (freq === "change") return isAutoBackupDue(lastAuto, now, CHANGE_MIN_MINUTES / (24 * 60));
+  const days = freq === "daily" ? 1 : AUTO_BACKUP_DAYS;
+  // Conta anche un backup manuale recente: niente doppioni nello stesso periodo.
+  return isAutoBackupDue(lastAuto, now, days) && isAutoBackupDue(lastAny, now, days);
+}
 
 export interface BackupCounts {
   vehicles: number;
@@ -91,7 +134,11 @@ async function getBaseline(): Promise<BackupCounts | null> {
 /** Da chiamare dopo un backup manuale su Drive o un ripristino: i dati attuali diventano il riferimento. */
 export async function markDataAsReference(data: BackupData, viaDrive: boolean): Promise<void> {
   await setMeta(BASELINE_KEY, JSON.stringify(countBackup(data)));
-  if (viaDrive) await setMeta(DRIVE_USED_KEY, "true");
+  if (viaDrive) {
+    await setMeta(DRIVE_USED_KEY, "true");
+    // questi dati sono già su Drive: il prossimo automatico parte solo se cambiano
+    await setMeta(HASH_KEY, backupFingerprint(data));
+  }
 }
 
 export type AutoBackupResult = "skipped" | "done" | "blocked" | "failed";
@@ -105,12 +152,10 @@ export async function runAutoBackupIfDue(isPro: boolean): Promise<AutoBackupResu
   running = true;
   try {
     if (!(await isAutoBackupEnabled()) || !(await hasUsedDrive())) return "skipped";
-    // Conta anche un backup manuale recente: niente doppioni nella stessa settimana.
-    const lastAuto = await getLastAutoBackupDate();
-    const lastAny = await getLastBackupDate();
-    if (!isAutoBackupDue(lastAuto) || !isAutoBackupDue(lastAny)) return "skipped";
-
     const backup = await buildBackup();
+    const hash = backupFingerprint(backup);
+    const changed = hash !== (await getMeta(HASH_KEY));
+    if (!shouldAutoBackup(await getAutoBackupFrequency(), await getLastAutoBackupDate(), await getLastBackupDate(), changed)) return "skipped";
     if (looksLikeDataLoss(await getBaseline(), countBackup(backup))) return "blocked";
 
     await uploadBackupToDrive(JSON.stringify(backup), { interactive: false });
@@ -118,6 +163,7 @@ export async function runAutoBackupIfDue(isPro: boolean): Promise<AutoBackupResu
     await setMeta(LAST_AUTO_KEY, now);
     await setLastBackupDate(now);
     await setMeta(BASELINE_KEY, JSON.stringify(countBackup(backup)));
+    await setMeta(HASH_KEY, hash);
     return "done";
   } catch {
     // Offline, accesso Google revocato, Drive pieno...: si riprova alla prossima apertura.

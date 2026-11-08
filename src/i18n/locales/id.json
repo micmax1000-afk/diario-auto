@@ -197,7 +197,10 @@
     "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (dihitung)",
     "errorPrice": "Masukkan harga yang valid untuk {{unit}}.",
-    "errorTotalCost": "Masukkan total biaya yang valid."
+    "errorTotalCost": "Masukkan total biaya yang valid.",
+    "missedBefore": "Saya lupa mencatat pengisian bahan bakar",
+    "missedHelp": "Jarak tempuh sejak pengisian bahan bakar terakhir tidak diperhitungkan dalam konsumsi bahan bakar: perhitungan dimulai kembali dari sini. Biaya tetap akurat.",
+    "missedSuspect": "Sejak pengisian bahan bakar terakhir yang tercatat, jarak yang telah ditempuh adalah {{km}} km: apakah kamu melewatkan satu kali pengisian?"
   },
   "common": {
     "close": "Tutup",
@@ -449,13 +452,25 @@
     "confirmCancel": "Batal",
     "confirmRestore": "Pulihkan",
     "autoTitle": "Cadangan otomatis ke Drive setiap {{days}} hari",
-    "autoHintOn": "Berjalan sendiri saat aplikasi dibuka, jika cadangan terakhir lebih lama. Data di ponsel tidak pernah diubah.",
-    "autoHintLast": "Cadangan otomatis terakhir: {{date}}. Berjalan sendiri saat aplikasi dibuka.",
+    "autoHintOn": "Aplikasi ini berjalan sendiri, tanpa meminta izin apa pun dari Anda. Data di ponsel Anda tidak akan terpengaruh.",
+    "autoHintLast": "Cadangan otomatis terakhir: {{date}}.",
     "autoHintFirst": "Aktif setelah «Simpan di Drive» pertama Anda.",
     "autoHintOff": "Nonaktif: jangan lupa membuat cadangan sesekali.",
     "autoHintPro": "Tersedia dengan Pro.",
     "autoBlocked": "Cadangan otomatis dijeda: data di ponsel ini jauh lebih sedikit daripada di cadangan terakhir, jadi tidak ada yang disimpan agar cadangan yang baik di Drive tidak tergantikan. Jika Anda sengaja menghapus data, buat cadangan manual; jika data hilang, pulihkan dari Drive.",
-    "autoBlockedOpen": "Buka cadangan"
+    "autoBlockedOpen": "Buka cadangan",
+    "autoTitleShort": "Pencadangan otomatis ke Drive",
+    "freqTitle": "Kapan harus menyimpan ke Drive",
+    "freq": {
+      "change": "Setelah setiap perubahan",
+      "daily": "Setiap hari",
+      "weekly": "Setiap minggu"
+    },
+    "freqHint": {
+      "change": "Beberapa menit setelah Anda memasukkan atau mengubah sesuatu, dan saat Anda menutup aplikasi, asalkan Anda terhubung ke internet. Di Drive, 5 cadangan terakhir akan tetap tersimpan.",
+      "daily": "Sekali sehari, saat Anda membuka atau menutup aplikasi, jika ada perubahan data.",
+      "weekly": "Sekali seminggu, saat Anda membuka atau menutup aplikasi, jika datanya telah berubah."
+    }
   },
   "reminderCatalog": {
     "oilFilter": "Oli dan filter oli",
@@ -1518,5 +1533,16 @@
     "nomatch": "I didn't catch that: tap the microphone and try again (or type the sentence).",
     "denied": "Microphone permission is needed: allow it in the phone settings.",
     "unavailable": "Speech recognition isn't available on this phone: type the sentence below."
+  },
+  "restoreOffer": {
+    "title": "Apakah kamu sudah pernah menggunakan Diario Auto?",
+    "body": "Jika Anda memiliki cadangan di Google Drive, saya akan memulihkannya sekarang: Anda akan menemukan kembali data tentang mobil, pengisian bahan bakar, tenggat waktu, dan bahkan tema Anda.",
+    "pick": "Pilih cadangan yang akan dipulihkan",
+    "searching": "Saya sedang mencari salinan cadangan…",
+    "drive": "Pulihkan dari Google Drive",
+    "skip": "Memulai dari nol",
+    "fileQuestion": "Apakah kamu punya file cadangan?",
+    "file": "Buka file",
+    "noDriveBackups": "Tidak ditemukan cadangan apa pun di akun Google ini."
   }
 }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Scorciatoie voce e distributori: solo con il telefono in italiano -->
+    <bool name="shortcut_italy">false</bool>
+</resources>

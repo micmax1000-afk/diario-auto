@@ -197,7 +197,10 @@
     "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (calculés)",
     "errorPrice": "Entrez un prix valide pour {{unit}}.",
-    "errorTotalCost": "Saisissez un coût total valide."
+    "errorTotalCost": "Saisissez un coût total valide.",
+    "missedBefore": "J'ai oublié d'enregistrer un plein d'essence",
+    "missedHelp": "Le trajet effectué depuis le dernier plein n'est pas pris en compte dans la consommation : le calcul recommence à partir de là. Le montant reste correct.",
+    "missedSuspect": "{{km}} km se sont écoulés depuis le dernier plein enregistré : en as-tu oublié un ?"
   },
   "common": {
     "close": "Fermer",
@@ -449,13 +452,25 @@
     "confirmCancel": "Annuler",
     "confirmRestore": "Restaurer",
     "autoTitle": "Sauvegarde automatique sur Drive tous les {{days}} jours",
-    "autoHintOn": "Se lance seule à l'ouverture de l'app si la dernière sauvegarde est plus ancienne. Les données du téléphone ne sont jamais modifiées.",
-    "autoHintLast": "Dernière sauvegarde automatique : {{date}}. Se lance seule à l'ouverture de l'app.",
+    "autoHintOn": "Il se lance tout seul, sans rien te demander. Les données de ton téléphone ne sont pas modifiées.",
+    "autoHintLast": "Dernière sauvegarde automatique : {{date}}.",
     "autoHintFirst": "S'active après votre premier « Enregistrer sur Drive ».",
     "autoHintOff": "Désactivée : pensez à faire une sauvegarde de temps en temps.",
     "autoHintPro": "Disponible avec Pro.",
     "autoBlocked": "Sauvegarde automatique suspendue : il y a beaucoup moins de données sur ce téléphone que dans la dernière sauvegarde, donc rien n'a été enregistré pour ne pas remplacer vos bonnes sauvegardes sur Drive. Si vous avez supprimé des données volontairement, faites une sauvegarde manuelle ; si elles ont disparu, restaurez depuis Drive.",
-    "autoBlockedOpen": "Ouvrir la sauvegarde"
+    "autoBlockedOpen": "Ouvrir la sauvegarde",
+    "autoTitleShort": "Sauvegarde automatique sur Drive",
+    "freqTitle": "Quand enregistrer sur Drive",
+    "freq": {
+      "change": "Après chaque modification",
+      "daily": "Chaque jour",
+      "weekly": "Chaque semaine"
+    },
+    "freqHint": {
+      "change": "Quelques minutes après avoir saisi ou modifié quelque chose, et lorsque vous fermez l'application, si vous êtes connecté à Internet. Les 5 dernières sauvegardes sont conservées sur Drive.",
+      "daily": "Une fois par jour, lorsque vous ouvrez ou fermez l'application, si les données ont changé.",
+      "weekly": "Une fois par semaine, lorsque vous ouvrez ou fermez l'application, si les données ont changé."
+    }
   },
   "reminderCatalog": {
     "oilFilter": "Huile et filtre",
@@ -1521,5 +1536,16 @@
     "nomatch": "I didn't catch that: tap the microphone and try again (or type the sentence).",
     "denied": "Microphone permission is needed: allow it in the phone settings.",
     "unavailable": "Speech recognition isn't available on this phone: type the sentence below."
+  },
+  "restoreOffer": {
+    "title": "As-tu déjà utilisé Diario Auto ?",
+    "body": "Si tu as une sauvegarde sur Google Drive, je vais la restaurer tout de suite : tu retrouveras tes trajets, tes pleins d'essence, tes échéances et même ton thème.",
+    "pick": "Choisissez la sauvegarde à restaurer",
+    "searching": "Je cherche les sauvegardes…",
+    "drive": "Restaurer depuis Google Drive",
+    "skip": "Je pars de zéro",
+    "fileQuestion": "As-tu un fichier de sauvegarde ?",
+    "file": "Ouvrir un fichier",
+    "noDriveBackups": "Aucune sauvegarde n'a été trouvée sur ce compte Google."
   }
 }

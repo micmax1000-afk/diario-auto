@@ -197,7 +197,10 @@
     "pricePerUnit": "{{cur}}/{{unit}} *",
     "litersComputed": "{{unit}} (berechnet)",
     "errorPrice": "Gib einen gültigen Preis für {{unit}} ein.",
-    "errorTotalCost": "Gib einen gültigen Gesamtbetrag ein."
+    "errorTotalCost": "Gib einen gültigen Gesamtbetrag ein.",
+    "missedBefore": "Ich habe vergessen, eine Tankfüllung zu erfassen",
+    "missedHelp": "Die Strecke seit der letzten Tankfüllung wird beim Verbrauch nicht berücksichtigt: Die Berechnung beginnt ab hier neu. Der Verbrauch bleibt korrekt.",
+    "missedSuspect": "Seit der letzten erfassten Tankfüllung sind {{km}} km vergangen: Hast du eine vergessen?"
   },
   "common": {
     "close": "Schließen",
@@ -449,13 +452,25 @@
     "confirmCancel": "Abbrechen",
     "confirmRestore": "Wiederherstellen",
     "autoTitle": "Automatisches Drive-Backup alle {{days}} Tage",
-    "autoHintOn": "Startet von selbst beim Öffnen der App, wenn das letzte Backup älter ist. Die Daten auf dem Handy werden nie verändert.",
-    "autoHintLast": "Letztes automatisches Backup: {{date}}. Startet von selbst beim Öffnen der App.",
+    "autoHintOn": "Es startet von selbst, ohne dich um Erlaubnis zu fragen. Die Daten auf dem Handy bleiben unberührt.",
+    "autoHintLast": "Letzte automatische Sicherung: {{date}}.",
     "autoHintFirst": "Wird nach deinem ersten „Auf Drive speichern“ aktiv.",
     "autoHintOff": "Aus: denk daran, ab und zu ein Backup zu machen.",
     "autoHintPro": "Mit Pro verfügbar.",
     "autoBlocked": "Automatisches Backup pausiert: Auf dem Handy sind viel weniger Daten als im letzten Backup. Deshalb wurde nichts gespeichert, damit deine guten Backups auf Drive nicht ersetzt werden. Wenn du absichtlich Daten gelöscht hast, mach ein manuelles Backup; wenn sie verschwunden sind, stelle sie von Drive wieder her.",
-    "autoBlockedOpen": "Backup öffnen"
+    "autoBlockedOpen": "Backup öffnen",
+    "autoTitleShort": "Automatische Sicherung auf Drive",
+    "freqTitle": "Wann sollte man auf Drive speichern?",
+    "freq": {
+      "change": "Nach jeder Änderung",
+      "daily": "Jeden Tag",
+      "weekly": "Jede Woche"
+    },
+    "freqHint": {
+      "change": "Ein paar Minuten, nachdem du etwas eingegeben oder geändert hast, und wenn du die App schließt, sofern du mit dem Internet verbunden bist. Auf Drive bleiben die letzten 5 Backups gespeichert.",
+      "daily": "Einmal täglich, wenn Sie die App öffnen oder schließen, sofern sich die Daten geändert haben.",
+      "weekly": "Einmal pro Woche, wenn du die App öffnest oder schließt, sofern sich die Daten geändert haben."
+    }
   },
   "reminderCatalog": {
     "oilFilter": "Öl und Ölfilter",
@@ -1521,5 +1536,16 @@
     "nomatch": "I didn't catch that: tap the microphone and try again (or type the sentence).",
     "denied": "Microphone permission is needed: allow it in the phone settings.",
     "unavailable": "Speech recognition isn't available on this phone: type the sentence below."
+  },
+  "restoreOffer": {
+    "title": "Hast du „Diario Auto“ schon einmal benutzt?",
+    "body": "Wenn du ein Backup auf Google Drive hast, stelle ich es jetzt wieder her: Du findest dein Auto, deine Tankvorgänge, deine Termine und sogar dein Design wieder.",
+    "pick": "Wähle das Backup aus, das du wiederherstellen möchtest",
+    "searching": "Ich suche nach den Backups…",
+    "drive": "Aus Google Drive wiederherstellen",
+    "skip": "Von Null anfangen",
+    "fileQuestion": "Hast du eine Sicherungsdatei?",
+    "file": "Datei öffnen",
+    "noDriveBackups": "Für dieses Google-Konto wurde kein Backup gefunden."
   }
 }
