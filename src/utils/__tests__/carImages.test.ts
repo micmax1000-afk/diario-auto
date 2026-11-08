@@ -31,17 +31,16 @@ describe("colori dell'auto", () => {
         seen.add(src);
       }
     }
-    expect(seen.size).toBe(84);
+    expect(seen.size).toBe(120);
   });
 
-  it("i colori vivaci ci sono solo per le sei carrozzerie adatte", () => {
-    expect(availableCarColors("citycar")).toHaveLength(10);
-    expect(availableCarColors("van")).toEqual(["bianco", "argento", "grigio", "nero"]);
+  it("ogni carrozzeria ha tutti e 10 i colori", () => {
+    for (const b of BODY_TYPES) expect(availableCarColors(b)).toHaveLength(10);
   });
 
-  it("un colore non disponibile per la carrozzeria torna al grigio scuro", () => {
-    expect(resolveCarColor("van", "rosso")).toBe("grigio");
-    expect(resolveCarColor("citycar", "rosso")).toBe("rosso");
+  it("senza colore, o con uno sconosciuto, si usa il grigio scuro", () => {
+    expect(resolveCarColor("van", "rosso")).toBe("rosso");
+    expect(resolveCarColor("van", "fucsia" as never)).toBe("grigio");
     expect(resolveCarColor("suv", undefined)).toBe("grigio");
   });
 });
