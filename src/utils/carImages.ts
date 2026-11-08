@@ -1,25 +1,38 @@
-import type { BodyType, Vehicle } from "../types";
-import citycar from "../assets/cars/citycar.webp";
-import hatchback from "../assets/cars/hatchback.webp";
-import sedan from "../assets/cars/sedan.webp";
-import premium from "../assets/cars/premium.webp";
-import suv from "../assets/cars/suv.webp";
-import suvlarge from "../assets/cars/suvlarge.webp";
-import wagon from "../assets/cars/wagon.webp";
-import coupe from "../assets/cars/coupe.webp";
-import convertible from "../assets/cars/convertible.webp";
-import mpv from "../assets/cars/mpv.webp";
-import van from "../assets/cars/van.webp";
-import pickup from "../assets/cars/pickup.webp";
+import type { BodyType, CarColor, Vehicle } from "../types";
 
-/** Immagine (già scontornata) di ogni tipo di carrozzeria. */
-export const CAR_IMAGES: Record<BodyType, string> = {
-  citycar, hatchback, sedan, premium, suv, suvlarge, wagon, coupe, convertible, mpv, van, pickup,
-};
+// Ogni carrozzeria esiste in più colori: "<carrozzeria>-<colore>.webp" (già scontornata).
+const FILES = import.meta.glob<string>("../assets/cars/*.webp", { eager: true, import: "default" });
+
+/** Colore di partenza (e di chi non ne ha mai scelto uno): grigio scuro. */
+export const DEFAULT_CAR_COLOR: CarColor = "grigio";
+
+/** Colori neutri, disponibili per tutte le carrozzerie. */
+export const NEUTRAL_CAR_COLORS: CarColor[] = ["bianco", "argento", "grigio", "nero"];
+/** Colori vivaci, disponibili solo per le carrozzerie che hanno la vernice adatta. */
+export const VIVID_CAR_COLORS: CarColor[] = ["rosso", "arancione", "giallo", "verde", "blu", "viola"];
+const VIVID_BODIES: BodyType[] = ["citycar", "convertible", "coupe", "mpv", "sedan", "suvlarge"];
+
+/** Colori tra cui scegliere per una carrozzeria. */
+export function availableCarColors(body: BodyType): CarColor[] {
+  return VIVID_BODIES.includes(body) ? [...NEUTRAL_CAR_COLORS, ...VIVID_CAR_COLORS] : NEUTRAL_CAR_COLORS;
+}
+
+/** Il colore scelto, se la carrozzeria lo ha; altrimenti il grigio scuro. */
+export function resolveCarColor(body: BodyType, color: CarColor | undefined): CarColor {
+  return color && availableCarColors(body).includes(color) ? color : DEFAULT_CAR_COLOR;
+}
+
+/** Immagine di una carrozzeria nel colore scelto (grigio scuro se non indicato). */
+export function carImage(body: BodyType, color?: CarColor): string {
+  return FILES[`../assets/cars/${body}-${resolveCarColor(body, color)}.webp`];
+}
 
 /** Cosa mostrare per un veicolo: la sua foto, altrimenti l'immagine del tipo scelto, altrimenti niente. */
-export function vehicleVisual(v: Pick<Vehicle, "photo" | "bodyType">): { src: string; isPhoto: boolean } | null {
+export function vehicleVisual(v: Pick<Vehicle, "photo" | "bodyType" | "carColor">): { src: string; isPhoto: boolean } | null {
   if (v.photo) return { src: v.photo, isPhoto: true };
-  if (v.bodyType && CAR_IMAGES[v.bodyType]) return { src: CAR_IMAGES[v.bodyType], isPhoto: false };
+  if (v.bodyType) {
+    const src = carImage(v.bodyType, v.carColor);
+    if (src) return { src, isPhoto: false };
+  }
   return null;
 }

@@ -84,7 +84,8 @@
     "modelsCount": "{{count}} طرازات",
     "optional": "(اختياري)",
     "bodyTypeHint": "اختر نوعًا لعرض صورة للسيارة.",
-    "bodyNone": "لا شيء"
+    "bodyNone": "لا شيء",
+    "carColorTitle": "لون السيارة"
   },
   "fuelType": {
     "benzina": "بنزين",
@@ -1578,5 +1579,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "تم التحديث في {{date}}"
+  },
+  "carColor": {
+    "bianco": "أبيض",
+    "argento": "فضي",
+    "grigio": "رمادي داكن",
+    "nero": "أسود",
+    "rosso": "أحمر",
+    "arancione": "برتقالي",
+    "giallo": "أصفر",
+    "verde": "أخضر",
+    "blu": "أزرق",
+    "viola": "بنفسجي"
   }
 }

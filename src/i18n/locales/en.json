@@ -84,7 +84,8 @@
     "modelsCount": "{{count}} models",
     "optional": "(optional)",
     "bodyTypeHint": "Pick a type to show a picture of the car.",
-    "bodyNone": "None"
+    "bodyNone": "None",
+    "carColorTitle": "Car color"
   },
   "fuelType": {
     "benzina": "Gasoline",
@@ -1566,5 +1567,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "Updated on {{date}}"
+  },
+  "carColor": {
+    "bianco": "White",
+    "argento": "Silver",
+    "grigio": "Dark gray",
+    "nero": "Black",
+    "rosso": "Red",
+    "arancione": "Orange",
+    "giallo": "Yellow",
+    "verde": "Green",
+    "blu": "Blue",
+    "viola": "Purple"
   }
 }

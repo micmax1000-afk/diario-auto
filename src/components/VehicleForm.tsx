@@ -2,13 +2,13 @@ import { useState } from "react";
 import { VEHICLE_COLORS } from "../utils/vehicleColor";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Vehicle, FuelType, BodyType } from "../types";
+import type { Vehicle, FuelType, BodyType, CarColor } from "../types";
 import { generateId } from "../utils/storage";
 import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL, guessBrandModel } from "../utils/carCatalog";
 import { getNumberLocale } from "../utils/locale";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import PhotoPicker from "./PhotoPicker";
-import { CAR_IMAGES } from "../utils/carImages";
+import { availableCarColors, carImage, resolveCarColor } from "../utils/carImages";
 import { BODY_TYPES, shade } from "../utils/bodyTypes";
 
 const FUEL_TYPES: FuelType[] = ["benzina", "diesel", "gpl", "metano", "elettrico", "ibrido"];
@@ -40,6 +40,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
   const [photo, setPhoto] = useState<string | null>(initialVehicle?.photo ?? null);
   const [color, setColor] = useState<string | undefined>(initialVehicle?.color);
   const [bodyType, setBodyType] = useState<BodyType | undefined>(initialVehicle?.bodyType);
+  const [carColor, setCarColor] = useState<CarColor | undefined>(initialVehicle?.carColor);
   const [error, setError] = useState("");
   const [picker, setPicker] = useState<"brand" | "model" | null>(null);
   const [query, setQuery] = useState("");
@@ -111,6 +112,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
       photo: photo ?? undefined,
       color,
       bodyType,
+      carColor: bodyType ? resolveCarColor(bodyType, carColor) : undefined,
       createdAt: initialVehicle?.createdAt ?? new Date().toISOString(),
     };
 
@@ -144,7 +146,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
           >
             {!photo && bodyType && (
               <span className="vform-hero__car is-cut">
-                <img src={CAR_IMAGES[bodyType]} alt="" />
+                <img src={carImage(bodyType, carColor)} alt="" />
               </span>
             )}
             <span className="vform-hero__text">
@@ -324,12 +326,33 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
                   className={`body-picker__item${bodyType === b ? " is-on" : ""}`}
                   onClick={() => setBodyType(b)}
                 >
-                  <img src={CAR_IMAGES[b]} alt="" />
+                  <img src={carImage(b, carColor)} alt="" />
                   <span>{t(`bodyType.${b}`)}</span>
                 </button>
               ))}
             </div>
           </div>
+
+          {bodyType && !photo && (
+            <div className="field">
+              <span className="vform-title">{t("vehicleForm.carColorTitle")}</span>
+              <div className="car-color" role="radiogroup" aria-label={t("vehicleForm.carColorTitle")}>
+                {availableCarColors(bodyType).map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    role="radio"
+                    aria-checked={resolveCarColor(bodyType, carColor) === c}
+                    aria-label={t(`carColor.${c}`)}
+                    title={t(`carColor.${c}`)}
+                    className={`car-color__dot car-color__dot--${c}${resolveCarColor(bodyType, carColor) === c ? " is-on" : ""}`}
+                    onClick={() => setCarColor(c)}
+                  />
+                ))}
+              </div>
+              <small className="vform-hint">{t(`carColor.${resolveCarColor(bodyType, carColor)}`)}</small>
+            </div>
+          )}
 
           <PhotoPicker id="vehicle-photo" value={photo} onChange={setPhoto} keyPrefix="vehicleForm" aspect={16 / 9} />
 

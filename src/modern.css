@@ -2173,3 +2173,18 @@ body {
 .home--hero .home-hero--car .home-hero__id { max-width: 58%; }
 .home--hero .home-hero__car { right: 0.9rem; }
 .home--hero .home-hero--photo::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 90px; background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent); pointer-events: none; }
+
+/* Colore dell'auto nel form del veicolo */
+.car-color { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.5rem 0 0.35rem; }
+.car-color__dot { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--border); padding: 0; cursor: pointer; box-shadow: inset 0 0 0 2px var(--card); }
+.car-color__dot.is-on { border-color: var(--amber); box-shadow: inset 0 0 0 2px var(--card), 0 0 0 2px var(--amber-soft); }
+.car-color__dot--bianco { background: #f4f4f4; }
+.car-color__dot--argento { background: #bfc3c8; }
+.car-color__dot--grigio { background: #4a4d52; }
+.car-color__dot--nero { background: #17181a; }
+.car-color__dot--rosso { background: #d82b2b; }
+.car-color__dot--arancione { background: #f08a1c; }
+.car-color__dot--giallo { background: #f2cf1d; }
+.car-color__dot--verde { background: #2f9e4f; }
+.car-color__dot--blu { background: #2f6fe0; }
+.car-color__dot--viola { background: #8a4fd6; }
