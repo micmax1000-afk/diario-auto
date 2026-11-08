@@ -39,9 +39,9 @@ describe("tema", () => {
       env = fakeEnv(true);
     });
 
-    it("senza scelta salvata parte da Automatico, Arancione, testo Normale", () => {
+    it("senza scelta salvata parte da Automatico, Blu, testo Normale", () => {
       expect(getStoredThemeMode()).toBe("auto");
-      expect(getStoredAccent()).toBe("orange");
+      expect(getStoredAccent()).toBe("blue");
       expect(getStoredTextSize()).toBe("normal");
     });
 
@@ -65,6 +65,8 @@ describe("tema", () => {
       setAccent("orange");
       setTextSize("normal");
       expect(env.attrs.has("data-accent")).toBe(false);
+      // chi ha scelto l'arancione lo tiene
+      expect(getStoredAccent()).toBe("orange");
       expect(env.attrs.has("data-text")).toBe(false);
     });
 
@@ -77,7 +79,7 @@ describe("tema", () => {
       expect(env.attrs.get("data-accent")).toBe("teal");
       expect(env.attrs.get("data-text")).toBe("large");
       env.store.set("diario-auto:accent", "giallo");
-      expect(getStoredAccent()).toBe("orange");
+      expect(getStoredAccent()).toBe("blue");
     });
   });
 
@@ -87,7 +89,7 @@ describe("tema", () => {
   });
 
   it("ci sono i sei colori principali", () => {
-    expect(ACCENTS.map((a) => a.id)).toEqual(["orange", "blue", "teal", "violet", "pink", "graphite"]);
+    expect(ACCENTS.map((a) => a.id)).toEqual(["blue", "orange", "teal", "violet", "pink", "graphite"]);
   });
 });
 

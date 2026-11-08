@@ -4,14 +4,17 @@ export type ThemeMode = Theme | "auto";
 export type Accent = "orange" | "blue" | "teal" | "violet" | "pink" | "graphite";
 export type TextSize = "normal" | "large";
 
+/** Colore principale di partenza: il blu dell'icona. Chi ha già scelto un altro colore lo tiene. */
+export const DEFAULT_ACCENT: Accent = "blue";
+
 const THEME_KEY = "diario-auto:theme";
 const ACCENT_KEY = "diario-auto:accent";
 const TEXT_KEY = "diario-auto:text-size";
 
 /** Colori principali disponibili, con il colore del pallino nel selettore. */
 export const ACCENTS: { id: Accent; swatch: string }[] = [
-  { id: "orange", swatch: "#f5901f" },
   { id: "blue", swatch: "#3b7ff5" },
+  { id: "orange", swatch: "#f5901f" },
   { id: "teal", swatch: "#14b8a6" },
   { id: "violet", swatch: "#8b5cf6" },
   { id: "pink", swatch: "#e8508a" },
@@ -78,7 +81,7 @@ export function applyTheme(theme: Theme): void {
 
 export function getStoredAccent(): Accent {
   const value = read(ACCENT_KEY);
-  return ACCENTS.some((a) => a.id === value) ? (value as Accent) : "orange";
+  return ACCENTS.some((a) => a.id === value) ? (value as Accent) : DEFAULT_ACCENT;
 }
 
 export function applyAccent(accent: Accent): void {
@@ -87,9 +90,32 @@ export function applyAccent(accent: Accent): void {
   else document.documentElement.setAttribute("data-accent", accent);
 }
 
+/** Gli altri pezzi dell'app (per esempio i widget) lo ascoltano per aggiornarsi col nuovo colore. */
+export const APPEARANCE_EVENT = "diario-auto:appearance";
+
+function announceAppearance(): void {
+  if (typeof window !== "undefined" && typeof window.dispatchEvent === "function" && typeof Event !== "undefined") {
+    window.dispatchEvent(new Event(APPEARANCE_EVENT));
+  }
+}
+
 export function setAccent(accent: Accent): void {
   write(ACCENT_KEY, accent);
   applyAccent(accent);
+  announceAppearance();
+}
+
+/** Colore principale scelto come [r, g, b] tra 0 e 1, uguale nel tema chiaro e scuro: serve ai PDF, sempre su fondo bianco. */
+export function accentRgb(): [number, number, number] {
+  const hex = (ACCENTS.find((a) => a.id === getStoredAccent()) ?? ACCENTS[0]).swatch;
+  return [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255) as [number, number, number];
+}
+
+/** Colore principale attuale come testo (per i grafici), uguale a quello che vede l'utente nel tema in uso. */
+export function accentCssColor(): string {
+  if (typeof document === "undefined") return ACCENTS[0].swatch;
+  const v = getComputedStyle(document.documentElement).getPropertyValue("--amber").trim();
+  return v || ACCENTS[0].swatch;
 }
 
 export function getStoredTextSize(): TextSize {
@@ -132,4 +158,5 @@ export function restoreAppearance(a: Partial<Record<keyof AppearanceBackup, unkn
   if (ACCENTS.some((x) => x.id === a.accent)) write(ACCENT_KEY, a.accent as Accent);
   if (a.textSize === "normal" || a.textSize === "large") write(TEXT_KEY, a.textSize);
   applyStoredAppearance();
+  announceAppearance();
 }

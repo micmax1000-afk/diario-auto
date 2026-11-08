@@ -24,6 +24,8 @@ export interface WidgetData {
   reminderLabel: string | null; // es. "Bollo · in scadenza" — null se nessuna scadenza vicina
   reminderOverdue?: boolean;
   consumption?: string | null; // es. "5,8 l/100"
+  /** Colore principale scelto nell'app (blue, orange, ...): il widget lo usa per il pulsante "A voce". */
+  accent?: string;
   /** Pulsante "A voce" (solo con l'app in italiano). */
   voice?: boolean;
   labels?: { deadline: string; consumption: string; noDeadline: string; fuel: string; voice: string };

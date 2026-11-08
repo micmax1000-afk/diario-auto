@@ -1,4 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from "recharts";
+import { accentCssColor } from "../utils/theme";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, ChargingEntry, Vehicle } from "../types";
 import { getNumberLocale } from "../utils/locale";
@@ -74,7 +75,7 @@ export default function KmHistory({ vehicle, fuelEntries, chargingEntries, onBac
                   labelFormatter={(v) => new Date(Number(v)).toLocaleDateString(locale, { day: "2-digit", month: "short", year: "numeric" })}
                   formatter={(value) => [`${formatKm(Number(value))} ${distanceUnit}`, ""]}
                 />
-                <Line type="linear" dataKey="km" stroke="#f5901f" strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
+                <Line type="linear" dataKey="km" stroke={accentCssColor()} strokeWidth={2} dot={{ r: 3 }} activeDot={{ r: 5 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>

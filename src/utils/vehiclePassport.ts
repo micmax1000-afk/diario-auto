@@ -1,4 +1,5 @@
 import type { PDFFont } from "pdf-lib";
+import { accentRgb } from "./theme";
 
 export interface PassportEntry {
   dateLabel: string;
@@ -89,7 +90,7 @@ export async function generateMaintenancePassportPdf(params: PassportParams): Pr
   // genera davvero il passaporto — non ha senso scaricarlo per tutti al
   // primo avvio dell'app.
   const { PDFDocument, StandardFonts, rgb } = await import("pdf-lib");
-  const AMBER = rgb(0.96, 0.56, 0.12);
+  const AMBER = rgb(...accentRgb());
   const DARK = rgb(0.12, 0.13, 0.15);
   const GRAY = rgb(0.45, 0.45, 0.48);
   const LIGHT_LINE = rgb(0.85, 0.85, 0.85);

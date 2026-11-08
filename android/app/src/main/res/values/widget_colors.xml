@@ -3,7 +3,7 @@
     <!-- Widget nella home: colori del tema chiaro (quelli scuri sono in values-night) -->
     <color name="widget_background">#FFFFFF</color>
     <color name="widget_chip">#F3F1EC</color>
-    <color name="widget_amber">#F5901F</color>
+    <color name="widget_accent">#3B7FF5</color>
     <color name="widget_green">#22A565</color>
     <color name="widget_red">#D64545</color>
     <color name="widget_text">#17181A</color>

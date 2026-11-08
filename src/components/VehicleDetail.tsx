@@ -754,7 +754,7 @@ export default function VehicleDetail({
 
             <section className="sbreak">
               {[
-                { key: "fuel", label: t("summary.fuel"), value: costs.fuelCost, color: "var(--amber)", show: vehicle.fuelType !== "elettrico" || costs.fuelCost > 0 },
+                { key: "fuel", label: t("summary.fuel"), value: costs.fuelCost, color: "var(--warn)", show: vehicle.fuelType !== "elettrico" || costs.fuelCost > 0 },
                 { key: "charging", label: t("summary.charging"), value: costs.chargingCost, color: "var(--blue)", show: costs.chargingCost > 0 },
                 { key: "maintenance", label: t("summary.maintenance"), value: costs.maintenanceCost, color: "var(--green)", show: true },
                 { key: "expenses", label: t("summary.expensesLong"), value: costs.expensesCost, color: "var(--purple)", show: true },
