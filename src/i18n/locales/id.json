@@ -84,7 +84,8 @@
     "modelsCount": "{{count}} model",
     "optional": "(opsional)",
     "bodyTypeHint": "Pilih jenisnya untuk menampilkan gambar mobil.",
-    "bodyNone": "Tidak ada"
+    "bodyNone": "Tidak ada",
+    "carColorTitle": "Warna mobil"
   },
   "fuelType": {
     "benzina": "Bensin",
@@ -1563,5 +1564,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "Diperbarui pada {{date}}"
+  },
+  "carColor": {
+    "bianco": "Putih",
+    "argento": "Perak",
+    "grigio": "Abu-abu tua",
+    "nero": "Hitam",
+    "rosso": "Merah",
+    "arancione": "Oranye",
+    "giallo": "Kuning",
+    "verde": "Hijau",
+    "blu": "Biru",
+    "viola": "Ungu"
   }
 }

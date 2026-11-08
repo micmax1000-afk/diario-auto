@@ -84,7 +84,8 @@
     "modelsCount": "Моделей: {{count}}",
     "optional": "(необязательно)",
     "bodyTypeHint": "Выберите тип, чтобы посмотреть фотографию автомобиля.",
-    "bodyNone": "Нет"
+    "bodyNone": "Нет",
+    "carColorTitle": "Цвет автомобиля"
   },
   "fuelType": {
     "benzina": "Бензин",
@@ -1572,5 +1573,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "Обновлено {{date}}"
+  },
+  "carColor": {
+    "bianco": "Белый",
+    "argento": "Серебро",
+    "grigio": "Тёмно-серый",
+    "nero": "Чёрный",
+    "rosso": "Красный",
+    "arancione": "Оранжевый",
+    "giallo": "Жёлтый",
+    "verde": "Зелёный",
+    "blu": "Синий",
+    "viola": "Фиолетовый"
   }
 }

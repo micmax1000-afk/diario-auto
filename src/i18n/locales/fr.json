@@ -84,7 +84,8 @@
     "modelsCount": "{{count}} modèles",
     "optional": "(facultatif)",
     "bodyTypeHint": "Choisissez un type pour afficher une photo de la voiture.",
-    "bodyNone": "Aucun"
+    "bodyNone": "Aucun",
+    "carColorTitle": "Couleur de la voiture"
   },
   "fuelType": {
     "benzina": "Essence",
@@ -1566,5 +1567,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "Mis à jour le {{date}}"
+  },
+  "carColor": {
+    "bianco": "Blanc",
+    "argento": "Argent",
+    "grigio": "Gris foncé",
+    "nero": "Noir",
+    "rosso": "Rouge",
+    "arancione": "Orange",
+    "giallo": "Jaune",
+    "verde": "Vert",
+    "blu": "Bleu",
+    "viola": "Violet"
   }
 }

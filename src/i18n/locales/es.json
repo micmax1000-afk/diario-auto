@@ -84,7 +84,8 @@
     "modelsCount": "{{count}} modelos",
     "optional": "(opcional)",
     "bodyTypeHint": "Elige un tipo para ver una foto del coche.",
-    "bodyNone": "Ninguno"
+    "bodyNone": "Ninguno",
+    "carColorTitle": "Color del coche"
   },
   "fuelType": {
     "benzina": "Gasolina",
@@ -1566,5 +1567,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "Actualizado el {{date}}"
+  },
+  "carColor": {
+    "bianco": "Blanco",
+    "argento": "Plata",
+    "grigio": "Gris oscuro",
+    "nero": "Negro",
+    "rosso": "Rojo",
+    "arancione": "Naranja",
+    "giallo": "Amarillo",
+    "verde": "Verde",
+    "blu": "Azul",
+    "viola": "Violeta"
   }
 }

@@ -84,7 +84,8 @@
     "modelsCount": "{{count}} मॉडल",
     "optional": "(वैकल्पिक)",
     "bodyTypeHint": "कार की तस्वीर दिखाने के लिए एक प्रकार चुनें।",
-    "bodyNone": "कोई नहीं"
+    "bodyNone": "कोई नहीं",
+    "carColorTitle": "कार का रंग"
   },
   "fuelType": {
     "benzina": "पेट्रोल",
@@ -1566,5 +1567,17 @@
   "widget": {
     "voice": "A voce",
     "updated": "{{date}} को अद्यतन किया गया"
+  },
+  "carColor": {
+    "bianco": "सफ़ेद",
+    "argento": "चाँदी",
+    "grigio": "गाढ़ा धूसर",
+    "nero": "काला",
+    "rosso": "लाल",
+    "arancione": "नारंगी",
+    "giallo": "पीला",
+    "verde": "हरा",
+    "blu": "नीला",
+    "viola": "बैंगनी"
   }
 }
