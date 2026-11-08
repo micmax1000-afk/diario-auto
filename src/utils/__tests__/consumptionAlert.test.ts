@@ -19,3 +19,15 @@ describe("allarme consumo", () => {
     expect(consumptionAlert([pt(0, 6), pt(1, 9)])).toBeNull();
   });
 });
+
+describe("promemoria Pieno", () => {
+  it("compare dopo 3 rifornimenti senza pieno", async () => {
+    const { needsFullTankHint } = await import("../calculations");
+    const f = (km: number, fullTank: boolean) => ({ km, fullTank });
+    expect(needsFullTankHint([f(100, false), f(200, false)])).toBe(false);
+    expect(needsFullTankHint([f(100, false), f(200, false), f(300, false)])).toBe(true);
+    expect(needsFullTankHint([f(100, true), f(200, false), f(300, false)])).toBe(false);
+    expect(needsFullTankHint([f(400, false), f(100, true), f(200, false), f(300, false)])).toBe(true);
+    expect(needsFullTankHint([f(100, false), f(200, false), f(300, true)])).toBe(false);
+  });
+});

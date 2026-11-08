@@ -90,3 +90,28 @@ describe("tema", () => {
     expect(ACCENTS.map((a) => a.id)).toEqual(["orange", "blue", "teal", "violet", "pink", "graphite"]);
   });
 });
+
+describe("aspetto nel backup", () => {
+  afterEach(() => vi.unstubAllGlobals());
+
+  it("salva e ripristina tema, colore e testo, ignorando valori sconosciuti", async () => {
+    const { readAppearance, restoreAppearance } = await import("../theme");
+    const env = fakeEnv(true);
+    setStoredThemeMode("dark");
+    setAccent("pink");
+    setTextSize("large");
+    const saved = readAppearance();
+    expect(saved).toEqual({ theme: "dark", accent: "pink", textSize: "large" });
+
+    env.store.clear();
+    restoreAppearance(saved);
+    expect(getStoredThemeMode()).toBe("dark");
+    expect(getStoredAccent()).toBe("pink");
+    expect(env.attrs.get("data-text")).toBe("large");
+
+    restoreAppearance({ theme: "rosso", accent: "giallo", textSize: "enorme" });
+    expect(getStoredThemeMode()).toBe("dark");
+    expect(getStoredAccent()).toBe("pink");
+    restoreAppearance(undefined);
+  });
+});

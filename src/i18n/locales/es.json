@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Precio medio",
     "period": "Periodo",
-    "partialShort": "Parcial"
+    "partialShort": "Parcial",
+    "fullTankHint": "El consumo se calcula entre dos repostajes marcados como «Depósito lleno». Cuando repostes, recuerda activar «Depósito lleno»."
   },
   "fuelForm": {
     "title": "Nuevo repostaje",

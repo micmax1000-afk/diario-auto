@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Average price",
     "period": "Period",
-    "partialShort": "Partial"
+    "partialShort": "Partial",
+    "fullTankHint": "Fuel consumption is calculated between two refuelling events marked as ‘Full tank’. When you fill up, remember to select ‘Full tank’."
   },
   "fuelForm": {
     "title": "New refuel",

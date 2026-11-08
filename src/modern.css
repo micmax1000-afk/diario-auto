@@ -2129,3 +2129,4 @@ body {
 .settings-embedded { margin-left: -1rem; margin-right: -1rem; }
 .menu-garage,
 .menu-list { padding-left: 1rem; padding-right: 1rem; }
+.fc-full-hint { margin: 0.7rem 0 0; padding: 0.7rem 0.85rem; border-radius: 14px; background: var(--amber-soft); color: var(--text); font-size: 0.85rem; line-height: 1.35; }

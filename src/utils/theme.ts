@@ -70,6 +70,7 @@ const THEME_COLORS: Record<Theme, string> = {
 };
 
 export function applyTheme(theme: Theme): void {
+  if (typeof document === "undefined") return;
   document.documentElement.setAttribute("data-theme", theme);
   const meta = document.querySelector('meta[name="theme-color"]');
   if (meta) meta.setAttribute("content", THEME_COLORS[theme]);
@@ -81,6 +82,7 @@ export function getStoredAccent(): Accent {
 }
 
 export function applyAccent(accent: Accent): void {
+  if (typeof document === "undefined") return;
   if (accent === "orange") document.documentElement.removeAttribute("data-accent");
   else document.documentElement.setAttribute("data-accent", accent);
 }
@@ -95,6 +97,7 @@ export function getStoredTextSize(): TextSize {
 }
 
 export function applyTextSize(size: TextSize): void {
+  if (typeof document === "undefined") return;
   if (size === "large") document.documentElement.setAttribute("data-text", "large");
   else document.documentElement.removeAttribute("data-text");
 }
@@ -109,4 +112,24 @@ export function applyStoredAppearance(): void {
   applyTheme(getInitialTheme());
   applyAccent(getStoredAccent());
   applyTextSize(getStoredTextSize());
+}
+
+/** Aspetto da salvare nel backup, così su un telefono nuovo l'app torna com'era. */
+export interface AppearanceBackup {
+  theme: ThemeMode;
+  accent: Accent;
+  textSize: TextSize;
+}
+
+export function readAppearance(): AppearanceBackup {
+  return { theme: getStoredThemeMode(), accent: getStoredAccent(), textSize: getStoredTextSize() };
+}
+
+/** Ripristina l'aspetto da un backup, ignorando valori sconosciuti. */
+export function restoreAppearance(a: Partial<Record<keyof AppearanceBackup, unknown>> | undefined): void {
+  if (!a || typeof a !== "object") return;
+  if (a.theme === "auto" || a.theme === "light" || a.theme === "dark") setStoredThemeMode(a.theme);
+  if (ACCENTS.some((x) => x.id === a.accent)) write(ACCENT_KEY, a.accent as Accent);
+  if (a.textSize === "normal" || a.textSize === "large") write(TEXT_KEY, a.textSize);
+  applyStoredAppearance();
 }

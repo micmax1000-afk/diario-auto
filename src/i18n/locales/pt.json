@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Preço médio",
     "period": "Período",
-    "partialShort": "Parcial"
+    "partialShort": "Parcial",
+    "fullTankHint": "O consumo é calculado entre dois reabastecimentos marcados como «Depósito cheio». Quando encher o depósito, não te esqueças de ativar a opção «Depósito cheio»."
   },
   "fuelForm": {
     "title": "Novo abastecimento",

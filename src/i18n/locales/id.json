@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Harga rata-rata",
     "period": "Periode",
-    "partialShort": "Sebagian"
+    "partialShort": "Sebagian",
+    "fullTankHint": "Konsumsi bahan bakar dihitung antara dua pengisian bahan bakar yang ditandai sebagai “Penuh”. Saat mengisi bahan bakar hingga penuh, jangan lupa untuk mengaktifkan “Penuh”."
   },
   "fuelForm": {
     "title": "Pengisian BBM baru",

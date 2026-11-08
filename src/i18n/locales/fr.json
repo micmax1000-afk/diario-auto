@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Prix moyen",
     "period": "Période",
-    "partialShort": "Partiel"
+    "partialShort": "Partiel",
+    "fullTankHint": "La consommation est calculée entre deux pleins enregistrés comme « Plein ». Lorsque vous faites le plein, n'oubliez pas d'activer « Plein »."
   },
   "fuelForm": {
     "title": "Nouveau plein",

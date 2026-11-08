@@ -1,3 +1,4 @@
+import { readAppearance, restoreAppearance, type AppearanceBackup } from "./theme";
 import type {
   Vehicle,
   FuelEntry,
@@ -259,6 +260,10 @@ export interface BackupData {
   homeChargingDefaults?: HomeChargingDefaults[];
   /** Installata prima che il Pro fosse a pagamento: resta sbloccato anche su un telefono nuovo. */
   earlyUser?: boolean;
+  /** Tema, colore principale e dimensione del testo. */
+  appearance?: AppearanceBackup;
+  /** Tariffa €/km del rimborso viaggi di lavoro. */
+  tripRate?: string;
 }
 
 export async function buildBackup(): Promise<BackupData> {
@@ -290,6 +295,7 @@ export async function buildBackup(): Promise<BackupData> {
     loadTripEntries(),
   ]);
   const earlyUser = (await getMeta("early-user")) === "1";
+  const tripRate = await getMeta("trip-rate").catch(() => null);
 
   return {
     version: 2,
@@ -307,6 +313,8 @@ export async function buildBackup(): Promise<BackupData> {
     homeChargingDefaults,
     tripEntries,
     ...(earlyUser ? { earlyUser: true } : {}),
+    appearance: readAppearance(),
+    ...(tripRate ? { tripRate } : {}),
   };
 }
 
@@ -347,6 +355,8 @@ export async function restoreBackup(data: BackupData): Promise<void> {
   await replaceAll("commuteScenarios", data.commuteScenarios ?? []);
   await replaceAll("tripEntries", data.tripEntries ?? []);
   if (data.earlyUser) await setMeta("early-user", "1");
+  if (typeof data.tripRate === "string" && data.tripRate) await setMeta("trip-rate", data.tripRate);
+  restoreAppearance(data.appearance);
 }
 
 export async function getLastBackupDate(): Promise<string | null> {
