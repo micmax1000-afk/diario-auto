@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Durchschnittspreis",
     "period": "Zeitraum",
-    "partialShort": "Teilweise"
+    "partialShort": "Teilweise",
+    "fullTankHint": "Der Verbrauch wird zwischen zwei als „Vollgetankt“ markierten Tankvorgängen berechnet. Wenn du tankst, denke daran, „Vollgetankt“ zu aktivieren."
   },
   "fuelForm": {
     "title": "Neuer Tankvorgang",

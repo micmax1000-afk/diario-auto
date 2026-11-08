@@ -878,7 +878,12 @@ export default function App() {
                 maintenanceEntries={maintenanceEntries}
                 expenseEntries={expenseEntries}
                 chargingEntries={chargingEntries}
-                onRestored={reloadAll}
+                onRestored={() => {
+                  void reloadAll();
+                  // il backup può riportare anche tema e colori
+                  setThemeMode(getStoredThemeMode());
+                  setTheme(resolveTheme(getStoredThemeMode()));
+                }}
               />
             </Suspense>
           </section>

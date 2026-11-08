@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "औसत कीमत",
     "period": "अवधि",
-    "partialShort": "आंशिक"
+    "partialShort": "आंशिक",
+    "fullTankHint": "ईंधन की खपत दो 'फुल टैंक' के रूप में चिह्नित ईंधन भरने की घटनाओं के बीच की जाती है। जब आप ईंधन भरवाते हैं, तो 'फुल टैंक' चुनना न भूलें।"
   },
   "fuelForm": {
     "title": "नई ईंधन भराई",

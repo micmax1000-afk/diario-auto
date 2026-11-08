@@ -230,3 +230,16 @@ export function consumptionAlert(points: ConsumptionPoint[], threshold = 0.15): 
   if (increase < threshold) return null;
   return { recent, usual, increasePct: Math.round(increase * 100), atKm: sorted[sorted.length - 1].toKm };
 }
+
+/**
+ * Serve ricordare di segnare "Pieno"? Il consumo si calcola solo tra due pieni:
+ * se ci sono almeno 3 rifornimenti e nessun pieno, o 3 di fila dopo l'ultimo pieno,
+ * il consumo resta fermo.
+ */
+export function needsFullTankHint(entries: Pick<FuelEntry, "km" | "fullTank">[]): boolean {
+  if (entries.length < 3) return false;
+  const sorted = [...entries].sort((a, b) => a.km - b.km);
+  let sinceFull = 0;
+  for (const e of sorted) sinceFull = e.fullTank ? 0 : sinceFull + 1;
+  return sinceFull >= 3;
+}

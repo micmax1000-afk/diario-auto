@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, ChargingEntry, FuelType } from "../types";
-import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth, mainFuelSource } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth, mainFuelSource, needsFullTankHint } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { getCurrencySymbol, kmToDisplayDistance } from "../utils/settings";
@@ -92,6 +92,10 @@ export default function FuelChargeList({
   const allKm = periodFilteredRows.map((r) => r.entry.km);
   const totalDistance = allKm.length > 1 ? Math.max(...allKm) - Math.min(...allKm) : 0;
 
+  // Nessun "Pieno" da un po': il consumo non si può calcolare, lo ricordiamo.
+  const hintSource = mainFuelSource(vehicleFuelType);
+  const showFullHint = needsFullTankHint(fuelEntries.filter((e) => !hintSource || e.source === hintSource));
+
   // per calcolare il delta "+XXX km" rispetto alla voce precedente nello storico completo (non filtrato)
   const sortedByKm = [...rows].sort((a, b) => a.entry.km - b.entry.km);
   const deltaByEntryId = new Map<string, number | null>();
@@ -142,6 +146,8 @@ export default function FuelChargeList({
           </div>
         </div>
       </section>
+
+      {showFullHint && <p className="fc-full-hint">{t("fuel.fullTankHint")}</p>}
 
       {actions}
 

@@ -173,7 +173,8 @@
     "pricePerUnitLabel": "{{cur}}/{{unit}}",
     "summaryAvgPrice": "Prezzo medio",
     "period": "Periodo",
-    "partialShort": "Parziale"
+    "partialShort": "Parziale",
+    "fullTankHint": "Il consumo si calcola tra due rifornimenti segnati come «Pieno». Quando fai il pieno, ricordati di attivare «Pieno»."
   },
   "fuelForm": {
     "title": "Nuovo rifornimento",
