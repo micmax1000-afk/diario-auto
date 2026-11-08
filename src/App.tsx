@@ -39,7 +39,7 @@ import {
 import { getNumberLocale } from "./utils/locale";
 import { formatDistance } from "./utils/settings";
 import { useAppSettings } from "./contexts/AppSettingsContext";
-import { applyTheme, getInitialTheme, setStoredTheme, type Theme } from "./utils/theme";
+import { applyTheme, getStoredThemeMode, onSystemThemeChange, resolveTheme, setStoredThemeMode, type ThemeMode } from "./utils/theme";
 import { isRtlLanguage } from "./i18n";
 import { triggerTopBackHandler, useBackButtonClose } from "./utils/backButtonStack";
 import { updateWidgetData } from "./utils/widgetData";
@@ -142,7 +142,8 @@ export default function App() {
   const [showPremium, setShowPremium] = useState(false);
   const [showAdapters, setShowAdapters] = useState(false);
   const [showStations, setShowStations] = useState(false);
-  const [theme, setTheme] = useState<Theme>(() => getInitialTheme());
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => getStoredThemeMode());
+  const [theme, setTheme] = useState(() => resolveTheme(getStoredThemeMode()));
   const { isPro, refresh: refreshProStatus } = useProStatus();
   // Backup automatico su Drive bloccato per sicurezza (molti meno dati dell'ultimo backup).
   const [autoBackupBlocked, setAutoBackupBlocked] = useState(false);
@@ -207,11 +208,22 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  function handleToggleTheme() {
-    const next: Theme = theme === "dark" ? "light" : "dark";
+  // Con "Automatico" segue il telefono anche quando cambia da chiaro a scuro con l'app aperta.
+  useEffect(() => {
+    if (themeMode !== "auto") return;
+    return onSystemThemeChange(() => {
+      const next = resolveTheme("auto");
+      setTheme(next);
+      applyTheme(next);
+    });
+  }, [themeMode]);
+
+  function handleThemeMode(mode: ThemeMode) {
+    const next = resolveTheme(mode);
+    setThemeMode(mode);
     setTheme(next);
     applyTheme(next);
-    setStoredTheme(next);
+    setStoredThemeMode(mode);
   }
 
   async function reloadAll() {
@@ -973,8 +985,8 @@ export default function App() {
             <SettingsScreen
               onClose={() => setMainTab("garage")}
               onOpenBackup={() => setShowBackup(true)}
-              theme={theme}
-              onToggleTheme={handleToggleTheme}
+              themeMode={themeMode}
+              onThemeMode={handleThemeMode}
               title={t("menu.title")}
               beforeList={
                 <MenuSections

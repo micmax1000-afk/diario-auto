@@ -4,7 +4,7 @@ import { Capacitor } from "@capacitor/core";
 import { useTranslation } from "react-i18next";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { CURRENCIES, MILES_ENABLED } from "../utils/settings";
-import type { Theme } from "../utils/theme";
+import { ACCENTS, getStoredAccent, getStoredTextSize, setAccent, setTextSize, type Accent, type TextSize, type ThemeMode } from "../utils/theme";
 import { SUPPORTED_LANGUAGES, changeLanguage } from "../i18n";
 import { isGoogleDriveConfigured } from "../services/googleDrive/config";
 import QuickEntryHeader from "./QuickEntryHeader";
@@ -21,8 +21,8 @@ import {
 interface Props {
   onClose: () => void;
   onOpenBackup: () => void;
-  theme: Theme;
-  onToggleTheme: () => void;
+  themeMode: ThemeMode;
+  onThemeMode: (mode: ThemeMode) => void;
   /** Titolo della schermata (il Menu della Home) e sezioni da mostrare prima delle impostazioni. */
   title?: string;
   beforeList?: ReactNode;
@@ -45,7 +45,9 @@ const ROW_ICONS: Record<string, string> = {
   info: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 6v.01M11 11h1.5v6H11",
 };
 
-export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleTheme, title, beforeList }: Props) {
+export default function SettingsScreen({ onClose, onOpenBackup, themeMode, onThemeMode, title, beforeList }: Props) {
+  const [accent, setAccentState] = useState<Accent>(() => getStoredAccent());
+  const [textSize, setTextSizeState] = useState<TextSize>(() => getStoredTextSize());
   // Versione reale dell'app installata (versionName + versionCode di Android),
   // così si capisce subito se l'aggiornamento è arrivato.
   const [appVersion, setAppVersion] = useState("");
@@ -166,14 +168,64 @@ export default function SettingsScreen({ onClose, onOpenBackup, theme, onToggleT
           <span className="settings-row__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d={ROW_ICONS.theme} /></svg></span>
           <span className="settings-row__text">
             <span className="settings-row__label">{t("settingsScreen.theme")}</span>
-            <span className="settings-row__value">{theme === "dark" ? t("settingsScreen.themeDark") : t("settingsScreen.themeLight")}</span>
+            <span className="settings-row__value">
+              {t(`settingsScreen.themeMode.${themeMode}`)} · {t(`settingsScreen.accent.${accent}`)}
+            </span>
           </span>
           <span className={`settings-row__chevron ${openRow === "theme" ? "is-open" : ""}`}>›</span>
         </div>
         {openRow === "theme" && (
-          <div className="settings-row__panel">
-            <button type="button" className={`settings-chip ${theme === "dark" ? "is-active" : ""}`} onClick={() => theme !== "dark" && onToggleTheme()}>{t("settingsScreen.themeDark")}</button>
-            <button type="button" className={`settings-chip ${theme === "light" ? "is-active" : ""}`} onClick={() => theme !== "light" && onToggleTheme()}>{t("settingsScreen.themeLight")}</button>
+          <div className="settings-row__panel settings-row__panel--stacked theme-panel">
+            <div className="settings-subfield">
+              <span className="theme-panel__label">{t("settingsScreen.appearance")}</span>
+              <div className="settings-chip-row">
+                {(["auto", "light", "dark"] as const).map((m) => (
+                  <button key={m} type="button" className={`settings-chip ${themeMode === m ? "is-active" : ""}`} onClick={() => onThemeMode(m)}>
+                    {t(`settingsScreen.themeMode.${m}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="settings-subfield">
+              <span className="theme-panel__label">{t("settingsScreen.accentTitle")}</span>
+              <div className="accent-swatches" role="radiogroup" aria-label={t("settingsScreen.accentTitle")}>
+                {ACCENTS.map((a) => (
+                  <button
+                    key={a.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={accent === a.id}
+                    className={`accent-swatch ${accent === a.id ? "is-active" : ""}`}
+                    onClick={() => {
+                      setAccent(a.id);
+                      setAccentState(a.id);
+                    }}
+                  >
+                    <span className="accent-swatch__dot" style={{ background: a.swatch, color: a.swatch }}>{accent === a.id ? "✓" : ""}</span>
+                    <span className="accent-swatch__name">{t(`settingsScreen.accent.${a.id}`)}</span>
+                  </button>
+                ))}
+              </div>
+              <small className="theme-panel__hint">{t("settingsScreen.accentHint")}</small>
+            </div>
+            <div className="settings-subfield">
+              <span className="theme-panel__label">{t("settingsScreen.textSize")}</span>
+              <div className="settings-chip-row">
+                {(["normal", "large"] as const).map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    className={`settings-chip ${textSize === size ? "is-active" : ""}`}
+                    onClick={() => {
+                      setTextSize(size);
+                      setTextSizeState(size);
+                    }}
+                  >
+                    {t(`settingsScreen.textSizes.${size}`)}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         )}
 

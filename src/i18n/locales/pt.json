@@ -1082,7 +1082,28 @@
     "notificationsHintNative": "Aviso 30 e 7 dias antes e no dia do prazo, às 9h, mesmo com a app fechada. Os prazos por quilometragem são verificados ao abrir a app.",
     "notificationsHintWeb": "Receba um aviso quando um prazo estiver próximo ou ultrapassado (só com a app aberta no navegador).",
     "openNotificationSettings": "Abrir definições de notificações",
-    "terms": "Termos de utilização"
+    "terms": "Termos de utilização",
+    "appearance": "Aspecto",
+    "themeMode": {
+      "auto": "Automático",
+      "light": "Claro",
+      "dark": "Escuro"
+    },
+    "accentTitle": "Cor principal",
+    "accent": {
+      "orange": "Laranja",
+      "blue": "Azul",
+      "teal": "Turquesa",
+      "violet": "Roxo",
+      "pink": "Cor-de-rosa",
+      "graphite": "Grafite"
+    },
+    "accentHint": "Altere os botões, os ícones e os destaques. Cada carro mantém a sua cor.",
+    "textSize": "Tamanho do texto",
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Grande"
+    }
   },
   "passport": {
     "generate": "Passaporte de revisões",

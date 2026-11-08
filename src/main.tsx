@@ -8,11 +8,11 @@ import '@fontsource/inter/700.css'
 import '@fontsource/inter/800.css'
 import './index.css'
 import './modern.css'
-import { applyTheme, getInitialTheme } from './utils/theme'
+import { applyStoredAppearance } from './utils/theme'
 import { AppSettingsProvider } from './contexts/AppSettingsContext'
 import { initI18n } from './i18n'
 
-applyTheme(getInitialTheme())
+applyStoredAppearance()
 
 async function bootstrap() {
   // Carica in parallelo la lingua che serve davvero e il codice dell'app,

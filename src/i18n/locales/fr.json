@@ -1082,7 +1082,28 @@
     "notificationsHintNative": "Un rappel 30 et 7 jours avant et le jour de l'échéance, à 9 h, même app fermée. Les échéances au kilométrage sont vérifiées à l'ouverture de l'app.",
     "notificationsHintWeb": "Recevez un rappel quand une échéance approche ou est dépassée (uniquement avec l'app ouverte dans le navigateur).",
     "openNotificationSettings": "Ouvrir les réglages des notifications",
-    "terms": "Conditions d'utilisation"
+    "terms": "Conditions d'utilisation",
+    "appearance": "Aspect",
+    "themeMode": {
+      "auto": "Automatique",
+      "light": "Clair",
+      "dark": "Sombre"
+    },
+    "accentTitle": "Couleur principale",
+    "accent": {
+      "orange": "Orange",
+      "blue": "Bleu",
+      "teal": "Turquoise",
+      "violet": "Violet",
+      "pink": "Rose",
+      "graphite": "Graphite"
+    },
+    "accentHint": "Modifiez les boutons, les icônes et les surlignages. Chaque voiture conserve sa couleur.",
+    "textSize": "Taille du texte",
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Grand"
+    }
   },
   "passport": {
     "generate": "Carnet d'entretien",

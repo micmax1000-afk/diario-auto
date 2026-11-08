@@ -1079,7 +1079,28 @@
     "notificationsHintNative": "Pengingat 30 dan 7 hari sebelumnya serta pada hari jatuh tempo, pukul 9, meski aplikasi tertutup. Jatuh tempo berdasarkan km diperiksa saat aplikasi dibuka.",
     "notificationsHintWeb": "Dapatkan pengingat saat jatuh tempo sudah dekat atau terlewat (hanya saat aplikasi terbuka di browser).",
     "openNotificationSettings": "Buka pengaturan notifikasi",
-    "terms": "Ketentuan penggunaan"
+    "terms": "Ketentuan penggunaan",
+    "appearance": "Penampilan",
+    "themeMode": {
+      "auto": "Otomatis",
+      "light": "Terang",
+      "dark": "Gelap"
+    },
+    "accentTitle": "Warna utama",
+    "accent": {
+      "orange": "Oranye",
+      "blue": "Biru",
+      "teal": "Biru kehijauan",
+      "violet": "Ungu",
+      "pink": "Merah muda",
+      "graphite": "Grafit"
+    },
+    "accentHint": "Ubah tombol, ikon, dan penyorotan. Setiap mobil memiliki warnanya masing-masing.",
+    "textSize": "Ukuran teks",
+    "textSizes": {
+      "normal": "Normal",
+      "large": "Besar"
+    }
   },
   "passport": {
     "generate": "Paspor servis",

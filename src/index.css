@@ -12,6 +12,8 @@
   --paper: #f3f1ea;
   --amber: #f5901f;
   --amber-dark: #c9701a;
+  --amber-rgb: 245, 144, 31;
+  --on-amber: var(--asphalt);
   --ok: #3fbb72;
   --danger: #e0563f;
   --cyan: #38d6c4;
@@ -700,7 +702,7 @@ textarea {
 }
 
 .record-card__icon--amber {
-  background: rgba(245, 144, 31, 0.14);
+  background: rgba(var(--amber-rgb), 0.14);
 }
 .record-card__icon--amber svg {
   stroke: var(--amber);
@@ -1074,7 +1076,7 @@ textarea {
 .obd-status-dot--connecting,
 .obd-status-dot--initializing {
   background: var(--amber);
-  box-shadow: 0 0 0 3px rgba(245, 144, 31, 0.25);
+  box-shadow: 0 0 0 3px rgba(var(--amber-rgb), 0.25);
 }
 
 .obd-status-dot--error {
@@ -1264,7 +1266,7 @@ textarea {
   inset-inline-end: 0.6rem;
   padding: 0.12rem 0.5rem;
   border-radius: 999px;
-  background: rgba(245, 144, 31, 0.18);
+  background: rgba(var(--amber-rgb), 0.18);
   color: var(--amber);
   font-family: var(--font-mono);
   font-size: 0.56rem;
@@ -1817,7 +1819,7 @@ textarea {
   margin-left: 0.5rem;
   padding: 0.1rem 0.45rem;
   border-radius: 999px;
-  background: rgba(245, 144, 31, 0.15);
+  background: rgba(var(--amber-rgb), 0.15);
   color: var(--amber);
   font-size: 0.68rem;
   font-weight: 700;
@@ -2130,7 +2132,7 @@ textarea {
 }
 
 .upcoming-reminders__icon--soon {
-  background: rgba(245, 144, 31, 0.14);
+  background: rgba(var(--amber-rgb), 0.14);
   color: var(--amber);
 }
 
@@ -2275,12 +2277,12 @@ textarea {
 }
 
 .quick-entry-card__icon--blue {
-  background: rgba(245, 144, 31, 0.15);
+  background: rgba(var(--amber-rgb), 0.15);
   color: var(--amber);
 }
 
 .quick-entry-card__icon--green {
-  background: rgba(245, 144, 31, 0.15);
+  background: rgba(var(--amber-rgb), 0.15);
   color: var(--amber);
 }
 
@@ -2611,7 +2613,7 @@ textarea {
 .settings-chip.is-active {
   background: var(--amber);
   border-color: var(--amber);
-  color: var(--asphalt);
+  color: var(--on-amber);
   font-weight: 700;
 }
 
