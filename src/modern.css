@@ -2156,3 +2156,20 @@ body {
 .report-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0.2rem 0 0.9rem; padding: 0.8rem; border-radius: 14px; background: var(--card); border: 1px solid var(--border); color: var(--text); font-weight: 700; }
 .report-btn svg { color: var(--amber); }
 .report-btn__error { margin: -0.4rem 0 0.9rem; color: var(--danger); font-size: 0.85rem; text-align: center; }
+
+/* ===================== Home: scheda a tutto schermo =====================
+   La scheda dell'auto occupa tutta la larghezza e parte dal bordo alto; il saluto e il
+   titolo non si vedono più (restano per i lettori di schermo) e l'ingranaggio delle
+   impostazioni sta dentro la scheda, in alto a destra. Le altre auto si scoprono
+   scorrendo (puntini sotto la scheda). */
+.content:has(.home--hero) { padding-top: env(safe-area-inset-top, 0px); }
+.home--hero { padding-top: 0; position: relative; }
+.home--hero .home-head { position: absolute; z-index: 3; top: 0.8rem; right: 1rem; padding: 0; width: auto; }
+.home--hero .home-head > div { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.home--hero .home-round { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.22); color: #fff; box-shadow: none; backdrop-filter: blur(6px); }
+.home--hero .home-carousel { margin: 0 -1rem; padding: 0 0 10px; gap: 0; scroll-padding: 0; }
+.home--hero .home-hero { flex: 0 0 100%; max-width: none; border-radius: 0 0 30px 30px; padding-left: 1.1rem; padding-right: 1.1rem; }
+.home--hero .home-hero__id { max-width: calc(100% - 60px); }
+.home--hero .home-hero--car .home-hero__id { max-width: 58%; }
+.home--hero .home-hero__car { right: 0.9rem; }
+.home--hero .home-hero--photo::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 90px; background: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent); pointer-events: none; }
