@@ -40,8 +40,16 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      # Il download di una libreria nativa (sharp) da GitHub ogni tanto fallisce con un 504:
+      # si riprova qualche volta prima di dare errore.
       - name: Install dependencies
-        run: npm ci
+        run: |
+          for attempt in 1 2 3 4; do
+            npm ci && exit 0
+            echo "npm ci non riuscito (tentativo $attempt), riprovo tra 20 secondi"
+            sleep 20
+          done
+          exit 1
 
       - name: Test automatici
         run: npm test
