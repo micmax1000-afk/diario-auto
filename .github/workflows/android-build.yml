@@ -84,7 +84,7 @@ jobs:
 
       - name: Build debug APK (sempre, utile per test rapidi)
         working-directory: android
-        run: ./gradlew assembleDebug
+        run: bash ../.github/scripts/gradle-retry.sh assembleDebug
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
@@ -114,7 +114,7 @@ jobs:
       - name: Build release AAB (firmato)
         if: steps.signing.outputs.available == 'true'
         working-directory: android
-        run: ./gradlew bundleRelease
+        run: bash ../.github/scripts/gradle-retry.sh bundleRelease
         env:
           RELEASE_KEYSTORE_PATH: release.keystore
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
