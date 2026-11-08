@@ -90,7 +90,8 @@ export default function Dashboard({
     const el = carouselRef.current;
     const card = el?.firstElementChild as HTMLElement | null;
     if (!el || !card) return;
-    const step = card.offsetWidth + 12;
+    // distanza tra una scheda e la successiva: la larghezza più lo spazio tra le schede (0 nella Home a tutto schermo)
+    const step = card.offsetWidth + (parseFloat(getComputedStyle(el).columnGap) || 0);
     // In arabo (da destra a sinistra) scrollLeft va verso i negativi.
     const target = (getComputedStyle(el).direction === "rtl" ? -1 : 1) * currentIndex * step;
     if (Math.abs(el.scrollLeft - target) > 4) el.scrollLeft = target;
@@ -103,7 +104,7 @@ export default function Dashboard({
       const el = carouselRef.current;
       const card = el?.firstElementChild as HTMLElement | null;
       if (!el || !card) return;
-      const i = Math.round(Math.abs(el.scrollLeft) / (card.offsetWidth + 12));
+      const i = Math.round(Math.abs(el.scrollLeft) / (card.offsetWidth + (parseFloat(getComputedStyle(el).columnGap) || 0)));
       const v = activeVehicles[i];
       if (v && v.id !== current?.id) onSelectVehicle(v.id);
     }, 120);
@@ -193,7 +194,7 @@ export default function Dashboard({
     .slice(0, 3);
 
   return (
-    <div className="home">
+    <div className="home home--hero">
       {header}
 
       <div className="home-carousel" ref={carouselRef} onScroll={handleScroll}>
