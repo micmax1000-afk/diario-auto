@@ -1559,5 +1559,24 @@
     "fileQuestion": "هل لديك ملف نسخة احتياطية؟",
     "file": "فتح الملف",
     "noDriveBackups": "لم يتم العثور على أي نسخة احتياطية في حساب Google هذا."
+  },
+  "annualReport": {
+    "button": "ملخص {{period}} بصيغة PDF",
+    "creating": "جاري إنشاء ملف PDF…",
+    "title": "ملخص سنوي",
+    "titleAll": "ملخص شامل",
+    "subtitle": "Diario Auto · تم إنشاؤه في {{date}}",
+    "chartMonths": "النفقات شهرًا بشهر",
+    "chartYears": "النفقات سنةً بعد سنة",
+    "categories": "حسب الفئة",
+    "maintenance": "أعمال الصيانة",
+    "noMaintenance": "لم يتم تسجيل أي أعمال صيانة خلال هذه الفترة.",
+    "trips": "تعويضات السفر لأغراض العمل: {{km}} · {{amount}}",
+    "page": "الصفحة {{n}} من {{total}}",
+    "failed": "لم أتمكن من إنشاء ملف PDF. حاول مرة أخرى."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "تم التحديث في {{date}}"
   }
 }

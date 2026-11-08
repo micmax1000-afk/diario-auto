@@ -1,42 +1,164 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Widget grande: auto principale, km, prossima scadenza, consumo e pulsanti -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/widget_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/widget_background"
+    android:background="@drawable/widget_bg"
     android:padding="14dp">
 
-    <TextView
-        android:id="@+id/widget_vehicle_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/widget_text"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:maxLines="1"
-        android:ellipsize="end"
-        android:text="Diario Auto" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@mipmap/ic_launcher_round"
+            android:contentDescription="@null" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/widget_vehicle_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_text"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text="@string/widget_label_vehicle" />
+
+            <TextView
+                android:id="@+id/widget_plate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_text_muted"
+                android:textSize="11sp"
+                android:maxLines="1"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/widget_km"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="@color/widget_amber"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="—" />
-
-    <TextView
-        android:id="@+id/widget_reminder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:textColor="@color/widget_text_muted"
-        android:textSize="12sp"
-        android:maxLines="2"
-        android:ellipsize="end"
-        android:visibility="gone" />
+        android:textColor="@color/widget_text"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:text="@string/widget_open_app" />
 
+    <LinearLayout
+        android:id="@+id/widget_chips"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/widget_chip_bg"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="7dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@+id/widget_deadline_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_text_muted"
+                android:textSize="10sp"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/widget_reminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_text"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/widget_consumption_box"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/widget_chip_bg"
+            android:orientation="vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="7dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="7dp">
+
+            <TextView
+                android:id="@+id/widget_consumption_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_text_muted"
+                android:textSize="10sp"
+                android:maxLines="1" />
+
+            <TextView
+                android:id="@+id/widget_consumption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/widget_text"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:maxLines="1" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/widget_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/widget_btn_fuel"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:background="@drawable/widget_btn_green"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/widget_btn_voice"
+            android:layout_width="0dp"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/widget_btn_amber"
+            android:gravity="center"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:maxLines="1" />
+    </LinearLayout>
 </LinearLayout>

@@ -36,13 +36,14 @@ import {
   scheduleUpcomingReminders,
   type NotifiableReminder,
 } from "./utils/notifications";
-import { getNumberLocale } from "./utils/locale";
+import { formatNumber, getNumberLocale } from "./utils/locale";
+import { averageConsumption, averageElectricConsumption, calculateConsumption, calculateElectricConsumption, mainFuelSource } from "./utils/calculations";
 import { formatDistance } from "./utils/settings";
 import { useAppSettings } from "./contexts/AppSettingsContext";
 import { applyTheme, getStoredThemeMode, onSystemThemeChange, resolveTheme, setStoredThemeMode, type ThemeMode } from "./utils/theme";
 import { isRtlLanguage } from "./i18n";
 import { triggerTopBackHandler, useBackButtonClose } from "./utils/backButtonStack";
-import { updateWidgetData } from "./utils/widgetData";
+import { updateDeadlinesWidget, updateWidgetData } from "./utils/widgetData";
 import VehicleCard from "./components/VehicleCard";
 import VehicleForm from "./components/VehicleForm";
 import Dashboard, { type ActivityKind } from "./components/Dashboard";
@@ -351,32 +352,67 @@ export default function App() {
   // più urgente — indipendente dalle notifiche: deve aggiornarsi anche se
   // l'utente non le ha mai attivate.
   useEffect(() => {
-    const primaryVehicle = vehicles.find((v) => !v.archived);
+    const primaryVehicle = activeOrderedVehicles[0] ?? vehicles.find((v) => !v.archived);
     if (!primaryVehicle) return;
+    const locale = getNumberLocale(i18n.language);
+    const active = vehicles.filter((v) => !v.archived);
 
-    let mostUrgentLabel: string | null = null;
-    let mostUrgentIsOverdue = false;
-    for (const reminder of reminders) {
-      if (reminder.completed) continue;
-      const vehicle = vehicles.find((v) => v.id === reminder.vehicleId);
-      if (!vehicle) continue;
-      const status = reminderStatus(reminder, vehicle.currentKm);
-      if (status === "ok") continue;
-      const isOverdue = status === "overdue";
-      // Una scadenza scaduta ha sempre priorità su una semplicemente in arrivo.
-      if (mostUrgentLabel === null || (isOverdue && !mostUrgentIsOverdue)) {
-        mostUrgentLabel = `${reminder.label} — ${isOverdue ? t("notif.overdue") : t("notif.soon")}`;
-        mostUrgentIsOverdue = isOverdue;
-      }
+    // Scadenze aperte di tutte le auto, dalla più urgente: scadute prima, poi per data o km.
+    const open = reminders
+      .filter((r) => !r.completed)
+      .map((r) => {
+        const v = active.find((x) => x.id === r.vehicleId);
+        return v ? { r, v, s: reminderStatus(r, v.currentKm) } : null;
+      })
+      .filter((x): x is NonNullable<typeof x> => x !== null && x.s !== "ok")
+      .sort((a, b) => (a.s === "overdue" ? 0 : 1) - (b.s === "overdue" ? 0 : 1) || (a.r.dueDate ?? "9999").localeCompare(b.r.dueDate ?? "9999"));
+    const status = (s: string) => t(s === "overdue" ? "home.overdue" : "home.soon");
+    const mine = open.find((x) => x.v.id === primaryVehicle.id);
+
+    const vFuel = fuelEntries.filter((e) => e.vehicleId === primaryVehicle.id);
+    const electric = primaryVehicle.fuelType === "elettrico";
+    let consumption: string | null = null;
+    if (electric) {
+      const kwh = averageElectricConsumption(calculateElectricConsumption(chargingEntries.filter((e) => e.vehicleId === primaryVehicle.id)));
+      if (kwh) consumption = `${formatNumber(kwh, 1, locale)} kWh/100`;
+    } else {
+      const kmPerL = averageConsumption(calculateConsumption(vFuel), mainFuelSource(primaryVehicle.fuelType));
+      if (kmPerL) consumption = `${formatNumber(100 / kmPerL, 1, locale)} l/100`;
     }
 
-    updateWidgetData({
+    void updateWidgetData({
       vehicleName: primaryVehicle.name,
-      km: formatDistance(primaryVehicle.currentKm, distanceUnit, getNumberLocale(i18n.language)),
-      reminderLabel: mostUrgentLabel,
+      plate: primaryVehicle.plate,
+      km: formatDistance(primaryVehicle.currentKm, distanceUnit, locale),
+      reminderLabel: mine ? `${mine.r.label} · ${status(mine.s)}` : null,
+      reminderOverdue: mine?.s === "overdue",
+      consumption,
+      voice: i18n.language.startsWith("it") && !electric,
+      labels: {
+        deadline: t("home.upcoming"),
+        consumption: t("home.consumption"),
+        noDeadline: t("home.allClear"),
+        fuel: t(electric ? "addSheet.charge" : "addSheet.fuel"),
+        voice: t("widget.voice"),
+      },
+    });
+    void updateDeadlinesWidget({
+      title: t("reminders.title"),
+      empty: t("home.allClear"),
+      items: open.slice(0, 3).map((x) => ({
+        label: active.length > 1 ? `${x.r.label} · ${x.v.name}` : x.r.label,
+        when: x.s === "overdue"
+          ? status(x.s)
+          : x.r.dueDate
+            ? new Date(x.r.dueDate).toLocaleDateString(locale, { day: "numeric", month: "short" })
+            : x.r.dueKm
+              ? formatDistance(x.r.dueKm, distanceUnit, locale)
+              : status(x.s),
+        overdue: x.s === "overdue",
+      })),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [vehicles, reminders]);
+  }, [vehicles, reminders, fuelEntries, chargingEntries, i18n.language, vehicleOrder]);
 
   // Sull'app nativa, programma anche le notifiche future per i promemoria
   // con data: a differenza del controllo sopra (solo ad app aperta), queste

@@ -1544,5 +1544,24 @@
     "fileQuestion": "Apakah kamu punya file cadangan?",
     "file": "Buka file",
     "noDriveBackups": "Tidak ditemukan cadangan apa pun di akun Google ini."
+  },
+  "annualReport": {
+    "button": "Ringkasan {{period}} dalam format PDF",
+    "creating": "Sedang membuat PDF…",
+    "title": "Ringkasan Tahunan",
+    "titleAll": "Ringkasan lengkap",
+    "subtitle": "Diario Auto · dibuat pada {{date}}",
+    "chartMonths": "Pengeluaran bulanan",
+    "chartYears": "Pengeluaran tahun demi tahun",
+    "categories": "Berdasarkan kategori",
+    "maintenance": "Pemeliharaan",
+    "noMaintenance": "Tidak ada kegiatan pemeliharaan yang tercatat selama periode ini.",
+    "trips": "Penggantian biaya perjalanan dinas: {{km}} · {{amount}}",
+    "page": "Halaman {{n}} dari {{total}}",
+    "failed": "Saya tidak berhasil membuat file PDF. Silakan coba lagi."
+  },
+  "widget": {
+    "voice": "A voce",
+    "updated": "Diperbarui pada {{date}}"
   }
 }

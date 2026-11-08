@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="widget_label_vehicle">Diario Auto</string>
+    <string name="widget_desc_vehicle">Coches, kilómetros y plazos</string>
+    <string name="widget_label_station">Gasolineras cercanas</string>
+    <string name="widget_label_deadlines">Vencimientos</string>
+    <string name="widget_open_app">Abre la aplicación para empezar</string>
+</resources>
