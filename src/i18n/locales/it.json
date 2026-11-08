@@ -75,7 +75,7 @@
     "choose": "Scegli…",
     "nameAuto": "Composto da marca e modello, puoi cambiarlo",
     "kmShort": "Km attuali *",
-    "colorTitle": "Colore",
+    "colorTitle": "Colore sfondo",
     "bodyTypeTitle": "Carrozzeria",
     "chooseBrandTitle": "Scegli la marca",
     "chooseModelTitle": "Modello {{brand}}",
@@ -85,7 +85,7 @@
     "optional": "(facoltativo)",
     "bodyTypeHint": "Scegli il tipo per vedere l'immagine dell'auto.",
     "bodyNone": "Nessuno",
-    "carColorTitle": "Colore dell'auto"
+    "carColorTitle": "Colore auto"
   },
   "fuelType": {
     "benzina": "Benzina",

@@ -75,7 +75,7 @@
     "choose": "Elegir…",
     "nameAuto": "Formado con marca y modelo, puedes cambiarlo",
     "kmShort": "Km actuales *",
-    "colorTitle": "Color",
+    "colorTitle": "Color de fondo",
     "bodyTypeTitle": "Carrocería",
     "chooseBrandTitle": "Elige la marca",
     "chooseModelTitle": "Modelo {{brand}}",
