@@ -53,7 +53,9 @@ def neutral_mask_vivid(body,a,alpha,h,s,v):
     lo,hi=(0.12,0.24) if body=='premium' else (0.17,0.30)
     b=(alpha>0.5)&(s<0.30)&(v>lo)
     M=clean(R.smooth(v,lo,hi)*b)*(alpha>0.5)
-    return M*(1-excl.zone(body,(alpha.shape[1],alpha.shape[0])))
+    size=(alpha.shape[1],alpha.shape[0])
+    ring=excl.wheel_ring(body,size)*(1-R.smooth(v,0.42,0.55))
+    return M*(1-excl.zone(body,size))*(1-ring)
 def neutral_mask(a,alpha,h,s,v):
     H,W=alpha.shape; yy,xx=np.mgrid[0:H,0:W]
     body=(alpha>0.5)&(s<0.30)&(v>0.30)
