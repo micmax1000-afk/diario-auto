@@ -86,6 +86,13 @@ vi.mock("../storage", () => ({
   setLastBackupDate: async (iso: string) => void meta.set("last-backup", iso),
 }));
 vi.mock("../../services/googleDrive/driveBackup", () => ({
+  DriveError: class DriveError extends Error {
+    reason: string;
+    constructor(reason: string, message: string) {
+      super(message);
+      this.reason = reason;
+    }
+  },
   uploadBackupToDrive: async (json: string, options: { interactive?: boolean }) => {
     if (options.interactive !== false) throw new Error("il backup automatico non deve mai chiedere l'accesso");
     if (uploadError) throw uploadError;
@@ -184,5 +191,25 @@ describe("runAutoBackupIfDue", async () => {
     expect(meta.get("last-backup")).toBe(longAgo);
     uploadError = null;
     expect(await runAutoBackupIfDue(true)).toBe("done");
+  });
+
+  it("scrive il motivo dell'errore, lo toglie dopo un successo e \"Riprova ora\" ignora la scadenza", async () => {
+    const { DriveError } = await import("../../services/googleDrive/driveBackup");
+    const { getLastAutoBackupError } = await import("../autoBackup");
+    await driveAlreadyUsed();
+    uploadError = new DriveError("not_signed_in", "x");
+    expect(await runAutoBackupIfDue(true)).toBe("failed");
+    expect(await getLastAutoBackupError()).toBe("not_signed_in");
+    uploadError = new Error("boh");
+    expect(await runAutoBackupIfDue(true)).toBe("failed");
+    expect(await getLastAutoBackupError()).toBe("other");
+    uploadError = null;
+    expect(await runAutoBackupIfDue(true)).toBe("done");
+    expect(await getLastAutoBackupError()).toBeNull();
+    // appena fatto e dati uguali: da solo non riparte, con "force" sì
+    expect(await runAutoBackupIfDue(true)).toBe("skipped");
+    const before = uploads.length;
+    expect(await runAutoBackupIfDue(true, { force: true })).toBe("done");
+    expect(uploads.length).toBe(before + 1);
   });
 });

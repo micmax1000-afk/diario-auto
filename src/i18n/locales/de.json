@@ -474,7 +474,18 @@
       "change": "Ein paar Minuten, nachdem du etwas eingegeben oder geändert hast, und wenn du die App schließt, sofern du mit dem Internet verbunden bist. Auf Drive bleiben die letzten 5 Backups gespeichert.",
       "daily": "Einmal täglich, wenn Sie die App öffnen oder schließen, sofern sich die Daten geändert haben.",
       "weekly": "Einmal pro Woche, wenn du die App öffnest oder schließt, sofern sich die Daten geändert haben."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "Die automatische Sicherung auf Drive ist fehlgeschlagen: Du musst dich erneut bei Google anmelden. Tippe einmal auf „Auf Drive speichern“.",
+      "auth_failed": "Der Zugriff auf Google ist fehlgeschlagen. Tippe auf „Auf Drive speichern“, um dich erneut anzumelden.",
+      "network": "Das Hochladen auf Drive ist fehlgeschlagen (Verbindungsproblem oder Drive ist voll). Bitte versuche es später erneut.",
+      "timeout": "Das Hochladen auf Drive hat zu lange gedauert. Versuche es noch einmal mit einer besseren Internetverbindung.",
+      "blocked": "Die Sicherung wurde aus Sicherheitsgründen angehalten: Auf dem Smartphone befinden sich deutlich weniger Daten als bei der letzten Sicherung. Falls gewünscht, tippe auf „Auf Drive speichern“.",
+      "other": "Die automatische Sicherung ist fehlgeschlagen."
+    },
+    "autoRetry": "Jetzt erneut versuchen",
+    "autoRetrying": "Speichere…",
+    "autoRetryDone": "Die Sicherung auf Drive ist abgeschlossen."
   },
   "reminderCatalog": {
     "oilFilter": "Öl und Ölfilter",

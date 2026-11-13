@@ -1,3 +1,4 @@
+import { Capacitor } from "@capacitor/core";
 import { useEffect, useRef, useState } from "react";
 import type { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +15,9 @@ import {
   setAutoBackupFrequency,
   type AutoBackupFrequency,
   getLastAutoBackupDate,
+  getLastAutoBackupError,
+  runAutoBackupIfDue,
+  type AutoBackupErrorCode,
   hasUsedDrive,
   isAutoBackupEnabled,
   markDataAsReference,
@@ -66,6 +70,9 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
   const [autoFreq, setAutoFreq] = useState<AutoBackupFrequency>("change");
   const [driveUsed, setDriveUsed] = useState(false);
   const [lastAutoBackup, setLastAutoBackup] = useState<string | null>(null);
+  const [autoError, setAutoError] = useState<AutoBackupErrorCode | null>(null);
+  const [retrying, setRetrying] = useState(false);
+  const [retryOk, setRetryOk] = useState(false);
   const [pendingRestore, setPendingRestore] = useState<{ data: BackupData; label: string; source: "file" | "drive" } | null>(null);
 
   async function refreshStatus() {
@@ -74,6 +81,7 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
     setAutoFreq(await getAutoBackupFrequency());
     setDriveUsed(await hasUsedDrive());
     setLastAutoBackup(await getLastAutoBackupDate());
+    setAutoError(await getLastAutoBackupError());
     // stima l'uso reale del quota browser (IndexedDB + resto), più accurata
     // del vecchio conteggio manuale dei soli byte in localStorage
     if (navigator.storage?.estimate) {
@@ -407,6 +415,28 @@ export default function BackupPanel({ vehicles, fuelEntries, maintenanceEntries,
             </span>
           </span>
         </label>
+        {isPro && autoEnabled && driveUsed && Capacitor.isNativePlatform() && (autoError || retryOk) && (
+          <div className={`backup-auto-status${autoError ? " is-error" : ""}`} role="status">
+            <p>{retryOk && !autoError ? t("backupPanel.autoRetryDone") : t(`backupPanel.autoError.${autoError}`)}</p>
+            {autoError && autoError !== "blocked" && (
+              <button
+                type="button"
+                className="btn btn--small"
+                disabled={retrying}
+                onClick={async () => {
+                  setRetrying(true);
+                  setRetryOk(false);
+                  const result = await runAutoBackupIfDue(true, { force: true });
+                  await refreshStatus();
+                  setRetryOk(result === "done");
+                  setRetrying(false);
+                }}
+              >
+                {retrying ? t("backupPanel.autoRetrying") : t("backupPanel.autoRetry")}
+              </button>
+            )}
+          </div>
+        )}
         {isPro && autoEnabled && (
           <div className="backup-freq">
             <span className="theme-panel__label">{t("backupPanel.freqTitle")}</span>

@@ -9,6 +9,7 @@ import com.getcapacitor.PluginMethod
 import com.getcapacitor.annotation.ActivityCallback
 import com.getcapacitor.annotation.CapacitorPlugin
 import com.google.android.gms.auth.GoogleAuthUtil
+import com.google.android.gms.auth.UserRecoverableAuthException
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -84,18 +85,47 @@ class GoogleDriveAuthPlugin : Plugin() {
         }
     }
 
-    /** GoogleAuthUtil.getToken fa una chiamata di rete: va eseguita fuori dal thread principale. */
+    /**
+     * GoogleAuthUtil.getToken fa una chiamata di rete: va eseguita fuori dal thread principale.
+     * Si risponde direttamente dal thread (Capacitor lo consente): con l'app in secondo piano
+     * `activity` può essere nulla e la risposta non arriverebbe mai, bloccando il backup automatico.
+     */
     private fun resolveToken(call: PluginCall, account: GoogleSignInAccount) {
         Thread {
             try {
-                val token = GoogleAuthUtil.getToken(context, account.account!!, "oauth2:$driveScope")
+                val android = account.account
+                if (android == null) {
+                    call.reject("Account Google non disponibile", "not_signed_in")
+                    return@Thread
+                }
+                val token = GoogleAuthUtil.getToken(context, android, "oauth2:$driveScope")
                 val ret = JSObject()
                 ret.put("accessToken", token)
                 ret.put("email", account.email ?: "")
-                activity?.runOnUiThread { call.resolve(ret) }
+                call.resolve(ret)
+            } catch (e: UserRecoverableAuthException) {
+                // Serve di nuovo il consenso dell'utente (permesso revocato o scaduto).
+                call.reject("Serve un nuovo consenso per Google Drive", "not_signed_in", e)
             } catch (e: Exception) {
-                activity?.runOnUiThread { call.reject("Impossibile ottenere l'accesso a Google Drive", "network", e) }
+                call.reject("Impossibile ottenere l'accesso a Google Drive", "network", e)
             }
+        }.start()
+    }
+
+    /** Il token in cache di Google può risultare scaduto (Drive risponde 401): lo si scarta per averne uno nuovo. */
+    @PluginMethod
+    fun clearToken(call: PluginCall) {
+        val token = call.getString("token")
+        if (token == null) {
+            call.resolve()
+            return
+        }
+        Thread {
+            try {
+                GoogleAuthUtil.clearToken(context, token)
+            } catch (e: Exception) {
+            }
+            call.resolve()
         }.start()
     }
 

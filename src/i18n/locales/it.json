@@ -474,7 +474,18 @@
       "change": "Pochi minuti dopo che inserisci o cambi qualcosa, e quando chiudi l'app, se sei connesso. Su Drive restano gli ultimi 5 backup.",
       "daily": "Una volta al giorno, quando apri o chiudi l'app, se i dati sono cambiati.",
       "weekly": "Una volta alla settimana, quando apri o chiudi l'app, se i dati sono cambiati."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "Il backup automatico su Drive non è riuscito: serve di nuovo l'accesso a Google. Tocca «Salva su Drive» una volta.",
+      "auth_failed": "L'accesso a Google non è riuscito. Tocca «Salva su Drive» per accedere di nuovo.",
+      "network": "Il caricamento su Drive non è riuscito (connessione o Drive pieno). Riprova più tardi.",
+      "timeout": "Il caricamento su Drive ci ha messo troppo. Riprova con una connessione migliore.",
+      "blocked": "Il backup è fermo per sicurezza: sul telefono ci sono molti meno dati dell'ultimo backup. Se è voluto, tocca «Salva su Drive».",
+      "other": "Il backup automatico non è riuscito."
+    },
+    "autoRetry": "Riprova ora",
+    "autoRetrying": "Sto salvando…",
+    "autoRetryDone": "Backup su Drive completato."
   },
   "reminderCatalog": {
     "oilFilter": "Olio con filtro",

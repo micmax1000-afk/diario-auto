@@ -2213,3 +2213,8 @@ body {
 .fc-bifuel__dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.4rem; }
 .fc-bifuel__note { margin: 0.4rem 0 0; font-size: 0.78rem; color: var(--text-muted); line-height: 1.35; }
 #fuelType { font-size: 0.9rem; padding-inline: 0.65rem 0.3rem; }
+
+/* Stato del backup automatico su Drive */
+.backup-auto-status { margin-top: 0.7rem; padding: 0.7rem 0.85rem; border-radius: 14px; background: var(--card); border: 1px solid var(--border); font-size: 0.86rem; line-height: 1.35; display: grid; gap: 0.55rem; }
+.backup-auto-status.is-error { background: var(--warn-soft, #fff4e2); border-color: var(--warn, #f08a1c); }
+.backup-auto-status p { margin: 0; }
