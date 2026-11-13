@@ -85,7 +85,8 @@
     "optional": "(facultatif)",
     "bodyTypeHint": "Choisissez un type pour afficher une photo de la voiture.",
     "bodyNone": "Aucun",
-    "carColorTitle": "Couleur de la voiture"
+    "carColorTitle": "Couleur de la voiture",
+    "dualFuelGroup": "Double alimentation"
   },
   "fuelType": {
     "benzina": "Essence",
@@ -175,7 +176,9 @@
     "summaryAvgPrice": "Prix moyen",
     "period": "Période",
     "partialShort": "Partiel",
-    "fullTankHint": "La consommation est calculée entre deux pleins enregistrés comme « Plein ». Lorsque vous faites le plein, n'oubliez pas d'activer « Plein »."
+    "fullTankHint": "La consommation est calculée entre deux pleins enregistrés comme « Plein ». Lorsque vous faites le plein, n'oubliez pas d'activer « Plein ».",
+    "refuelsShort": "Pleins",
+    "bifuelNote": "Avec deux carburants, on ne calcule pas la consommation en litres aux 100 km : ce qui compte, ce sont les dépenses et le coût au km."
   },
   "fuelForm": {
     "title": "Nouveau plein",

@@ -4,6 +4,8 @@ import { isoToLocalDate, localDateString, localDateToIso } from "../utils/dates"
 import { useTranslation } from "react-i18next";
 import type { FuelEntry, FuelSource, Vehicle } from "../types";
 import { generateId } from "../utils/storage";
+import { bifuelSources } from "../utils/calculations";
+import { defaultBifuelSource } from "../utils/fuelCombos";
 import { useCurrencySymbol } from "../utils/useCurrencySymbol";
 
 const SOURCE_TYPES: FuelSource[] = ["benzina", "diesel", "gpl", "metano", "elettrico"];
@@ -13,11 +15,13 @@ interface Props {
   initialEntry?: FuelEntry;
   onSave: (entry: FuelEntry) => void;
   onClose: () => void;
+  /** Rifornimenti già registrati: servono alle bifuel per proporre l'ultimo carburante usato. */
+  existingEntries?: FuelEntry[];
   /** Se presente (in modifica), mostra "Elimina" nel modulo. */
   onDelete?: () => void;
 }
 
-export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDelete }: Props) {
+export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDelete, existingEntries }: Props) {
   const { t } = useTranslation();
   const cur = useCurrencySymbol();
   const isEditing = Boolean(initialEntry);
@@ -28,7 +32,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDel
   );
   const [totalCost, setTotalCost] = useState(initialEntry ? String(initialEntry.totalCost) : "");
   const [source, setSource] = useState<FuelSource>(
-    initialEntry?.source ?? (vehicle.fuelType === "ibrido" ? "benzina" : (vehicle.fuelType as FuelSource)),
+    initialEntry?.source ?? (vehicle.secondFuel ? defaultBifuelSource(vehicle, existingEntries ?? []) : vehicle.fuelType === "ibrido" ? "benzina" : (vehicle.fuelType as FuelSource)),
   );
   const [fullTank, setFullTank] = useState(initialEntry?.fullTank ?? false);
   const [missedBefore, setMissedBefore] = useState(initialEntry?.missedBefore ?? false);
@@ -116,7 +120,7 @@ export default function FuelForm({ vehicle, initialEntry, onSave, onClose, onDel
           <div className="field">
             <label htmlFor="fuel-source">{t("fuelForm.source")}</label>
             <select id="fuel-source" value={source} onChange={(e) => setSource(e.target.value as FuelSource)}>
-              {SOURCE_TYPES.map((value) => (
+              {(bifuelSources(vehicle) ?? SOURCE_TYPES).map((value) => (
                 <option key={value} value={value}>
                   {t(`fuelType.${value}`)}
                   {value === "elettrico" ? " (kWh)" : ""}

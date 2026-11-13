@@ -85,7 +85,8 @@
     "optional": "(optional)",
     "bodyTypeHint": "Wähle einen Typ aus, um ein Bild des Autos anzuzeigen.",
     "bodyNone": "Keine",
-    "carColorTitle": "Autofarbe"
+    "carColorTitle": "Autofarbe",
+    "dualFuelGroup": "Zwei Kraftstoffe"
   },
   "fuelType": {
     "benzina": "Benzin",
@@ -175,7 +176,9 @@
     "summaryAvgPrice": "Durchschnittspreis",
     "period": "Zeitraum",
     "partialShort": "Teilweise",
-    "fullTankHint": "Der Verbrauch wird zwischen zwei als „Vollgetankt“ markierten Tankvorgängen berechnet. Wenn du tankst, denke daran, „Vollgetankt“ zu aktivieren."
+    "fullTankHint": "Der Verbrauch wird zwischen zwei als „Vollgetankt“ markierten Tankvorgängen berechnet. Wenn du tankst, denke daran, „Vollgetankt“ zu aktivieren.",
+    "refuelsShort": "Tankvorgänge",
+    "bifuelNote": "Bei zwei Kraftstoffsorten werden die Liter pro 100 km nicht berechnet: Was zählt, sind die Ausgaben und die Kosten pro km."
   },
   "fuelForm": {
     "title": "Neuer Tankvorgang",

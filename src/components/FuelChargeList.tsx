@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import type { FuelEntry, ChargingEntry, FuelType } from "../types";
+import type { FuelEntry, ChargingEntry, FuelType, FuelSource } from "../types";
 import { calculateConsumption, averageConsumption, calculateElectricConsumption, averageElectricConsumption, groupByMonth, mainFuelSource, needsFullTankHint } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -19,6 +19,8 @@ interface Props {
   chargingEntries: ChargingEntry[];
   /** Alimentazione del veicolo: per GPL e metano il consumo medio conta solo quella. */
   vehicleFuelType?: FuelType;
+  /** Doppia alimentazione: i due carburanti. Niente consumo in litri, ma costo al km e riepilogo per carburante. */
+  bifuel?: [FuelSource, FuelSource] | null;
   /** Mostra i filtri Tutti / Carburante / Elettrico (inutili per un veicolo che non si ricarica). */
   showSourceFilters?: boolean;
   onEditFuel: (entry: FuelEntry) => void;
@@ -31,6 +33,7 @@ export default function FuelChargeList({
   fuelEntries,
   chargingEntries,
   vehicleFuelType,
+  bifuel = null,
   showSourceFilters = true,
   onEditFuel,
   onEditCharging,
@@ -74,7 +77,7 @@ export default function FuelChargeList({
   // Totali del periodo scelto (prima erano sempre quelli di tutto lo storico).
   const totalCost = periodFilteredRows.reduce((sum, r) => sum + r.entry.totalCost, 0);
   const periodFuel = periodFilteredRows.filter((r) => r.kind === "fuel").map((r) => r.entry as FuelEntry);
-  const consumptionPoints = calculateConsumption(periodFuel);
+  const consumptionPoints = bifuel ? [] : calculateConsumption(periodFuel);
   const avgConsumption = averageConsumption(consumptionPoints, mainFuelSource(vehicleFuelType));
   // Solo ricariche nel periodo (auto elettrica): consumo in kWh/100 km.
   const periodCharging = periodFilteredRows.filter((r) => r.kind === "charge").map((r) => r.entry as ChargingEntry);
@@ -91,10 +94,19 @@ export default function FuelChargeList({
       : chargeQty > 0 ? `${formatMoney(periodCharging.reduce((sum, e) => sum + e.totalCost, 0) / chargeQty, 2)}/kWh` : null;
   const allKm = periodFilteredRows.map((r) => r.entry.km);
   const totalDistance = allKm.length > 1 ? Math.max(...allKm) - Math.min(...allKm) : 0;
+  // Doppia alimentazione: spesa, litri e rifornimenti di ciascun carburante.
+  const bifuelRows = (bifuel ?? []).map((src, i) => {
+    const list = periodFuel.filter((e) => e.source === src);
+    const liters = list.reduce((s, e) => s + e.liters, 0);
+    const spend = list.reduce((s, e) => s + e.totalCost, 0);
+    return { src, spend, count: list.length, price: liters > 0 ? spend / liters : null, color: i === 0 ? "var(--amber)" : "#13a086" };
+  });
+  const bifuelSpend = bifuelRows.reduce((s, r) => s + r.spend, 0);
+  const bifuelCostPerKm = totalDistance > 0 && totalCost > 0 ? totalCost / totalDistance : null;
 
   // Nessun "Pieno" da un po': il consumo non si può calcolare, lo ricordiamo.
   const hintSource = mainFuelSource(vehicleFuelType);
-  const showFullHint = needsFullTankHint(fuelEntries.filter((e) => !hintSource || e.source === hintSource));
+  const showFullHint = !bifuel && needsFullTankHint(fuelEntries.filter((e) => !hintSource || e.source === hintSource));
 
   // per calcolare il delta "+XXX km" rispetto alla voce precedente nello storico completo (non filtrato)
   const sortedByKm = [...rows].sort((a, b) => a.entry.km - b.entry.km);
@@ -119,9 +131,11 @@ export default function FuelChargeList({
         <div className="fc-sum__total">{formatMoney(totalCost)}</div>
         <div className="fc-sum__kpis">
           <div className="fc-sum__kpi">
-            <span>{t("fuel.summaryAvgConsumption", "Consumo medio")}</span>
+            <span>{bifuel ? t("summary.costPerKm") : t("fuel.summaryAvgConsumption", "Consumo medio")}</span>
             <b>
-              {avgConsumption !== null && avgConsumption > 0 ? (
+              {bifuel ? (
+                bifuelCostPerKm !== null ? formatMoney(bifuelCostPerKm, 3) : "—"
+              ) : avgConsumption !== null && avgConsumption > 0 ? (
                 <>
                   {(100 / avgConsumption).toLocaleString(locale, { maximumFractionDigits: 1 })} <small>l/100 km</small>
                 </>
@@ -141,10 +155,29 @@ export default function FuelChargeList({
             </b>
           </div>
           <div className="fc-sum__kpi">
-            <span>{t("fuel.summaryAvgPrice")}</span>
-            <b>{avgPrice ?? "—"}</b>
+            <span>{bifuel ? t("fuel.refuelsShort") : t("fuel.summaryAvgPrice")}</span>
+            <b>{bifuel ? periodFuel.length : (avgPrice ?? "—")}</b>
           </div>
         </div>
+        {bifuel && bifuelSpend > 0 && (
+          <div className="fc-bifuel">
+            <div className="fc-bifuel__bar" aria-hidden="true">
+              {bifuelRows.map((r) => (
+                <i key={r.src} style={{ width: `${(r.spend / bifuelSpend) * 100}%`, background: r.color }} />
+              ))}
+            </div>
+            {bifuelRows.map((r) => (
+              <div key={r.src} className="fc-bifuel__row">
+                <span>
+                  <span className="fc-bifuel__dot" style={{ background: r.color }} />
+                  {t(`fuelType.${r.src}`)} · {formatMoney(r.spend)} · {r.count}×
+                </span>
+                <b>{r.price !== null ? `${formatMoney(r.price, 3)}/l` : "—"}</b>
+              </div>
+            ))}
+            <p className="fc-bifuel__note">{t("fuel.bifuelNote")}</p>
+          </div>
+        )}
       </section>
 
       {showFullHint && <p className="fc-full-hint">{t("fuel.fullTankHint")}</p>}

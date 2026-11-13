@@ -85,7 +85,8 @@
     "optional": "(opsional)",
     "bodyTypeHint": "Pilih jenisnya untuk menampilkan gambar mobil.",
     "bodyNone": "Tidak ada",
-    "carColorTitle": "Warna mobil"
+    "carColorTitle": "Warna mobil",
+    "dualFuelGroup": "Bahan bakar ganda"
   },
   "fuelType": {
     "benzina": "Bensin",
@@ -175,7 +176,9 @@
     "summaryAvgPrice": "Harga rata-rata",
     "period": "Periode",
     "partialShort": "Sebagian",
-    "fullTankHint": "Konsumsi bahan bakar dihitung antara dua pengisian bahan bakar yang ditandai sebagai “Penuh”. Saat mengisi bahan bakar hingga penuh, jangan lupa untuk mengaktifkan “Penuh”."
+    "fullTankHint": "Konsumsi bahan bakar dihitung antara dua pengisian bahan bakar yang ditandai sebagai “Penuh”. Saat mengisi bahan bakar hingga penuh, jangan lupa untuk mengaktifkan “Penuh”.",
+    "refuelsShort": "Pengisian",
+    "bifuelNote": "Dengan dua jenis bahan bakar, konsumsi bahan bakar per 100 km tidak dihitung: yang penting adalah pengeluaran dan biaya per km."
   },
   "fuelForm": {
     "title": "Pengisian BBM baru",

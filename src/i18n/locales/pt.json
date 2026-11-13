@@ -85,7 +85,8 @@
     "optional": "(opcional)",
     "bodyTypeHint": "Escolha um tipo para ver uma imagem do carro.",
     "bodyNone": "Nenhum",
-    "carColorTitle": "Cor do carro"
+    "carColorTitle": "Cor do carro",
+    "dualFuelGroup": "Dois combustíveis"
   },
   "fuelType": {
     "benzina": "Gasolina",
@@ -175,7 +176,9 @@
     "summaryAvgPrice": "Preço médio",
     "period": "Período",
     "partialShort": "Parcial",
-    "fullTankHint": "O consumo é calculado entre dois reabastecimentos marcados como «Depósito cheio». Quando encher o depósito, não te esqueças de ativar a opção «Depósito cheio»."
+    "fullTankHint": "O consumo é calculado entre dois reabastecimentos marcados como «Depósito cheio». Quando encher o depósito, não te esqueças de ativar a opção «Depósito cheio».",
+    "refuelsShort": "Abastecimentos",
+    "bifuelNote": "Com dois tipos de combustível, não se calculam os litros por 100 km: o que importa é a despesa e o custo por km."
   },
   "fuelForm": {
     "title": "Novo abastecimento",

@@ -3,7 +3,7 @@
 Testi da copiare in Play Console → Presenza nello store → Scheda dello store principale.
 Limiti di Google: nome 30 caratteri, descrizione breve 80, descrizione completa 4000.
 
-Aggiornata per la versione 1.0.78 (app gratuita, senza acquisti in-app).
+Aggiornata per la versione 1.0.94 (app gratuita, senza acquisti in-app).
 
 ---
 
@@ -65,22 +65,31 @@ Con un adattatore OBD2 Bluetooth:
 • Registrazione dei viaggi ed esportazione in CSV
 L'app legge soltanto: non cancella codici e non modifica nulla nell'auto. Nell'app trovi quali adattatori funzionano.
 
+📱 WIDGET E SCORCIATOIE
+• Widget nella home: la tua auto con km e prossima scadenza, il distributore più economico, le scadenze più vicine
+• Dal widget e dall'icona dell'app: nuovo rifornimento, a voce, km e scadenze con un tocco
+
+🎨 SU MISURA
+• Scegli il colore dell'auto (10 colori, per ogni carrozzeria) e lo sfondo della scheda, oppure usa la tua foto
+• Colore principale, tema chiaro, scuro o automatico e testo più grande
+
 🚗 E POI
-• Più veicoli, ognuno con il suo colore e l'immagine della sua carrozzeria (o la tua foto)
+• Più veicoli, ognuno con la sua immagine
+• Riepilogo annuale in PDF: spese, km, costo al km, consumo e manutenzioni
 • Costo del tragitto casa-lavoro, con pedaggi e parcheggio
 • Cronologia dei chilometri
-• Esportazione CSV e backup su file o su Google Drive, anche automatico ogni settimana
+• Esportazione CSV e backup su file o su Google Drive, anche automatico; su un telefono nuovo l'app ti propone subito di ripristinarlo
 • Importazione dei rifornimenti da altre app
-• Tema chiaro e scuro, 10 lingue
+• 10 lingue
 
 🔒 I TUOI DATI RESTANO TUOI
 Nessun account e nessuna pubblicità. I dati restano sul tuo telefono: li porti con te con il backup. La posizione serve solo per trovare i distributori e non viene inviata a nessuno.
 
 Usa l'app solo a veicolo fermo, mai mentre guidi.
 
-**Note di rilascio (1.0.78)**
+**Note di rilascio (1.0.94)**
 
-Novità: rifornimento a voce, distributori vicini con i prezzi del Ministero e mappa, rimborso dei viaggi di lavoro con export PDF e CSV, immagini delle auto per tipo di carrozzeria, controlli sugli inserimenti e avviso consumi. Correzioni e miglioramenti.
+Novità: Home con la scheda dell'auto a tutto schermo, colore dell'auto e dello sfondo a scelta, nuova icona, widget e scorciatoie, riepilogo annuale in PDF, ripristino del backup al primo avvio, tema e colore principale personalizzabili. Correzioni e miglioramenti.
 
 ---
 
@@ -129,28 +138,38 @@ With a Bluetooth OBD2 adapter:
 • Trip recording and CSV export
 The app only reads: it never clears codes or changes anything in the car. The app shows which adapters work.
 
+📱 WIDGETS AND SHORTCUTS
+• Home screen widgets: your car with mileage and next deadline, the cheapest fuel station, your nearest deadlines
+• From the widget and the app icon: new refuel, mileage and deadlines in one tap
+
+🎨 YOUR WAY
+• Pick your car's colour (10 colours, for every body type) and the card background, or use your own photo
+• Accent colour, light, dark or automatic theme and larger text
+
 🚗 AND MORE
-• Multiple vehicles, each with its own colour and an image of its body type (or your photo)
+• Multiple vehicles, each with its own image
+• Yearly summary as a PDF: spending, kilometres, cost per km, consumption and services
 • Commute cost, with tolls and parking
 • Mileage history
 • In Italy: nearby fuel prices with a map, from the open data of the Italian Ministry of Enterprises and Made in Italy (IODL 2.0 licence). Diario Auto is not a government app and is not affiliated with the Ministry.
-• CSV export and backup to a file or Google Drive, also automatically every week
+• CSV export and backup to a file or Google Drive, also automatic; on a new phone the app offers to restore it right away
 • Import refuels from other apps
-• Light and dark theme, 10 languages
+• 10 languages
 
 🔒 YOUR DATA STAYS YOURS
 No account and no ads. Your data stays on your phone: take it with you using the backup.
 
 Use the app only when the vehicle is stopped, never while driving.
 
-**Release notes (1.0.78)**
+**Release notes (1.0.94)**
 
-New: business trip reimbursement with PDF and CSV export, car images by body type, input checks and consumption alerts, nearby fuel prices with a map (Italy only). Fixes and improvements.
+New: full-width car card on the Home screen, choose your car's colour and card background, new icon, widgets and shortcuts, yearly PDF summary, backup restore on first launch, customisable theme and accent colour. Fixes and improvements.
 
 ---
 
 ## Immagini
 
 Le immagini sono nella cartella `docs/play-store/`:
-- **Screenshot telefono** 1080×1920: 8 in italiano (`it-1…8`), 6 in inglese (`en-1…6`). Il rifornimento a voce e i distributori ci sono solo in italiano, perché funzionano solo con l'app in italiano o in Italia.
+- **Icona** 512×512: `icona-512.png` (nuova, senza ingranaggio).
+- **Screenshot telefono** 1080×1920: 8 in italiano (`it-1…8`), 6 in inglese (`en-1…6`), tutti con la nuova Home. Il rifornimento a voce e i distributori ci sono solo in italiano, perché funzionano solo con l'app in italiano o in Italia.
 - **Grafica in evidenza** 1024×500: `feature-it.png` e `feature-en.png`.

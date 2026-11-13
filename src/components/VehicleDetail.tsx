@@ -2,7 +2,8 @@ import { useEffect, useState, type CSSProperties } from "react";
 import { useTranslation } from "react-i18next";
 import { Capacitor } from "@capacitor/core";
 import type { Vehicle, FuelEntry, ChargingEntry, MaintenanceEntry, MaintenanceCategory, ExpenseEntry, Reminder, TripEntry } from "../types";
-import { calculateVehicleCosts, calculateConsumption, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
+import { fuelLabel } from "../utils/fuelCombos";
+import { calculateVehicleCosts, vehicleConsumptionPoints, bifuelSources, averageConsumption as averageConsumptionKmPerL, calculateElectricConsumption, averageElectricConsumption, mainFuelSource } from "../utils/calculations";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { formatDistance } from "../utils/settings";
 import { useAppSettings } from "../contexts/AppSettingsContext";
@@ -279,7 +280,7 @@ export default function VehicleDetail({
         vehicleName: vehicle.name,
         vehiclePlate: vehicle.plate,
         vehicleYear: vehicle.year,
-        fuelTypeLabel: t(`fuelType.${vehicle.fuelType}`),
+        fuelTypeLabel: fuelLabel(t, vehicle),
         currentKmLabel: formatDistance(vehicle.currentKm, distanceUnit, locale),
         totalCostLabel: formatMoney(sorted.reduce((sum, e) => sum + e.cost, 0)),
         generatedOnLabel: new Date().toLocaleDateString(locale),
@@ -390,7 +391,7 @@ export default function VehicleDetail({
         subtitle: tp("annualReport.subtitle", { date: new Date().toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" }) }),
         periodLabel: year !== null ? String(year) : tp("summary.periodAlways"),
         vehicleName: vehicle.name,
-        vehicleInfo: [vehicle.plate, tp(`fuelType.${vehicle.fuelType}`), formatDistance(vehicle.currentKm, distanceUnit, locale)].filter(Boolean).join(" · "),
+        vehicleInfo: [vehicle.plate, fuelLabel(tp, vehicle), formatDistance(vehicle.currentKm, distanceUnit, locale)].filter(Boolean).join(" · "),
         vehicleImage: carPng ? { bytes: carPng, type: "png" } : undefined,
         icon: iconBytes,
         kpis: [
@@ -466,7 +467,7 @@ export default function VehicleDetail({
   // Consumo reale da pieno a pieno (con i parziali in mezzo), lo stesso calcolo
   // usato nel resto dell'app; per le elettriche in kWh/100 km dalle ricariche.
   const isElectric = vehicle.fuelType === "elettrico";
-  const fuelPoints = calculateConsumption(filteredFuel);
+  const fuelPoints = vehicleConsumptionPoints(filteredFuel, vehicle);
   const electricPoints = calculateElectricConsumption(filteredCharging);
   const kmPerL = averageConsumptionKmPerL(fuelPoints, mainFuelSource(vehicle.fuelType));
   const averageConsumption = kmPerL ? 100 / kmPerL : null;
@@ -534,6 +535,7 @@ export default function VehicleDetail({
               fuelEntries={fuelEntries}
               chargingEntries={chargingEntries}
               vehicleFuelType={vehicle.fuelType}
+              bifuel={bifuelSources(vehicle)}
               showSourceFilters={canCharge && showFuelButton}
               onEditFuel={setEditingFuel}
               onEditCharging={setEditingCharging}
@@ -837,6 +839,7 @@ export default function VehicleDetail({
       {showFuelForm && (
         <FuelForm
           vehicle={vehicle}
+          existingEntries={fuelEntries}
           onSave={(entry) => {
             onSaveFuel(entry);
             setShowFuelForm(false);
@@ -848,6 +851,7 @@ export default function VehicleDetail({
       {editingFuel && (
         <FuelForm
           vehicle={vehicle}
+          existingEntries={fuelEntries}
           initialEntry={editingFuel}
           onSave={(entry) => {
             onSaveFuel(entry);

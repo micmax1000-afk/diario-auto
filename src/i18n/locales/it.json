@@ -85,7 +85,8 @@
     "optional": "(facoltativo)",
     "bodyTypeHint": "Scegli il tipo per vedere l'immagine dell'auto.",
     "bodyNone": "Nessuno",
-    "carColorTitle": "Colore auto"
+    "carColorTitle": "Colore auto",
+    "dualFuelGroup": "Doppia alimentazione"
   },
   "fuelType": {
     "benzina": "Benzina",
@@ -175,7 +176,9 @@
     "summaryAvgPrice": "Prezzo medio",
     "period": "Periodo",
     "partialShort": "Parziale",
-    "fullTankHint": "Il consumo si calcola tra due rifornimenti segnati come «Pieno». Quando fai il pieno, ricordati di attivare «Pieno»."
+    "fullTankHint": "Il consumo si calcola tra due rifornimenti segnati come «Pieno». Quando fai il pieno, ricordati di attivare «Pieno».",
+    "refuelsShort": "Rifornimenti",
+    "bifuelNote": "Con due carburanti i litri ogni 100 km non si calcolano: contano la spesa e il costo al km."
   },
   "fuelForm": {
     "title": "Nuovo rifornimento",
