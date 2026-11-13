@@ -37,7 +37,7 @@ import {
   type NotifiableReminder,
 } from "./utils/notifications";
 import { formatNumber, getNumberLocale } from "./utils/locale";
-import { averageConsumption, averageElectricConsumption, calculateConsumption, calculateElectricConsumption, mainFuelSource } from "./utils/calculations";
+import { averageConsumption, averageElectricConsumption, vehicleConsumptionPoints, calculateElectricConsumption, mainFuelSource } from "./utils/calculations";
 import { formatDistance } from "./utils/settings";
 import { useAppSettings } from "./contexts/AppSettingsContext";
 import { APPEARANCE_EVENT, applyTheme, getStoredAccent, getStoredThemeMode, onSystemThemeChange, resolveTheme, setStoredThemeMode, type ThemeMode } from "./utils/theme";
@@ -383,7 +383,7 @@ export default function App() {
       const kwh = averageElectricConsumption(calculateElectricConsumption(chargingEntries.filter((e) => e.vehicleId === primaryVehicle.id)));
       if (kwh) consumption = `${formatNumber(kwh, 1, locale)} kWh/100`;
     } else {
-      const kmPerL = averageConsumption(calculateConsumption(vFuel), mainFuelSource(primaryVehicle.fuelType));
+      const kmPerL = averageConsumption(vehicleConsumptionPoints(vFuel, primaryVehicle), mainFuelSource(primaryVehicle.fuelType));
       if (kmPerL) consumption = `${formatNumber(100 / kmPerL, 1, locale)} l/100`;
     }
 

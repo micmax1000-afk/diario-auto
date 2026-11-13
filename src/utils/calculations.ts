@@ -1,4 +1,4 @@
-import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, FuelSource, FuelType } from "../types";
+import type { FuelEntry, ChargingEntry, MaintenanceEntry, ExpenseEntry, FuelSource, FuelType, Vehicle } from "../types";
 
 export interface ConsumptionPoint {
   fromKm: number;
@@ -109,6 +109,26 @@ export function averageElectricConsumption(points: ElectricConsumptionPoint[]): 
  */
 export function mainFuelSource(fuelType: FuelType | undefined): FuelSource | undefined {
   return fuelType === "gpl" || fuelType === "metano" ? fuelType : undefined;
+}
+
+/** Auto a doppia alimentazione (es. benzina + GPL). */
+export function isBifuel(v: { secondFuel?: FuelSource } | undefined): boolean {
+  return !!v?.secondFuel;
+}
+
+/** I due carburanti di una bifuel, nell'ordine [primo, secondo]; altrimenti null. */
+export function bifuelSources(v: Pick<Vehicle, "fuelType" | "secondFuel"> | undefined): [FuelSource, FuelSource] | null {
+  if (!v?.secondFuel || v.fuelType === "elettrico" || v.fuelType === "ibrido") return null;
+  return [v.fuelType as FuelSource, v.secondFuel];
+}
+
+/**
+ * Consumo da pieno a pieno per un veicolo. Con due serbatoi non si sa quanti km
+ * siano stati fatti con ciascun carburante: il numero sarebbe sbagliato, quindi
+ * per le bifuel non si calcola (restano precisi spesa e costo al km).
+ */
+export function vehicleConsumptionPoints(entries: FuelEntry[], v: { secondFuel?: FuelSource } | undefined): ConsumptionPoint[] {
+  return isBifuel(v) ? [] : calculateConsumption(entries);
 }
 
 export function averageConsumption(points: ConsumptionPoint[], source?: FuelSource): number | null {

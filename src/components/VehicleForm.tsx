@@ -2,12 +2,13 @@ import { useState } from "react";
 import { VEHICLE_COLORS } from "../utils/vehicleColor";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
-import type { Vehicle, FuelType, BodyType, CarColor } from "../types";
+import type { Vehicle, FuelType, FuelSource, BodyType, CarColor } from "../types";
 import { generateId } from "../utils/storage";
 import { CAR_CATALOG, OTHER_BRAND, OTHER_MODEL, guessBrandModel } from "../utils/carCatalog";
 import { getNumberLocale } from "../utils/locale";
 import { useBackButtonClose } from "../utils/backButtonStack";
 import PhotoPicker from "./PhotoPicker";
+import { FUEL_COMBOS, comboValue, fuelLabel, fuelSelectValue, parseFuelSelect } from "../utils/fuelCombos";
 import { availableCarColors, carImage, resolveCarColor } from "../utils/carImages";
 import { BODY_TYPES, shade } from "../utils/bodyTypes";
 
@@ -34,6 +35,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
   const [nameAuto, setNameAuto] = useState(false);
   const [plate, setPlate] = useState(initialVehicle?.plate ?? "");
   const [fuelType, setFuelType] = useState<FuelType>(initialVehicle?.fuelType ?? "benzina");
+  const [secondFuel, setSecondFuel] = useState<FuelSource | undefined>(initialVehicle?.secondFuel);
   const [currentKm, setCurrentKm] = useState(initialVehicle ? String(initialVehicle.currentKm) : "");
   const [year, setYear] = useState(initialVehicle?.year ? String(initialVehicle.year) : "");
   const [notes, setNotes] = useState(initialVehicle?.notes ?? "");
@@ -106,6 +108,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
       name: name.trim(),
       plate: plate.trim() || undefined,
       fuelType,
+      secondFuel,
       currentKm: Math.round(kmValue),
       year: year.trim() ? Number(year) : undefined,
       notes: notes.trim() || undefined,
@@ -153,7 +156,7 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
               <span className="vform-hero__name">{name.trim() || t("vehicleForm.newVehicle")}</span>
               {plate.trim() && <span className="vform-hero__plate">{plate.trim()}</span>}
               <span className="vform-hero__km">
-                {currentKm.trim() && !Number.isNaN(kmNumber) ? `${kmNumber.toLocaleString(locale)} km` : "— km"} · {t(`fuelType.${fuelType}`)}
+                {currentKm.trim() && !Number.isNaN(kmNumber) ? `${kmNumber.toLocaleString(locale)} km` : "— km"} · {fuelLabel(t, { fuelType, secondFuel })}
               </span>
             </span>
           </div>
@@ -236,12 +239,27 @@ export default function VehicleForm({ initialVehicle, autoColor, onSave, onClose
           <div className="field-row">
             <div className="field">
               <label htmlFor="fuelType">{t("vehicleForm.fuelType")}</label>
-              <select id="fuelType" value={fuelType} onChange={(e) => setFuelType(e.target.value as FuelType)}>
+              <select
+                id="fuelType"
+                value={fuelSelectValue(fuelType, secondFuel)}
+                onChange={(e) => {
+                  const p = parseFuelSelect(e.target.value);
+                  setFuelType(p.fuelType);
+                  setSecondFuel(p.secondFuel);
+                }}
+              >
                 {FUEL_TYPES.map((value) => (
                   <option key={value} value={value}>
                     {t(`fuelType.${value}`)}
                   </option>
                 ))}
+                <optgroup label={t("vehicleForm.dualFuelGroup")}>
+                  {FUEL_COMBOS.map((c) => (
+                    <option key={comboValue(c)} value={comboValue(c)}>
+                      {t(`fuelType.${c.first}`)} + {t(`fuelType.${c.second}`)}
+                    </option>
+                  ))}
+                </optgroup>
               </select>
             </div>
 

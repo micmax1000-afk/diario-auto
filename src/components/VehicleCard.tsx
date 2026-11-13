@@ -1,3 +1,4 @@
+import { fuelLabel } from "../utils/fuelCombos";
 import { useTranslation } from "react-i18next";
 import type { Vehicle } from "../types";
 import { getNumberLocale } from "../utils/locale";
@@ -40,7 +41,7 @@ export default function VehicleCard({ vehicle, onOpen, onEdit, onQuickKm, onDele
       <dl className="vehicle-card__facts">
         <div className="vehicle-card__fact">
           <dt>{t("vehicleCard.fuelType")}</dt>
-          <dd>{t(`fuelType.${vehicle.fuelType}`)}</dd>
+          <dd>{fuelLabel(t, vehicle)}</dd>
         </div>
         {vehicle.plate && (
           <div className="vehicle-card__fact">

@@ -9,7 +9,7 @@ import CategoryIcon from "./CategoryIcon";
 import { vehicleVisual } from "../utils/carImages";
 import { shade } from "../utils/bodyTypes";
 import {
-  calculateConsumption,
+  vehicleConsumptionPoints,
   averageConsumption,
   calculateElectricConsumption,
   averageElectricConsumption,
@@ -164,12 +164,12 @@ export default function Dashboard({
   const per100 = electric
     ? averageElectricConsumption(calculateElectricConsumption(vCharge))
     : (() => {
-        const kmPerL = averageConsumption(calculateConsumption(vFuel), mainFuelSource(current.fuelType));
+        const kmPerL = averageConsumption(vehicleConsumptionPoints(vFuel, current), mainFuelSource(current.fuelType));
         return kmPerL ? 100 / kmPerL : null;
       })();
   const alert = electric
     ? null
-    : consumptionAlert(calculateConsumption(vFuel).filter((p) => !mainFuelSource(current.fuelType) || p.source === mainFuelSource(current.fuelType)));
+    : consumptionAlert(vehicleConsumptionPoints(vFuel, current).filter((p) => !mainFuelSource(current.fuelType) || p.source === mainFuelSource(current.fuelType)));
   const alertKey = `consumption-alert-${current.id}`;
   const yearAgo = Date.now() - YEAR_MS;
   const inYear = (d: string) => new Date(d).getTime() >= yearAgo;

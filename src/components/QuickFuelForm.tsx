@@ -4,7 +4,8 @@ import { useTranslation } from "react-i18next";
 import type { FuelEntry, FuelSource, Vehicle } from "../types";
 import { checkFuelEntry, type EntryWarning } from "../utils/entryChecks";
 import { generateId } from "../utils/storage";
-import { calculateConsumption, averageConsumption, suspectMissedFill } from "../utils/calculations";
+import { calculateConsumption, averageConsumption, suspectMissedFill, bifuelSources } from "../utils/calculations";
+import { defaultBifuelSource } from "../utils/fuelCombos";
 import { formatNumber, getNumberLocale } from "../utils/locale";
 import { useAppSettings } from "../contexts/AppSettingsContext";
 import { formatCurrency, getCurrencySymbol } from "../utils/settings";
@@ -29,7 +30,8 @@ interface Props {
 
 // Mappa il tipo di alimentazione del veicolo alla fonte rifornimento più
 // probabile, per pre-compilare senza dover scegliere (velocità è l'obiettivo).
-function defaultSource(vehicle: Vehicle): FuelSource {
+function defaultSource(vehicle: Vehicle, entries: FuelEntry[]): FuelSource {
+  if (vehicle.secondFuel) return defaultBifuelSource(vehicle, entries);
   if (vehicle.fuelType === "benzina" || vehicle.fuelType === "diesel" || vehicle.fuelType === "gpl" || vehicle.fuelType === "metano") {
     return vehicle.fuelType;
   }
@@ -46,7 +48,9 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
   const cur = useCurrencySymbol();
   const locale = getNumberLocale(i18n.language);
   const { currency, formatMoney } = useAppSettings();
-  const source = defaultSource(vehicle);
+  const pair = bifuelSources(vehicle);
+  const [pickedSource, setPickedSource] = useState<FuelSource | null>(null);
+  const source = pickedSource ?? defaultSource(vehicle, existingEntries);
   const [pricePerUnit, setPricePerUnit] = useState(prefill ? String(Math.round(prefill.pricePerUnit * 1000) / 1000) : "");
   const [totalCost, setTotalCost] = useState(prefill?.totalCost ? String(Math.round(prefill.totalCost * 100) / 100) : "");
   const [fullTank, setFullTank] = useState(prefill?.fullTank ?? false);
@@ -86,7 +90,7 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
       fullTank,
       missedBefore,
     };
-    newAvgConsumption = averageConsumption(calculateConsumption([...existingEntries, previewEntry]), source);
+    newAvgConsumption = pair ? null : averageConsumption(calculateConsumption([...existingEntries, previewEntry]), source);
   }
 
   function handleSubmit(e: FormEvent | null, confirmed = false) {
@@ -153,6 +157,16 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
           {kmUnchanged && <p className="quick-entry-card__km-hint">{t("quickEntry.kmUnchangedHint")}</p>}
         </div>
 
+        {pair && (
+          <div className="fuel-seg" role="radiogroup" aria-label={t("fuelForm.source")}>
+            {pair.map((value) => (
+              <button key={value} type="button" role="radio" aria-checked={source === value} className={source === value ? "is-on" : ""} onClick={() => setPickedSource(value)}>
+                {t(`fuelType.${value}`)}
+              </button>
+            ))}
+          </div>
+        )}
+
         <p className="quick-entry-page__section-label">{t("quickEntry.enterOnlyFuelData")}</p>
 
         <div className="quick-entry-inputs">
@@ -217,10 +231,10 @@ export default function QuickFuelForm({ vehicle, vehicles, colors, urgentCounts,
             <span>{t("quickEntry.costPer100Km")}</span>
             <strong>{costPerKm !== null ? formatMoney(costPerKm * 100) : "—"}</strong>
           </div>
-          <div className="quick-entry-calc__row">
+          {!pair && <div className="quick-entry-calc__row">
             <span>{t("quickEntry.newAvgConsumption")}</span>
             <strong>{newAvgConsumption !== null && newAvgConsumption > 0 ? `${formatNumber(100 / newAvgConsumption, 1, locale)} l/100km` : "—"}</strong>
-          </div>
+          </div>}
         </div>
 
         {error && <p className="form-error">{error}</p>}

@@ -24,6 +24,7 @@ export interface Vehicle extends SyncFields {
   year?: number;
   notes?: string;
   bodyType?: BodyType; // categoria di carrozzeria: se manca il veicolo non mostra nessuna immagine
+  secondFuel?: FuelSource; // doppia alimentazione (es. benzina + GPL): il secondo carburante; fuelType resta il primo
   carColor?: CarColor; // colore della carrozzeria nell'immagine; se manca è grigio scuro
   photo?: string; // foto dell'auto (data URL JPEG, ritagliata 16:9 e compressa), mostrata nella card
   color?: string; // colore identificativo (hex) scelto dall'utente; se manca ne viene assegnato uno in automatico

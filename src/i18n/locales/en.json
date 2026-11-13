@@ -85,7 +85,8 @@
     "optional": "(optional)",
     "bodyTypeHint": "Pick a type to show a picture of the car.",
     "bodyNone": "None",
-    "carColorTitle": "Car color"
+    "carColorTitle": "Car color",
+    "dualFuelGroup": "Dual fuel"
   },
   "fuelType": {
     "benzina": "Gasoline",
@@ -175,7 +176,9 @@
     "summaryAvgPrice": "Average price",
     "period": "Period",
     "partialShort": "Partial",
-    "fullTankHint": "Fuel consumption is calculated between two refuelling events marked as ‘Full tank’. When you fill up, remember to select ‘Full tank’."
+    "fullTankHint": "Fuel consumption is calculated between two refuelling events marked as ‘Full tank’. When you fill up, remember to select ‘Full tank’.",
+    "refuelsShort": "Refuels",
+    "bifuelNote": "With two fuels, litres per 100 km can't be worked out: spending and cost per km are what count."
   },
   "fuelForm": {
     "title": "New refuel",

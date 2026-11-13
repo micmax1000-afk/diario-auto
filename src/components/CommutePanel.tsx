@@ -98,7 +98,8 @@ export default function CommutePanel({ vehicle, fuelEntries, chargingEntries, ma
     if (kWhPer100 && kWhPer100 > 0) realConsumption = { kmPerUnit: 100 / kWhPer100, count: points.length };
   } else {
     const source = mainFuelSource(vehicle.fuelType);
-    const points = calculateConsumption(fuelEntries).filter((p) => !source || p.source === source);
+    // Doppia alimentazione: il consumo reale non è calcolabile, si usa la stima scritta a mano.
+    const points = vehicle.secondFuel ? [] : calculateConsumption(fuelEntries).filter((p) => !source || p.source === source);
     const kmPerLiter = averageConsumption(points); // già filtrati per alimentazione
     if (kmPerLiter && kmPerLiter > 0) realConsumption = { kmPerUnit: kmPerLiter, count: points.length };
   }
