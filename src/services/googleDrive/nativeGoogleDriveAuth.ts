@@ -18,6 +18,8 @@ export interface NativeDriveToken {
 export interface GoogleDriveAuthPlugin {
   /** interactive: false = non aprire mai l'accesso Google; se serve, errore "not_signed_in". */
   getAccessToken(options?: { interactive?: boolean }): Promise<NativeDriveToken>;
+  /** Scarta un token scaduto dalla cache di Google. */
+  clearToken(options: { token: string }): Promise<void>;
   signOut(): Promise<void>;
 }
 

@@ -474,7 +474,18 @@
       "change": "A few minutes after you enter or change something, and when you close the app, provided you’re connected to the internet. The last five backups are stored on Drive.",
       "daily": "Once a day, when you open or close the app, if the data has changed.",
       "weekly": "Once a week, when you open or close the app, if the data has changed."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "The automatic backup to Drive failed: you need to sign in to Google again. Tap \"Save to Drive\" once.",
+      "auth_failed": "Signing in to Google failed. Tap \"Save to Drive\" to try again.",
+      "network": "The upload to Drive failed (connection issue or Drive is full). Please try again later.",
+      "timeout": "Uploading to Drive took too long. Please try again with a better connection.",
+      "blocked": "The backup has been paused for security reasons: there is much less data on your phone than in the last backup. If this is what you intended, tap \"Save to Drive\".",
+      "other": "The automatic backup failed."
+    },
+    "autoRetry": "Try again now",
+    "autoRetrying": "Saving…",
+    "autoRetryDone": "Backup to Drive completed."
   },
   "reminderCatalog": {
     "oilFilter": "Oil and filter",

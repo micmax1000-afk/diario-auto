@@ -474,7 +474,18 @@
       "change": "Poucos minutos depois de introduzires ou alterares algo e quando fechares a aplicação, se estiveres ligado à Internet. No Drive ficam guardadas as últimas 5 cópias de segurança.",
       "daily": "Uma vez por dia, quando abrires ou fechares a aplicação, caso os dados tenham sido alterados.",
       "weekly": "Uma vez por semana, quando abrires ou fechares a aplicação, se os dados tiverem mudado."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "A cópia de segurança automática no Drive não foi bem-sucedida: é necessário iniciar sessão no Google novamente. Toque uma vez em «Guardar no Drive».",
+      "auth_failed": "Não foi possível aceder ao Google. Toque em «Guardar no Drive» para tentar novamente.",
+      "network": "Não foi possível carregar no Drive (problema de ligação ou espaço no Drive esgotado). Tente novamente mais tarde.",
+      "timeout": "O carregamento no Drive demorou demasiado tempo. Tente novamente com uma ligação melhor.",
+      "blocked": "A cópia de segurança está suspensa por motivos de segurança: há muito menos dados no telemóvel do que na última cópia de segurança. Se for intencional, toque em «Guardar no Drive».",
+      "other": "A cópia de segurança automática não foi bem-sucedida."
+    },
+    "autoRetry": "Tentar novamente agora",
+    "autoRetrying": "A guardar…",
+    "autoRetryDone": "A cópia de segurança no Drive foi concluída."
   },
   "reminderCatalog": {
     "oilFilter": "Óleo com filtro",

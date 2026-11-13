@@ -474,7 +474,18 @@
       "change": "Quelques minutes après avoir saisi ou modifié quelque chose, et lorsque vous fermez l'application, si vous êtes connecté à Internet. Les 5 dernières sauvegardes sont conservées sur Drive.",
       "daily": "Une fois par jour, lorsque vous ouvrez ou fermez l'application, si les données ont changé.",
       "weekly": "Une fois par semaine, lorsque vous ouvrez ou fermez l'application, si les données ont changé."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "La sauvegarde automatique sur Drive a échoué : vous devez vous reconnecter à Google. Appuyez une fois sur « Enregistrer sur Drive ».",
+      "auth_failed": "L'accès à Google a échoué. Appuyez sur « Enregistrer sur Drive » pour réessayer.",
+      "network": "Le téléchargement sur Drive a échoué (problème de connexion ou espace de stockage insuffisant). Veuillez réessayer plus tard.",
+      "timeout": "Le chargement sur Drive a pris trop de temps. Réessayez avec une meilleure connexion.",
+      "blocked": "La sauvegarde est suspendue pour des raisons de sécurité : il y a beaucoup moins de données sur le téléphone que lors de la dernière sauvegarde. Si vous le souhaitez, appuyez sur « Enregistrer sur Drive ».",
+      "other": "La sauvegarde automatique a échoué."
+    },
+    "autoRetry": "Réessayer maintenant",
+    "autoRetrying": "Enregistrement…",
+    "autoRetryDone": "La sauvegarde sur Drive est terminée."
   },
   "reminderCatalog": {
     "oilFilter": "Huile et filtre",

@@ -474,7 +474,18 @@
       "change": "Unos minutos después de introducir o modificar algo, y al cerrar la aplicación, si estás conectado a Internet. En Drive se guardan las últimas 5 copias de seguridad.",
       "daily": "Una vez al día, al abrir o cerrar la aplicación, si los datos han cambiado.",
       "weekly": "Una vez a la semana, al abrir o cerrar la aplicación, si los datos han cambiado."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "La copia de seguridad automática en Drive no se ha realizado correctamente: es necesario volver a iniciar sesión en Google. Pulsa una vez en «Guardar en Drive».",
+      "auth_failed": "No se ha podido acceder a Google. Toca «Guardar en Drive» para volver a intentarlo.",
+      "network": "No se ha podido subir el archivo a Drive (problema de conexión o espacio insuficiente en Drive). Inténtalo más tarde.",
+      "timeout": "La subida a Drive ha tardado demasiado. Inténtalo de nuevo con una conexión mejor.",
+      "blocked": "La copia de seguridad se ha detenido por motivos de seguridad: en el teléfono hay muchos menos datos que en la última copia de seguridad. Si lo deseas, pulsa «Guardar en Drive».",
+      "other": "La copia de seguridad automática no se ha realizado correctamente."
+    },
+    "autoRetry": "Intentarlo de nuevo ahora",
+    "autoRetrying": "Guardando…",
+    "autoRetryDone": "La copia de seguridad en Drive se ha completado."
   },
   "reminderCatalog": {
     "oilFilter": "Aceite con filtro",

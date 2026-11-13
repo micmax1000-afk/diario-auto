@@ -16,7 +16,7 @@
 import { Capacitor } from "@capacitor/core";
 import { getMeta, setMeta } from "./db";
 import { buildBackup, getLastBackupDate, setLastBackupDate, type BackupData } from "./storage";
-import { uploadBackupToDrive } from "../services/googleDrive/driveBackup";
+import { DriveError, uploadBackupToDrive } from "../services/googleDrive/driveBackup";
 
 export const AUTO_BACKUP_DAYS = 7;
 
@@ -26,6 +26,9 @@ const BASELINE_KEY = "autoBackup:baseline";
 const DRIVE_USED_KEY = "drive:used";
 const FREQ_KEY = "autoBackup:freq";
 const HASH_KEY = "autoBackup:hash";
+const ERROR_KEY = "autoBackup:error";
+/** Tempo massimo per un backup automatico: oltre, si considera fallito (altrimenti un caricamento bloccato fermerebbe tutti i successivi). */
+const AUTO_BACKUP_TIMEOUT_MS = 90_000;
 
 /** Quando salvare su Drive. "change": qualche minuto dopo ogni modifica (al massimo uno ogni CHANGE_MIN_MINUTES). */
 export type AutoBackupFrequency = "change" | "daily" | "weekly";
@@ -143,10 +146,43 @@ export async function markDataAsReference(data: BackupData, viaDrive: boolean): 
 
 export type AutoBackupResult = "skipped" | "done" | "blocked" | "failed";
 
+/** Perché l'ultimo tentativo non è riuscito: serve a spiegarlo all'utente nel pannello Backup. */
+export type AutoBackupErrorCode = "not_signed_in" | "auth_failed" | "network" | "timeout" | "blocked" | "other";
+
+export async function getLastAutoBackupError(): Promise<AutoBackupErrorCode | null> {
+  const v = await getMeta(ERROR_KEY);
+  return v === "not_signed_in" || v === "auth_failed" || v === "network" || v === "timeout" || v === "blocked" || v === "other" ? v : null;
+}
+
+function errorCodeOf(err: unknown): AutoBackupErrorCode {
+  if (err instanceof DriveError) {
+    if (err.reason === "not_signed_in") return "not_signed_in";
+    if (err.reason === "network") return "network";
+    return "auth_failed";
+  }
+  return err instanceof Error && err.message === "timeout" ? "timeout" : "other";
+}
+
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error("timeout")), ms);
+    promise.then(
+      (v) => {
+        clearTimeout(timer);
+        resolve(v);
+      },
+      (e) => {
+        clearTimeout(timer);
+        reject(e);
+      },
+    );
+  });
+}
+
 let running = false;
 
 /** Controlla le condizioni e, se serve, carica il backup su Drive senza chiedere nulla all'utente. */
-export async function runAutoBackupIfDue(isPro: boolean): Promise<AutoBackupResult> {
+export async function runAutoBackupIfDue(isPro: boolean, options: { force?: boolean } = {}): Promise<AutoBackupResult> {
   if (running || !isPro || !Capacitor.isNativePlatform()) return "skipped";
   if (typeof navigator !== "undefined" && navigator.onLine === false) return "skipped";
   running = true;
@@ -155,18 +191,24 @@ export async function runAutoBackupIfDue(isPro: boolean): Promise<AutoBackupResu
     const backup = await buildBackup();
     const hash = backupFingerprint(backup);
     const changed = hash !== (await getMeta(HASH_KEY));
-    if (!shouldAutoBackup(await getAutoBackupFrequency(), await getLastAutoBackupDate(), await getLastBackupDate(), changed)) return "skipped";
-    if (looksLikeDataLoss(await getBaseline(), countBackup(backup))) return "blocked";
+    if (!options.force && !shouldAutoBackup(await getAutoBackupFrequency(), await getLastAutoBackupDate(), await getLastBackupDate(), changed)) return "skipped";
+    if (looksLikeDataLoss(await getBaseline(), countBackup(backup))) {
+      await setMeta(ERROR_KEY, "blocked");
+      return "blocked";
+    }
 
-    await uploadBackupToDrive(JSON.stringify(backup), { interactive: false });
+    await withTimeout(uploadBackupToDrive(JSON.stringify(backup), { interactive: false }), AUTO_BACKUP_TIMEOUT_MS);
     const now = new Date().toISOString();
     await setMeta(LAST_AUTO_KEY, now);
     await setLastBackupDate(now);
     await setMeta(BASELINE_KEY, JSON.stringify(countBackup(backup)));
     await setMeta(HASH_KEY, hash);
+    await setMeta(ERROR_KEY, "");
     return "done";
-  } catch {
-    // Offline, accesso Google revocato, Drive pieno...: si riprova alla prossima apertura.
+  } catch (err) {
+    // Offline, accesso Google revocato, Drive pieno...: si riprova alla prossima apertura
+    // e il motivo resta scritto, così il pannello Backup può spiegarlo.
+    await setMeta(ERROR_KEY, errorCodeOf(err)).catch(() => {});
     return "failed";
   } finally {
     running = false;

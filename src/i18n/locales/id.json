@@ -474,7 +474,18 @@
       "change": "Beberapa menit setelah Anda memasukkan atau mengubah sesuatu, dan saat Anda menutup aplikasi, asalkan Anda terhubung ke internet. Di Drive, 5 cadangan terakhir akan tetap tersimpan.",
       "daily": "Sekali sehari, saat Anda membuka atau menutup aplikasi, jika ada perubahan data.",
       "weekly": "Sekali seminggu, saat Anda membuka atau menutup aplikasi, jika datanya telah berubah."
-    }
+    },
+    "autoError": {
+      "not_signed_in": "Pencadangan otomatis ke Drive gagal: Anda perlu masuk ke Google lagi. Ketuk «Simpan ke Drive» sekali.",
+      "auth_failed": "Akses ke Google gagal. Ketuk «Simpan ke Drive» untuk mencoba lagi.",
+      "network": "Pengunggahan ke Drive gagal (masalah koneksi atau ruang penyimpanan Drive penuh). Silakan coba lagi nanti.",
+      "timeout": "Proses pengunggahan ke Drive memakan waktu terlalu lama. Coba lagi dengan koneksi internet yang lebih baik.",
+      "blocked": "Pencadangan dihentikan demi keamanan: data di ponsel jauh lebih sedikit daripada pada pencadangan terakhir. Jika memang diinginkan, ketuk «Simpan ke Drive».",
+      "other": "Pencadangan otomatis gagal."
+    },
+    "autoRetry": "Coba lagi sekarang",
+    "autoRetrying": "Sedang menyimpan…",
+    "autoRetryDone": "Pencadangan ke Drive telah selesai."
   },
   "reminderCatalog": {
     "oilFilter": "Oli dan filter oli",

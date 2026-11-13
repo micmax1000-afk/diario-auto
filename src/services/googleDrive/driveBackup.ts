@@ -30,9 +30,12 @@ export type DriveErrorReason = "not_configured" | "script_failed" | "cancelled" 
 
 export class DriveError extends Error {
   reason: DriveErrorReason;
-  constructor(reason: DriveErrorReason, message: string) {
+  /** Codice HTTP di Drive, se l'errore viene da una sua risposta. */
+  status?: number;
+  constructor(reason: DriveErrorReason, message: string, status?: number) {
     super(message);
     this.reason = reason;
+    this.status = status;
   }
 }
 
@@ -112,15 +115,22 @@ const MULTIPART_MAX_BYTES = 4 * 1024 * 1024;
 
 /** Carica il backup JSON su Google Drive dell'utente (nella sezione "File creati da questa app", non nel resto del Drive). */
 export async function uploadBackupToDrive(jsonContent: string, options: { interactive?: boolean } = {}): Promise<void> {
-  const token = await getAccessToken(options.interactive ?? true);
+  const interactive = options.interactive ?? true;
+  let token = await getAccessToken(interactive);
   const filename = `${DRIVE_FILE_NAME_PREFIX}${localDateString()}.json`;
   const metadata = { name: filename, mimeType: "application/json" };
   const content = new Blob([jsonContent], { type: "application/json" });
 
-  if (content.size <= MULTIPART_MAX_BYTES) {
-    await uploadMultipart(token, metadata, jsonContent);
-  } else {
-    await uploadResumable(token, metadata, content);
+  const send = (tk: string) => (content.size <= MULTIPART_MAX_BYTES ? uploadMultipart(tk, metadata, jsonContent) : uploadResumable(tk, metadata, content));
+  try {
+    await send(token);
+  } catch (err) {
+    // Token scaduto (Drive risponde 401): si scarta quello in cache, se ne chiede uno nuovo e si riprova una volta.
+    if (!(err instanceof DriveError) || err.status !== 401) throw err;
+    if (Capacitor.isNativePlatform()) await NativeGoogleDriveAuth.clearToken({ token }).catch(() => {});
+    else cachedToken = null;
+    token = await getAccessToken(interactive);
+    await send(token);
   }
 
   // La pulizia non deve far fallire un backup già caricato.
@@ -144,7 +154,7 @@ async function uploadMultipart(token: string, metadata: object, jsonContent: str
   });
 
   if (!res.ok) {
-    throw new DriveError("network", `Caricamento su Drive fallito (${res.status})`);
+    throw new DriveError("network", `Caricamento su Drive fallito (${res.status})`, res.status);
   }
 }
 
@@ -162,7 +172,7 @@ async function uploadResumable(token: string, metadata: object, content: Blob): 
   });
   const sessionUrl = start.headers.get("Location");
   if (!start.ok || !sessionUrl) {
-    throw new DriveError("network", `Caricamento su Drive fallito (${start.status})`);
+    throw new DriveError("network", `Caricamento su Drive fallito (${start.status})`, start.status);
   }
 
   const res = await fetch(sessionUrl, {
@@ -171,7 +181,7 @@ async function uploadResumable(token: string, metadata: object, content: Blob): 
     body: content,
   });
   if (!res.ok) {
-    throw new DriveError("network", `Caricamento su Drive fallito (${res.status})`);
+    throw new DriveError("network", `Caricamento su Drive fallito (${res.status})`, res.status);
   }
 }
 
