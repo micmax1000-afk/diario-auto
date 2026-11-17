@@ -20,7 +20,7 @@ Rifornimenti, consumi, scadenze e distributori più economici. Con OBD2.
 Diario Auto è il libretto della tua auto, sempre in tasca. Registra rifornimenti, ricariche, manutenzioni e spese: l'app calcola da sola consumi, costo al km e quanto spendi ogni mese, ti avvisa prima delle scadenze e ti mostra dove fare il pieno spendendo meno. Gratis, senza account e senza pubblicità.
 
 ⛽ RIFORNIMENTI E RICARICHE
-• Benzina, diesel, GPL, metano, ibride ed elettriche
+• Benzina, diesel, GPL, metano, ibride ed elettriche, anche a doppia alimentazione (benzina o diesel + GPL o metano)
 • Consumo reale da pieno a pieno, anche con i rifornimenti parziali
 • Prezzo medio, km percorsi e spesa del periodo
 • "Pieno come l'ultimo": un tocco e controlli solo i km
@@ -106,7 +106,7 @@ Refuels, consumption, deadlines and mileage claims. With read-only OBD2.
 Diario Auto is your car's logbook, always in your pocket. Log refuels, charges, services and expenses: the app works out consumption, cost per km and monthly spending for you, and reminds you before every deadline. Free, with no account and no ads.
 
 ⛽ REFUELS AND CHARGING
-• Petrol, diesel, LPG, CNG, hybrid and electric
+• Petrol, diesel, LPG, CNG, hybrid and electric, also dual fuel (petrol or diesel + LPG or CNG)
 • Real consumption from full tank to full tank, partial refuels included
 • Average price, distance driven and spending for any period
 • "Same as last time": one tap and you only check the mileage
