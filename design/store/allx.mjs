@@ -1,0 +1,17 @@
+import { boot, b } from './shots.mjs';
+import fs from 'fs';
+const L=JSON.parse(fs.readFileSync('/home/user/diario-auto/src/i18n/locales/'+process.argv[2]+'.json','utf8'));
+const lang=process.argv[2];
+const p=await boot(lang);
+const shot=n=>p.screenshot({path:`multi/raw-${lang}-${n}.png`});
+const home=async()=>{ await p.goto('http://localhost:4173/'); await p.waitForTimeout(1500); };
+const tabs=p.locator('.bottom-tabbar button');
+await shot('home');
+await tabs.nth(1).click(); await p.waitForTimeout(1200); await shot('fuel');
+await tabs.nth(3).click(); await p.waitForTimeout(1200); await shot('maint');
+await home(); await p.locator('.home-round').first().click(); await p.waitForTimeout(600);
+await p.getByText(L.trips.title,{exact:true}).first().click(); await p.waitForTimeout(1200); await shot('trips');
+await home(); await p.getByText(L.home.statsLink).first().click(); await p.waitForTimeout(1500); await shot('stats');
+await tabs.nth(4).click(); await p.waitForTimeout(800);
+await p.getByText(L.live.demo.start,{exact:true}).click(); await p.waitForTimeout(3000); await shot('obd');
+await b.close();
