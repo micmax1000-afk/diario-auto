@@ -1,0 +1,7 @@
+Come è stata ottenuta design/store/icona-finale-1024.png (icona senza l'auto):
+1. duo.py   -> tutto in tonalità di blu, solo il tachimetro giallo (duo-full.png), poi toppa dei bordi (duo-pad.png)
+2. erase.py -> maschere di libretto, penna e tachimetro
+3. erase2.py <spostamento> -> sfondo sfumato, tachimetro, libretto e penna spostati in su, perno della lancetta (senza-auto-full.png)
+4. ritaglio quadrato 1070 px centrato in (627, 432), ridimensionato a 1024.
+Gli script leggono/scrivono nella cartella corrente: sorgente.png = design/store/icona-sorgente-1254.png.
+Per rigenerare tutte le icone dall'immagine finale: python3 design/store/applica-icona.py
